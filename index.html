@@ -998,11 +998,21 @@ let lastTap=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-l
 /* migrate old saves: old plan done flags carry XP already */
 if(!S.v||S.v<3){S.v=3;save()}
 go('day');loadPlan(SEL);render();
-/* remote updates from Claude: applied once per id */
-(async()=>{try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();S.applied=S.applied||[];if(!o||!o.id||S.applied.includes(o.id))return;
- S.applied.push(o.id);if(o.cleanSince){const t=new Date(o.cleanSince).getTime();if(t&&t<=Date.now())S.cleanSince=t}
+/* remote updates from Claude: each update applied once per id */
+function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id||S.applied.includes(o.id))return null;S.applied.push(o.id);const msgs=[];
+ if(o.cleanSince){const t=new Date(o.cleanSince).getTime();if(t&&t<=Date.now())S.cleanSince=t}
  let n=0;for(const[k,v]of Object.entries(o.days||{})){if(S.days[k]!==v){if(v==='c')n++;S.days[k]=v}}
- if(o.note)addLog(o.note);if(n)award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n});save();render();toast('Обновлено: '+(o.note||'данные'))}catch(e){}})();
+ if(n)award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n});
+ if(Array.isArray(o.grants)&&o.grants.length){const d=o.date||today(),key=planKey(d);let pl={tasks:[],note:'',best:''};try{const v=JSON.parse(localStorage.getItem(key)||'null');if(v)pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v}catch(e){}
+  let sum=0,gold0=S.gold;for(const g of o.grants){if(!g||!g.t)continue;const xp=Math.max(5,Math.min(200,Number(g.xp)||25)),c=STATS[g.c]?g.c:catOf(g.t);
+   const ex=(pl.tasks||[]).find(x=>x.t===g.t);if(ex&&ex.done)continue;const aw=award(xp,c,'');sum+=aw.xp;
+   if(ex){ex.done=true;ex.aw=aw;ex.lt=true}else pl.tasks.push({t:String(g.t).slice(0,140),time:g.time||'',xp,c,done:true,aw,lt:true});S.quests++;feed(10)}
+  try{localStorage.setItem(key,JSON.stringify(pl))}catch(e){}if(d===SEL)loadPlan(SEL);
+  if(sum)msgs.push('+'+sum+' XP и +'+(S.gold-gold0)+' золота за '+o.grants.length+' '+plural(o.grants.length,'дело','дела','дел'))}
+ if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
+(async()=>{try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
+ const list=Array.isArray(o.updates)?o.updates:[o];const out=[];for(const u of list){const m=applyRemote(u);if(m)out.push(m)}
+ if(out.length){save();render();lootSheet('Награда от Claude',null,out.join('. '))}}catch(e){}})();
 if(!S.oath.done)setTimeout(()=>oathSheet(true),400);
 setInterval(()=>{const a=document.activeElement;if(!a||!/INPUT|TEXTAREA/.test(a.tagName))render()},30000);
 document.addEventListener('visibilitychange',()=>{const a=document.activeElement;if(!document.hidden&&(!a||!/INPUT|TEXTAREA/.test(a.tagName)))render()});
