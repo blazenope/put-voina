@@ -276,7 +276,7 @@ textarea{width:100%;background:var(--surface);border:1px solid var(--line);borde
     </div>
   </div>
 
-  <button class="sos" id="sosBtn"><span><b>Тянет</b><small>15 минут, и тяга отступит</small></span>
+  <button class="sos" id="sosBtn"><span><b>Тянет</b><small>5 минут, и тяга отступит</small></span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 
   <section class="sec">
@@ -354,7 +354,7 @@ textarea{width:100%;background:var(--surface);border:1px solid var(--line);borde
     <details><summary>Как играть</summary><div class="prose">
       <ol>
         <li><b>Утром</b> впиши задачи дня. Время в начале строки («12:00 врач») расставит их по порядку. Наперёд можно планировать через полосу недели.</li>
-        <li><b>Когда тянет</b>, жми «Тянет». Дыши в ритм круга и делай действия по одному. Пик тяги обычно проходит за 10–20 минут.</li>
+        <li><b>Когда тянет</b>, жми «Тянет». Дыши в ритм круга и делай действия по одному. Бой длится 5 минут, «Тяга прошла» доступна через 2. Если тянет дальше, начни ещё один бой.</li>
         <li><b>Вечером</b> отметь итог дня.</li>
       </ol>
       <p>Срыв не отнимает уровень и опыт. Заново начинается только таймер. Честная отметка срыва даёт +5 XP.</p>
@@ -386,7 +386,7 @@ textarea{width:100%;background:var(--surface);border:1px solid var(--line);borde
 <div class="fight hide" id="fight"><div class="fight-in">
   <div class="fight-top"><span class="eyebrow">Бой с тягой</span><span class="date" id="fElapsed"></span></div>
   <div class="breath"><div class="ring"></div><div class="ring2"></div>
-    <div class="tm"><b id="fTimer">15:00</b><span id="fBreath">Вдох</span></div></div>
+    <div class="tm"><b id="fTimer">5:00</b><span id="fBreath">Вдох</span></div></div>
 
   <div class="act">
     <div class="eyebrow">Сейчас</div>
@@ -625,7 +625,7 @@ function sheet(t,p,yes,yesLabel){$('shT').textContent=t;$('shP').textContent=p;$
  $('shYes').onclick=()=>{$('sheet').classList.add('hide');yes()};$('shNo').onclick=()=>$('sheet').classList.add('hide')}
 
 /* ---------- fight ---------- */
-const FIGHT=15*60,MIN_WIN=5*60;let fT=null,fStart=0,fActs=[],fIdx=0,fDone=0,fTrig='';
+const FIGHT=5*60,MIN_WIN=2*60;let fT=null,fStart=0,fActs=[],fIdx=0,fDone=0,fTrig='';
 function bucket(){const h=new Date().getHours();return h<6?'Ночью':h<12?'Утром':h<18?'Днём':'Вечером'}
 function openFight(){fStart=Date.now();fDone=0;fTrig='';fActs=[...ACTIONS].sort(()=>Math.random()-.5);fIdx=0;$('fAct').textContent=fActs[0];$('fCount').textContent='Сделано: 0';
  $('fTrig').innerHTML=TRIGS.map(t=>'<button class="chip" data-t="'+t+'">'+t+'</button>').join('');
