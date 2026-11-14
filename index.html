@@ -616,6 +616,7 @@ function selectDay(d){SEL=d;follow=d===today();loadPlan(d);render()}
 /* ================= MATH ================= */
 const cleanMs=()=>Math.max(0,Date.now()-S.cleanSince);
 const cleanDays=()=>Math.floor(cleanMs()/DAY);
+const dayNum=()=>{const s=new Date(S.cleanSince);s.setHours(0,0,0,0);const t=new Date();t.setHours(0,0,0,0);return Math.round((t-s)/DAY)+1};
 const bestDays=()=>Math.max(S.best||0,Math.floor((S.bestMs||0)/DAY),cleanDays());
 const totalClean=()=>Object.values(S.days).filter(v=>v==='c').length;
 function lvlInfo(xp){let l=1,need=100,acc=0;while(xp>=acc+need){acc+=need;l++;need=Math.round(100+(l-1)*40)}return{l,cur:xp-acc,need}}
@@ -782,12 +783,12 @@ function renderDay(){
  $('petName').textContent=STAGES[st][1];$('petStage').textContent='стадия '+(st+1)+'/5';$('petSay').textContent=petLine();
  $('pFuel').style.width=S.pet.fuel+'%';$('pMood').style.width=S.pet.mood+'%';
  const ms=cleanMs(),d=Math.floor(ms/DAY),hh=Math.floor(ms%DAY/36e5),mm=Math.floor(ms%36e5/6e4);
- $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин';
+ $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
  $('cTot').textContent='Всего чистых дней: '+totalClean();
  // buffs
- {const d=cleanDays(),cur=[...BUFFS].reverse().find(b=>d>=b[0]),nx=BUFFS.find(b=>b[0]>d);
+ {const d=dayNum(),cur=[...BUFFS].reverse().find(b=>d>=b[0]),nx=BUFFS.find(b=>b[0]>d);
   $('buffNow').innerHTML=(cur?'<div style="font:600 15px var(--body);color:var(--ink)">День '+cur[0]+': '+esc(cur[1])+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:4px">'+esc(cur[2])+'</div>':'<div style="font:14px/1.45 var(--body);color:var(--ink2)">Первый бафф откроется через сутки без срыва.</div>')
-   +(nx?'<div style="font:13px var(--body);color:#ff8fc8;margin-top:8px">Следующий: «'+esc(nx[1])+'» через '+(nx[0]-d)+' '+plural(nx[0]-d,'день','дня','дней')+'</div>':'')}
+   +(nx?'<div style="font:13px var(--body);color:#ff8fc8;margin-top:8px">Сегодня '+d+'-й день пути. Следующий: «'+esc(nx[1])+'» через '+(nx[0]-d)+' '+plural(nx[0]-d,'день','дня','дней')+'</div>':'')}
  // vote
  $('voteBox').classList.toggle('hide',!isT);
  const voted=!!S.votes[today()];$('voteTxt').innerHTML=voted?'Голос отдан. Сегодня ты — человек, который <b>'+esc(S.oath.identity||IDENTITY)+'</b>.':'Сегодня я голосую за себя — человека, который <b>'+esc(S.oath.identity||IDENTITY)+'</b>.';
@@ -971,7 +972,7 @@ $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+
  sheet('<h3>Начало отсчёта</h3><p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
  $('csNo').onclick=closeSheet;$('csYes').onclick=()=>{const t=new Date($('csIn').value).getTime();if(!t||t>Date.now())return toast('Впиши дату не позже сегодняшней');
   S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];{let k=dkey(new Date(t)),n=0;while(k<today()){if(!S.days[k]){S.days[k]='c';n++}k=shift(k,1)}if(n){award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n})}}addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
-$('buffBox').onclick=()=>{const d=cleanDays();sheet('<h3>Бафы пути</h3><p>Что ждёт тебя на каждом этапе без срыва. Эффекты индивидуальны: часть подтверждена исследованиями, часть — опыт тех, кто прошёл этот путь.</p>'+BUFFS.map(b=>'<div style="padding:10px 0;border-bottom:2px dashed var(--edge);'+(d>=b[0]?'':'opacity:.55')+'"><div style="font:600 15px var(--body);color:'+(d>=b[0]?'#ff8fc8':'var(--ink)')+'">'+(d>=b[0]?'✓ ':'')+'День '+b[0]+' · '+esc(b[1])+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:4px">'+esc(b[2])+'</div></div>').join('')+'<button class="btn gold" id="bfOk" style="width:100%;margin-top:14px">Понял</button>');$('bfOk').onclick=closeSheet};
+$('buffBox').onclick=()=>{const d=dayNum();sheet('<h3>Бафы пути</h3><p>Что ждёт тебя на каждом этапе без срыва. Эффекты индивидуальны: часть подтверждена исследованиями, часть — опыт тех, кто прошёл этот путь.</p>'+BUFFS.map(b=>'<div style="padding:10px 0;border-bottom:2px dashed var(--edge);'+(d>=b[0]?'':'opacity:.55')+'"><div style="font:600 15px var(--body);color:'+(d>=b[0]?'#ff8fc8':'var(--ink)')+'">'+(d>=b[0]?'✓ ':'')+'День '+b[0]+' · '+esc(b[1])+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:4px">'+esc(b[2])+'</div></div>').join('')+'<button class="btn gold" id="bfOk" style="width:100%;margin-top:14px">Понял</button>');$('bfOk').onclick=closeSheet};
 $('petArt').onclick=()=>{const a=$('petArt');a.classList.remove('hop');void a.offsetWidth;a.classList.add('hop');if(S.pet.petDay!==today()){S.pet.petDay=today();S.pet.pets=0}
  SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=rnd(['Тепло!','Мы справимся.','Я с тобой.','Ещё!','Ты молодец, что зашёл.']);$('pMood').style.width=S.pet.mood+'%'};
 $('voteBtn').onclick=()=>{if(S.votes[today()])return;S.votes[today()]=1;addLog('Голос за себя');award(10,'wil','голос за себя',{dmg:10});save();render()};
