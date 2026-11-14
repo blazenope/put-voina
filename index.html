@@ -582,6 +582,11 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
       <div class="row2"><button class="btn" id="expBtn">Копировать</button><button class="btn" id="impBtn">Загрузить</button></div>
       <textarea id="saveBox" rows="3" class="hide" style="margin-top:10px" placeholder="Вставь код сохранения"></textarea>
       <button class="btn gold hide" id="impGo" style="width:100%;margin-top:10px">Загрузить</button>
+      <p style="margin-top:14px"><b>Синхронизация телефон ↔ ПК</b></p>
+      <p class="mut" style="font-size:13px">Создай токен с правом gist: <a href="https://github.com/settings/tokens/new?scopes=gist&amp;description=put-voina" target="_blank" rel="noopener" style="color:inherit">github.com/settings/tokens</a>. Сначала подключи телефон, потом ПК — ПК возьмёт прогресс телефона.</p>
+      <div class="add" id="syncAdd"><input type="password" id="syncTok" placeholder="Токен GitHub" aria-label="Токен GitHub" autocomplete="off"><button class="btn gold" id="syncGo">OK</button></div>
+      <div class="row2 hide" id="syncOn" style="margin-top:10px"><button class="btn" id="syncNow">Синхронизировать</button><button class="btn" id="syncOff">Отключить</button></div>
+      <p class="mut" id="syncSt" style="font-size:13px;margin-top:8px"></p>
       <p style="margin-top:14px"><button class="linkbtn" id="resetBtn">Начать игру заново</button></p>
     </div></details>
   </div>
@@ -763,7 +768,7 @@ function hydrate(o){const s=Object.assign(fresh(),o||{});const f=fresh();
  return s}
 let S=fresh();
 try{const r=localStorage.getItem(KEY);if(r)S=hydrate(JSON.parse(r))}catch(e){}
-function save(){S.ts=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Память телефона заполнена')}}
+function save(){S.ts=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Память телефона заполнена')}syncLater()}
 
 /* per-day plan */
 let SEL=today(), follow=true, P={tasks:[],note:'',best:''};
@@ -771,7 +776,27 @@ const planKey=d=>KEY+'_plan_'+d;
 function loadPlan(d){let v=null;try{v=JSON.parse(localStorage.getItem(planKey(d))||'null')}catch(e){}
  if(Array.isArray(v))v={tasks:v};v=v||{};
  P={tasks:(v.tasks||[]).filter(x=>x&&x.t).map(x=>({t:String(x.t).slice(0,140),time:x.time||'',xp:Number(x.xp)||25,c:x.c||catOf(x.t),done:!!x.done,aw:x.aw||null,lt:!!x.lt})),note:v.note||'',best:v.best||''}}
-function savePlan(){try{localStorage.setItem(planKey(SEL),JSON.stringify(P))}catch(e){}}
+function savePlan(){try{localStorage.setItem(planKey(SEL),JSON.stringify(P))}catch(e){}save()}
+
+/* sync phone <-> PC via private GitHub Gist */
+const SK=KEY+'_sync',GF='put-voina.json',GH='https://api.github.com/gists';
+let SY={};try{SY=JSON.parse(localStorage.getItem(SK)||'{}')||{}}catch(e){}
+let syT=0,syBusy=false,syDirty=false;
+function sySave(){try{localStorage.setItem(SK,JSON.stringify(SY))}catch(e){}}
+function syUI(t){const on=!!(SY.tok&&SY.gist);$('syncAdd').classList.toggle('hide',on);$('syncOn').classList.toggle('hide',!on);
+ $('syncSt').textContent=t!=null?t:(on?'Подключено'+(SY.at?' · '+new Date(SY.at).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''):'')}
+function dump(){const all={s:S,plans:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(KEY+'_plan_'))all.plans[k]=localStorage.getItem(k)}return all}
+async function gh(url,opt){const r=await fetch(url,Object.assign({cache:'no-store'},opt||{},{headers:{Authorization:'Bearer '+SY.tok,Accept:'application/vnd.github+json','Content-Type':'application/json'}}));
+ if(r.status===401)throw new Error('токен не подошёл');if(!r.ok)throw new Error('GitHub '+r.status);return r.json()}
+async function syRead(){const g=await gh(GH+'/'+SY.gist),f=g.files&&g.files[GF];if(!f)return null;let c=f.content;
+ if(f.truncated)c=await (await fetch(f.raw_url,{cache:'no-store'})).text();return JSON.parse(c)}
+function syApply(o){clearTimeout(syT);S=hydrate(o.s);try{localStorage.setItem(KEY,JSON.stringify(S));for(const[k,v]of Object.entries(o.plans||{}))localStorage.setItem(k,v)}catch(e){}loadPlan(SEL);render()}
+async function syPush(){if(!SY.tok||!SY.gist)return;if(syBusy){syDirty=true;return}syBusy=true;
+ try{await gh(GH+'/'+SY.gist,{method:'PATCH',body:JSON.stringify({files:{[GF]:{content:JSON.stringify(dump())}}})});SY.at=Date.now();sySave();syUI()}catch(e){syUI('Не отправлено: '+e.message)}
+ syBusy=false;if(syDirty){syDirty=false;syPush()}}
+function syncLater(){if(!SY.tok||!SY.gist)return;clearTimeout(syT);syT=setTimeout(syPush,3000)}
+async function syPull(){if(!SY.tok||!SY.gist)return;
+ try{const o=await syRead();if(o&&o.s&&(o.s.ts||0)>(S.ts||0)){syApply(o);toast('Прогресс обновлён')}else if(!o||!o.s||(o.s.ts||0)<(S.ts||0))await syPush();SY.at=Date.now();sySave();syUI()}catch(e){syUI('Нет связи: '+e.message)}}
 function selectDay(d){SEL=d;follow=d===today();loadPlan(d);render()}
 
 /* ================= MATH ================= */
@@ -1271,6 +1296,15 @@ $('expBtn').onclick=async()=>{const all={s:S,plans:{}};for(let i=0;i<localStorag
 $('impBtn').onclick=()=>{$('saveBox').classList.remove('hide');$('impGo').classList.remove('hide');$('saveBox').value=''};
 $('impGo').onclick=()=>{try{const o=JSON.parse(decodeURIComponent(escape(atob($('saveBox').value.trim()))));
  if(o.s){S=hydrate(o.s);for(const[k,v]of Object.entries(o.plans||{}))localStorage.setItem(k,v)}else S=hydrate(o);save();loadPlan(SEL);render();toast('Прогресс загружен');$('saveBox').classList.add('hide');$('impGo').classList.add('hide')}catch(e){toast('Код не подошёл')}};
+$('syncGo').onclick=async()=>{const t=$('syncTok').value.trim();if(!t)return toast('Вставь токен');SY={tok:t};syUI('Подключаю…');
+ try{const list=await gh(GH+'?per_page=100'),g=list.find(x=>x.files&&x.files[GF]);
+  if(g){SY.gist=g.id;sySave();const o=await syRead();if(o&&o.s){syApply(o);toast('Прогресс загружен с другого устройства')}else await syPush()}
+  else{const n=await gh(GH,{method:'POST',body:JSON.stringify({description:'Путь Воина — сохранение',public:false,files:{[GF]:{content:JSON.stringify(dump())}}})});SY.gist=n.id;toast('Синхронизация включена')}
+  SY.at=Date.now();sySave();$('syncTok').value='';syUI()}catch(e){SY={};sySave();syUI('Ошибка: '+e.message)}};
+$('syncNow').onclick=()=>{syUI('Синхронизирую…');syPull()};
+$('syncOff').onclick=()=>{SY={};sySave();syUI();toast('Синхронизация отключена')};
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(syT){clearTimeout(syT);syPush()}}else syPull()});
+syUI();
 $('resetBtn').onclick=()=>sheet('<h3>Начать заново?</h3><p>Весь прогресс будет стёрт.</p><div class="row2"><button class="btn" id="zNo">Отмена</button><button class="btn red" id="zYes">Стереть</button></div>')||($('zNo').onclick=closeSheet,$('zYes').onclick=()=>{S=fresh();save();closeSheet();render();toast('Новая игра')});
 
 ['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
@@ -1295,8 +1329,9 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id||S.applied.includes
   for(const[id,n]of Object.entries(o.love)){if(id==='rej'){for(let i=0;i<n;i++){S.love.rej=(S.love.rej||0)+1;lx+=award(15,'cha','',{dmg:15}).xp}continue}const t=all.find(x=>x[0]===id);if(!t)continue;
    for(let i=0;i<n&&(S.love.d[id]||0)<t[3];i++){S.love.d[id]=(S.love.d[id]||0)+1;if(id==='date')S.love.dates=(S.love.dates||0)+1;lx+=award(t[2],'cha','',{dmg:t[2]}).xp;addLog('Линия Сердца: '+t[1])}}
   if(lx)msgs.push('Линия Сердца: +'+lx+' XP')}
+ if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
-(async()=>{try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
+(async()=>{await syPull();try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
  const list=Array.isArray(o.updates)?o.updates:[o];const out=[];for(const u of list){const m=applyRemote(u);if(m)out.push(m)}
  if(out.length){save();render();lootSheet('Награда от Claude',null,out.join('. '))}}catch(e){}})();
 if(!S.oath.done)setTimeout(()=>oathSheet(true),400);
