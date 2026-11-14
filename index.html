@@ -369,6 +369,7 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
 .shopit{border-bottom:1px solid var(--edge)}
 .vote p b{color:var(--gold2)}
 .lore{font:italic 14px/1.5 var(--pix);color:var(--ink2);margin-top:10px}
+.goal{margin:10px 0}.goal .gt{display:flex;justify-content:space-between;gap:10px;font:14px/1.35 var(--body)}.goal .gt b{font-variant-numeric:tabular-nums;opacity:.8}.goal.ok .gt span{opacity:.6}
 </style>
 </head>
 <body>
@@ -444,6 +445,10 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
     <div id="eveBox"><label class="lbl" for="best">Лучший момент дня</label><textarea id="best" rows="2" placeholder="Даже маленький"></textarea></div>
   </div>
 
+  <div class="pnl" id="ctSec">
+    <div class="ttl"><h2>Контракты дня</h2><span class="c" id="ctCnt"></span></div>
+    <div id="ctList"></div>
+  </div>
   <div class="pnl" id="checkSec">
     <div class="ttl"><h2>Итог дня</h2></div>
     <div id="checkBox"></div>
@@ -470,15 +475,19 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
     </div>
   </div>
   <div class="pnl">
+    <div class="ttl"><h2>Цели недели</h2><span class="c" id="wkCnt"></span></div>
+    <div id="wkList"></div>
+  </div>
+  <div class="pnl">
     <div class="ttl"><h2>Карта похода</h2><span class="c" id="mapCnt"></span></div>
     <div class="map" id="map"></div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Как бить босса</h2></div>
     <div class="prose">
-      <p>Каждый выполненный квест бьёт босса на столько урона, сколько даёт опыта. Победа над тягой: 60 урона. Чистый день: 40.</p>
+      <p>Каждое дело бьёт босса. Чем труднее дело, тем сильнее удар: дело на 25 XP наносит ~29 урона, на 60 XP — ~84, на 150 XP — 300. Победа над тягой: 60 урона. Чистый день: 40.</p><p><b>Две фазы:</b> на половине HP босс впадает в ярость и меняет слабость — переключайся на другую характеристику.</p><p><b>Сила босса</b> подстраивается под твой средний урон: каждый бой рассчитан на 3–10 дней, весь поход — примерно на 100 дней.</p><p><b>Золото</b> больше дают привычки и мелкие дела, серия и броня. После 6 дел одной характеристики за день золото за неё вдвое меньше — чередуй.</p>
       <p>У каждого босса есть <b>слабость</b>: квесты нужной характеристики бьют ×2. И <b>способность</b>: большинство восстанавливают HP за дни без квестов, поэтому хотя бы один квест в день не даёт им отрасти.</p><p>Срыв лечит босса на 10%. Это не наказание, а напоминание: поход продолжается.</p><p><b>Серия активности:</b> каждый день подряд хотя бы с одним квестом даёт +5% золота, до +50%.</p>
-      <p>За победу: золото, редкая добыча и новая локация.</p>
+      <p>За победу: золото, опыт, редкая добыча и новая локация.</p>
     </div>
   </div>
 </main>
@@ -527,6 +536,15 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
     <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:6px">Снаряжение покупается здесь за золото. Бонусы: оружие — урон по боссу, броня — золото, амулет — опыт. Ещё вещи падают с боссов и иногда с квестов.</div>
     <div class="chips" id="armTabs" style="margin-bottom:6px"></div>
     <div id="armory"></div>
+  </div>
+  <div class="pnl">
+    <div class="ttl"><h2>Кузница</h2></div>
+    <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:6px">Закалка слота: каждый уровень +4% к его бонусу и остаётся при смене вещи. Уровень закалки +N открывается с уровня героя 3·N.</div>
+    <div id="forge"></div>
+  </div>
+  <div class="pnl">
+    <div class="ttl"><h2>Товары недели</h2><span class="c">обновятся в понедельник</span></div>
+    <div id="offers"></div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Мои награды</h2></div>
@@ -667,7 +685,7 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 function plural(n,a,b,c){n=Math.abs(n)%100;const m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
 
 /* ================= DATA ================= */
-const RANKS=[[1,'Новичок'],[3,'Ученик'],[5,'Страж'],[8,'Воин'],[12,'Рыцарь'],[16,'Паладин'],[20,'Мастер воли'],[25,'Герой'],[30,'Легенда']];
+const RANKS=[[1,'Новичок'],[3,'Ученик'],[5,'Страж'],[8,'Воин'],[12,'Рыцарь'],[16,'Паладин'],[20,'Мастер воли'],[25,'Герой'],[30,'Легенда'],[40,'Миф'],[50,'Бессмертный']];
 const STATS={str:['Сила','#ff8a80'],int:['Разум','#8db8ff'],cha:['Харизма','#f59bcc'],wil:['Воля','#ffd67a']};
 const CAT_RX={str:/спорт|трен|отжим|присед|бег|пробеж|прогул|зал|душ|плаван|растяж|вело|ходьб|фитнес/i,
  int:/немец|deutsch|учеб|учит|курс|чита|книг|слов|ausbild|\beq\b|заявк|урок|b2|экзам|резюме|lebenslauf|bewerb|job|джоб|изуч|код|програм|монтаж|видео|short/i,
@@ -683,17 +701,32 @@ const HABITS=[['Телефон ночью вне кровати',15,'wil'],['20 
  ['Сказать кому-то спасибо за конкретное',10,'cha'],['25 минут глубокой работы без отвлечений',20,'int'],['Small talk на немецком с незнакомцем',20,'cha'],
  ['2 минуты представить себя через год',10,'wil'],['Сделать сразу все дела, которые занимают меньше 2 минут',10,'wil']];
 const CHAPTERS=[
- ['Слизень Прокрастинации','Лес Лени',300,['#7ed957','#3f8a2c']],
- ['Ведьма Скуки','Болото Скуки',550,['#9ad0c2','#3d7a6c']],
- ['Тень Соблазна','Пещера Соблазна',850,['#a35cf0','#5a2c96']],
- ['Тролль Сомнений','Горы Сомнений',1200,['#c2a37a','#7a5d38']],
- ['Голем Хаоса','Руины Хаоса',1700,['#8d93a0','#4b505c']],
- ['Дракон Привычки','Замок Дракона',2400,['#e0483e','#8a1e18']]];
-const WEAK=['wil','cha','str','int','wil','str'];
-const ABIL=['Липкая лень: за каждый день без квестов восстанавливает 8% HP','Чары скуки: за день без квестов +8% HP. Боится общения','Соблазн: срыв лечит её на 20%. Боится тренировок','Сомнения: за день без квестов +10% HP. Боится учёбы','Каменная кожа: обычный урон −20%. Боится дисциплины','Пламя дракона: за день без квестов +12% HP. Боится силы'];
-const weakOf=ch=>WEAK[ch%WEAK.length];const abilOf=ch=>ABIL[ch%ABIL.length]+(ch>=ABIL.length?' · круг '+(Math.floor(ch/ABIL.length)+1):'');
-const regenOf=ch=>[.08,.08,.08,.10,.08,.12][ch%6]*(1+Math.floor(ch/6)*.25);
-const bossOf=ch=>ch<CHAPTERS.length?CHAPTERS[ch]:['Тёмный Лорд '+(ch-CHAPTERS.length+1)+'-го круга','Бездна',2400+(ch-CHAPTERS.length+1)*600,['#3b3f5c','#16182a']];
+ ['Слизень Прокрастинации','Лес Лени',700,['#7ed957','#3f8a2c']],
+ ['Ведьма Скуки','Болото Скуки',1200,['#9ad0c2','#3d7a6c']],
+ ['Тень Соблазна','Пещера Соблазна',1800,['#a35cf0','#5a2c96']],
+ ['Тролль Сомнений','Горы Сомнений',2200,['#c2a37a','#7a5d38']],
+ ['Голем Хаоса','Руины Хаоса',2600,['#8d93a0','#4b505c']],
+ ['Сирена Ленты','Бухта Бесконечной Ленты',3000,['#5fd4e6','#1f6f80']],
+ ['Бюрократ Канцелярии','Башня Форм и Печатей',3400,['#d9cfa8','#6b6247']],
+ ['Король Бессонницы','Ночной Дворец',3800,['#7a86d6','#2c3370']],
+ ['Кракен Одиночества','Холодное Море',4200,['#4fa3a0','#174a48']],
+ ['Страж Чужого Языка','Врата Мюнхена',4600,['#e8b04a','#7a5414']],
+ ['Лич Отговорок','Склеп «Завтра»',5000,['#b8c4a0','#4d5a38']],
+ ['Дракон Привычки','Замок Дракона',6000,['#e0483e','#8a1e18']]];
+/* pacing: days to beat each boss at your average damage (~100 days for the whole campaign) */
+const BDAYS=[3,4,6,6,7,7,7,8,8,8,9,10];
+const WEAK=['wil','cha','str','int','wil','wil','int','wil','cha','int','wil','str'];
+const WEAK2=['str','int','wil','cha','int','str','wil','str','str','cha','int','wil'];
+const REGEN=[.08,.08,.08,.10,.08,.10,.08,.12,.10,.08,.15,.12];
+const ABIL=['Липкая лень: за каждый день без квестов +8% HP','Чары скуки: за день без квестов +8% HP','Соблазн: срыв лечит её на 20%','Сомнения: за день без квестов +10% HP','Каменная кожа: урон не по слабости −20%','Зов ленты: за день без квестов +10% HP',
+ 'Бумажная стена: дела меньше 20 XP бьют вполсилы','Ночная сила: за день без квестов +12% HP','Холод: за день без квестов +10% HP','Языковой барьер: урон не по слабости −20%','Отговорки: за день без квестов +15% HP','Пламя привычки: срыв лечит 25%, за день без квестов +12% HP'];
+const NB=CHAPTERS.length,circ=ch=>Math.floor(ch/NB);
+const phase2=()=>S.camp.hp<=bossOf(S.camp.ch)[2]/2;
+const weakOf=ch=>(ch===S.camp.ch&&phase2()?WEAK2:WEAK)[ch%NB];
+const abilOf=ch=>ABIL[ch%NB]+(ch>=NB?' · круг '+(circ(ch)+1):'');
+const regenOf=ch=>REGEN[ch%NB]*(1+circ(ch)*.25);
+const baseHp=ch=>Math.round(CHAPTERS[ch%NB][2]*(1+circ(ch)*.5));
+const bossOf=ch=>{const c=CHAPTERS[ch%NB],mx=ch===S.camp.ch&&S.camp.mx?S.camp.mx:baseHp(ch);return [ch<NB?c[0]:c[0]+' · круг '+(circ(ch)+1),c[1],mx,c[3]]};
 const SLOTS={weapon:['Оружие','урон',['Деревянный меч','Стальной клинок','Рунический меч','Клинок Феникса']],
  armor:['Броня','золото',['Кожаная куртка','Кольчуга','Латы стража','Доспех легенды']],
  amulet:['Амулет','опыт',['Медный амулет','Серебряный оберег','Око мудреца','Сердце пламени']]};
@@ -810,7 +843,10 @@ const rankOf=l=>{let r=RANKS[0];for(const x of RANKS)if(l>=x[0])r=x;return r};
 const statLvl=x=>Math.floor(Math.sqrt(x/15))+1;
 const statProg=x=>{const l=statLvl(x),a=15*(l-1)**2,b=15*l**2;return(x-a)/(b-a)};
 const stageIdx=()=>{const d=cleanDays();let i=0;STAGES.forEach((s,k)=>{if(d>=s[0])i=k});return i};
-function bonus(){const b={dmg:0,gold:0,xp:0};for(const sl of ['weapon','armor','amulet']){const it=S.inv.find(i=>i.id===S.eq[sl]);if(it)b[{weapon:'dmg',armor:'gold',amulet:'xp'}[sl]]+=RARITY[it.r][1]/100}return b}
+const SLOTB={weapon:'dmg',armor:'gold',amulet:'xp'};
+function bonus(){const b={dmg:0,gold:0,xp:0};for(const sl of ['weapon','armor','amulet']){const it=S.inv.find(i=>i.id===S.eq[sl]);if(it)b[SLOTB[sl]]+=RARITY[it.r][1]/100;b[SLOTB[sl]]+=((S.forge||{})[sl]||0)*FORGE_STEP}return b}
+/* forge: per-slot upgrades +1..+5, each +4% to the slot's bonus */
+const FORGE_STEP=.04,FORGE_COST=[120,340,620,960,1340];
 function addLog(t){S.log.unshift({d:today(),t});S.log=S.log.slice(0,200)}
 let tt;function toast(t){if(/Впиши|уже есть|не подошёл/.test(t))SFX.err();const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2300)}
 function floatTxt(txt,col,x,y){const e=document.createElement('div');e.className='float';e.textContent=txt;e.style.color=col;e.style.left=(x||window.innerWidth/2-30)+'px';e.style.top=(y||window.innerHeight/2)+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1100)}
@@ -896,22 +932,37 @@ const icon=(n,col,s)=>'<svg class="art" viewBox="0 0 24 24" width="'+(8*(s||3))+
 const coin=s=>'<svg class="art" viewBox="0 0 24 24" width="'+(8*(s||2.5))+'" height="'+(8*(s||2.5))+'">'+ICONS.coin+'</svg>';
 
 /* ================= ECONOMY ================= */
+/* per-day counters: contracts, weekly goals, boss pacing */
+function ds(d){S.ds=S.ds||{};d=d||today();return S.ds[d]||(S.ds[d]={str:0,int:0,cha:0,wil:0,n:0,am:0,big:0,crit:0,dmg:0})}
+const dmgOf=xp=>Math.round(xp*(1+Math.min(xp,150)/150));   // hard deeds hit harder
+const goldOf=xp=>Math.round(8+xp*.25);                       // routine pays relatively more gold
 function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();if(S.buffXp>now)b.xp+=1;if(S.buffDmg>now)b.dmg+=1;if(S.buffGold>now)b.gold+=1;
- const streakB=Math.min(.5,(actStreak())*.05);const crit=cat===weakOf(S.camp.ch);const golem=S.camp.ch%6===4&&!crit?.8:1;
- const ax=Math.round(xp*(1+b.xp)),ag=Math.round(xp/2*(1+b.gold+streakB)),ad=Math.round((opt.dmg||xp)*(1+b.dmg)*(crit?2:1)*golem);
+ const D=ds(),bc=S.camp.ch%NB,streakB=Math.min(.5,actStreak()*.05),crit=cat===weakOf(S.camp.ch);
+ const armor=(bc===4||bc===9)&&!crit?.8:1,paper=bc===6&&xp<20?.5:1,tired=D[cat]>=6?.5:1;
+ const ax=Math.round(xp*(1+b.xp)),ag=Math.round(goldOf(xp)*(1+b.gold+streakB)*tired),ad=Math.round((opt.dmg||dmgOf(xp))*(1+b.dmg)*(crit?2:1)*armor*paper);
+ D[cat]++;D.n++;if(new Date().getHours()<12)D.am++;if(xp>=40)D.big++;if(crit)D.crit++;D.dmg+=ad;
  if(!S.act)S.act={};S.act[today()]=1;
  const before=lvlInfo(S.xp).l;S.xp+=ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;
  const lv=lvlInfo(S.xp).l;SFX.hit();if(lv>before){SFX.level();const r0=rankOf(before)[1],r1=rankOf(lv)[1];addLog('Уровень '+lv+(r0!==r1?' · ранг '+r1:''));setTimeout(()=>lootSheet('Новый уровень!',null,'Уровень '+lv+(r0!==r1?'. Новый ранг: '+r1:'')+'. Ты становишься тем, кем решил стать.'),700)}
  else{toast('+'+ax+' XP · +'+ag+' золота'+(why?' · '+why:''));setTimeout(SFX.coin,120)}
  floatTxt((crit?'КРИТ -':'-')+ad,crit?'#ffd67a':'#ff9a8f');hitBoss(ad);
- return{xp:ax,g:ag,d:ad,c:cat}}
+ return{xp:ax,g:ag,d:ad,c:cat,day:today(),cr:crit,big:xp>=40}}
 function unaward(aw){if(!aw)return;SFX.undo();S.xp=Math.max(0,S.xp-aw.xp);S.gold=Math.max(0,S.gold-aw.g);S.st[aw.c]=Math.max(0,(S.st[aw.c]||0)-aw.xp);
+ const D=S.ds&&aw.day&&S.ds[aw.day];if(D){const dn=k=>D[k]=Math.max(0,(D[k]||0)-1);dn(aw.c);dn('n');if(aw.cr)dn('crit');if(aw.big)dn('big');D.dmg=Math.max(0,D.dmg-aw.d)}
  const mx=bossOf(S.camp.ch)[2];S.camp.hp=Math.min(mx,S.camp.hp+aw.d);toast('−'+aw.xp+' XP · −'+aw.g+' золота')}
-function hitBoss(d){S.camp.hp-=d;if(S.camp.hp<=0){const b=bossOf(S.camp.ch);const g=150*(S.camp.ch+1);S.gold+=g;S.goldTotal+=g;S.xp+=50*(S.camp.ch+1);
-  const it=makeItem(S.camp.ch>=4?(Math.random()<.3?3:2):S.camp.ch>=2?2:(Math.random()<.3?2:1));addLog('Повержен босс: '+b[0]);S.camp.ch++;S.camp.hp=bossOf(S.camp.ch)[2];
-  setTimeout(()=>lootSheet('Босс повержен!',it,b[0]+' пал. +'+g+' золота. Впереди: '+bossOf(S.camp.ch)[1]+'.'),900)}}
+/* boss HP adapts to your average daily damage so each boss lasts about BDAYS days */
+function avgDmg(){const ks=Object.keys(S.ds||{}).filter(k=>k<today()).sort().slice(-14);if(ks.length<3)return 0;return ks.reduce((a,k)=>a+(S.ds[k].dmg||0),0)/ks.length}
+function spawnBoss(){const ch=S.camp.ch,base=baseHp(ch),a=avgDmg();
+ S.camp.mx=a?Math.round(Math.min(base*1.4,Math.max(base*.7,a*BDAYS[ch%NB]*(1+circ(ch)*.3)))/10)*10:base;S.camp.hp=S.camp.mx;S.camp.ph=0}
+const bossGold=ch=>Math.min(3000,150*(ch+1)),bossXp=ch=>Math.min(1000,50*(ch+1));
+function hitBoss(d){S.camp.hp-=d;const mx=bossOf(S.camp.ch)[2];
+ if(S.camp.hp>0&&!S.camp.ph&&S.camp.hp<=mx/2){S.camp.ph=1;const b=bossOf(S.camp.ch),w=STATS[weakOf(S.camp.ch)][0];addLog(b[0]+': вторая фаза, новая слабость — '+w);
+  setTimeout(()=>lootSheet('Вторая фаза!',null,b[0]+': ярость! Слабость сменилась — теперь ×2 бьют дела на «'+w+'».'),900)}
+ if(S.camp.hp<=0){const ch=S.camp.ch,b=bossOf(ch),g=bossGold(ch);S.gold+=g;S.goldTotal+=g;S.xp+=bossXp(ch);
+  const it=makeItem(ch>=6?(Math.random()<.35?3:2):ch>=2?2:(Math.random()<.3?2:1));addLog('Повержен босс: '+b[0]);S.camp.ch++;spawnBoss();
+  setTimeout(()=>lootSheet('Босс повержен!',it,b[0]+' пал. +'+g+' золота и +'+bossXp(ch)+' XP. Впереди: '+bossOf(S.camp.ch)[1]+'.'),900)}}
 function actStreak(){if(!S.act)return 0;let n=0,k=today();if(!S.act[k])k=shift(k,-1);while(S.act[k]){n++;k=shift(k,-1)}return n}
-function bossRegen(){if(!S.lastRegen){S.lastRegen=shift(today(),-1);return}let k=S.lastRegen,healed=0;const mx=bossOf(S.camp.ch)[2];
+function bossRegen(){if(!S.lastRegen||S.noRegen>Date.now()){S.lastRegen=shift(today(),-1);return}let k=S.lastRegen,healed=0;const mx=bossOf(S.camp.ch)[2];
  while(k<shift(today(),-1)){k=shift(k,1);if(!(S.act&&S.act[k])&&healed<3){S.camp.hp=Math.min(mx,Math.round(S.camp.hp+mx*regenOf(S.camp.ch)));healed++}}
  S.lastRegen=shift(today(),-1);if(healed){addLog(bossOf(S.camp.ch)[0]+' восстановил силы за '+healed+' '+plural(healed,'день','дня','дней')+' без квестов');setTimeout(()=>toast('Босс восстановился, пока ты отдыхал'),900)}}
 function healBoss(f){const mx=bossOf(S.camp.ch)[2];S.camp.hp=Math.min(mx,Math.round(S.camp.hp+mx*f))}
@@ -925,9 +976,49 @@ const OFF=[0];
 const FIX=['Сделать самое неприятное дело первым','Сделать сразу все дела, которые занимают меньше 2 минут','25 минут глубокой работы без отвлечений','Немецкий 20 минут','Силовая тренировка (присед, отжимания, подтягивания)','Лечь спать до 00:00'].map(t=>HABITS.findIndex(x=>x[0]===t));
 function seededHabits(day){let h=0;for(const c of day)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...HABITS.keys()].filter(i=>!OFF.includes(i)&&!FIX.includes(i)),out=[...FIX];
  while(out.length<FIX.length){h=(h*1103515245+12345)>>>0;out.push(idx.splice(h%idx.length,1)[0])}return out}
-function ensureDay(){const d=today();if(S.qDay!==d){bossRegen();S.qDay=d;S.qList=seededHabits(d);S.qDone=[];S.hAw={};S.hLoot=[];save()}
+function ensureDay(){const d=today();if(S.qDay!==d){bossRegen();if(S.ds){const old=shift(d,-70);for(const k of Object.keys(S.ds))if(k<old)delete S.ds[k]}S.qDay=d;S.qList=seededHabits(d);S.qDone=[];S.hAw={};S.hLoot=[];save()}
  if(S.qList.some(i=>OFF.includes(i))){const fresh=seededHabits(d+'x').filter(i=>!S.qList.includes(i));S.qList=S.qList.map(i=>OFF.includes(i)?fresh.shift():i);S.qDone=S.qDone.filter(i=>!OFF.includes(i));save()}
  if(!FIX.every(i=>S.qList.includes(i))||S.qList.length!==FIX.length){const rest=S.qList.filter(i=>!FIX.includes(i)).sort((a,b)=>S.qDone.includes(b)-S.qDone.includes(a));S.qList=[...FIX];S.qDone=S.qDone.filter(i=>S.qList.includes(i));save()}if(follow&&SEL!==d)selectDay(d)}
+/* ================= CONTRACTS & WEEKLY ================= */
+const CONTRACTS=[
+ ['Все 4 характеристики за день',D=>['str','int','cha','wil'].filter(k=>D[k]).length,4],
+ ['3 дела до 12:00',D=>D.am,3],
+ ['Дело на 40+ XP',D=>D.big,1],
+ ['2 дела на разум',D=>D.int,2],
+ ['2 дела на силу',D=>D.str,2],
+ ['Дело на харизму',D=>D.cha,1],
+ ['6 дел за день',D=>D.n,6],
+ ['Все привычки дня',()=>S.qDone.filter(i=>S.qList.includes(i)).length,FIX.length],
+ ['Отметить чистый день',()=>S.days[today()]==='c'?1:0,1],
+ ['2 крита по боссу',D=>D.crit,2]];
+function seedPick(key,n,len){let h=0;for(const c of key)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...Array(len).keys()],out=[];
+ while(out.length<n&&idx.length){h=(h*1103515245+12345)>>>0;out.push(idx.splice(h%idx.length,1)[0])}return out}
+const contractsToday=()=>seedPick(today()+'k',3,CONTRACTS.length);
+const weekStart=()=>shift(today(),-((parseD(today()).getDay()+6)%7));
+function wk(){const id=weekStart();if(!S.wk||S.wk.id!==id)S.wk={id,done:[],ct:0,all:false,bought:[]};return S.wk}
+const weekDays=()=>[0,1,2,3,4,5,6].map(i=>shift(weekStart(),i)).filter(d=>d<=today());
+const WEEKLY=[
+ ['Тренировки: 4 дня с делом на силу',()=>weekDays().filter(d=>((S.ds||{})[d]||{}).str).length,4],
+ ['Учёба: 5 дней с делом на разум',()=>weekDays().filter(d=>((S.ds||{})[d]||{}).int).length,5],
+ ['Чистые дни: 6',()=>weekDays().filter(d=>S.days[d]==='c').length,6],
+ ['Контракты: 10',()=>wk().ct,10]];
+let gained=false;function gain(x,g){S.xp+=x;S.gold+=g;S.goldTotal+=g;gained=true}
+function checkGoals(){gained=false;const d=today(),D=ds(),W=wk();if(!S.ct||S.ct.d!==d)S.ct={d,done:[],all:false};const list=contractsToday();
+ for(const i of list){const c=CONTRACTS[i];if(!S.ct.done.includes(i)&&c[1](D)>=c[2]){S.ct.done.push(i);W.ct++;gain(15,25);addLog('Контракт: '+c[0]);setTimeout(()=>toast('Контракт выполнен · +15 XP · +25 золота'),1200)}}
+ if(!S.ct.all&&list.every(i=>S.ct.done.includes(i))){S.ct.all=true;gain(30,60);const it=Math.random()<.5?makeItem(1):null;addLog('Все контракты дня');
+  setTimeout(()=>lootSheet('Все контракты дня!',it,'+30 XP и +60 золота'+(it?', а ещё добыча':'')+'.'),1500)}
+ WEEKLY.forEach((w,i)=>{if(!W.done.includes(i)&&w[1]()>=w[2]){W.done.push(i);gain(60,120);addLog('Цель недели: '+w[0]);setTimeout(()=>toast('Цель недели · +60 XP · +120 золота'),1800)}});
+ if(!W.all&&W.done.length===WEEKLY.length){W.all=true;gain(150,200);const it=makeItem(2);addLog('Все цели недели');setTimeout(()=>lootSheet('Неделя покорена!',it,'Все цели недели выполнены. +150 XP, +200 золота и эпическая вещь.'),2100)}
+ if(gained)save()}
+const OFFERS=[
+ ['Сундук наёмника','Вещь: редкая или лучше','star','#8db8ff',450,()=>{const it=makeItem(1);lootSheet('Сундук наёмника',it,'')}],
+ ['Печать ярости','×2 урон по боссу на 6 часов','scroll','#ff8a80',200,()=>buff('buffDmg',6,'печать ярости')],
+ ['Цепи для босса','Босс не восстанавливается 7 дней','bomb','#c2a37a',300,()=>{S.noRegen=Date.now()+7*864e5;addLog('Цепи для босса')}],
+ ['Свиток наставника','×2 опыт на 12 часов','scroll','#67c84d',180,()=>buff('buffXp',12,'свиток наставника')],
+ ['Таран','Сразу 15% HP босса','bomb','#e0483e',380,()=>{const d=Math.round(bossOf(S.camp.ch)[2]*.15);floatTxt('-'+d,'#ff9a8f');SFX.hit();hitBoss(d);addLog('Таран: '+d+' урона')}],
+ ['Ларец легенды','25% — легендарная вещь, иначе эпическая','star','#ffd67a',1200,()=>{const it=makeItem(Math.random()<.25?3:2);lootSheet('Ларец легенды',it,'')}],
+ ['Малый свиток удачи','×2 золото на 12 часов','scroll','#f0b541',160,()=>buff('buffGold',12,'малый свиток удачи')]];
+const offersWeek=()=>seedPick(weekStart()+'o',3,OFFERS.length);
 function checkAch(){for(const a of ACHS)if(!S.ach.includes(a[0])&&a[3](S)){S.ach.push(a[0]);S.xp+=30;S.gold+=20;S.goldTotal+=20;addLog('Достижение: '+a[1]);setTimeout(()=>toast('Достижение: '+a[1]+' · +30 XP · +20 золота'),1500)}}
 
 /* ================= RENDER ================= */
@@ -966,7 +1057,7 @@ function renderDay(){
  if(diff!==0){const a=document.createElement('button');a.className='linkbtn';a.textContent='к сегодня';a.onclick=()=>selectDay(today());$('dSub').appendChild(a)}
  // boss mini
  const b=bossOf(S.camp.ch);$('bMiniSpr').innerHTML=bossSVG(S.camp.ch,2);$('bMiniName').textContent=b[0];
- $('bMiniHp').style.width=(S.camp.hp/b[2]*100)+'%';const ql=Math.ceil(S.camp.hp/25);$('bMiniTxt').textContent=S.camp.hp+' / '+b[2]+' HP · слабость: '+STATS[weakOf(S.camp.ch)][0]+' ×2';
+ $('bMiniHp').style.width=(S.camp.hp/b[2]*100)+'%';const ql=Math.ceil(S.camp.hp/35);$('bMiniTxt').textContent=S.camp.hp+' / '+b[2]+' HP · слабость: '+STATS[weakOf(S.camp.ch)][0]+' ×2';
  // pet
  const st=stageIdx();$('petArt').innerHTML='<div class="bob">'+petSVG()+'</div>';$('petArt').classList.toggle('dim',S.pet.fuel<15);
  $('petName').textContent=STAGES[st][1];$('petStage').textContent='стадия '+(st+1)+'/5';$('petSay').textContent=petLine();
@@ -1026,7 +1117,7 @@ function markPast(v){S.days[SEL]=v;if(v==='c'){addLog('Чистый день: '+
 function renderQuest(){renderLove();const ch=S.camp.ch,b=bossOf(ch);
  $('bossSpr').innerHTML=bossSVG(ch,8,S.camp.hp<b[2]*.35);$('bossName').textContent=b[0];$('bossLoc').textContent='Глава '+(ch+1)+' · '+b[1];
  $('bossHp').style.width=(S.camp.hp/b[2]*100)+'%';$('bossTxt').textContent=S.camp.hp+' / '+b[2]+' HP';
- const ql=Math.ceil(S.camp.hp/25),wk=weakOf(ch),st=actStreak();$('bossTip').innerHTML='<b style="color:#ffd67a">Слабость:</b> '+STATS[wk][0]+' — квесты этой характеристики бьют ×2 (КРИТ).<br><b style="color:#ff9a8f">Способность:</b> '+esc(abilOf(ch))+'.<br><b style="color:var(--xp)">Награда:</b> '+(150*(ch+1))+' золота, '+(50*(ch+1))+' XP и '+(ch>=4?'эпическая или легендарная':ch>=2?'эпическая':'редкая')+' вещь.<br>Осталось примерно '+ql+' '+plural(ql,'квест','квеста','квестов')+'. Серия активности: '+st+' '+plural(st,'день','дня','дней')+' (+'+Math.min(50,st*5)+'% золота).'
+ const ql=Math.ceil(S.camp.hp/25),wk=weakOf(ch),st=actStreak();$('bossTip').innerHTML='<b style="color:#ffd67a">Слабость'+(S.camp.ph?' (2-я фаза)':'')+':</b> '+STATS[wk][0]+' — дела этой характеристики бьют ×2 (КРИТ).'+(S.camp.ph?'':' На половине HP сменится на «'+STATS[WEAK2[ch%NB]][0]+'».')+'<br><b style="color:#ff9a8f">Способность:</b> '+esc(abilOf(ch))+'.<br><b style="color:var(--xp)">Награда:</b> '+bossGold(ch)+' золота, '+bossXp(ch)+' XP и '+(ch>=6?'эпическая или легендарная':ch>=2?'эпическая':'редкая')+' вещь.<br>Осталось примерно '+ql+' '+plural(ql,'квест','квеста','квестов')+'. Серия активности: '+st+' '+plural(st,'день','дня','дней')+' (+'+Math.min(50,st*5)+'% золота).'
  const n=Math.max(CHAPTERS.length,ch+2);let h='';for(let i=0;i<n;i++){const bb=bossOf(i);h+='<div class="node '+(i<ch?'done':i===ch?'now':'lock')+'"><div class="dot">'+(i<ch?'✓':i+1)+'</div><div><div class="nm">'+(i<=ch?esc(bb[0]):'???')+'</div><div class="loc">'+esc(bb[1])+'</div></div></div>'}
  $('map').innerHTML=h;$('mapCnt').textContent='побеждено: '+ch}
 function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0]>li.l);
@@ -1048,10 +1139,10 @@ const SHOP=[
  ['Зелье огня','+50 огня питомцу','potion','#f2843a',30,()=>{feed(50);addLog('Зелье огня')}],
  ['Зелье радости','+40 настроения питомцу','potion','#e66fb0',30,()=>{cheer(40);addLog('Зелье радости')}],
  ['Великий эликсир','Огонь и настроение питомца на максимум','potion','#ffd67a',90,()=>{feed(100);cheer(100);addLog('Великий эликсир')}],
- ['Свиток мудрости','×2 опыт за всё на 24 часа','scroll','#67c84d',150,()=>buff('buffXp',24,'свиток мудрости')],
- ['Свиток ярости','×2 урон по боссу на 24 часа','scroll','#e0483e',150,()=>buff('buffDmg',24,'свиток ярости')],
- ['Свиток удачи','×2 золото на 24 часа','scroll','#f0b541',200,()=>buff('buffGold',24,'свиток удачи')],
- ['Бомба','Сразу 150 урона текущему боссу','bomb','#8d93a0',120,()=>{floatTxt('-150','#ff9a8f');SFX.hit();hitBoss(150);addLog('Брошена бомба: 150 урона')}]];
+ ['Свиток мудрости','×2 опыт за всё на 24 часа','scroll','#67c84d',260,()=>buff('buffXp',24,'свиток мудрости')],
+ ['Свиток ярости','×2 урон по боссу на 24 часа','scroll','#e0483e',260,()=>buff('buffDmg',24,'свиток ярости')],
+ ['Свиток удачи','×2 золото на 24 часа','scroll','#f0b541',320,()=>buff('buffGold',24,'свиток удачи')],
+ ['Бомба','Сразу 8% HP текущего босса','bomb','#8d93a0',180,()=>{const d=Math.round(bossOf(S.camp.ch)[2]*.08);floatTxt('-'+d,'#ff9a8f');SFX.hit();hitBoss(d);addLog('Брошена бомба: '+d+' урона')}]];
 const PRICE=[80,250,700,1800],REQ=[1,3,6,10];
 function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(lvlInfo(S.xp).l<REQ[r])return toast('Нужен уровень '+REQ[r]);S.gold-=p;
  const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,r,n:SLOTS[k][2][r]};S.inv.push(it);
@@ -1093,7 +1184,19 @@ function renderLog(){renderMood();const now=new Date(),base=new Date(now.getFull
  $('trigBars').innerHTML=tk.length?bars(S.trig):'<div class="empty">Нет данных</div>';$('hourBars').innerHTML=n?bars(S.hours,['Утром','Днём','Вечером','Ночью']):'<div class="empty">Нет данных</div>';
  const it=Object.entries(S.ifthen).filter(x=>x[1]);$('ifView').innerHTML=it.length?'<ul style="margin:0;padding-left:18px">'+it.map(([k,v])=>'<li>Если <b>'+esc(k.toLowerCase())+'</b>, то <b style="color:var(--gold2)">'+esc(v)+'</b></li>').join('')+'</ul>':'<span class="mut">Пока нет. Добавь, чтобы в бою знать, что делать.</span>';
  $('logList').innerHTML=S.log.length?S.log.slice(0,60).map(l=>'<div class="log"><span>'+l.d.slice(8)+'.'+l.d.slice(5,7)+'</span>'+esc(l.t)+'</div>').join(''):'<div class="empty">Летопись начнётся с первого подвига.</div>'}
-function render(){ensureDay();checkAch();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
+const goalRow=(t,v,n)=>{v=Math.min(v,n);return '<div class="goal'+(v>=n?' ok':'')+'"><div class="gt"><span>'+(v>=n?'✓ ':'')+esc(t)+'</span><b>'+v+'/'+n+'</b></div><div class="gauge g-xp"><i style="width:'+(v/n*100)+'%"></i></div></div>'};
+function renderGoals(){const D=ds(),list=contractsToday(),done=(S.ct&&S.ct.d===today())?S.ct.done:[];
+ $('ctList').innerHTML=list.map(i=>{const c=CONTRACTS[i];return goalRow(c[0],done.includes(i)?c[2]:c[1](D),c[2])}).join('')+'<div class="mut" style="font-size:13px;margin-top:8px">Каждый: +15 XP и +25 золота. Все три: +60 золота и шанс на добычу.</div>';
+ $('ctCnt').textContent=done.filter(i=>list.includes(i)).length+'/3';
+ const W=wk();$('wkList').innerHTML=WEEKLY.map((w,i)=>goalRow(w[0],W.done.includes(i)?w[2]:w[1](),w[2])).join('')+'<div class="mut" style="font-size:13px;margin-top:8px">Каждая: +60 XP и +120 золота. Все четыре: эпическая вещь.</div>';
+ $('wkCnt').textContent=W.done.length+'/'+WEEKLY.length;
+ S.forge=S.forge||{weapon:0,armor:0,amulet:0};const lv=lvlInfo(S.xp).l;
+ $('forge').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const n=S.forge[k]||0,max=n>=FORGE_COST.length,cost=FORGE_COST[n],need=3*(n+1),lock=!max&&lv<need;
+  return '<div class="shopit">'+icon(k,'#c9a46a',4)+'<div class="nm"><b>'+v[0]+' +'+n+'</b><span>сейчас +'+Math.round(n*FORGE_STEP*100)+'% '+v[1]+(max?' · максимум':lock?' · следующая с ур. '+need:'')+'</span></div>'+(max?'':'<button class="btn gold" data-f="'+k+'"'+(lock||S.gold<cost?' disabled':'')+'>'+cost+'</button>')+'</div>'}).join('');
+ $('forge').querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const k=b.dataset.f,n=S.forge[k]||0,c=FORGE_COST[n];if(S.gold<c||lvlInfo(S.xp).l<3*(n+1))return;S.gold-=c;S.forge[k]=n+1;SFX.coin();addLog('Кузница: '+SLOTS[k][0]+' +'+(n+1));save();render();toast(SLOTS[k][0]+' закалён до +'+(n+1))});
+ $('offers').innerHTML=offersWeek().map(i=>{const o=OFFERS[i],got=W.bought.includes(i);return '<div class="shopit"'+(got?' style="opacity:.5"':'')+'>'+icon(o[2],o[3],4)+'<div class="nm"><b>'+o[0]+'</b><span>'+o[1]+(got?' · куплено на этой неделе':'')+'</span></div>'+(got?'':'<button class="btn gold" data-o="'+i+'"'+(S.gold<o[4]?' disabled':'')+'>'+o[4]+'</button>')+'</div>'}).join('');
+ $('offers').querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const i=+b.dataset.o,o=OFFERS[i],W=wk();if(S.gold<o[4]||W.bought.includes(i))return;S.gold-=o[4];W.bought.push(i);SFX.coin();o[5]();save();render();toast(o[0]+': готово')})}
+function render(){ensureDay();checkGoals();checkAch();renderGoals();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
 
 /* ================= ACTIONS ================= */
 function checkPerfect(){if(SEL!==today())return;const T=allTasks();
@@ -1111,7 +1214,7 @@ function addTask(){const v=$('newTask').value.trim();if(!v)return;SFX.tap();$('n
 function checkClean(){const d=cleanDays();S.days[today()]='c';if(S.fell){S.phoenix++;S.fell=false}S.best=Math.max(S.best||0,d);cheer(15);feed(10);addLog('Чистый день');
  award(20+Math.min(d,30)*2,'wil','чистый день',{dmg:40});save();render()}
 function relapse(src,lesson,trig){const ms=cleanMs(),dd=Math.floor(ms/DAY),st=stageIdx();S.bestMs=Math.max(S.bestMs||0,ms);S.best=Math.max(S.best||0,dd);
- S.cleanSince=Date.now();S.days[today()]='f';SFX.sad();healBoss(S.camp.ch%6===2?.1:0);S.fell=true;cheer(-35);healBoss(.1);
+ S.cleanSince=Date.now();S.days[today()]='f';SFX.sad();healBoss(S.camp.ch%NB===2?.1:S.camp.ch%NB===11?.15:0);S.fell=true;cheer(-35);healBoss(.1);
  if(lesson&&trig)S.ifthen[trig]=lesson;
  addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+(src?' · '+src:'')+(lesson?' · урок: '+lesson:''));S.xp+=5;save();render();
  lootSheet('Урок, а не конец',null,'Уровень, золото, вещи и '+totalClean()+' '+plural(totalClean(),'чистый день','чистых дня','чистых дней')+' остаются с тобой. Таймер начат заново'+(st>0?', питомец снова Искра':'')+'. Мысль «всё пропало» — главная ловушка, не верь ей. +5 XP за честность.')}
@@ -1313,6 +1416,9 @@ let lastTap=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-l
 
 /* migrate old saves: old plan done flags carry XP already */
 if(!S.v||S.v<3){S.v=3;save()}
+/* economy v2: 12 bosses with adaptive HP, forge, contracts. Keep progress, rescale current boss */
+if(S.econ!==2){const ch=S.camp.ch,old=ch<6?[300,550,850,1200,1700,2400][ch]:2400+(ch-5)*600,r=Math.max(.05,Math.min(1,S.camp.hp/old));
+ S.camp.mx=baseHp(ch);S.camp.hp=Math.round(S.camp.mx*r);S.camp.ph=r<=.5?1:0;S.forge=S.forge||{weapon:0,armor:0,amulet:0};S.econ=2;save()}
 go('day');loadPlan(SEL);render();
 /* remote updates from Claude: each update applied once per id */
 function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id||S.applied.includes(o.id))return null;S.applied.push(o.id);const msgs=[];
