@@ -525,7 +525,7 @@ const CAT_RX={str:/спорт|трен|отжим|присед|бег|пробе
 const catOf=t=>{for(const k of ['str','int','cha'])if(CAT_RX[k].test(t))return k;return 'wil'};
 const HABITS=[['Телефон ночью вне кровати',15,'wil'],['20 отжиманий или приседаний',10,'str'],['Прогулка 20+ минут',15,'str'],['Немецкий 20 минут',15,'int'],
  ['10 новых немецких слов',10,'int'],['Прохладный душ',10,'str'],['Лечь спать до 00:00',15,'wil'],['Первые 30 минут утра без телефона',15,'wil'],
- ['Позвонить или написать близкому',10,'cha'],['Поработать над Shorts или монтажом',15,'int'],['Тренировка',20,'str'],['Отправить заявку на EQ или Ausbildung',25,'int'],
+ ['Позвонить или написать близкому',10,'cha'],['Поработать над Shorts или монтажом',15,'int'],['Тренировка',20,'str'],['Силовая тренировка (присед, отжимания, подтягивания)',25,'str'],['Отправить заявку на EQ или Ausbildung',25,'int'],
  ['Проверить Jobcenter-портал',10,'int'],['Прибраться в комнате',10,'wil'],['10 минут чтения',10,'int'],['Выйти из дома',10,'str'],['Записать 3 хороших события дня',10,'wil'],['Поесть без экрана',10,'wil'],
  ['5 минут дыхания или медитации',15,'wil'],['Назвать свою эмоцию и записать, откуда она',10,'wil'],['10 минут дневного света утром',10,'str'],
  ['Сделать самое неприятное дело первым',25,'wil'],['Записать план «если — то» на завтра',10,'wil'],['Сделать кому-то доброе дело или комплимент',15,'cha'],
@@ -742,12 +742,12 @@ function maybeLoot(){if(Math.random()<.12){const it=makeItem(0);setTimeout(()=>l
 
 /* ================= DAY ROLLOVER ================= */
 const OFF=[0];
-const FIX=['Сделать самое неприятное дело первым','Сделать сразу все дела, которые занимают меньше 2 минут','25 минут глубокой работы без отвлечений'].map(t=>HABITS.findIndex(x=>x[0]===t));
+const FIX=['Сделать самое неприятное дело первым','Сделать сразу все дела, которые занимают меньше 2 минут','25 минут глубокой работы без отвлечений','Немецкий 20 минут','Силовая тренировка (присед, отжимания, подтягивания)','Лечь спать до 00:00'].map(t=>HABITS.findIndex(x=>x[0]===t));
 function seededHabits(day){let h=0;for(const c of day)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...HABITS.keys()].filter(i=>!OFF.includes(i)&&!FIX.includes(i)),out=[...FIX];
- while(out.length<FIX.length+2){h=(h*1103515245+12345)>>>0;out.push(idx.splice(h%idx.length,1)[0])}return out}
+ while(out.length<FIX.length){h=(h*1103515245+12345)>>>0;out.push(idx.splice(h%idx.length,1)[0])}return out}
 function ensureDay(){const d=today();if(S.qDay!==d){S.qDay=d;S.qList=seededHabits(d);S.qDone=[];S.hAw={};S.hLoot=[];save()}
  if(S.qList.some(i=>OFF.includes(i))){const fresh=seededHabits(d+'x').filter(i=>!S.qList.includes(i));S.qList=S.qList.map(i=>OFF.includes(i)?fresh.shift():i);S.qDone=S.qDone.filter(i=>!OFF.includes(i));save()}
- if(!FIX.every(i=>S.qList.includes(i))){const rest=S.qList.filter(i=>!FIX.includes(i)).sort((a,b)=>S.qDone.includes(b)-S.qDone.includes(a));S.qList=[...FIX,...rest.slice(0,2)];S.qDone=S.qDone.filter(i=>S.qList.includes(i));save()}if(follow&&SEL!==d)selectDay(d)}
+ if(!FIX.every(i=>S.qList.includes(i))||S.qList.length!==FIX.length){const rest=S.qList.filter(i=>!FIX.includes(i)).sort((a,b)=>S.qDone.includes(b)-S.qDone.includes(a));S.qList=[...FIX];S.qDone=S.qDone.filter(i=>S.qList.includes(i));save()}if(follow&&SEL!==d)selectDay(d)}
 function checkAch(){for(const a of ACHS)if(!S.ach.includes(a[0])&&a[3](S)){S.ach.push(a[0]);S.xp+=30;S.gold+=20;S.goldTotal+=20;addLog('Достижение: '+a[1]);setTimeout(()=>toast('Достижение: '+a[1]+' · +30 XP · +20 золота'),1500)}}
 
 /* ================= RENDER ================= */
