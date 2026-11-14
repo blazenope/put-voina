@@ -230,8 +230,8 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
 .arena{display:flex;flex-direction:column;align-items:center;margin-top:8px}
 .arena .spr{height:120px;display:flex;align-items:flex-end;transition:opacity 1s,transform 1s}
 .breath{width:150px;height:150px;margin:12px auto 0;position:relative;display:grid;place-items:center}
-.breath .ring{position:absolute;inset:0;border:4px solid var(--mp);animation:breathe 8s steps(16) infinite;image-rendering:pixelated}
-@keyframes breathe{0%,100%{transform:scale(.7);opacity:.5}50%{transform:scale(1);opacity:1}}
+.breath .ring{position:absolute;inset:0;border:4px solid var(--mp);animation:breathe 10s ease-in-out infinite;image-rendering:pixelated}
+@keyframes breathe{0%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1);opacity:1}}
 .breath .tm{text-align:center;position:relative}
 .breath .tm b{display:block;font:700 42px/1 var(--body);font-variant-numeric:tabular-nums}
 .breath .tm span{font-size:13px;color:var(--mp);text-transform:uppercase}
@@ -309,6 +309,7 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
     <div class="pnl status">
       <div class="clock" id="clockBox" role="button" style="cursor:pointer"><div class="lb">Без срыва ✎</div><div class="big" id="cBig">0<small>д</small></div><div class="sm" id="cSm"></div><div class="tot" id="cTot"></div></div>
       <button class="btn red sos" id="sosBtn">Тянет!</button>
+      <button class="btn blue" id="stormBtn" style="width:100%;padding:10px 6px;font-size:12px">Шторм эмоций</button>
     </div>
   </div>
 
@@ -316,6 +317,12 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
     <div class="ttl" style="margin-bottom:6px"><h2 style="color:#ff8fc8">Бафф пути</h2><span class="c">все →</span></div>
     <div id="buffNow"></div>
   </button>
+  <div class="pnl" id="moodBox">
+    <div class="ttl"><h2>Состояние</h2><span class="c" id="moodDone"></span></div>
+    <div class="lbl">Настроение сейчас</div><div class="scale" id="moodScale"></div>
+    <div class="lbl">Сон прошлой ночью, часов</div><div class="scale" id="sleepScale"></div>
+    <div class="mut" style="font:13px/1.4 var(--body);margin-top:8px">Короткая отметка раз в день. Через пару недель увидишь свои волны настроения, а врачу будет что показать.</div>
+  </div>
   <div class="pnl" id="voteBox">
     <div class="vote"><p id="voteTxt"></p><button class="btn gold" id="voteBtn">Голос</button></div>
   </div>
@@ -363,7 +370,7 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
     <div class="ttl"><h2>Как бить босса</h2></div>
     <div class="prose">
       <p>Каждый выполненный квест бьёт босса на столько урона, сколько даёт опыта. Победа над тягой: 60 урона. Чистый день: 40.</p>
-      <p>Срыв лечит босса на 10%. Это не наказание, а напоминание: поход продолжается.</p>
+      <p>У каждого босса есть <b>слабость</b>: квесты нужной характеристики бьют ×2. И <b>способность</b>: большинство восстанавливают HP за дни без квестов, поэтому хотя бы один квест в день не даёт им отрасти.</p><p>Срыв лечит босса на 10%. Это не наказание, а напоминание: поход продолжается.</p><p><b>Серия активности:</b> каждый день подряд хотя бы с одним квестом даёт +5% золота, до +50%.</p>
       <p>За победу: золото, редкая добыча и новая локация.</p>
     </div>
   </div>
@@ -432,6 +439,10 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
     <div class="prose" id="insight" style="padding-bottom:6px"></div>
     <div class="lbl">Причины</div><div id="trigBars"></div>
     <div class="lbl">Время суток</div><div id="hourBars"></div>
+  </div>
+  <div class="pnl">
+    <div class="ttl"><h2>Настроение и сон</h2><span class="c">14 дней</span></div>
+    <div id="moodChart"></div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Мои «если — то»</h2><button class="linkbtn" id="ifEdit">изменить</button></div>
@@ -539,6 +550,10 @@ const CHAPTERS=[
  ['Тролль Сомнений','Горы Сомнений',1200,['#c2a37a','#7a5d38']],
  ['Голем Хаоса','Руины Хаоса',1700,['#8d93a0','#4b505c']],
  ['Дракон Привычки','Замок Дракона',2400,['#e0483e','#8a1e18']]];
+const WEAK=['wil','cha','str','int','wil','str'];
+const ABIL=['Липкая лень: за каждый день без квестов восстанавливает 8% HP','Чары скуки: за день без квестов +8% HP. Боится общения','Соблазн: срыв лечит её на 20%. Боится тренировок','Сомнения: за день без квестов +10% HP. Боится учёбы','Каменная кожа: обычный урон −20%. Боится дисциплины','Пламя дракона: за день без квестов +12% HP. Боится силы'];
+const weakOf=ch=>WEAK[ch%WEAK.length];const abilOf=ch=>ABIL[ch%ABIL.length]+(ch>=ABIL.length?' · круг '+(Math.floor(ch/ABIL.length)+1):'');
+const regenOf=ch=>[.08,.08,.08,.10,.08,.12][ch%6]*(1+Math.floor(ch/6)*.25);
 const bossOf=ch=>ch<CHAPTERS.length?CHAPTERS[ch]:['Тёмный Лорд '+(ch-CHAPTERS.length+1)+'-го круга','Бездна',2400+(ch-CHAPTERS.length+1)*600,['#3b3f5c','#16182a']];
 const SLOTS={weapon:['Оружие','урон',['Деревянный меч','Стальной клинок','Рунический меч','Клинок Феникса']],
  armor:['Броня','золото',['Кожаная куртка','Кольчуга','Латы стража','Доспех легенды']],
@@ -564,7 +579,14 @@ const PHRASES=['Это просто волна. Она поднимается, �
  'Срыв ничего не решит. Чувство, от которого я бегу, останется и после.',
  'Я — человек, который держит слово. Даже когда трудно. Особенно когда трудно.',
  'Эта волна не последняя, но каждая следующая будет слабее.',
- 'Всё, что нужно сейчас, — пережить следующие пять минут. Только их.'];
+ 'Всё, что нужно сейчас, — пережить следующие пять минут. Только их.',
+ 'Мои чувства сейчас настоящие, и они имеют право быть. Но они не обязаны решать за меня.',
+ 'Сейчас эмоции на 10, а через час будут на 4. Я уже проживал такое.',
+ 'Стоп. Шаг назад. Наблюдаю. Действую осознанно, а не на автомате.',
+ 'Холодная вода на лицо на 30 секунд успокаивает тело быстрее любых уговоров.',
+ 'Я могу чувствовать сильное и не делать резкого. Чувство и действие — разные вещи.',
+ 'Что бы я посоветовал другу, если бы он был сейчас на моём месте?',
+ 'Я делаю лучшее, что могу сейчас. И я могу делать лучше. Обе мысли правда.'];
 const ACTIONS=['Встань и выйди из комнаты','20 отжиманий или приседаний','Умой лицо холодной водой','Выйди на улицу','Выпей стакан воды','Напиши кому-нибудь','Включи немецкий урок','Положи телефон в другую комнату','Сделай один квест из списка','Приберись на столе 3 минуты'];
 const HALT={'Голоден':'Поешь что-нибудь нормальное','Злюсь':'Выйди, пройдись быстрым шагом 5 минут','Одиноко':'Напиши или позвони кому-нибудь','Устал':'Ляг без телефона, телефон в другой комнате'};
 const TRIGS=['Скука','Стресс','Одиночество','Телефон в кровати','Не спится','Соцсети','Усталость','Другое'];
@@ -599,11 +621,11 @@ const freshPet=()=>({fuel:70,mood:70,t:Date.now(),pets:0,petDay:''});
 const fresh=()=>({v:3,xp:0,gold:0,goldTotal:0,wins:0,quests:0,perfect:0,phoenix:0,fell:false,cleanSince:Date.now(),bestMs:0,best:0,
  days:{},trig:{},hours:{},urges:0,urgeLog:[],qDay:'',qList:[],qDone:[],hAw:{},hLoot:[],perfectDay:'',log:[],ach:[],pet:freshPet(),
  st:{str:0,int:0,cha:0,wil:0},camp:{ch:0,hp:Math.round(CHAPTERS[0][2]*.85)},inv:[],eq:{weapon:null,armor:null,amulet:null},
- sound:true,buffXp:0,buffDmg:0,buffGold:0,armTab:'weapon',rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},ts:0});
+ sound:true,mood:{},buffXp:0,buffDmg:0,buffGold:0,armTab:'weapon',rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},ts:0});
 function hydrate(o){const s=Object.assign(fresh(),o||{});const f=fresh();
  for(const k of ['pet','st','camp','eq','oath'])s[k]=Object.assign(f[k],(o||{})[k]);
  for(const k of ['inv','rewards','urgeLog','log','ach','qList','qDone','hLoot'])if(!Array.isArray(s[k]))s[k]=f[k];
- for(const k of ['days','trig','hours','hAw','votes','ifthen'])if(!s[k]||typeof s[k]!=='object')s[k]={};
+ for(const k of ['days','trig','hours','hAw','votes','ifthen','mood'])if(!s[k]||typeof s[k]!=='object')s[k]={};
  return s}
 let S=fresh();
 try{const r=localStorage.getItem(KEY);if(r)S=hydrate(JSON.parse(r))}catch(e){}
@@ -723,17 +745,23 @@ const coin=s=>px(ICONS.coin,{k:'#05060a',g:'#f0b541',A:'#fff3c4'},s||2.5);
 
 /* ================= ECONOMY ================= */
 function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();if(S.buffXp>now)b.xp+=1;if(S.buffDmg>now)b.dmg+=1;if(S.buffGold>now)b.gold+=1;
- const ax=Math.round(xp*(1+b.xp)),ag=Math.round(xp/2*(1+b.gold)),ad=Math.round((opt.dmg||xp)*(1+b.dmg));
+ const streakB=Math.min(.5,(actStreak())*.05);const crit=cat===weakOf(S.camp.ch);const golem=S.camp.ch%6===4&&!crit?.8:1;
+ const ax=Math.round(xp*(1+b.xp)),ag=Math.round(xp/2*(1+b.gold+streakB)),ad=Math.round((opt.dmg||xp)*(1+b.dmg)*(crit?2:1)*golem);
+ if(!S.act)S.act={};S.act[today()]=1;
  const before=lvlInfo(S.xp).l;S.xp+=ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;
  const lv=lvlInfo(S.xp).l;SFX.hit();if(lv>before){SFX.level();const r0=rankOf(before)[1],r1=rankOf(lv)[1];addLog('Уровень '+lv+(r0!==r1?' · ранг '+r1:''));setTimeout(()=>lootSheet('Новый уровень!',null,'Уровень '+lv+(r0!==r1?'. Новый ранг: '+r1:'')+'. Ты становишься тем, кем решил стать.'),700)}
  else{toast('+'+ax+' XP · +'+ag+' золота'+(why?' · '+why:''));setTimeout(SFX.coin,120)}
- floatTxt('-'+ad,'#ff9a8f');hitBoss(ad);
+ floatTxt((crit?'КРИТ -':'-')+ad,crit?'#ffd67a':'#ff9a8f');hitBoss(ad);
  return{xp:ax,g:ag,d:ad,c:cat}}
 function unaward(aw){if(!aw)return;SFX.undo();S.xp=Math.max(0,S.xp-aw.xp);S.gold=Math.max(0,S.gold-aw.g);S.st[aw.c]=Math.max(0,(S.st[aw.c]||0)-aw.xp);
  const mx=bossOf(S.camp.ch)[2];S.camp.hp=Math.min(mx,S.camp.hp+aw.d);toast('−'+aw.xp+' XP · −'+aw.g+' золота')}
-function hitBoss(d){S.camp.hp-=d;if(S.camp.hp<=0){const b=bossOf(S.camp.ch);const g=100*(S.camp.ch+1);S.gold+=g;S.goldTotal+=g;
-  const it=makeItem(Math.random()<.25?2:1);addLog('Повержен босс: '+b[0]);S.camp.ch++;S.camp.hp=bossOf(S.camp.ch)[2];
+function hitBoss(d){S.camp.hp-=d;if(S.camp.hp<=0){const b=bossOf(S.camp.ch);const g=150*(S.camp.ch+1);S.gold+=g;S.goldTotal+=g;S.xp+=50*(S.camp.ch+1);
+  const it=makeItem(S.camp.ch>=4?(Math.random()<.3?3:2):S.camp.ch>=2?2:(Math.random()<.3?2:1));addLog('Повержен босс: '+b[0]);S.camp.ch++;S.camp.hp=bossOf(S.camp.ch)[2];
   setTimeout(()=>lootSheet('Босс повержен!',it,b[0]+' пал. +'+g+' золота. Впереди: '+bossOf(S.camp.ch)[1]+'.'),900)}}
+function actStreak(){if(!S.act)return 0;let n=0,k=today();if(!S.act[k])k=shift(k,-1);while(S.act[k]){n++;k=shift(k,-1)}return n}
+function bossRegen(){if(!S.lastRegen){S.lastRegen=shift(today(),-1);return}let k=S.lastRegen,healed=0;const mx=bossOf(S.camp.ch)[2];
+ while(k<shift(today(),-1)){k=shift(k,1);if(!(S.act&&S.act[k])&&healed<3){S.camp.hp=Math.min(mx,Math.round(S.camp.hp+mx*regenOf(S.camp.ch)));healed++}}
+ S.lastRegen=shift(today(),-1);if(healed){addLog(bossOf(S.camp.ch)[0]+' восстановил силы за '+healed+' '+plural(healed,'день','дня','дней')+' без квестов');setTimeout(()=>toast('Босс восстановился, пока ты отдыхал'),900)}}
 function healBoss(f){const mx=bossOf(S.camp.ch)[2];S.camp.hp=Math.min(mx,Math.round(S.camp.hp+mx*f))}
 function makeItem(minR){const roll=Math.random();let r=roll<.70?0:roll<.92?1:roll<.99?2:3;r=Math.max(r,minR||0);
  const k=rnd(Object.keys(SLOTS));const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,r,n:SLOTS[k][2][r]};S.inv.push(it);
@@ -745,7 +773,7 @@ const OFF=[0];
 const FIX=['Сделать самое неприятное дело первым','Сделать сразу все дела, которые занимают меньше 2 минут','25 минут глубокой работы без отвлечений','Немецкий 20 минут','Силовая тренировка (присед, отжимания, подтягивания)','Лечь спать до 00:00'].map(t=>HABITS.findIndex(x=>x[0]===t));
 function seededHabits(day){let h=0;for(const c of day)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...HABITS.keys()].filter(i=>!OFF.includes(i)&&!FIX.includes(i)),out=[...FIX];
  while(out.length<FIX.length){h=(h*1103515245+12345)>>>0;out.push(idx.splice(h%idx.length,1)[0])}return out}
-function ensureDay(){const d=today();if(S.qDay!==d){S.qDay=d;S.qList=seededHabits(d);S.qDone=[];S.hAw={};S.hLoot=[];save()}
+function ensureDay(){const d=today();if(S.qDay!==d){bossRegen();S.qDay=d;S.qList=seededHabits(d);S.qDone=[];S.hAw={};S.hLoot=[];save()}
  if(S.qList.some(i=>OFF.includes(i))){const fresh=seededHabits(d+'x').filter(i=>!S.qList.includes(i));S.qList=S.qList.map(i=>OFF.includes(i)?fresh.shift():i);S.qDone=S.qDone.filter(i=>!OFF.includes(i));save()}
  if(!FIX.every(i=>S.qList.includes(i))||S.qList.length!==FIX.length){const rest=S.qList.filter(i=>!FIX.includes(i)).sort((a,b)=>S.qDone.includes(b)-S.qDone.includes(a));S.qList=[...FIX];S.qDone=S.qDone.filter(i=>S.qList.includes(i));save()}if(follow&&SEL!==d)selectDay(d)}
 function checkAch(){for(const a of ACHS)if(!S.ach.includes(a[0])&&a[3](S)){S.ach.push(a[0]);S.xp+=30;S.gold+=20;S.goldTotal+=20;addLog('Достижение: '+a[1]);setTimeout(()=>toast('Достижение: '+a[1]+' · +30 XP · +20 золота'),1500)}}
@@ -756,7 +784,7 @@ function renderHUD(){const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);
  $('hudGold').innerHTML=(bf?'<span style="font:600 11px var(--body);margin-right:4px">'+bf+'</span>':'')+coin(2.5)+'<span>'+S.gold+'</span>'}
 function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
 function taskEl(x,onT,onD){const el=document.createElement('label');el.className='task'+(x.done?' done':'');const b=bonus();
- el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'><span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+'</span>'
+ el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'><span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+(x.c===weakOf(S.camp.ch)&&!x.done?' ×2':'')+'</span>'
   +(onD?'<button class="x" aria-label="Удалить">×</button>':'')+'<span class="rw">+'+Math.round(x.xp*(1+b.xp))+'<em>+'+Math.round(x.xp/2*(1+b.gold))+'з</em></span>';
  el.querySelector('input').onchange=onT;const d=el.querySelector('.x');if(d)d.onclick=e=>{e.preventDefault();onD()};return el}
 function renderWeek(){const sel=parseD(SEL),mon=new Date(sel);mon.setDate(sel.getDate()-((sel.getDay()+6)%7));let h='';const WD=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
@@ -786,7 +814,7 @@ function renderDay(){
  if(diff!==0){const a=document.createElement('button');a.className='linkbtn';a.textContent='к сегодня';a.onclick=()=>selectDay(today());$('dSub').appendChild(a)}
  // boss mini
  const b=bossOf(S.camp.ch);$('bMiniSpr').innerHTML=bossSVG(S.camp.ch,2);$('bMiniName').textContent=b[0];
- $('bMiniHp').style.width=(S.camp.hp/b[2]*100)+'%';const ql=Math.ceil(S.camp.hp/25);$('bMiniTxt').textContent=S.camp.hp+' / '+b[2]+' HP · ≈ '+ql+' '+plural(ql,'квест','квеста','квестов')+' до победы';
+ $('bMiniHp').style.width=(S.camp.hp/b[2]*100)+'%';const ql=Math.ceil(S.camp.hp/25);$('bMiniTxt').textContent=S.camp.hp+' / '+b[2]+' HP · слабость: '+STATS[weakOf(S.camp.ch)][0]+' ×2';
  // pet
  const st=stageIdx();$('petArt').innerHTML='<div class="bob">'+petSVG()+'</div>';$('petArt').classList.toggle('dim',S.pet.fuel<15);
  $('petName').textContent=STAGES[st][1];$('petStage').textContent='стадия '+(st+1)+'/5';$('petSay').textContent=petLine();
@@ -798,6 +826,12 @@ function renderDay(){
  {const d=dayNum(),cur=[...BUFFS].reverse().find(b=>d>=b[0]),nx=BUFFS.find(b=>b[0]>d);
   $('buffNow').innerHTML=(cur?'<div style="font:600 15px var(--body);color:var(--ink)">День '+cur[0]+': '+esc(cur[1])+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:4px">'+esc(cur[2])+'</div>':'<div style="font:14px/1.45 var(--body);color:var(--ink2)">Первый бафф откроется через сутки без срыва.</div>')
    +(nx?'<div style="font:13px var(--body);color:#ff8fc8;margin-top:8px">Сегодня '+d+'-й день пути. Следующий: «'+esc(nx[1])+'» через '+(nx[0]-d)+' '+plural(nx[0]-d,'день','дня','дней')+'</div>':'')}
+ // mood
+ $('moodBox').classList.toggle('hide',!isT);
+ {const m=S.mood[today()]||{};const mk=(el,vals,key)=>{el.innerHTML=vals.map(v=>'<button data-v="'+v+'"'+(m[key]==v?' class="on"':'')+'>'+v+'</button>').join('');
+   el.querySelectorAll('button').forEach(b=>b.onclick=()=>{const first=!S.mood[today()];const o=S.mood[today()]=Object.assign({},S.mood[today()],{[key]:+b.dataset.v});if(first){award(5,'wil','отметка состояния',{dmg:5})}SFX.tap();save();
+    if(key==='m'&&+b.dataset.v<=3)setTimeout(()=>stormSheet(),400);render()})};
+  mk($('moodScale'),[1,2,3,4,5,6,7,8,9,10],'m');mk($('sleepScale'),[3,4,5,6,7,8,9,10,11,12],'s');$('moodDone').textContent=m.m?'отмечено':''}
  // vote
  $('voteBox').classList.toggle('hide',!isT);
  const voted=!!S.votes[today()];$('voteTxt').innerHTML=voted?'Голос отдан. Сегодня ты — человек, который <b>'+esc(S.oath.identity||IDENTITY)+'</b>.':'Сегодня я голосую за себя — человека, который <b>'+esc(S.oath.identity||IDENTITY)+'</b>.';
@@ -821,7 +855,7 @@ function markPast(v){S.days[SEL]=v;if(v==='c'){addLog('Чистый день: '+
 function renderQuest(){const ch=S.camp.ch,b=bossOf(ch);
  $('bossSpr').innerHTML=bossSVG(ch,8,S.camp.hp<b[2]*.35);$('bossName').textContent=b[0];$('bossLoc').textContent='Глава '+(ch+1)+' · '+b[1];
  $('bossHp').style.width=(S.camp.hp/b[2]*100)+'%';$('bossTxt').textContent=S.camp.hp+' / '+b[2]+' HP';
- const ql=Math.ceil(S.camp.hp/25);$('bossTip').textContent='Осталось примерно '+ql+' '+plural(ql,'квест','квеста','квестов')+'. Награда: '+(100*(ch+1))+' золота и редкая вещь.';
+ const ql=Math.ceil(S.camp.hp/25),wk=weakOf(ch),st=actStreak();$('bossTip').innerHTML='<b style="color:#ffd67a">Слабость:</b> '+STATS[wk][0]+' — квесты этой характеристики бьют ×2 (КРИТ).<br><b style="color:#ff9a8f">Способность:</b> '+esc(abilOf(ch))+'.<br><b style="color:var(--xp)">Награда:</b> '+(150*(ch+1))+' золота, '+(50*(ch+1))+' XP и '+(ch>=4?'эпическая или легендарная':ch>=2?'эпическая':'редкая')+' вещь.<br>Осталось примерно '+ql+' '+plural(ql,'квест','квеста','квестов')+'. Серия активности: '+st+' '+plural(st,'день','дня','дней')+' (+'+Math.min(50,st*5)+'% золота).'
  const n=Math.max(CHAPTERS.length,ch+2);let h='';for(let i=0;i<n;i++){const bb=bossOf(i);h+='<div class="node '+(i<ch?'done':i===ch?'now':'lock')+'"><div class="dot">'+(i<ch?'✓':i+1)+'</div><div><div class="nm">'+(i<=ch?esc(bb[0]):'???')+'</div><div class="loc">'+esc(bb[1])+'</div></div></div>'}
  $('map').innerHTML=h;$('mapCnt').textContent='побеждено: '+ch}
 function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0]>li.l);
@@ -867,7 +901,12 @@ function renderShop(){$('shopGold').innerHTML=coin(2.5)+S.gold;
  $('sndBtn').textContent=S.sound?'Вкл':'Выкл';
  $('rewards').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{S.rewards.splice(b.dataset.del,1);save();render()})}
 let calOff=0;
-function renderLog(){const now=new Date(),base=new Date(now.getFullYear(),now.getMonth()+calOff,1),WD=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+function renderMood(){const days=[];for(let i=13;i>=0;i--)days.push(shift(today(),-i));
+ const has=days.some(d=>S.mood[d]);if(!has){$('moodChart').innerHTML='<div class="empty">Отмечай состояние на вкладке «День».</div>';return}
+ $('moodChart').innerHTML='<div style="display:grid;grid-template-columns:repeat(14,1fr);gap:3px;align-items:end;height:90px">'+days.map(d=>{const m=S.mood[d]||{};return '<div style="display:flex;gap:1px;align-items:end;height:100%"><i style="flex:1;background:var(--pink);height:'+((m.m||0)*10)+'%"></i><i style="flex:1;background:var(--mp);height:'+(m.s?m.s/12*100:0)+'%"></i></div>'}).join('')+'</div>'
+  +'<div style="display:grid;grid-template-columns:repeat(14,1fr);gap:3px;font-size:10px;color:var(--ink3);text-align:center;margin-top:4px">'+days.map(d=>'<span>'+(+d.slice(8))+'</span>').join('')+'</div>'
+  +'<div class="mut" style="font-size:12px;margin-top:6px"><span style="color:var(--pink)">■</span> настроение 1–10 · <span style="color:var(--mp)">■</span> сон, часов</div>'}
+function renderLog(){renderMood();const now=new Date(),base=new Date(now.getFullYear(),now.getMonth()+calOff,1),WD=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
  $('calTitle').textContent=base.toLocaleDateString('ru-RU',{month:'long',year:'numeric'}).replace(' г.','');
  let h=WD.map(w=>'<div class="wd">'+w+'</div>').join('');for(let i=0;i<(base.getDay()+6)%7;i++)h+='<div></div>';
  const nd=new Date(base.getFullYear(),base.getMonth()+1,0).getDate(),cs=new Date(S.cleanSince);cs.setHours(0,0,0,0);
@@ -901,7 +940,7 @@ function addTask(){const v=$('newTask').value.trim();if(!v)return;SFX.tap();$('n
 function checkClean(){const d=cleanDays();S.days[today()]='c';if(S.fell){S.phoenix++;S.fell=false}S.best=Math.max(S.best||0,d);cheer(15);feed(10);addLog('Чистый день');
  award(20+Math.min(d,30)*2,'wil','чистый день',{dmg:40});save();render()}
 function relapse(src,lesson,trig){const ms=cleanMs(),dd=Math.floor(ms/DAY),st=stageIdx();S.bestMs=Math.max(S.bestMs||0,ms);S.best=Math.max(S.best||0,dd);
- S.cleanSince=Date.now();S.days[today()]='f';SFX.sad();S.fell=true;cheer(-35);healBoss(.1);
+ S.cleanSince=Date.now();S.days[today()]='f';SFX.sad();healBoss(S.camp.ch%6===2?.1:0);S.fell=true;cheer(-35);healBoss(.1);
  if(lesson&&trig)S.ifthen[trig]=lesson;
  addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+(src?' · '+src:'')+(lesson?' · урок: '+lesson:''));S.xp+=5;save();render();
  lootSheet('Урок, а не конец',null,'Уровень, золото, вещи и '+totalClean()+' '+plural(totalClean(),'чистый день','чистых дня','чистых дней')+' остаются с тобой. Таймер начат заново'+(st>0?', питомец снова Искра':'')+'. Мысль «всё пропало» — главная ловушка, не верь ей. +5 XP за честность.')}
@@ -911,6 +950,20 @@ function relapseFlow(src,presetTrig){sheet('<h3>Был срыв?</h3><p>Без �
  +'<div class="row2" style="margin-top:14px"><button class="btn" id="rNo">Отмена</button><button class="btn gold" id="rYes">Записать урок</button></div>');
  let tr=presetTrig||'';$('rTrig').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{tr=tr===c.dataset.t?'':c.dataset.t;$('rTrig').querySelectorAll('.chp').forEach(x=>x.classList.toggle('on',x.dataset.t===tr))});
  $('rNo').onclick=closeSheet;$('rYes').onclick=()=>{const l=$('rLesson').value.trim().slice(0,120);closeSheet();relapse(src||(tr?tr.toLowerCase():''),l,tr)}}
+
+/* ================= STORM (DBT) ================= */
+function stormSheet(){SFX.open();sheet('<h3>Шторм эмоций</h3><p>Когда накрывает злость, тревога, пустота или обида. Делай по шагам, сверху вниз. Это навыки из диалектической терапии (DBT), они помогают пережить пик без резких поступков.</p>'
+ +[['1. Стоп','Замри. Не говори и не пиши ничего важного. Шаг назад, вдох. Пик эмоции длится минуты, решения после него — дольше.'],
+   ['2. Остуди тело','Холодная вода на лицо или кубик льда к запястьям на 30 секунд. Или 5 минут быстрой ходьбы, приседаний. Потом медленное дыхание: вдох на 4, выдох на 6. Не дыши часто и глубоко — тебе это не подходит.'],
+   ['3. Назови чувство','Скажи себе: «Я сейчас чувствую ___, и это пройдёт». Названная эмоция слабеет.'],
+   ['4. Проверь факты','Что на самом деле произошло? Что я додумал? Какая вероятность, что всё так плохо, как кажется?'],
+   ['5. Противоположное действие','Хочется закрыться — напиши кому-то. Хочется наорать — уйди и сделай что-то руками. Хочется всё бросить — сделай одно маленькое дело.'],
+   ['6. Успокой 5 чувств','Тёплый чай, душ, любимая музыка, запах, плед. Позаботься о себе как о друге.'],
+   ['7. Принятие','«Сейчас так. Мне это не нравится, но я могу это выдержать». Борьба с реальностью добавляет боли сверху.']]
+ .map(s=>'<div style="padding:9px 0;border-bottom:2px dashed var(--edge)"><div style="font:600 15px var(--body);color:#8db8ff">'+s[0]+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:3px">'+s[1]+'</div></div>').join('')
+ +'<div class="banner" style="margin-top:14px">Если есть мысли причинить себе вред — позвони: Telefonseelsorge <b>0800 111 0 111</b> или <b>0800 111 0 222</b> (бесплатно, круглосуточно). В опасности — <b>112</b>.</div>'
+ +'<button class="btn gold" id="stOk" style="width:100%;margin-top:14px">Я справился</button><button class="linkbtn" id="stClose" style="display:block;margin:12px auto 0">Закрыть</button>');
+ $('stOk').onclick=()=>{closeSheet();addLog('Пережил шторм эмоций');award(30,'wil','шторм пережит',{dmg:30});cheer(15);save();render()};$('stClose').onclick=closeSheet}
 
 /* ================= SHEETS ================= */
 function sheet(html){$('sheetIn').innerHTML=html;$('sheet').classList.remove('hide','out')}
@@ -956,7 +1009,7 @@ function showAct(){const a=$('fAct');a.style.opacity=0;setTimeout(()=>{a.textCon
 let fRot=null;const pre_n=()=>(fTrig&&S.ifthen[fTrig]?1:0)+(fHalt?1:0);
 function nextPhrase(){fDone++;fIdx=(fIdx+1)%fActs.length;showAct()}
 function fTick(){const el=Math.floor((Date.now()-fStart)/1000),left=Math.max(0,FIGHT-el),hp=left/FIGHT;
- $('fTimer').textContent=Math.floor(left/60)+':'+pad(left%60);$('fBreath').textContent=left?(Math.floor(el/4)%2?'выдох':'вдох'):'выстоял';
+ $('fTimer').textContent=Math.floor(left/60)+':'+pad(left%60);$('fBreath').textContent=left?((el%10)<4?'вдох · 4':'выдох · 6'):'выстоял';
  $('fHp').style.width=Math.max(0,hp*100)+'%';$('fSpr').style.opacity=.35+.65*hp;$('fSpr').style.transform='scale('+(.6+.4*hp)+')';
  const w=Math.max(0,MIN_WIN-el);$('fWin').disabled=w>0;$('fWin').textContent=w>0?'Волна · '+Math.floor(w/60)+':'+pad(w%60):'Волна прошла';$('fEl').textContent=Math.floor(el/60)+' мин'}
 function closeFight(){clearInterval(fT);clearInterval(fRot);$('fight').classList.add('hide');document.body.style.overflow=''}
@@ -969,7 +1022,7 @@ $('fFinish').onclick=()=>{logUrge(true);closeFight();S.wins++;cheer(25);feed(10)
  addLog('Волна пережита: '+fFrom+' → '+fTo+(fTrig?' · '+fTrig.toLowerCase():''));award(60,'wil','волна пережита',{dmg:60});save();render();
  setTimeout(()=>lootSheet('Волна пережита!',null,dropped>0?'Тяга упала с '+fFrom+' до '+fTo+'. Это доказательство: ты сильнее волны.':'Ты выстоял, даже когда было тяжело. Это и есть сила.'),400)};
 $('fLose').onclick=()=>{logUrge(false);const t=fTrig;closeFight();relapseFlow('',t)};
-$('fCancel1').onclick=closeFight;$('fCancel2').onclick=closeFight;$('sosBtn').onclick=openFight;
+$('fCancel1').onclick=closeFight;$('fCancel2').onclick=closeFight;$('sosBtn').onclick=openFight;$('stormBtn').onclick=stormSheet;
 
 /* ================= WIRING ================= */
 const NAV=[['day','День','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Поход','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2'],['log','Летопись','M4 2h7l2 2v10H4z M6 6h5 M6 9h5 M6 12h3']];
