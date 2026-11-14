@@ -75,7 +75,17 @@
      "time": "12:00"
     },
     {
-     "t": "Зарегистрироваться как ищущий Ausbildung",
+     "t": "5–10 заявок на EQ/Ausbildung (дедлайн пн 16.11): отправить черновики из Gmail",
+     "xp": 60,
+     "c": "int"
+    },
+    {
+     "t": "Заявки в медиа: BR, TU München, Brainlab, MediaMarktSaturn (онлайн-формы)",
+     "xp": 50,
+     "c": "int"
+    },
+    {
+     "t": "Зарегистрироваться ausbildungsuchend (онлайн, eService Berufsberatung)",
      "xp": 45,
      "c": "int"
     },
@@ -111,49 +121,51 @@
    "date": "2026-11-16",
    "tasks": [
     {
-     "t": "Киндергельд: поменять статус",
+     "t": "Термин Jobcenter: показать Bewerbungen, ausbildungsuchend, ZAB, Kooperationsplan",
+     "xp": 50,
+     "c": "int"
+    },
+    {
+     "t": "ZAB Pre-Check + Antrag на оплату 208 € (платить только после согласия)",
      "xp": 40,
      "c": "int"
     },
     {
-     "t": "Заявка на перевод",
-     "xp": 40,
+     "t": "Подать Widerspruch против отказа B2 (после заявок на EQ)",
+     "xp": 60,
      "c": "int"
     },
     {
-     "t": "Отказ / решение суда — разобраться и ответить",
-     "xp": 50,
-     "c": "int"
-    },
-    {
-     "t": "EQ (Einstiegsqualifizierung): найти и откликнуться",
-     "xp": 50,
-     "c": "int"
-    },
-    {
-     "t": "Откликнуться на вакансию монтажёра",
-     "xp": 50,
-     "c": "int"
-    },
-    {
-     "t": "Перевести диплом",
-     "xp": 50,
-     "c": "int"
-    },
-    {
-     "t": "Написать по квартирам (хатам) в Мюнхене",
+     "t": "Bestätigung ausbildungsuchend → отправить в Familienkasse (Kindergeld)",
      "xp": 25,
+     "c": "int"
+    },
+    {
+     "t": "Позвонить Philipp по WG Bogenhausen",
+     "xp": 20,
      "c": "cha"
+    },
+    {
+     "t": "Заявление на соцжильё SOWON",
+     "xp": 40,
+     "c": "int"
     },
     {
      "t": "Проверить ответ от нейроцентра",
      "xp": 15,
      "c": "int"
-    },
+    }
+   ]
+  },
+  {
+   "id": "2026-11-17-plan-inbox",
+   "date": "2026-11-17",
+   "tasks": [
     {
-     "t": "Физиотерапия",
+     "t": "Физиотерапия (Bohrer, Appenzeller Str. 142): Versichertenkarte + рецепт",
      "xp": 25,
-     "c": "str"
+     "c": "str",
+     "time": "15:00"
     }
    ]
   }
