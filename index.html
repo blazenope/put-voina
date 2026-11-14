@@ -469,7 +469,8 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
     <div id="logList"></div>
   </div>
   <div class="pnl">
-    <div class="vote" style="padding:4px 0 12px"><p style="font-family:var(--pix);text-transform:uppercase;font-size:14px">Звуки</p><button class="btn" id="sndBtn"></button></div>
+    <div class="vote" style="padding:4px 0 8px"><p style="font-family:var(--pix);text-transform:uppercase;font-size:14px">Звуки</p><button class="btn" id="sndBtn"></button></div>
+    <div class="vote" style="padding:0 0 12px"><p style="font:14px/1.4 var(--body);color:var(--ink2)">Играть даже в беззвучном режиме iPhone</p><button class="btn" id="loudBtn"></button></div>
     <details><summary>Психология игры</summary><div class="prose">
       <p><b>Сёрфинг тяги.</b> Тяга растёт, достигает пика и спадает, как волна. Бой учит её переждать, а оценка «до и после» показывает, что ты сильнее волны.</p>
       <p><b>Планы «если — то».</b> Заранее решённое действие на конкретный триггер срабатывает почти автоматически, без борьбы.</p>
@@ -661,7 +662,7 @@ const freshPet=()=>({fuel:70,mood:70,t:Date.now(),pets:0,petDay:''});
 const fresh=()=>({v:3,xp:0,gold:0,goldTotal:0,wins:0,quests:0,perfect:0,phoenix:0,fell:false,cleanSince:Date.now(),bestMs:0,best:0,
  days:{},trig:{},hours:{},urges:0,urgeLog:[],qDay:'',qList:[],qDone:[],hAw:{},hLoot:[],perfectDay:'',log:[],ach:[],pet:freshPet(),
  st:{str:0,int:0,cha:0,wil:0},camp:{ch:0,hp:Math.round(CHAPTERS[0][2]*.85)},inv:[],eq:{weapon:null,armor:null,amulet:null},
- sound:true,mood:{},buffXp:0,buffDmg:0,buffGold:0,armTab:'weapon',rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},ts:0});
+ sound:true,soundLoud:true,mood:{},buffXp:0,buffDmg:0,buffGold:0,armTab:'weapon',rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},ts:0});
 function hydrate(o){const s=Object.assign(fresh(),o||{});const f=fresh();
  for(const k of ['pet','st','camp','eq','oath'])s[k]=Object.assign(f[k],(o||{})[k]);
  for(const k of ['inv','rewards','urgeLog','log','ach','qList','qDone','hLoot'])if(!Array.isArray(s[k]))s[k]=f[k];
@@ -700,10 +701,13 @@ const feed=n=>{petTick();S.pet.fuel=clamp(S.pet.fuel+n)},cheer=n=>{petTick();S.p
 
 /* ================= SOUND ================= */
 let AC=null;
-function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}if(AC.state==='suspended')AC.resume();return AC}
+function setSession(){try{if(navigator.audioSession)navigator.audioSession.type=S.soundLoud?'playback':'ambient'}catch(e){}}
+function ac(){if(!AC){setSession();try{AC=new(window.AudioContext||window.webkitAudioContext)();MG=AC.createGain();MG.gain.value=2.4;MG.connect(AC.destination)}catch(e){return null}}if(AC.state!=='running'){try{AC.resume()}catch(e){}}return AC}
+let MG=null;
+function unlockAudio(){if(!S.sound)return;const a=ac();if(!a)return;try{const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0)}catch(e){}}
 function tone(f,d,type,vol,t0,slide){if(!S.sound)return;const a=ac();if(!a)return;const t=a.currentTime+(t0||0),o=a.createOscillator(),g=a.createGain();
  o.type=type||'square';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);
- g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.05,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.03)}
+ g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.05,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(MG||a.destination);o.start(t);o.stop(t+d+.03)}
 const SFX={tap:()=>tone(1046,.035,'square',.025),
  check:()=>{tone(659,.06,'square',.05);tone(988,.1,'square',.05,.055)},
  coin:()=>{tone(988,.05,'square',.04);tone(1319,.16,'square',.04,.05)},
@@ -716,7 +720,7 @@ const SFX={tap:()=>tone(1046,.035,'square',.025),
  sad:()=>[392,349,311].forEach((f,i)=>tone(f,.25,'triangle',.06,i*.18)),
  open:()=>tone(330,.18,'sawtooth',.04,0,880),
  err:()=>tone(160,.15,'square',.04)};
-document.addEventListener('touchstart',()=>ac(),{once:true,passive:true});document.addEventListener('mousedown',()=>ac(),{once:true});
+['touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{passive:true,capture:true}));
 
 /* ================= PIXEL ART ================= */
 function px(map,pal,s){const h=map.length,w=map[0].length;let r='';
@@ -957,7 +961,7 @@ function renderShop(){$('shopGold').innerHTML=coin(2.5)+S.gold;
  $('armory').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>buyItem(k,+b.dataset.a));
  $('rewards').innerHTML=S.rewards.length?S.rewards.map((r,i)=>'<div class="shopit">'+icon('star','#f0b541',4)+'<div class="nm"><b class="body" style="font-weight:600">'+esc(r.t)+'</b><span>куплено: '+(r.n||0)+'</span></div><button class="x" data-del="'+i+'" aria-label="Удалить">×</button><button class="btn gold" data-r="'+i+'"'+(S.gold<r.cost?' disabled':'')+'>'+r.cost+'</button></div>').join(''):'<div class="empty">Добавь свою награду, например: «кино» за 150.</div>';
  $('rewards').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const r=S.rewards[b.dataset.r];if(S.gold<r.cost)return;S.gold-=r.cost;r.n=(r.n||0)+1;addLog('Награда себе: '+r.t);save();render();lootSheet('Заслужено!',null,'«'+r.t+'» — наслаждайся без вины. Ты это заработал.')});
- $('sndBtn').textContent=S.sound?'Вкл':'Выкл';
+ $('sndBtn').textContent=S.sound?'Вкл':'Выкл';$('loudBtn').textContent=S.soundLoud?'Да':'Нет';
  $('rewards').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{S.rewards.splice(b.dataset.del,1);save();render()})}
 let calOff=0;
 function renderMood(){const days=[];for(let i=13;i>=0;i--)days.push(shift(today(),-i));
@@ -1172,6 +1176,7 @@ let nT;const noteIn=(id,f)=>{$(id).oninput=()=>{P[f]=$(id).value.slice(0,4000);g
 $('wPrev').onclick=()=>selectDay(shift(SEL,-7));$('wNext').onclick=()=>selectDay(shift(SEL,7));
 $('calPrev').onclick=()=>{calOff--;renderLog()};$('calNext').onclick=()=>{if(calOff<0){calOff++;renderLog()}};
 $('rwAdd').onclick=()=>{const t=$('rwName').value.trim(),c=parseInt($('rwCost').value,10);if(!t||!(c>0))return toast('Впиши название и цену');S.rewards.push({t:t.slice(0,60),cost:Math.min(99999,c),n:0});$('rwName').value='';$('rwCost').value='';save();render()};
+$('loudBtn').onclick=()=>{S.soundLoud=!S.soundLoud;setSession();save();render();SFX.coin()};
 $('sndBtn').onclick=()=>{S.sound=!S.sound;save();render();if(S.sound)SFX.coin()};
 $('oathEdit').onclick=()=>oathSheet(false);$('ifEdit').onclick=()=>oathSheet(false);
 $('expBtn').onclick=async()=>{const all={s:S,plans:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(KEY+'_plan_'))all.plans[k]=localStorage.getItem(k)}
