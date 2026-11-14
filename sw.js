@@ -1,5 +1,5 @@
-const CORE='pv-core-v3', FONTS='pv-fonts';
-const FILES=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./fonts/geist-cyrillic-400-normal.woff2','./fonts/geist-cyrillic-600-normal.woff2','./fonts/geist-cyrillic-700-normal.woff2','./fonts/geist-latin-400-normal.woff2','./fonts/geist-latin-600-normal.woff2','./fonts/geist-latin-700-normal.woff2','./fonts/oswald-cyrillic-600-normal.woff2','./fonts/oswald-cyrillic-700-normal.woff2','./fonts/oswald-latin-600-normal.woff2','./fonts/oswald-latin-700-normal.woff2'];
+const CORE='pv-core-v5', FONTS='pv-fonts';
+const FILES=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./fonts/geist-cyrillic-400-normal.woff2','./fonts/geist-cyrillic-600-normal.woff2','./fonts/geist-latin-400-normal.woff2','./fonts/geist-latin-600-normal.woff2','./fonts/press-start-2p-cyrillic-400-normal.woff2','./fonts/press-start-2p-latin-400-normal.woff2'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CORE).then(c=>c.addAll(FILES)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CORE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
