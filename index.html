@@ -308,7 +308,7 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
       <div class="bars"><span>Огонь</span><div class="gauge g-gold"><i id="pFuel"></i></div><span>Настроение</span><div class="gauge g-pink"><i id="pMood"></i></div></div>
     </div>
     <div class="pnl status">
-      <div class="clock"><div class="lb">Без срыва</div><div class="big" id="cBig">0<small>д</small></div><div class="sm" id="cSm"></div><div class="tot" id="cTot"></div></div>
+      <div class="clock" id="clockBox" role="button" style="cursor:pointer"><div class="lb">Без срыва ✎</div><div class="big" id="cBig">0<small>д</small></div><div class="sm" id="cSm"></div><div class="tot" id="cTot"></div></div>
       <button class="btn red sos" id="sosBtn">Тянет!</button>
     </div>
   </div>
@@ -897,7 +897,11 @@ const NAV=[['day','День','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','�
 $('nav').innerHTML=NAV.map(([k,n,d])=>'<button data-s="'+k+'"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" shape-rendering="crispEdges" stroke-linejoin="miter"><path d="'+d+'"/></svg>'+n+'</button>').join('');
 function go(s){SFX.tap();document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.s===s));['day','quest','hero','shop','log'].forEach(k=>$('s-'+k).classList.toggle('hide',k!==s));window.scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.s));
-$('chestBtn').onclick=openChest;$('bMini').onclick=()=>go('quest');
+$('chestBtn').onclick=openChest;
+$('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+ sheet('<h3>Начало отсчёта</h3><p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
+ $('csNo').onclick=closeSheet;$('csYes').onclick=()=>{const t=new Date($('csIn').value).getTime();if(!t||t>Date.now())return toast('Впиши дату не позже сегодняшней');
+  S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
 $('petArt').onclick=()=>{const a=$('petArt');a.classList.remove('hop');void a.offsetWidth;a.classList.add('hop');if(S.pet.petDay!==today()){S.pet.petDay=today();S.pet.pets=0}
  SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=rnd(['Тепло!','Мы справимся.','Я с тобой.','Ещё!','Ты молодец, что зашёл.']);$('pMood').style.width=S.pet.mood+'%'};
 $('voteBtn').onclick=()=>{if(S.votes[today()])return;S.votes[today()]=1;addLog('Голос за себя');award(10,'wil','голос за себя',{dmg:10});save();render()};
