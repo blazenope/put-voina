@@ -1357,10 +1357,10 @@ function oathSheet(first){const o=S.oath;
  sheet('<h3>'+(first?'Клятва героя':'Клятва')+'</h3><p>'+(first?'Перед походом ответь на три вопроса. Свои слова держат сильнее чужих. Всё хранится только на телефоне.':'Обнови свои причины и планы.')+'</p>'
  +'<label class="lbl" for="oId">Я — человек, который…</label><textarea id="oId" rows="2">'+esc(o.identity||IDENTITY)+'</textarea>'
  +'<label class="lbl" for="oWhy">Зачем мне это? (каждая причина с новой строки)</label><textarea id="oWhy" rows="3" placeholder="Больше энергии и фокуса&#10;Уважать себя&#10;Отношения без стыда">'+esc(o.why.join('\n'))+'</textarea>'
- +'<div class="lbl">План «если — то» на главные триггеры</div>'+['Скука','Телефон в кровати','Стресс','Одиночество'].map(t=>'<label class="lbl" style="text-transform:none;margin-top:8px" for="if_'+t+'">Если '+t.toLowerCase()+', то я…</label><input type="text" id="if_'+t+'" value="'+esc(S.ifthen[t]||'')+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:10px;font-family:var(--body);outline:none">').join('')
+ +'<div class="lbl">План «если — то» на главные триггеры</div>'+['Скука','Стресс','Одиночество'].map(t=>'<label class="lbl" style="text-transform:none;margin-top:8px" for="if_'+t+'">Если '+t.toLowerCase()+', то я…</label><input type="text" id="if_'+t+'" value="'+esc(S.ifthen[t]||'')+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:10px;font-family:var(--body);outline:none">').join('')
  +'<button class="btn gold" id="oOk" style="width:100%;margin-top:16px">'+(first?'Клянусь':'Сохранить')+'</button>'+(first?'<button class="linkbtn" id="oSkip" style="display:block;margin:14px auto 0">Позже</button>':''));
  $('oOk').onclick=()=>{o.identity=$('oId').value.trim().slice(0,120)||IDENTITY;o.why=$('oWhy').value.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,6);
-  for(const t of ['Скука','Телефон в кровати','Стресс','Одиночество']){const v=$('if_'+t).value.trim().slice(0,120);if(v)S.ifthen[t]=v;else delete S.ifthen[t]}
+  for(const t of ['Скука','Стресс','Одиночество']){const v=$('if_'+t).value.trim().slice(0,120);if(v)S.ifthen[t]=v;else delete S.ifthen[t]}
   if(!o.done){o.done=true;award(30,'wil','клятва',{dmg:30})}save();closeSheet();render()};
  if(first)$('oSkip').onclick=()=>{o.done=true;save();closeSheet()}}
 
@@ -1453,6 +1453,7 @@ let lastTap=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-l
 
 /* migrate old saves: old plan done flags carry XP already */
 if(!S.v||S.v<3){S.v=3;save()}
+if(S.ifthen&&S.ifthen['Телефон в кровати']){delete S.ifthen['Телефон в кровати'];save()}
 /* economy v2: 12 bosses with adaptive HP, forge, contracts. Keep progress, rescale current boss */
 if(S.econ!==2){const ch=S.camp.ch,old=ch<6?[300,550,850,1200,1700,2400][ch]:2400+(ch-5)*600,r=Math.max(.05,Math.min(1,S.camp.hp/old));
  S.camp.mx=baseHp(ch);S.camp.hp=Math.round(S.camp.mx*r);S.camp.ph=r<=.5?1:0;S.forge=S.forge||{weapon:0,armor:0,amulet:0};S.econ=2;save()}
