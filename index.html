@@ -997,6 +997,11 @@ let lastTap=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-l
 /* migrate old saves: old plan done flags carry XP already */
 if(!S.v||S.v<3){S.v=3;save()}
 go('day');loadPlan(SEL);render();
+/* remote updates from Claude: applied once per id */
+(async()=>{try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();S.applied=S.applied||[];if(!o||!o.id||S.applied.includes(o.id))return;
+ S.applied.push(o.id);if(o.cleanSince){const t=new Date(o.cleanSince).getTime();if(t&&t<=Date.now())S.cleanSince=t}
+ let n=0;for(const[k,v]of Object.entries(o.days||{})){if(S.days[k]!==v){if(v==='c')n++;S.days[k]=v}}
+ if(o.note)addLog(o.note);if(n)award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n});save();render();toast('Обновлено: '+(o.note||'данные'))}catch(e){}})();
 if(!S.oath.done)setTimeout(()=>oathSheet(true),400);
 setInterval(()=>{const a=document.activeElement;if(!a||!/INPUT|TEXTAREA/.test(a.tagName))render()},30000);
 document.addEventListener('visibilitychange',()=>{const a=document.activeElement;if(!document.hidden&&(!a||!/INPUT|TEXTAREA/.test(a.tagName)))render()});
