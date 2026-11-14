@@ -312,6 +312,10 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
     </div>
   </div>
 
+  <button class="pnl" id="buffBox" style="display:block;width:100%;border:0;text-align:left;color:inherit;cursor:pointer;background:linear-gradient(90deg,#2a1020,#141724);box-shadow:inset 0 0 0 2px #7a2a5a">
+    <div class="ttl" style="margin-bottom:6px"><h2 style="color:#ff8fc8">Бафф пути</h2><span class="c">все →</span></div>
+    <div id="buffNow"></div>
+  </button>
   <div class="pnl" id="voteBox">
     <div class="vote"><p id="voteTxt"></p><button class="btn gold" id="voteBtn">Голос</button></div>
   </div>
@@ -559,6 +563,22 @@ const PHRASES=['Это просто волна. Она поднимается, �
 const ACTIONS=['Встань и выйди из комнаты','20 отжиманий или приседаний','Умой лицо холодной водой','Выйди на улицу','Выпей стакан воды','Напиши кому-нибудь','Включи немецкий урок','Положи телефон в другую комнату','Сделай один квест из списка','Приберись на столе 3 минуты'];
 const HALT={'Голоден':'Поешь что-нибудь нормальное','Злюсь':'Выйди, пройдись быстрым шагом 5 минут','Одиноко':'Напиши или позвони кому-нибудь','Устал':'Ляг без телефона, телефон в другой комнате'};
 const TRIGS=['Скука','Стресс','Одиночество','Телефон в кровати','Не спится','Соцсети','Усталость','Другое'];
+const BUFFS=[
+ [1,'Первая искра','Ты выбрал себя. Мозг впервые получает перерыв от суперстимула, которого нет в природе: бесконечных новых тел и сцен. Тяга может быть сильной — это просто привычка требует своё.'],
+ [2,'Ясная голова','Меньше тумана и разбитости, которые бывают после сессий. Освобождается пара часов в день: время, которое раньше уходило в экран.'],
+ [3,'Пробуждение либидо','У многих заметнее утренняя эрекция и спонтанное возбуждение: желание копится в теле, а не сливается на картинки. Часто это пик тяги — держись, дальше легче.'],
+ [5,'Острота чувств','Прикосновения, взгляды, голос, запах девушки ощущаются ярче. Фантазии начинают тянуться к живым людям, а не к роликам.'],
+ [7,'Звериный тонус','В небольшом исследовании уровень тестостерона на 7-й день воздержания был на пике (это кратковременный скачок). Многие чувствуют больше напора, уверенности и сексуальной энергии. Направь её в зал, флирт и дела.'],
+ [10,'Магнетизм','Легче держать взгляд и заговорить первым. Желание настоящего секса ощутимо сильнее желания экрана: хочется трогать, а не смотреть.'],
+ [14,'Затишье (дебафф)','У части людей наступает «флэтлайн»: либидо будто пропадает, член молчит, порно не тянет, но и девушки тоже. Это временная перестройка, а не поломка. Главная ловушка — «проверить себя» роликом. Не ведись: через пару недель желание вернётся сильнее.'],
+ [21,'Перепрошивка','Новые привычки закрепляются. Триггеры и фетиш-контент цепляют слабее: твои фантазии снова твои, а не подсунутые алгоритмом. Сами фетиши — нормальная часть тебя, уходит только компульсивность.'],
+ [30,'Живая чувствительность','У тех, кто много сидел на порно, часто возвращается чувствительность: эрекция с партнёршей держится увереннее, оргазм ярче и полнее, меньше нужды в «жёстче и необычнее», чтобы завестись.'],
+ [45,'Контроль','Ты решаешь, когда и как кончать. Многие замечают лучший контроль эякуляции и больше выносливости в постели.'],
+ [60,'Настоящий голод','Живой секс ощущается сильнее любого видео: кожа, дыхание, реакция партнёрши. Свои кинки можно проживать с ней, по-настоящему, а не в одиночку перед экраном.'],
+ [90,'Перерождение','90 дней — классический срок перезагрузки. Система вознаграждения заметно восстановилась: возбуждает живое тело, запах, голос. Ты управляешь желанием, а не оно тобой.'],
+ [120,'Хозяин желания','Энергия, которую раньше съедал экран, стабильно работает на тебя: в зале, в учёбе, в отношениях.'],
+ [180,'Полгода свободы','Старая привычка почти не имеет над тобой власти. Срывы, если и случаются, больше не определяют тебя.'],
+ [365,'Легенда','Год. Это уже не борьба, а образ жизни. Ты стал тем, кем решил стать.']];
 const STAGES=[[0,'Искра'],[3,'Огонёк'],[7,'Пламя'],[14,'Костёр'],[30,'Феникс']];
 const IDENTITY='держит слово и управляет собой';
 const ACHS=[
@@ -764,6 +784,10 @@ function renderDay(){
  const ms=cleanMs(),d=Math.floor(ms/DAY),hh=Math.floor(ms%DAY/36e5),mm=Math.floor(ms%36e5/6e4);
  $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин';
  $('cTot').textContent='Всего чистых дней: '+totalClean();
+ // buffs
+ {const d=cleanDays(),cur=[...BUFFS].reverse().find(b=>d>=b[0]),nx=BUFFS.find(b=>b[0]>d);
+  $('buffNow').innerHTML=(cur?'<div style="font:600 15px var(--body);color:var(--ink)">День '+cur[0]+': '+esc(cur[1])+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:4px">'+esc(cur[2])+'</div>':'<div style="font:14px/1.45 var(--body);color:var(--ink2)">Первый бафф откроется через сутки без срыва.</div>')
+   +(nx?'<div style="font:13px var(--body);color:#ff8fc8;margin-top:8px">Следующий: «'+esc(nx[1])+'» через '+(nx[0]-d)+' '+plural(nx[0]-d,'день','дня','дней')+'</div>':'')}
  // vote
  $('voteBox').classList.toggle('hide',!isT);
  const voted=!!S.votes[today()];$('voteTxt').innerHTML=voted?'Голос отдан. Сегодня ты — человек, который <b>'+esc(S.oath.identity||IDENTITY)+'</b>.':'Сегодня я голосую за себя — человека, который <b>'+esc(S.oath.identity||IDENTITY)+'</b>.';
@@ -947,6 +971,7 @@ $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+
  sheet('<h3>Начало отсчёта</h3><p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
  $('csNo').onclick=closeSheet;$('csYes').onclick=()=>{const t=new Date($('csIn').value).getTime();if(!t||t>Date.now())return toast('Впиши дату не позже сегодняшней');
   S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];{let k=dkey(new Date(t)),n=0;while(k<today()){if(!S.days[k]){S.days[k]='c';n++}k=shift(k,1)}if(n){award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n})}}addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
+$('buffBox').onclick=()=>{const d=cleanDays();sheet('<h3>Бафы пути</h3><p>Что ждёт тебя на каждом этапе без срыва. Эффекты индивидуальны: часть подтверждена исследованиями, часть — опыт тех, кто прошёл этот путь.</p>'+BUFFS.map(b=>'<div style="padding:10px 0;border-bottom:2px dashed var(--edge);'+(d>=b[0]?'':'opacity:.55')+'"><div style="font:600 15px var(--body);color:'+(d>=b[0]?'#ff8fc8':'var(--ink)')+'">'+(d>=b[0]?'✓ ':'')+'День '+b[0]+' · '+esc(b[1])+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:4px">'+esc(b[2])+'</div></div>').join('')+'<button class="btn gold" id="bfOk" style="width:100%;margin-top:14px">Понял</button>');$('bfOk').onclick=closeSheet};
 $('petArt').onclick=()=>{const a=$('petArt');a.classList.remove('hop');void a.offsetWidth;a.classList.add('hop');if(S.pet.petDay!==today()){S.pet.petDay=today();S.pet.pets=0}
  SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=rnd(['Тепло!','Мы справимся.','Я с тобой.','Ещё!','Ты молодец, что зашёл.']);$('pMood').style.width=S.pet.mood+'%'};
 $('voteBtn').onclick=()=>{if(S.votes[today()])return;S.votes[today()]=1;addLog('Голос за себя');award(10,'wil','голос за себя',{dmg:10});save();render()};
