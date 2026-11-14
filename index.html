@@ -1528,6 +1528,9 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id||S.applied.includes
   pl.tasks=pl.tasks||[];let n=0;for(const q of o.tasks){if(!q||!q.t||pl.tasks.some(x=>x.t===q.t))continue;pl.tasks.push({t:String(q.t).slice(0,140),time:q.time||'',xp:Math.max(5,Math.min(200,Number(q.xp)||25)),c:STATS[q.c]?q.c:catOf(q.t),done:false,aw:null,lt:false});n++}
   pl.tasks.sort((a,b)=>(a.time||'99').localeCompare(b.time||'99'));try{localStorage.setItem(key,JSON.stringify(pl))}catch(e){}if(d===SEL)loadPlan(SEL);
   if(n)msgs.push('Новые квесты на '+(d===today()?'сегодня':parseD(d).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}))+': '+n)}
+ if(Array.isArray(o.remove))for(const r of o.remove){if(!r||!r.t)continue;const d=r.date||o.date||today(),key=planKey(d);
+  try{const v=JSON.parse(localStorage.getItem(key)||'null');if(!v)continue;const pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v,n0=pl.tasks.length;
+   pl.tasks=pl.tasks.filter(x=>x.done||x.t!==r.t);if(pl.tasks.length!==n0){localStorage.setItem(key,JSON.stringify(pl));if(d===SEL)loadPlan(SEL)}}catch(e){}}
  if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
 (async()=>{await syPull();try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
