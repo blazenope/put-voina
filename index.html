@@ -736,9 +736,11 @@ function makeItem(minR){const roll=Math.random();let r=roll<.70?0:roll<.92?1:rol
 function maybeLoot(){if(Math.random()<.12){const it=makeItem(0);setTimeout(()=>lootSheet('Добыча!',it,'Выпало во время квеста.'),800)}}
 
 /* ================= DAY ROLLOVER ================= */
-function seededHabits(day){let h=0;for(const c of day)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...HABITS.keys()].slice(1),out=[0];
+const OFF=[0];
+function seededHabits(day){let h=0;for(const c of day)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...HABITS.keys()].filter(i=>!OFF.includes(i)),out=[];
  while(out.length<4){h=(h*1103515245+12345)>>>0;out.push(idx.splice(h%idx.length,1)[0])}return out}
-function ensureDay(){const d=today();if(S.qDay!==d){S.qDay=d;S.qList=seededHabits(d);S.qDone=[];S.hAw={};S.hLoot=[];save()}if(follow&&SEL!==d)selectDay(d)}
+function ensureDay(){const d=today();if(S.qDay!==d){S.qDay=d;S.qList=seededHabits(d);S.qDone=[];S.hAw={};S.hLoot=[];save()}
+ if(S.qList.some(i=>OFF.includes(i))){const fresh=seededHabits(d+'x').filter(i=>!S.qList.includes(i));S.qList=S.qList.map(i=>OFF.includes(i)?fresh.shift():i);S.qDone=S.qDone.filter(i=>!OFF.includes(i));save()}if(follow&&SEL!==d)selectDay(d)}
 function checkAch(){for(const a of ACHS)if(!S.ach.includes(a[0])&&a[3](S)){S.ach.push(a[0]);S.xp+=30;S.gold+=20;S.goldTotal+=20;addLog('Достижение: '+a[1]);setTimeout(()=>toast('Достижение: '+a[1]+' · +30 XP · +20 золота'),1500)}}
 
 /* ================= RENDER ================= */
