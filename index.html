@@ -1204,6 +1204,10 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id||S.applied.includes
    if(ex){ex.done=true;ex.aw=aw;ex.lt=true}else pl.tasks.push({t:String(g.t).slice(0,140),time:g.time||'',xp,c,done:true,aw,lt:true});S.quests++;feed(10)}
   try{localStorage.setItem(key,JSON.stringify(pl))}catch(e){}if(d===SEL)loadPlan(SEL);
   if(sum)msgs.push('+'+sum+' XP и +'+(S.gold-gold0)+' золота за '+o.grants.length+' '+plural(o.grants.length,'дело','дела','дел'))}
+ if(o.love&&typeof o.love==='object'){S.love=S.love||{d:{},rej:0};S.love.d=S.love.d||{};let lx=0;const all=LOVE.flatMap(s=>s[2]);
+  for(const[id,n]of Object.entries(o.love)){if(id==='rej'){for(let i=0;i<n;i++){S.love.rej=(S.love.rej||0)+1;lx+=award(15,'cha','',{dmg:15}).xp}continue}const t=all.find(x=>x[0]===id);if(!t)continue;
+   for(let i=0;i<n&&(S.love.d[id]||0)<t[3];i++){S.love.d[id]=(S.love.d[id]||0)+1;if(id==='date')S.love.dates=(S.love.dates||0)+1;lx+=award(t[2],'cha','',{dmg:t[2]}).xp;addLog('Линия Сердца: '+t[1])}}
+  if(lx)msgs.push('Линия Сердца: +'+lx+' XP')}
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
 (async()=>{try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
  const list=Array.isArray(o.updates)?o.updates:[o];const out=[];for(const u of list){const m=applyRemote(u);if(m)out.push(m)}
