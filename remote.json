@@ -217,26 +217,9 @@
    "date": "2026-11-16",
    "tasks": [
     {
-     "t": "Термин в Jobcenter: заявки, регистрация ausbildungsuchend, ZAB",
-     "xp": 80,
-     "c": "int"
-    },
-    {
      "t": "Подать заявки медиа через порталы (BR, TUM, Brainlab, MediaMarktSaturn)",
      "xp": 50,
      "c": "int"
-    }
-   ]
-  },
-  {
-   "id": "2026-11-17-plan-physio",
-   "date": "2026-11-17",
-   "tasks": [
-    {
-     "t": "Физиотерапия 15:00 (Appenzeller Str.)",
-     "xp": 25,
-     "c": "str",
-     "time": "15:00"
     }
    ]
   }
