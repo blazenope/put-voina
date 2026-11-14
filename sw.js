@@ -1,16 +1,17 @@
-const CORE='pv-core-v5', FONTS='pv-fonts';
+const VER='pv-v6', FONTS='pv-fonts';
 const FILES=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./fonts/geist-cyrillic-400-normal.woff2','./fonts/geist-cyrillic-600-normal.woff2','./fonts/geist-latin-400-normal.woff2','./fonts/geist-latin-600-normal.woff2','./fonts/press-start-2p-cyrillic-400-normal.woff2','./fonts/press-start-2p-latin-400-normal.woff2'];
-self.addEventListener('install',e=>{e.waitUntil(caches.open(CORE).then(c=>c.addAll(FILES)));self.skipWaiting()});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CORE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+self.addEventListener('install',e=>{e.waitUntil(caches.open(VER).then(c=>c.addAll(FILES.map(u=>new Request(u,{cache:'reload'})))));self.skipWaiting()});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VER).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
-  const req=e.request;if(req.method!=='GET')return;const u=new URL(req.url);
-  if(u.hostname==='fonts.googleapis.com'||u.hostname==='fonts.gstatic.com'){
-    e.respondWith(caches.open(FONTS).then(async c=>{const hit=await c.match(req);if(hit)return hit;
-      try{const r=await fetch(req);c.put(req,r.clone());return r}catch(err){return new Response('',{status:504})}}));return}
-  if(u.origin!==location.origin)return;
-  e.respondWith(caches.open(CORE).then(async c=>{
-    const key=req.mode==='navigate'?'./index.html':req;
-    const hit=await c.match(key,{ignoreSearch:true});
-    const net=fetch(req).then(r=>{if(r&&r.ok){const copy=r.clone();c.put(key,copy)}return r}).catch(()=>hit);
-    return hit||net}));
+  const req=e.request;if(req.method!=='GET')return;const u=new URL(req.url);if(u.origin!==location.origin)return;
+  const isPage=req.mode==='navigate'||u.pathname.endsWith('/')||u.pathname.endsWith('.html');
+  if(isPage){
+    // свежая версия из сети, без сети — из кэша
+    e.respondWith((async()=>{const c=await caches.open(VER);
+      try{const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),3000);
+        const r=await fetch(new Request('./index.html',{cache:'no-store',signal:ctl.signal}));clearTimeout(t);
+        if(r.ok){c.put('./index.html',r.clone());return r}throw 0}
+      catch(err){return (await c.match('./index.html'))||(await c.match('./'))||Response.error()}})());return}
+  e.respondWith(caches.open(VER).then(async c=>{const hit=await c.match(req,{ignoreSearch:true});if(hit)return hit;
+    const r=await fetch(req);if(r.ok)c.put(req,r.clone());return r}));
 });
