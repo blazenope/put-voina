@@ -474,9 +474,8 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
     <div class="arena"><div class="spr" id="fSpr"></div>
       <div class="gauge g-hp" style="width:70%;margin-top:6px"><i id="fHp"></i></div></div>
     <div class="breath"><div class="ring"></div><div class="tm"><b id="fTimer">5:00</b><span id="fBreath">вдох</span></div></div>
-    <div class="pnl act"><div class="lbl" id="fActLbl">Сейчас сделай</div><b id="fAct"></b>
-      <div class="row2"><button class="btn blue" id="fDone">Сделал</button><button class="btn" id="fSkip">Другое</button></div>
-      <div class="mut" id="fCount" style="margin-top:8px"></div></div>
+    <div class="pnl act"><div class="lbl" id="fActLbl">Скажи себе</div><b id="fAct" style="min-height:76px;transition:opacity .25s"></b>
+      <button class="btn blue" id="fDone" style="width:100%">Дальше</button></div>
     <div class="pnl"><div class="lbl">Мои причины</div><ul class="why" id="fWhy" style="margin:0;padding-left:18px"></ul>
       <div class="lbl">Прокрути плёнку вперёд</div><div class="why">Представь себя через 20 минут после срыва. Что чувствуешь? А если выдержишь?</div></div>
     <div class="row2" style="margin-top:16px"><button class="btn" id="fLose">Сорвался</button><button class="btn gold" id="fWin" disabled>Волна прошла</button></div>
@@ -531,6 +530,26 @@ const SLOTS={weapon:['Оружие','урон',['Деревянный меч','�
  amulet:['Амулет','опыт',['Медный амулет','Серебряный оберег','Око мудреца','Сердце пламени']]};
 const RARITY=[['Обычный',5,10],['Редкий',10,30],['Эпический',20,80],['Легендарный',35,200]];
 const RCOL=['#9aa0a6','#4f8fef','#a35cf0','#f0b541'];
+const PHRASES=['Это просто волна. Она поднимается, достигает пика и уходит. Я переждал уже много волн.',
+ 'Тяга — это сигнал мозга, а не приказ. Я могу заметить её и не подчиняться.',
+ 'Мне не нужно бороться с тягой. Достаточно дать ей пройти мимо.',
+ 'Через 20 минут я буду гордиться собой или жалеть. Я выбираю гордиться.',
+ 'Желание сейчас кажется огромным, но через несколько минут оно станет в два раза слабее.',
+ 'Я не обязан верить каждой мысли в своей голове.',
+ 'Каждый раз, когда я выдерживаю, связь «скука → срыв» в мозге слабеет.',
+ 'Мне сейчас неуютно, и это нормально. Неуютно — не значит опасно.',
+ 'Я сильнее, чем эта минута.',
+ 'Что я на самом деле чувствую под этой тягой? Скуку, усталость, одиночество?',
+ 'Короткое удовольствие против уважения к себе завтра утром. Я знаю, что важнее.',
+ 'Я уже сделал самое трудное — заметил тягу и нажал эту кнопку.',
+ 'Дыши медленно. Вдох на 4, выдох на 6. Тело успокаивается, и тяга вместе с ним.',
+ 'Я не «не могу», я «не делаю». Это мой выбор, а не запрет.',
+ 'Представь, как ты ложишься спать сегодня с чистой совестью.',
+ 'Мой мозг перестраивается. Это неприятно, но это значит, что всё работает.',
+ 'Срыв ничего не решит. Чувство, от которого я бегу, останется и после.',
+ 'Я — человек, который держит слово. Даже когда трудно. Особенно когда трудно.',
+ 'Эта волна не последняя, но каждая следующая будет слабее.',
+ 'Всё, что нужно сейчас, — пережить следующие пять минут. Только их.'];
 const ACTIONS=['Встань и выйди из комнаты','20 отжиманий или приседаний','Умой лицо холодной водой','Выйди на улицу','Выпей стакан воды','Напиши кому-нибудь','Включи немецкий урок','Положи телефон в другую комнату','Сделай один квест из списка','Приберись на столе 3 минуты'];
 const HALT={'Голоден':'Поешь что-нибудь нормальное','Злюсь':'Выйди, пройдись быстрым шагом 5 минут','Одиноко':'Напиши или позвони кому-нибудь','Устал':'Ляг без телефона, телефон в другой комнате'};
 const TRIGS=['Скука','Стресс','Одиночество','Телефон в кровати','Не спится','Соцсети','Усталость','Другое'];
@@ -871,23 +890,24 @@ function openFight(){SFX.open();fTrig='';fHalt='';fFrom=0;fTo=0;fDone=0;fShow(1)
  $('fight').classList.remove('hide');document.body.style.overflow='hidden'}
 function startFight(){fStart=Date.now();fShow(2);
  const pre=[];if(fTrig&&S.ifthen[fTrig])pre.push('Твой план: '+S.ifthen[fTrig]);if(fHalt)pre.push(HALT[fHalt]);
- fActs=pre.concat([...ACTIONS].sort(()=>Math.random()-.5));fIdx=0;showAct();$('fCount').textContent='Сделано: 0';
+ fActs=pre.concat([...PHRASES].sort(()=>Math.random()-.5));fIdx=0;showAct();clearInterval(fRot);fRot=setInterval(nextPhrase,14000);
  $('fWhy').innerHTML=(S.oath.why.length?S.oath.why:['Хочу уважать себя','Больше энергии и фокуса']).map(w=>'<li>'+esc(w)+'</li>').join('');
  $('fSpr').innerHTML=bossSVG(2,6,false);fTick();fT=setInterval(fTick,1000)}
-function showAct(){$('fAct').textContent=fActs[fIdx];$('fActLbl').textContent=fIdx===0&&fTrig&&S.ifthen[fTrig]?'Если — то':'Сейчас сделай'}
+function showAct(){const a=$('fAct');a.style.opacity=0;setTimeout(()=>{a.textContent=fActs[fIdx];a.style.opacity=1},180);$('fActLbl').textContent=fIdx===0&&fTrig&&S.ifthen[fTrig]?'Твой план':(fIdx<pre_n()?'Подсказка':'Скажи себе')}
+let fRot=null;const pre_n=()=>(fTrig&&S.ifthen[fTrig]?1:0)+(fHalt?1:0);
+function nextPhrase(){fDone++;fIdx=(fIdx+1)%fActs.length;showAct()}
 function fTick(){const el=Math.floor((Date.now()-fStart)/1000),left=Math.max(0,FIGHT-el),hp=left/FIGHT;
  $('fTimer').textContent=Math.floor(left/60)+':'+pad(left%60);$('fBreath').textContent=left?(Math.floor(el/4)%2?'выдох':'вдох'):'выстоял';
- $('fHp').style.width=Math.max(0,hp*100-fDone*5)+'%';$('fSpr').style.opacity=.35+.65*hp;$('fSpr').style.transform='scale('+(.6+.4*hp)+')';
+ $('fHp').style.width=Math.max(0,hp*100)+'%';$('fSpr').style.opacity=.35+.65*hp;$('fSpr').style.transform='scale('+(.6+.4*hp)+')';
  const w=Math.max(0,MIN_WIN-el);$('fWin').disabled=w>0;$('fWin').textContent=w>0?'Волна · '+Math.floor(w/60)+':'+pad(w%60):'Волна прошла';$('fEl').textContent=Math.floor(el/60)+' мин'}
-function closeFight(){clearInterval(fT);$('fight').classList.add('hide');document.body.style.overflow=''}
+function closeFight(){clearInterval(fT);clearInterval(fRot);$('fight').classList.add('hide');document.body.style.overflow=''}
 function logUrge(win){S.urges=(S.urges||0)+1;const b=bucket();S.hours[b]=(S.hours[b]||0)+1;if(fTrig)S.trig[fTrig]=(S.trig[fTrig]||0)+1;
  S.urgeLog.unshift({ts:Date.now(),from:fFrom,to:win?fTo:null,trig:fTrig,halt:fHalt,win});S.urgeLog=S.urgeLog.slice(0,100)}
 $('fStart').onclick=startFight;
-$('fDone').onclick=()=>{fDone++;SFX.hit();$('fCount').textContent='Сделано: '+fDone;floatTxt('-5','#ff9a8f');fIdx=(fIdx+1)%fActs.length;showAct()};
-$('fSkip').onclick=()=>{fIdx=(fIdx+1)%fActs.length;showAct()};
-$('fWin').onclick=()=>{clearInterval(fT);fShow(3);$('fFinish').disabled=true;scale($('fTo'),n=>{fTo=n;$('fFinish').disabled=false})};
+$('fDone').onclick=()=>{SFX.tap();clearInterval(fRot);fRot=setInterval(nextPhrase,14000);nextPhrase()};
+$('fWin').onclick=()=>{clearInterval(fT);clearInterval(fRot);fShow(3);$('fFinish').disabled=true;scale($('fTo'),n=>{fTo=n;$('fFinish').disabled=false})};
 $('fFinish').onclick=()=>{logUrge(true);closeFight();S.wins++;cheer(25);feed(10);const dropped=fFrom-fTo;
- addLog('Волна пережита: '+fFrom+' → '+fTo+(fTrig?' · '+fTrig.toLowerCase():''));award(50+fDone*5,'wil','волна пережита',{dmg:60});save();render();
+ addLog('Волна пережита: '+fFrom+' → '+fTo+(fTrig?' · '+fTrig.toLowerCase():''));award(60,'wil','волна пережита',{dmg:60});save();render();
  setTimeout(()=>lootSheet('Волна пережита!',null,dropped>0?'Тяга упала с '+fFrom+' до '+fTo+'. Это доказательство: ты сильнее волны.':'Ты выстоял, даже когда было тяжело. Это и есть сила.'),400)};
 $('fLose').onclick=()=>{logUrge(false);const t=fTrig;closeFight();relapseFlow('',t)};
 $('fCancel1').onclick=closeFight;$('fCancel2').onclick=closeFight;$('sosBtn').onclick=openFight;
