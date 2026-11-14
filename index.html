@@ -372,6 +372,16 @@ summary{text-transform:none;font:700 15px var(--pix)}summary::after{color:var(--
 .lore{font:italic 14px/1.55 var(--pix);color:var(--ink2);margin-top:10px}
 .prose{color:var(--ink2)}.prose b{color:var(--ink)}
 .goal{margin:10px 0}.goal .gt{display:flex;justify-content:space-between;gap:10px;font:14px/1.35 var(--body)}.goal .gt b{font-variant-numeric:tabular-nums;opacity:.8}.goal.ok .gt span{opacity:.6}
+.pnl.gold:has(.herocard){position:relative;overflow:hidden}
+.nobori{position:absolute;right:10px;top:12px;writing-mode:vertical-rl;font:900 30px/1.05 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;color:var(--seal);opacity:.9;letter-spacing:2px;padding:6px 3px;border:1.5px solid var(--seal);background:#b8281e14}
+.herocard{padding-right:44px}
+.herocard .spr{background:none}
+.herocard h3{font:700 24px var(--pix)}
+.kotoba{margin-top:12px;padding:10px 12px;border-left:2px solid var(--seal);background:var(--panel2);display:grid;gap:2px}
+.kotoba b{font:700 18px "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;letter-spacing:1px;color:var(--ink)}
+.kotoba span{font:italic 14px/1.4 var(--pix);color:var(--ink2)}.kotoba small{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px}
+.statrow .kj{font:normal 700 15px "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;margin-right:6px;opacity:.9}
+.statrow{grid-template-columns:118px 1fr 52px}
 </style>
 </head>
 <body>
@@ -501,7 +511,9 @@ summary{text-transform:none;font:700 15px var(--pix)}summary::after{color:var(--
       <div style="flex:1;min-width:0"><h3 id="heroRank"></h3><div class="mut" id="heroLvl"></div>
         <div class="gauge g-xp" style="margin-top:8px"><i id="heroXp"></i></div>
         <div class="mut" id="heroNext" style="margin-top:6px;font-size:13px"></div></div></div>
-    <div class="lore">Ты — Странник, Носитель Света. Рядом с тобой идёт рыжий кот — он растёт с каждым чистым днём. Тени — Лень, Скука, Соблазн, Сомнения — растут во тьме и слабеют от каждого твоего шага. Чем дольше твой путь без срыва, тем взрослее и сильнее твой кот.</div>
+    <div class="nobori" id="heroKanji"></div>
+    <div class="lore">Ты — ронин без господина, идущий по Пути — 道. Твой меч — дисциплина, а враги — собственные тени. Рядом идёт рыжий кот — он растёт с каждым чистым днём. Тени — Лень, Скука, Соблазн, Сомнения — растут во тьме и слабеют от каждого твоего шага.</div>
+    <div class="kotoba" id="kotoba"></div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Характеристики</h2></div>
@@ -692,8 +704,10 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 function plural(n,a,b,c){n=Math.abs(n)%100;const m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
 
 /* ================= DATA ================= */
-const RANKS=[[1,'Новичок'],[3,'Ученик'],[5,'Страж'],[8,'Воин'],[12,'Рыцарь'],[16,'Паладин'],[20,'Мастер воли'],[25,'Герой'],[30,'Легенда'],[40,'Миф'],[50,'Бессмертный']];
-const STATS={str:['Сила','#ff8a80'],int:['Разум','#8db8ff'],cha:['Харизма','#f59bcc'],wil:['Воля','#ffd67a']};
+const RANKS=[[1,'Асигару','足軽'],[3,'Ученик додзё','門弟'],[5,'Ронин','浪人'],[8,'Самурай','侍'],[12,'Хатамото','旗本'],[16,'Мастер меча','剣豪'],[20,'Кэнсэй','剣聖'],[25,'Даймё','大名'],[30,'Сёгун','将軍'],[40,'Легенда','伝説'],[50,'Бессмертный','不滅']];
+const STATS={str:['Сила','#c4473b'],int:['Разум','#6d8bb0'],cha:['Харизма','#c27a8a'],wil:['Воля','#c9a46a']};
+const STK={str:'力',int:'知',cha:'心',wil:'志'};
+const KOTOBA=[['七転び八起き','Упади семь раз — встань восемь'],['継続は力なり','Постоянство — это сила'],['石の上にも三年','Даже на холодном камне за три года станет тепло'],['急がば回れ','Спешишь — иди в обход'],['塵も積もれば山となる','Из пылинок вырастает гора'],['初心忘るべからず','Не забывай дух новичка'],['猿も木から落ちる','И обезьяна падает с дерева'],['一期一会','Одна встреча — один шанс'],['雨降って地固まる','После дождя земля твёрже'],['千里の道も一歩から','Путь в тысячу ри начинается с шага'],['案ずるより産むが易し','Сделать легче, чем бояться'],['己に克つ','Победи самого себя']];
 const CAT_RX={str:/спорт|трен|отжим|присед|бег|пробеж|прогул|зал|душ|плаван|растяж|вело|ходьб|фитнес/i,
  int:/немец|deutsch|учеб|учит|курс|чита|книг|слов|ausbild|\beq\b|заявк|урок|b2|экзам|резюме|lebenslauf|bewerb|job|джоб|изуч|код|програм|монтаж|видео|short/i,
  cha:/позвон|напис|друг|мам|пап|встреч|свидан|знаком|гост|девуш|брат|сестр|созвон|чат|общ/i};
@@ -734,9 +748,9 @@ const abilOf=ch=>ABIL[ch%NB]+(ch>=NB?' · круг '+(circ(ch)+1):'');
 const regenOf=ch=>REGEN[ch%NB]*(1+circ(ch)*.25);
 const baseHp=ch=>Math.round(CHAPTERS[ch%NB][2]*(1+circ(ch)*.5));
 const bossOf=ch=>{const c=CHAPTERS[ch%NB],mx=ch===S.camp.ch&&S.camp.mx?S.camp.mx:baseHp(ch);return [ch<NB?c[0]:c[0]+' · круг '+(circ(ch)+1),c[1],mx,c[3]]};
-const SLOTS={weapon:['Оружие','урон',['Деревянный меч','Стальной клинок','Рунический меч','Клинок Феникса']],
- armor:['Броня','золото',['Кожаная куртка','Кольчуга','Латы стража','Доспех легенды']],
- amulet:['Амулет','опыт',['Медный амулет','Серебряный оберег','Око мудреца','Сердце пламени']]};
+const SLOTS={weapon:['Меч','урон',['Боккэн','Вакидзаси','Катана мастера','Клинок Феникса']],
+ armor:['Хаори','золото',['Хаори странника','Кимоно додзё','Доспех асигару','О-ёрой легенды']],
+ amulet:['Омамори','опыт',['Бумажный омамори','Серебряный омамори','Око тэнгу','Сердце кицунэ']]};
 const RARITY=[['Обычный',5,10],['Редкий',10,30],['Эпический',20,80],['Легендарный',35,200]];
 const RCOL=['#a8b0bf','#86aaff','#c39bff','#ffc36b'];
 const PHRASES=['Это просто волна. Она поднимается, достигает пика и уходит. Я переждал уже много волн.',
@@ -887,23 +901,30 @@ const SFX={tap:()=>tone(1046,.035,'triangle',.025),
 let _u=0;const uid=p=>p+(++_u);
 function px(){return ''}
 const RCOLV=['#a8b0bf','#86aaff','#c39bff','#ffc36b'];
+/* hero: ronin in a straw kasa hat; haori colour = armor rarity, katana fittings = weapon, omamori = amulet */
 function heroSVG(s){const ar=S.inv.find(i=>i.id===S.eq.armor),wp=S.inv.find(i=>i.id===S.eq.weapon),am=S.inv.find(i=>i.id===S.eq.amulet);
- const cape=ar?['#55617a','#3d5fb8','#7a4fc4','#c98a2a'][ar.r]:'#2f4a68',capeD=ar?['#39425a','#2a4285','#553591','#8f5f17'][ar.r]:'#1f3248',
-  staff=wp?RCOLV[wp.r]:'#8a6a48',eye=am?RCOLV[am.r]:'#ffe2a8',g=uid('lg'),c=uid('cg');
- return '<svg class="art" viewBox="0 0 64 64" width="'+(16*s)+'" height="'+(16*s)+'"><defs><radialGradient id="'+g+'"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#ffc36b"/><stop offset="1" stop-color="#ffc36b" stop-opacity="0"/></radialGradient>'
-  +'<linearGradient id="'+c+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+cape+'"/><stop offset="1" stop-color="'+capeD+'"/></linearGradient></defs>'
-  +'<ellipse cx="30" cy="60" rx="18" ry="2.6" fill="#000" opacity=".35"/>'
-  +'<circle cx="49" cy="25" r="15" fill="url(#'+g+')" opacity=".55"/>'
-  +'<path d="M46 12 L44 59" stroke="'+staff+'" stroke-width="2.4" stroke-linecap="round"/>'
-  +'<path d="M45.5 13 C49 13 51 15 51 18" stroke="'+staff+'" stroke-width="1.6" fill="none" stroke-linecap="round"/>'
-  +'<rect x="47.5" y="20" width="7" height="9" rx="2" fill="#2a1d10" stroke="#e8b35e" stroke-width="1.2"/><path d="M51 21.5 C53 24 52.5 26.5 51 27.5 C49.5 26.5 49 24 51 21.5Z" fill="#ffd27a"/>'
-  +'<path d="M30 17 C21 22 17 38 14 58 L46 58 C43 38 39 22 30 17Z" fill="url(#'+c+')"/>'
-  +'<path d="M30 25 C26 32 25 46 24 58 L36 58 C35 46 34 32 30 25Z" fill="#0c1020" opacity=".35"/>'
-  +(ar&&ar.r>=2?'<path d="M21 31 Q30 35 39 31" stroke="#ffd27a" stroke-width="1.6" fill="none" opacity=".9"/>':'')
-  +'<path d="M30 6 C38 6 41 13 40 19 C39 24 35 27 30 27 C25 27 21 24 20 19 C19 13 22 6 30 6Z" fill="url(#'+c+')"/>'
-  +'<ellipse cx="30" cy="19" rx="6.6" ry="5.8" fill="#0b0e1c"/>'
-  +'<circle cx="27.6" cy="19.2" r="1.25" fill="'+eye+'"/><circle cx="32.4" cy="19.2" r="1.25" fill="'+eye+'"/>'
-  +'<path d="M38.5 30 Q43 28 45 24" stroke="'+cape+'" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg>'}
+ const haori=ar?['#3b3a38','#2c3f5c','#4a2f5e','#5c1f1a'][ar.r]:'#2a2826',haoriD=ar?['#262523','#1d2a3e','#311f3f','#3d1411'][ar.r]:'#1b1a18',
+  fit=wp?RCOLV[wp.r]:'#8a8172',om=am?RCOLV[am.r]:null,eye=lvlInfo(S.xp).l>=8?'#d9473b':'#ebe4d6';
+ return '<svg class="art" viewBox="0 0 64 64" width="'+(16*s)+'" height="'+(16*s)+'">'
+  +'<ellipse cx="32" cy="60.5" rx="19" ry="2.4" fill="#000" opacity=".4"/>'
+  +'<path d="M22 40 L19 59 L30 59 L32 44 L34 59 L45 59 L42 40Z" fill="#1a1917"/>'
+  +'<path d="M32 44 L32 59" stroke="#0d0c0b" stroke-width="1"/>'
+  +'<path d="M20 24 C17 30 15 44 13 56 L24 56 L26 40 L38 40 L40 56 L51 56 C49 44 47 30 44 24 C40 22 24 22 20 24Z" fill="'+haori+'"/>'
+  +'<path d="M20 24 C17 30 15 44 13 56 L17 56 C18 44 20 32 23 25Z M44 24 C47 30 49 44 51 56 L47 56 C46 44 44 32 41 25Z" fill="'+haoriD+'"/>'
+  +'<path d="M27 24 L32 34 L37 24Z" fill="#d8cfbd"/><path d="M28.5 24 L32 31 L35.5 24Z" fill="#1a1917"/>'
+  +'<rect x="23" y="37" width="18" height="4" fill="#8f2a21"/>'
+  +'<path d="M14 45 L50 34" stroke="#141312" stroke-width="3.2" stroke-linecap="round"/>'
+  +'<path d="M43 36.1 L54 32.7" stroke="'+fit+'" stroke-width="2.4" stroke-linecap="butt"/>'
+  +'<path d="M45.2 34.2 l1 3.4M47.6 33.5 l1 3.4M50 32.8 l1 3.4" stroke="#0d0c0b" stroke-width=".7"/>'
+  +'<rect x="40.4" y="34.4" width="2.4" height="4.6" transform="rotate(-17 41.6 36.7)" fill="'+fit+'"/>'
+  +(om?'<path d="M26 41 v3" stroke="#d8cfbd" stroke-width=".7"/><rect x="24.4" y="44" width="3.2" height="4.4" rx=".6" fill="'+om+'"/>':'')
+  +'<path d="M27 19 C27 24 29 26 32 26 C35 26 37 24 37 19Z" fill="#c9ab88"/>'
+  +'<path d="M27 17.5 h10 v3 h-10Z" fill="#0d0c0b" opacity=".85"/>'
+  +'<circle cx="29.6" cy="19.2" r=".9" fill="'+eye+'"/><circle cx="34.4" cy="19.2" r=".9" fill="'+eye+'"/>'
+  +'<path d="M8 17.5 L32 6 L56 17.5 Q32 21.5 8 17.5Z" fill="#b9975e"/>'
+  +'<path d="M8 17.5 Q32 21.5 56 17.5 Q32 23.5 8 17.5Z" fill="#7a6239"/>'
+  +'<path d="M32 6 L20 18.6M32 6 L26 19.4M32 6 L38 19.4M32 6 L44 18.6" stroke="#8f7445" stroke-width=".6"/>'
+  +'</svg>'}
 /* cat: grows with total clean days, wears bought accessories, sleeps at night */
 const CAT_ACC=[['bow','Бантик на ушко',120],['bell','Колокольчик',150],['scarf','Красный шарф',220],['cape','Плащ героя',500],['crown','Корона',900]];
 const catAsleep=()=>{const h=new Date().getHours();return h>=1&&h<7};
@@ -1151,9 +1172,9 @@ function renderQuest(){renderLove();const ch=S.camp.ch,b=bossOf(ch);
  const n=Math.max(CHAPTERS.length,ch+2);let h='';for(let i=0;i<n;i++){const bb=bossOf(i);h+='<div class="node '+(i<ch?'done':i===ch?'now':'lock')+'"><div class="dot">'+(i<ch?'✓':i+1)+'</div><div><div class="nm">'+(i<=ch?esc(bb[0]):'???')+'</div><div class="loc">'+esc(bb[1])+'</div></div></div>'}
  $('map').innerHTML=h;$('mapCnt').textContent='побеждено: '+ch}
 function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0]>li.l);
- $('heroSpr').innerHTML=heroSVG(6);$('heroRank').textContent=r[1];$('heroLvl').textContent='Уровень '+li.l+' · '+li.cur+' / '+li.need+' XP';$('heroXp').style.width=(li.cur/li.need*100)+'%';
+ $('heroSpr').innerHTML=heroSVG(6);$('heroRank').textContent=r[1];$('heroKanji').textContent=r[2]||'道';{const k=KOTOBA[seedPick(today()+'w',1,KOTOBA.length)[0]];$('kotoba').innerHTML='<b lang="ja">'+k[0]+'</b><span>«'+k[1]+'»</span><small>слово дня</small>'}$('heroLvl').textContent='Уровень '+li.l+' · '+li.cur+' / '+li.need+' XP';$('heroXp').style.width=(li.cur/li.need*100)+'%';
  $('heroNext').textContent=nx?'Ранг «'+nx[1]+'» с уровня '+nx[0]:'Высший ранг';
- $('stats').innerHTML=Object.entries(STATS).map(([k,[n,col]])=>'<div class="statrow"><b style="color:'+col+'">'+n+'</b><div class="gauge"><i style="width:'+(statProg(S.st[k]||0)*100)+'%;background:'+col+'"></i></div><span>ур. '+statLvl(S.st[k]||0)+'</span></div>').join('');
+ $('stats').innerHTML=Object.entries(STATS).map(([k,[n,col]])=>'<div class="statrow"><b style="color:'+col+'"><i lang="ja" class="kj">'+STK[k]+'</i>'+n+'</b><div class="gauge"><i style="width:'+(statProg(S.st[k]||0)*100)+'%;background:'+col+'"></i></div><span>ур. '+statLvl(S.st[k]||0)+'</span></div>').join('');
  const b=bonus();$('bonusTxt').textContent='+'+Math.round(b.dmg*100)+'% урона · +'+Math.round(b.gold*100)+'% золота · +'+Math.round(b.xp*100)+'% XP';
  $('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]);return '<button class="slot '+(it?'r'+it.r:'')+'" data-k="'+k+'">'+(it?icon(k,RCOL[it.r],4):icon(k,'#2b3150',4))+'<span class="'+(it?'t'+it.r:'')+'">'+(it?esc(it.n):v[0]+': пусто')+'</span></button>'}).join('');
  $('slots').querySelectorAll('.slot').forEach(s=>s.onclick=()=>{const it=S.inv.find(i=>i.id===S.eq[s.dataset.k]);if(it)itemSheet(it)});
@@ -1453,6 +1474,7 @@ let lastTap=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-l
 
 /* migrate old saves: old plan done flags carry XP already */
 if(!S.v||S.v<3){S.v=3;save()}
+S.inv.forEach(i=>{if(SLOTS[i.k])i.n=SLOTS[i.k][2][i.r]});
 if(S.ifthen&&S.ifthen['Телефон в кровати']){delete S.ifthen['Телефон в кровати'];save()}
 /* economy v2: 12 bosses with adaptive HP, forge, contracts. Keep progress, rescale current boss */
 if(S.econ!==2){const ch=S.camp.ch,old=ch<6?[300,550,850,1200,1700,2400][ch]:2400+(ch-5)*600,r=Math.max(.05,Math.min(1,S.camp.hp/old));
