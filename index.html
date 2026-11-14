@@ -768,15 +768,16 @@ function renderDay(){
  const box=$('tasks');box.innerHTML='';
  if(!P.tasks.length)box.innerHTML='<div class="empty">'+(diff<0?'В этот день квестов не было.':'Пусто. Запиши первый квест.')+'</div>';
  sorted.forEach(([x,i])=>box.appendChild(taskEl(x,()=>togglePlan(i),x.done?null:()=>{P.tasks.splice(i,1);savePlan();render()})));
- $('habSec').classList.toggle('hide',!isT);$('checkSec').classList.toggle('hide',!isT);$('eveBox').classList.toggle('hide',!(isT||diff<0));
+ $('habSec').classList.toggle('hide',!isT);$('checkSec').classList.toggle('hide',diff>0);$('eveBox').classList.toggle('hide',!(isT||diff<0));
  if(isT){const hb=$('habits');hb.innerHTML='';$('hCount').textContent=S.qDone.length+' / '+S.qList.length;
   S.qList.forEach(i=>hb.appendChild(taskEl({t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)},()=>toggleHabit(i))))}
  if(document.activeElement!==$('notes'))$('notes').value=P.note;if(document.activeElement!==$('best'))$('best').value=P.best;grow($('notes'));grow($('best'));
- const s=S.days[today()],cb=$('checkBox');
- if(s==='c')cb.innerHTML='<div class="prose" style="padding:0">Чистый день отмечен. До завтра, герой.</div>';
- else if(s==='f')cb.innerHTML='<div class="prose" style="padding:0">Сегодня был срыв, и ты честно его отметил. Это уже сила. Завтра — новый день.</div>';
- else{cb.innerHTML='<div class="prose" style="padding:0 0 10px">Как прошёл день? Отметь вечером, честно.</div><div class="row2"><button class="btn gold" id="cleanBtn">Чистый день</button><button class="btn" id="fallBtn">Был срыв</button></div>';
-  $('cleanBtn').onclick=checkClean;$('fallBtn').onclick=()=>relapseFlow('')}}
+ const s=S.days[SEL],cb=$('checkBox');
+ if(s==='c')cb.innerHTML='<div class="prose" style="padding:0">Чистый день отмечен.'+(isT?' До завтра, герой.':'')+'</div>';
+ else if(s==='f')cb.innerHTML='<div class="prose" style="padding:0">'+(isT?'Сегодня был срыв, и ты честно его отметил. Это уже сила. Завтра — новый день.':'В этот день был срыв.')+'</div>';
+ else{cb.innerHTML='<div class="prose" style="padding:0 0 10px">'+(isT?'Как прошёл день? Отметь вечером, честно.':'Этот день не отмечен. Как он прошёл?')+'</div><div class="row2"><button class="btn gold" id="cleanBtn">Чистый день</button><button class="btn" id="fallBtn">Был срыв</button></div>';
+  $('cleanBtn').onclick=()=>isT?checkClean():markPast('c');$('fallBtn').onclick=()=>isT?relapseFlow(''):markPast('f')}}
+function markPast(v){S.days[SEL]=v;if(v==='c'){addLog('Чистый день: '+parseD(SEL).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}));award(20,'wil','чистый день',{dmg:40})}else addLog('Срыв отмечен: '+parseD(SEL).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}));save();render()}
 function renderQuest(){const ch=S.camp.ch,b=bossOf(ch);
  $('bossSpr').innerHTML=bossSVG(ch,8,S.camp.hp<b[2]*.35);$('bossName').textContent=b[0];$('bossLoc').textContent='Глава '+(ch+1)+' · '+b[1];
  $('bossHp').style.width=(S.camp.hp/b[2]*100)+'%';$('bossTxt').textContent=S.camp.hp+' / '+b[2]+' HP';
@@ -921,7 +922,7 @@ $('chestBtn').onclick=openChest;
 $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
  sheet('<h3>Начало отсчёта</h3><p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
  $('csNo').onclick=closeSheet;$('csYes').onclick=()=>{const t=new Date($('csIn').value).getTime();if(!t||t>Date.now())return toast('Впиши дату не позже сегодняшней');
-  S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
+  S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];{let k=dkey(new Date(t)),n=0;while(k<today()){if(!S.days[k]){S.days[k]='c';n++}k=shift(k,1)}if(n){award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n})}}addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
 $('petArt').onclick=()=>{const a=$('petArt');a.classList.remove('hop');void a.offsetWidth;a.classList.add('hop');if(S.pet.petDay!==today()){S.pet.petDay=today();S.pet.pets=0}
  SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=rnd(['Тепло!','Мы справимся.','Я с тобой.','Ещё!','Ты молодец, что зашёл.']);$('pMood').style.width=S.pet.mood+'%'};
 $('voteBtn').onclick=()=>{if(S.votes[today()])return;S.votes[today()]=1;addLog('Голос за себя');award(10,'wil','голос за себя',{dmg:10});save();render()};
