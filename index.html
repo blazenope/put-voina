@@ -3,29 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0b0c12">
+<meta name="theme-color" content="#0c0f24">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Путь Воина">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="fonts/press-start-2p-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/nunito-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/philosopher-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <title>Путь Воина</title>
 <style>
-@font-face{font-family:Pix;font-weight:100 900;font-display:swap;src:url(fonts/press-start-2p-cyrillic-400-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:Pix;font-weight:100 900;font-display:swap;src:url(fonts/press-start-2p-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
-@font-face{font-family:Geist;font-weight:400;font-display:swap;src:url(fonts/geist-cyrillic-400-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:Geist;font-weight:400;font-display:swap;src:url(fonts/geist-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
-@font-face{font-family:Geist;font-weight:600;font-display:swap;src:url(fonts/geist-cyrillic-600-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:Geist;font-weight:600;font-display:swap;src:url(fonts/geist-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:Pix;font-weight:400;font-display:swap;src:url(fonts/philosopher-cyrillic-400-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Pix;font-weight:400;font-display:swap;src:url(fonts/philosopher-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:Pix;font-weight:700;font-display:swap;src:url(fonts/philosopher-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Pix;font-weight:700;font-display:swap;src:url(fonts/philosopher-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:Body;font-weight:400;font-display:swap;src:url(fonts/nunito-cyrillic-400-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Body;font-weight:400;font-display:swap;src:url(fonts/nunito-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:Body;font-weight:600;font-display:swap;src:url(fonts/nunito-cyrillic-600-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Body;font-weight:600;font-display:swap;src:url(fonts/nunito-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:Body;font-weight:800;font-display:swap;src:url(fonts/nunito-cyrillic-800-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Body;font-weight:800;font-display:swap;src:url(fonts/nunito-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
 
 /* Ночная пиксельная RPG: тёмный камень, золото, красное HP, синяя мана, зелёный опыт. Панели с пиксельными углами, нижнее меню из 5 вкладок */
 :root{
  --bg:#0b0c12; --panel:#141724; --panel2:#1b1f31; --edge:#2b3150; --edge2:#40487a;
  --ink:#efe8d6; --ink2:#aba796; --ink3:#6f6c80;
  --gold:#f0b541; --gold2:#ffd67a; --hp:#e0483e; --mp:#4f8fef; --xp:#67c84d; --epic:#a35cf0; --pink:#e66fb0;
- --pix:Pix,'Courier New',monospace; --body:Geist,-apple-system,'Segoe UI',Roboto,sans-serif;
+ --pix:Pix,Georgia,serif; --body:Body,-apple-system,'Segoe UI',Roboto,sans-serif;
  color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg);-webkit-text-size-adjust:100%;touch-action:manipulation}
@@ -277,6 +282,93 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
 .pet-art.hop .bob{animation:hop .45s cubic-bezier(.34,1.56,.64,1)}
 @keyframes hop{40%{transform:translateY(-16px) scale(.95,1.08)}70%{transform:translateY(0) scale(1.06,.94)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== «Носитель Света»: ночное небо, тёплый свет фонаря, стеклянные панели ===== */
+:root{--bg:#0c0f24;--panel:rgba(24,28,58,.58);--panel2:rgba(255,255,255,.06);--edge:rgba(255,255,255,.09);--edge2:rgba(255,255,255,.16);
+ --ink:#f5efe4;--ink2:#bab6cc;--ink3:#7f7b98;--gold:#ffc36b;--gold2:#ffdca3;--hp:#ff6f6f;--mp:#86aaff;--xp:#8fe3a8;--epic:#c39bff;--pink:#ff9ec8}
+html{background:#0c0f24}
+body{font:400 16px/1.45 var(--body);background:transparent}
+body::before{content:'';position:fixed;inset:0;z-index:-2;background:
+ radial-gradient(1px 1px at 12% 18%,#fff8 50%,transparent 51%),radial-gradient(1px 1px at 72% 9%,#fff9 50%,transparent 51%),radial-gradient(1.5px 1.5px at 38% 26%,#fffa 50%,transparent 51%),
+ radial-gradient(1px 1px at 88% 31%,#fff7 50%,transparent 51%),radial-gradient(1px 1px at 55% 14%,#fff6 50%,transparent 51%),radial-gradient(1.5px 1.5px at 22% 40%,#fff5 50%,transparent 51%),
+ radial-gradient(1px 1px at 64% 44%,#fff5 50%,transparent 51%),radial-gradient(1px 1px at 8% 60%,#fff4 50%,transparent 51%),
+ radial-gradient(120% 60% at 50% 105%,#ff9f5a55 0%,#c0567022 35%,transparent 60%),linear-gradient(180deg,#090c1e 0%,#141436 45%,#2a1d48 80%,#3a2347 100%)}
+body::after{content:'';position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:-1;pointer-events:none;opacity:.55;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120' preserveAspectRatio='none'%3E%3Cpath d='M0 80 L60 40 L110 70 L170 25 L230 65 L290 35 L350 70 L400 45 L400 120 L0 120Z' fill='%23181433'/%3E%3Cpath d='M0 100 L50 75 L120 95 L190 70 L260 98 L330 78 L400 92 L400 120 L0 120Z' fill='%230e0c22'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+svg.art{display:block;overflow:visible}
+.pnl{clip-path:none;border-radius:22px;background:var(--panel);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+ box-shadow:inset 0 0 0 1px var(--edge),0 18px 40px -22px #000c;padding:16px}
+.pnl.gold{box-shadow:inset 0 0 0 1px #ffc36b55,0 0 40px -18px #ffc36b66,0 18px 40px -22px #000c}
+.ttl h2{font:700 21px var(--pix);text-transform:none;letter-spacing:.2px;color:var(--gold2)}
+.ttl .c{font-size:13px}
+.dtitle{font:700 36px/1.05 var(--pix);text-transform:none;letter-spacing:.2px}
+.dsub{font-size:14px}
+.hud{background:rgba(12,15,36,.7);border-bottom:1px solid var(--edge);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.hud .face{border-radius:14px;background:radial-gradient(circle at 50% 70%,#ffc36b33,transparent 70%),rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--edge);overflow:hidden}
+.hud .who b{font:700 17px var(--pix);text-transform:none;letter-spacing:.2px}
+.coins{font:800 16px var(--body)}
+.gauge{height:8px;border-radius:99px;background:rgba(255,255,255,.08);box-shadow:none}
+.gauge i{border-radius:99px}.gauge i::after{display:none}
+.g-xp i{background:linear-gradient(90deg,#5fd18a,#b8f5c8)}.g-hp i{background:linear-gradient(90deg,#ff5f6d,#ffa08a)}.g-mp i{background:linear-gradient(90deg,#6a8dff,#a9c3ff)}
+.g-gold i{background:linear-gradient(90deg,#ff9f45,#ffd27a)}.g-pink i{background:linear-gradient(90deg,#ff7eb3,#ffc2dc)}
+.btn{border-radius:14px;font:800 14px var(--body);letter-spacing:.3px;text-transform:none;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px var(--edge2)}
+.btn:active{box-shadow:inset 0 0 0 1px var(--edge2)}
+.btn.gold{background:linear-gradient(180deg,#ffd58a,#ffae4a);color:#3a2205;box-shadow:0 8px 22px -10px #ffae4a}
+.btn.red{background:linear-gradient(180deg,#ff8a7a,#ff5a6a);color:#fff;box-shadow:0 10px 26px -10px #ff5a6a}
+.btn.blue{background:linear-gradient(180deg,#9ab8ff,#6a8dff);color:#fff;box-shadow:0 8px 22px -10px #6a8dff}
+.db{border-radius:14px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--edge)}
+.db b{font:700 19px/1.2 var(--pix)}.db small{text-transform:none}
+.db.sel{background:linear-gradient(180deg,#ffd58a,#ffae4a);box-shadow:0 6px 18px -8px #ffae4a}
+.db i{border-radius:50%}
+.bmini{border-radius:20px;background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 0 0 1px #ff6f6f44}
+.bmini .nm{font:700 17px var(--pix);text-transform:none;letter-spacing:.2px;color:#ffb3a8}
+.pet-art{background:radial-gradient(circle at 50% 75%,#ffb35a33,transparent 62%)}
+.pet b{font:700 20px var(--pix);text-transform:none;letter-spacing:.2px}
+.pet .bars{text-transform:none;font-size:12px}
+.clock .lb{text-transform:none;letter-spacing:.3px;font-size:13px}
+.clock .big{font:700 46px/1 var(--pix)}
+.task{border-bottom:1px solid var(--edge)}
+.task input{border-radius:50%;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 2px var(--edge2)}
+.task input:checked{background:linear-gradient(180deg,#a6f0bf,#5fd18a);box-shadow:none}
+.task input:checked::after{font:800 14px var(--body);color:#0d3a1e}
+.task .t{font:600 15px/1.35 var(--body)}
+.chip{border-radius:99px;text-transform:none;font-weight:700}
+.add input,textarea{border-radius:14px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--edge)}
+.lbl{text-transform:none;letter-spacing:.2px;font-weight:700}
+.scale button{border-radius:10px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--edge)}
+.scale button.on{background:linear-gradient(180deg,#ff8a7a,#ff5a6a);box-shadow:none}
+.chp{border-radius:99px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--edge2)}
+.chp.on{background:linear-gradient(180deg,#9ab8ff,#6a8dff);box-shadow:none}
+.slot,.it,.ach{border-radius:16px;background:rgba(255,255,255,.04)}
+.r0{box-shadow:inset 0 0 0 1.5px #a8b0bf88}.r1{box-shadow:inset 0 0 0 1.5px #86aaff}.r2{box-shadow:inset 0 0 0 1.5px #c39bff,0 0 18px -8px #c39bff}.r3{box-shadow:inset 0 0 0 1.5px #ffc36b,0 0 22px -6px #ffc36b}
+.t0{color:#cfd5df}.t1{color:#a9c3ff}.t2{color:#d9c2ff}.t3{color:#ffdca3}
+.ach.got{box-shadow:inset 0 0 0 1px #ffc36b88}.ach .m{border-radius:50%;background:rgba(255,195,107,.12);font:700 12px var(--body)}
+.node .dot{border-radius:50%;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px var(--edge2)}
+.node.done .dot{background:linear-gradient(180deg,#a6f0bf,#5fd18a);box-shadow:none}
+.node.now .dot{background:linear-gradient(180deg,#ff8a7a,#ff5a6a);box-shadow:0 0 16px #ff5a6a88}
+.map::before{background:repeating-linear-gradient(var(--edge2) 0 4px,transparent 4px 9px)}
+.bossbig h3{font:700 25px var(--pix);text-transform:none;letter-spacing:.2px;color:#ffb3a8}
+.herocard h3{font:700 26px var(--pix);text-transform:none;letter-spacing:.2px}
+.herocard .spr{background:radial-gradient(circle at 60% 40%,#ffc36b30,transparent 65%);border-radius:20px}
+.cal .d{border-radius:10px;background:rgba(255,255,255,.04)}
+.cal .d.c{background:linear-gradient(180deg,#a6f0bf,#5fd18a);color:#0d3a1e}.cal .d.f{background:#ff6f6f33}.cal .d.run{background:#8fe3a822}
+.cal-h button{border-radius:10px;background:rgba(255,255,255,.06)}
+summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
+.nav{background:rgba(12,15,36,.78);border-top:1px solid var(--edge);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.nav button{text-transform:none;font:700 11px var(--body);letter-spacing:.2px}
+.nav button.on{color:var(--gold2)}
+.ovl{background:linear-gradient(180deg,#090c1e,#1c1840 70%,#2a1d48)}
+.fight-h b{font:700 20px var(--pix);text-transform:none;letter-spacing:.2px}
+.breath .ring{border-radius:50%;border:2px solid #86aaffaa;background:radial-gradient(circle,#86aaff22,transparent 70%)}
+.breath .tm b{font:800 42px/1 var(--body)}.breath .tm span{text-transform:none}
+.act b{text-transform:none}
+.sheet{border-radius:26px 26px 0 0;background:rgba(22,24,52,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 -1px 0 var(--edge2)}
+.sheet h3{font:700 24px var(--pix);text-transform:none;letter-spacing:.2px;color:var(--gold2)}
+.toast{border-radius:16px;background:rgba(30,32,64,.92);box-shadow:inset 0 0 0 1px #ffc36b55,0 12px 30px -10px #000;font:700 14px var(--body);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.float{font:800 18px var(--body)}
+.banner{border-radius:16px}
+.shopit{border-bottom:1px solid var(--edge)}
+.vote p b{color:var(--gold2)}
+.lore{font:italic 14px/1.5 var(--pix);color:var(--ink2);margin-top:10px}
 </style>
 </head>
 <body>
@@ -398,6 +490,7 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
       <div style="flex:1;min-width:0"><h3 id="heroRank"></h3><div class="mut" id="heroLvl"></div>
         <div class="gauge g-xp" style="margin-top:8px"><i id="heroXp"></i></div>
         <div class="mut" id="heroNext" style="margin-top:6px;font-size:13px"></div></div></div>
+    <div class="lore">Ты — Странник, Носитель Света. В фонаре на твоём посохе живёт Искра. Тени — Лень, Скука, Соблазн, Сомнения — растут во тьме и слабеют от каждого твоего шага. Чем ярче твой свет, тем сильнее Искра и тем дальше ты видишь путь.</div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Характеристики</h2></div>
@@ -600,7 +693,7 @@ const SLOTS={weapon:['Оружие','урон',['Деревянный меч','�
  armor:['Броня','золото',['Кожаная куртка','Кольчуга','Латы стража','Доспех легенды']],
  amulet:['Амулет','опыт',['Медный амулет','Серебряный оберег','Око мудреца','Сердце пламени']]};
 const RARITY=[['Обычный',5,10],['Редкий',10,30],['Эпический',20,80],['Легендарный',35,200]];
-const RCOL=['#9aa0a6','#4f8fef','#a35cf0','#f0b541'];
+const RCOL=['#a8b0bf','#86aaff','#c39bff','#ffc36b'];
 const PHRASES=['Это просто волна. Она поднимается, достигает пика и уходит. Я переждал уже много волн.',
  'Тяга — это сигнал мозга, а не приказ. Я могу заметить её и не подчиняться.',
  'Мне не нужно бороться с тягой. Достаточно дать ей пройти мимо.',
@@ -706,86 +799,76 @@ function ac(){if(!AC){setSession();try{AC=new(window.AudioContext||window.webkit
 let MG=null;
 function unlockAudio(){if(!S.sound)return;const a=ac();if(!a)return;try{const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0)}catch(e){}}
 function tone(f,d,type,vol,t0,slide){if(!S.sound)return;const a=ac();if(!a)return;const t=a.currentTime+(t0||0),o=a.createOscillator(),g=a.createGain();
- o.type=type||'square';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);
+ o.type=type||'triangle';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);
  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.05,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(MG||a.destination);o.start(t);o.stop(t+d+.03)}
-const SFX={tap:()=>tone(1046,.035,'square',.025),
- check:()=>{tone(659,.06,'square',.05);tone(988,.1,'square',.05,.055)},
- coin:()=>{tone(988,.05,'square',.04);tone(1319,.16,'square',.04,.05)},
+const SFX={tap:()=>tone(1046,.035,'triangle',.025),
+ check:()=>{tone(659,.06,'triangle',.05);tone(988,.1,'triangle',.05,.055)},
+ coin:()=>{tone(988,.05,'triangle',.04);tone(1319,.16,'triangle',.04,.05)},
  hit:()=>tone(240,.14,'sawtooth',.05,0,60),
  undo:()=>tone(520,.12,'triangle',.05,0,240),
- level:()=>[523,659,784,1047,1319].forEach((f,i)=>tone(f,.13,'square',.05,i*.08)),
+ level:()=>[523,659,784,1047,1319].forEach((f,i)=>tone(f,.13,'triangle',.05,i*.08)),
  chest:()=>[392,523,659,784,1047].forEach((f,i)=>tone(f,.11,'triangle',.08,i*.06)),
- win:()=>[659,784,988,1319,1568].forEach((f,i)=>tone(f,.15,'square',.05,i*.1)),
- pet:()=>{tone(1200,.05,'square',.03);tone(1600,.07,'square',.03,.05)},
+ win:()=>[659,784,988,1319,1568].forEach((f,i)=>tone(f,.15,'triangle',.05,i*.1)),
+ pet:()=>{tone(1200,.05,'triangle',.03);tone(1600,.07,'triangle',.03,.05)},
  sad:()=>[392,349,311].forEach((f,i)=>tone(f,.25,'triangle',.06,i*.18)),
  open:()=>tone(330,.18,'sawtooth',.04,0,880),
- err:()=>tone(160,.15,'square',.04)};
+ err:()=>tone(160,.15,'triangle',.04)};
 ['touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{passive:true,capture:true}));
 
 /* ================= PIXEL ART ================= */
-function px(map,pal,s){const h=map.length,w=map[0].length;let r='';
- for(let y=0;y<h;y++){let x=0;while(x<w){const c=map[y][x],col=pal[c];let n=1;while(x+n<w&&map[y][x+n]===c)n++;if(col)r+='<rect x="'+x+'" y="'+y+'" width="'+n+'" height="1" fill="'+col+'"/>';x+=n}}
- return '<svg class="px" viewBox="0 0 '+w+' '+h+'" width="'+(w*s)+'" height="'+(h*s)+'" shape-rendering="crispEdges">'+r+'</svg>'}
-const HERO=[
-"................",
-"......kkkk......",
-".....khhHhk.....",
-"....khhhhHhk....",
-"....kkkkkkkk..w.",
-"....ksessesk..w.",
-"....kssssssk..w.",
-".....kkkkkk...w.",
-"...kkaaAAaakk.w.",
-"..kcaaagAaaakgg.",
-"..kcaaaaaaaak.k.",
-"..kckaaaaaak....",
-"...kkaaaaaak....",
-"....kaak.kaak...",
-"....kbbk.kbbk...",
-"....kkkk.kkkk..."];
+let _u=0;const uid=p=>p+(++_u);
+function px(){return ''}
+const RCOLV=['#a8b0bf','#86aaff','#c39bff','#ffc36b'];
 function heroSVG(s){const ar=S.inv.find(i=>i.id===S.eq.armor),wp=S.inv.find(i=>i.id===S.eq.weapon),am=S.inv.find(i=>i.id===S.eq.amulet);
- const ac=ar?RCOL[ar.r]:'#8a5a3b',wc=wp?RCOL[wp.r]:null;
- const pal={k:'#05060a',h:ac,H:'#ffffff88',s:'#f1c9a0',e:'#1a1a2a',a:ac,A:'#ffffff55',c:'#b8362e',b:'#4a3220',g:am?RCOL[am.r]:'#6b4a2a',w:wc||'#7a5a38'};
- return px(HERO,pal,s)}
-function flameMap(st,dim,mood){const W=16,H=18,A=6.5,cx=7.5,g=[];
- for(let y=0;y<H;y++){g.push([]);const t=(y+.5)/H;const half=t<.7?A*Math.pow(t/.7,.75):A*Math.sqrt(Math.max(0,1-((t-.7)/.3)**2));
-  for(let x=0;x<W;x++){const ins=Math.abs(x+.5-cx)<=half;if(!ins){g[y].push('.');continue}
-   const d=Math.sqrt(((x+.5-cx)/A)**2+((y+.5-.72*H)/(.5*H))**2);g[y].push(d<.38?'y':d<.72?'o':'r')}}
- for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(g[y][x]!=='.'&&g[y][x]!=='k'){const n=[[0,1],[0,-1],[1,0],[-1,0]].some(([a,b])=>{const yy=y+a,xx=x+b;return yy<0||yy>=H||xx<0||xx>=W||g[yy][xx]==='.'});if(n)g[y][x]='K'}
- for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(g[y][x]==='K')g[y][x]='k';
- const ey=11;if(dim){g[ey][5]=g[ey][6]='e';g[ey][9]=g[ey][10]='e'}else{g[ey][5]=g[ey+1][5]='e';g[ey][10]=g[ey+1][10]='e';g[ey][5]='w';}
- if(!dim){if(mood>60){g[14][6]=g[14][9]='e';g[15][7]=g[15][8]='e';g[13][4]=g[13][11]='p'}else if(mood>30){g[14][7]=g[14][8]='e'}else{g[15][6]=g[15][9]='e';g[14][7]=g[14][8]='e'}}
- if(st>=4&&!dim){for(const[y,x]of[[8,1],[9,0],[9,1],[10,0],[10,1],[10,2],[11,1],[11,2],[8,14],[9,15],[9,14],[10,15],[10,14],[10,13],[11,14],[11,13]])g[y][x]='y'}
- return g.map(r=>r.join(''))}
-function petSVG(){petTick();const st=stageIdx(),p=S.pet,dim=p.fuel<15;
- const pal=dim?{k:'#05060a',y:'#6b6560',o:'#4a4540',r:'#36322e',e:'#05060a',w:'#05060a',p:'#4a4540'}
-  :st>=4?{k:'#05060a',y:'#fff6c8',o:'#ffd67a',r:'#f0a030',e:'#2a1402',w:'#fff',p:'#ff7a5c'}
-  :{k:'#05060a',y:'#ffe08a',o:'#f2843a',r:'#c8401e',e:'#1c0e05',w:'#fff',p:'#ff5a3c'};
- return px(flameMap(st,dim,p.mood),pal,[3.6,4.2,4.8,5.4,6][st])}
-function bossMap(ch,hurt){const W=20,H=17,cx=10,cy=11,rx=9,ry=10,g=[];
- for(let y=0;y<H;y++){g.push([]);for(let x=0;x<W;x++){const ins=((x+.5-cx)/rx)**2+((y+.5-cy)/ry)**2<=1&&y<=15;g[y].push(ins?(((x+.5-cx)/rx)**2+((y+.5-cy+3)/ry)**2<.25?'L':'b'):'.')}}
- for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(g[y][x]!=='.'){const n=[[0,1],[0,-1],[1,0],[-1,0]].some(([a,b])=>{const yy=y+a,xx=x+b;return yy<0||yy>=H||xx<0||xx>=W||g[yy][xx]==='.'});if(n)g[y][x]='K'}
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(g[y][x]==='K')g[y][x]='k';if(y>=13&&g[y][x]==='b')g[y][x]='d'}
- const set=(y,x,c)=>{if(y>=0&&y<H&&x>=0&&x<W)g[y][x]=c};
- if(ch>=1){for(const[y,x]of[[2,5],[1,4],[0,4],[2,14],[1,15],[0,15]])set(y,x,'h')}
- if(ch>=3){for(const x of[7,8,9,10,11,12])set(1,x,'g');for(const x of[7,9,10,12])set(0,x,'g')}
- set(8,6,'k');set(8,7,'k');set(9,7,'w');set(9,6,'r');set(8,12,'k');set(8,13,'k');set(9,12,'w');set(9,13,'r');
- for(const x of[7,8,9,10,11,12])set(12,x,'k');set(13,8,'w');set(13,11,'w');
- if(hurt){set(5,9,'k');set(6,10,'k');set(7,9,'k')}
- return g.map(r=>r.join(''))}
-function bossSVG(ch,s,hurt){const c=bossOf(ch)[3];return px(bossMap(ch,hurt),{k:'#05060a',b:c[0],L:'#ffffff40',d:c[1],h:'#e8e0c8',g:'#f0b541',w:'#ffffff',r:'#e0483e'},s)}
+ const cape=ar?['#55617a','#3d5fb8','#7a4fc4','#c98a2a'][ar.r]:'#2f4a68',capeD=ar?['#39425a','#2a4285','#553591','#8f5f17'][ar.r]:'#1f3248',
+  staff=wp?RCOLV[wp.r]:'#8a6a48',eye=am?RCOLV[am.r]:'#ffe2a8',g=uid('lg'),c=uid('cg');
+ return '<svg class="art" viewBox="0 0 64 64" width="'+(16*s)+'" height="'+(16*s)+'"><defs><radialGradient id="'+g+'"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#ffc36b"/><stop offset="1" stop-color="#ffc36b" stop-opacity="0"/></radialGradient>'
+  +'<linearGradient id="'+c+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+cape+'"/><stop offset="1" stop-color="'+capeD+'"/></linearGradient></defs>'
+  +'<ellipse cx="30" cy="60" rx="18" ry="2.6" fill="#000" opacity=".35"/>'
+  +'<circle cx="49" cy="25" r="15" fill="url(#'+g+')" opacity=".55"/>'
+  +'<path d="M46 12 L44 59" stroke="'+staff+'" stroke-width="2.4" stroke-linecap="round"/>'
+  +'<path d="M45.5 13 C49 13 51 15 51 18" stroke="'+staff+'" stroke-width="1.6" fill="none" stroke-linecap="round"/>'
+  +'<rect x="47.5" y="20" width="7" height="9" rx="2" fill="#2a1d10" stroke="#e8b35e" stroke-width="1.2"/><path d="M51 21.5 C53 24 52.5 26.5 51 27.5 C49.5 26.5 49 24 51 21.5Z" fill="#ffd27a"/>'
+  +'<path d="M30 17 C21 22 17 38 14 58 L46 58 C43 38 39 22 30 17Z" fill="url(#'+c+')"/>'
+  +'<path d="M30 25 C26 32 25 46 24 58 L36 58 C35 46 34 32 30 25Z" fill="#0c1020" opacity=".35"/>'
+  +(ar&&ar.r>=2?'<path d="M21 31 Q30 35 39 31" stroke="#ffd27a" stroke-width="1.6" fill="none" opacity=".9"/>':'')
+  +'<path d="M30 6 C38 6 41 13 40 19 C39 24 35 27 30 27 C25 27 21 24 20 19 C19 13 22 6 30 6Z" fill="url(#'+c+')"/>'
+  +'<ellipse cx="30" cy="19" rx="6.6" ry="5.8" fill="#0b0e1c"/>'
+  +'<circle cx="27.6" cy="19.2" r="1.25" fill="'+eye+'"/><circle cx="32.4" cy="19.2" r="1.25" fill="'+eye+'"/>'
+  +'<path d="M38.5 30 Q43 28 45 24" stroke="'+cape+'" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg>'}
+function petSVG(){petTick();const st=stageIdx(),p=S.pet,dim=p.fuel<15,mood=p.mood,g=uid('pg'),sc=[.62,.74,.86,.94,1][st];
+ const c=dim?['#6b6560','#4a4540','#36322e']:st>=4?['#fff6c8','#ffd67a','#f0a030']:['#ffe08a','#f2843a','#c8401e'];
+ const eyes=dim?'<path d="M40 70h6M54 70h6" stroke="#1c0e05" stroke-width="2.4" stroke-linecap="round"/>':'<ellipse cx="43" cy="70" rx="3.4" ry="'+(mood<30?3:4.4)+'" fill="#1c0e05"/><ellipse cx="57" cy="70" rx="3.4" ry="'+(mood<30?3:4.4)+'" fill="#1c0e05"/><circle cx="44.2" cy="68.4" r="1.2" fill="#fff"/><circle cx="58.2" cy="68.4" r="1.2" fill="#fff"/>';
+ const mouth=dim?'':'<path d="'+(mood>60?'M45 79 Q50 84 55 79':mood>30?'M46 80 L54 80':'M45 82 Q50 77 55 82')+'" stroke="#1c0e05" stroke-width="2.2" fill="none" stroke-linecap="round"/>';
+ const cheeks=!dim&&mood>60?'<ellipse cx="37" cy="77" rx="4" ry="2.3" fill="#ff5a3c" opacity=".4"/><ellipse cx="63" cy="77" rx="4" ry="2.3" fill="#ff5a3c" opacity=".4"/>':'';
+ const wings=st>=4&&!dim?'<path d="M24 72 C8 64 2 48 6 36 C14 48 20 54 30 58Z" fill="url(#'+g+')" opacity=".85"/><path d="M76 72 C92 64 98 48 94 36 C86 48 80 54 70 58Z" fill="url(#'+g+')" opacity=".85"/>':'';
+ const tongues=st>=2&&!dim?'<path d="M30 52 C24 40 28 30 34 24 C34 36 38 42 40 48Z" fill="url(#'+g+')" opacity=".8"/><path d="M70 52 C76 40 72 30 66 24 C66 36 62 42 60 48Z" fill="url(#'+g+')" opacity=".8"/>':'';
+ return '<svg class="art" viewBox="0 0 100 110" width="'+(110*sc)+'" height="'+(121*sc)+'"><defs><radialGradient id="'+g+'" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="'+c[0]+'"/><stop offset=".55" stop-color="'+c[1]+'"/><stop offset="1" stop-color="'+c[2]+'"/></radialGradient></defs>'
+  +(dim?'':'<ellipse cx="50" cy="104" rx="34" ry="6" fill="#f2753a" opacity=".22"/>')+wings+tongues
+  +'<path d="M50 6 C60 26 84 40 82 70 C80 94 64 104 50 104 C36 104 20 94 18 70 C16 40 40 26 50 6Z" fill="url(#'+g+')"/>'
+  +'<path d="M50 40 C56 52 68 60 66 78 C64 92 56 98 50 98 C44 98 36 92 34 78 C32 60 44 52 50 40Z" fill="'+c[0]+'" opacity="'+(dim?.15:.35)+'"/>'+eyes+cheeks+mouth+'</svg>'}
+function bossSVG(ch,s,hurt){const col=bossOf(ch)[3],g=uid('bg'),w=20*s,h2=17*s;
+ return '<svg class="art" viewBox="0 0 100 90" width="'+w+'" height="'+(w*.9)+'"><defs><radialGradient id="'+g+'" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="'+col[0]+'"/><stop offset="1" stop-color="'+col[1]+'"/></radialGradient></defs>'
+  +'<ellipse cx="50" cy="86" rx="34" ry="4" fill="#000" opacity=".35"/>'
+  +'<path d="M14 84 C10 60 16 30 36 18 C44 13 56 13 64 18 C84 30 90 60 86 84 C80 78 76 86 70 80 C64 86 58 78 50 84 C42 78 36 86 30 80 C24 86 20 78 14 84Z" fill="url(#'+g+')"/>'
+  +(ch>=1?'<path d="M30 24 C24 12 26 6 30 2 C31 10 35 16 38 19Z" fill="#e9e2cf"/><path d="M70 24 C76 12 74 6 70 2 C69 10 65 16 62 19Z" fill="#e9e2cf"/>':'')
+  +(ch>=3?'<path d="M36 14 L40 4 L45 12 L50 2 L55 12 L60 4 L64 14Z" fill="#ffc36b"/>':'')
+  +'<path d="M30 44 L44 49" stroke="#0b0e1c" stroke-width="3" stroke-linecap="round"/><path d="M70 44 L56 49" stroke="#0b0e1c" stroke-width="3" stroke-linecap="round"/>'
+  +'<ellipse cx="38" cy="53" rx="5" ry="4" fill="#fff4d6"/><ellipse cx="62" cy="53" rx="5" ry="4" fill="#fff4d6"/><circle cx="39" cy="53.5" r="2.2" fill="#ff4d4d"/><circle cx="61" cy="53.5" r="2.2" fill="#ff4d4d"/>'
+  +'<path d="M38 66 Q50 72 62 66" stroke="#0b0e1c" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M43 67 L45 72 L47 68M53 68 L55 72 L57 67" fill="#fff4d6"/>'
+  +(hurt?'<path d="M48 22 L52 30 L47 36 L52 42" stroke="#0b0e1c" stroke-width="2" fill="none"/>':'')+'</svg>'}
 const ICONS={
- weapon:["......kw",".....kwk","....kwk.","k..kwk..",".kkwk...","..kgk...",".kgkk...","kk..k..."],
- armor:[".kk..kk.","kaakkaak","kaaaaaak",".kaaaak.",".kaAaak.",".kaaaak.",".kaaaak.","..kkkk.."],
- amulet:["..k..k..",".k....k.",".k....k.","..k..k..","...kk...","..kaak..","..kAak..","...kk..."],
- potion:["...kk...","...kk...","..k..k..",".kaaaak.","kaaAaaak","kaaaaaAk",".kaaaak.","..kkkk.."],
- chest:["........",".kkkkkk.","kaaaaaak","kkkggkkk","kaaggaak","kaaaaaak","kkkkkkkk","........"],
- coin:["..kkkk..",".kggggk.","kggAAggk","kgAggggk","kgAggggk","kggggggk",".kggggk.","..kkkk.."],
- scroll:[".kkkkkk.","kaaaaaak",".kAaaak.",".kaaaak.",".kaAAak.",".kaaaak.","kaaaaaak",".kkkkkk."],
- bomb:[".....kg.","....k.g.","..kkkk..",".kaaaak.","kaAaaaak","kaaaaaak",".kaaaak.","..kkkk.."],
- star:["...kk...","...kk...","kkkaakkk",".kaaaak.","..kaak..",".kaaaak.",".kk..kk.","........"]};
-const icon=(n,col,s)=>px(ICONS[n],{k:'#05060a',a:col||'#9aa0a6',A:'#ffffffaa',g:'#f0b541',w:'#dfe6ee'},s||3);
-const coin=s=>px(ICONS.coin,{k:'#05060a',g:'#f0b541',A:'#fff3c4'},s||2.5);
+ weapon:'<path d="M18 3 L21 3 L21 6 L10 17 L7 14Z" fill="C" opacity=".9"/><path d="M6 13 L11 18 M4 20 L8 16" stroke="C" stroke-width="2" stroke-linecap="round"/>',
+ armor:'<path d="M12 2 L20 5 V11 C20 16 16.5 20 12 22 C7.5 20 4 16 4 11 V5Z" fill="C" opacity=".9"/><path d="M12 6 V18" stroke="#0b0e1c" stroke-width="1.4" opacity=".4"/>',
+ amulet:'<path d="M7 3 C7 9 17 9 17 3" stroke="C" stroke-width="1.6" fill="none"/><path d="M12 9 L17 14 L12 21 L7 14Z" fill="C"/><circle cx="12" cy="14.5" r="1.8" fill="#fff" opacity=".7"/>',
+ potion:'<path d="M10 3 H14 V8 C18 9.5 19.5 12.5 19.5 15 C19.5 19 16 22 12 22 C8 22 4.5 19 4.5 15 C4.5 12.5 6 9.5 10 8Z" fill="C"/><rect x="9" y="2" width="6" height="2" rx="1" fill="#d9c7a6"/><circle cx="9.5" cy="15" r="1.4" fill="#fff" opacity=".6"/>',
+ chest:'<rect x="3" y="9" width="18" height="11" rx="2" fill="C"/><path d="M3 11 C3 6 6 4 12 4 C18 4 21 6 21 11Z" fill="C" opacity=".8"/><rect x="10.5" y="10" width="3" height="4" rx="1" fill="#ffc36b"/>',
+ coin:'<circle cx="12" cy="12" r="9" fill="#ffc36b"/><circle cx="12" cy="12" r="6" fill="none" stroke="#c98a2a" stroke-width="1.4"/><path d="M10 9.5 h4 M10 14.5 h4" stroke="#c98a2a" stroke-width="1.4"/>',
+ star:'<path d="M12 2.5 L14.8 8.6 L21.5 9.3 L16.5 13.8 L17.9 20.4 L12 17 L6.1 20.4 L7.5 13.8 L2.5 9.3 L9.2 8.6Z" fill="C"/>',
+ scroll:'<rect x="5" y="4" width="14" height="16" rx="2" fill="C" opacity=".9"/><circle cx="5" cy="6" r="2.4" fill="C"/><circle cx="19" cy="18" r="2.4" fill="C"/><path d="M8 9 H16 M8 12 H16 M8 15 H13" stroke="#0b0e1c" stroke-width="1.2" opacity=".5"/>',
+ bomb:'<circle cx="11" cy="14" r="7" fill="C"/><path d="M15 8 L18 5" stroke="#d9c7a6" stroke-width="1.8"/><circle cx="19" cy="4" r="1.8" fill="#ffc36b"/><circle cx="8.5" cy="11.5" r="1.6" fill="#fff" opacity=".5"/>'};
+const icon=(n,col,s)=>'<svg class="art" viewBox="0 0 24 24" width="'+(8*(s||3))+'" height="'+(8*(s||3))+'">'+ICONS[n].replace(/="C"/g,'="'+(col||'#a8b0bf')+'"')+'</svg>';
+const coin=s=>'<svg class="art" viewBox="0 0 24 24" width="'+(8*(s||2.5))+'" height="'+(8*(s||2.5))+'">'+ICONS.coin+'</svg>';
 
 /* ================= ECONOMY ================= */
 function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();if(S.buffXp>now)b.xp+=1;if(S.buffDmg>now)b.dmg+=1;if(S.buffGold>now)b.gold+=1;
@@ -1069,8 +1152,12 @@ const STORM=[['Стоп','Замри. Не говори и не пиши нич�
  ['Принятие','«Сейчас так. Мне это не нравится, но я могу это выдержать». Борьба с реальностью добавляет боли сверху.',5]];
 const EMO=['Злость','Тревога','Пустота','Обида','Стыд','Одиночество','Ревность','Другое'];
 let sI=0,sHp=100,sFromV=0,sToV=0,sEmoV='',sDone=0;
-function cloudMap(){return ["....kkkk..........","..kkwwwwkk.kkk....",".kwwwwwwwwkwwwk...","kwwwwwwwwwwwwwwk..","kwwekwwwwwekwwwwk.","kwwwwwwwwwwwwwwwk.","kwwwwkkkkkwwwwwwk.",".kwwwwwwwwwwwwwk..","..kkkkkkkkkkkkk...","...y...y...y......","..y...y...y.......",".y...y...y........"]}
-function cloudSVG(s,hp){const c=hp>60?'#6b7a9a':hp>30?'#8ea0c4':'#c9d6f0';return px(cloudMap(),{k:'#05060a',w:c,e:'#05060a',y:hp>30?'#ffd67a':'transparent'},s)}
+function cloudSVG(s,hp){const c=hp>60?'#5f6c92':hp>30?'#8797c0':'#c5d2f2',w=18*s;
+ return '<svg class="art" viewBox="0 0 120 90" width="'+w+'" height="'+(w*.75)+'"><path d="M22 52 C10 52 6 40 14 33 C14 20 30 14 40 22 C46 8 70 6 78 22 C92 16 108 26 104 40 C114 44 112 58 100 58 L26 58 C24 58 23 55 22 52Z" fill="'+c+'"/>'
+  +'<ellipse cx="48" cy="40" rx="3.4" ry="'+(hp>30?2.4:3.4)+'" fill="#0b0e1c"/><ellipse cx="72" cy="40" rx="3.4" ry="'+(hp>30?2.4:3.4)+'" fill="#0b0e1c"/>'
+  +'<path d="'+(hp>30?'M52 50 Q60 45 68 50':'M52 48 Q60 54 68 48')+'" stroke="#0b0e1c" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+  +(hp>0?[30,46,62,78,94].map((x,i)=>'<path d="M'+x+' 64 l-4 '+(8+hp/10)+'" stroke="#86aaff" stroke-width="2" stroke-linecap="round" opacity="'+(.3+hp/150)+'"/>').join(''):'')
+  +(hp>30?'<path d="M60 58 L52 72 L60 72 L54 86" stroke="#ffd27a" stroke-width="3" fill="none" stroke-linejoin="round"/>':'')+'</svg>'}
 function stormShow(n){['sA','sB','sC'].forEach((id,i)=>$(id).classList.toggle('hide',i!==n))}
 function stormSheet(){SFX.open();sI=0;sHp=100;sFromV=0;sToV=0;sEmoV='';sDone=0;stormShow(0);$('sStep').textContent='';$('sGo').disabled=true;
  $('sSpr0').innerHTML=cloudSVG(7,100);scale($('sFrom'),n=>{sFromV=n;$('sGo').disabled=false});chips($('sEmo'),EMO,v=>sEmoV=v);
