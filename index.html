@@ -290,7 +290,6 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
 
 <!-- ================= DAY ================= -->
 <main class="screen" id="s-day">
-  <button class="chest hide" id="chestBtn"><span id="chestIco"></span><span><b>Сундук дня</b><span id="chestSub">Нажми, чтобы открыть</span></span></button>
   <div class="banner hide" id="danger"></div>
   <div class="banner blue hide" id="fresh"></div>
 
@@ -401,7 +400,14 @@ code{background:var(--panel2);padding:1px 5px;font-size:12px;color:var(--ink)}
 <main class="screen hide" id="s-shop">
   <div class="pnl gold">
     <div class="ttl"><h2>Лавка</h2><span class="coins" id="shopGold"></span></div>
+    <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:4px">Зелья и свитки действуют сразу.</div>
     <div id="shop"></div>
+  </div>
+  <div class="pnl">
+    <div class="ttl"><h2>Оружейная</h2><span class="c" id="armLvl"></span></div>
+    <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:6px">Снаряжение покупается здесь за золото. Бонусы: оружие — урон по боссу, броня — золото, амулет — опыт. Ещё вещи падают с боссов и иногда с квестов.</div>
+    <div class="chips" id="armTabs" style="margin-bottom:6px"></div>
+    <div id="armory"></div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Мои награды</h2></div>
@@ -568,7 +574,7 @@ const freshPet=()=>({fuel:70,mood:70,t:Date.now(),pets:0,petDay:''});
 const fresh=()=>({v:3,xp:0,gold:0,goldTotal:0,wins:0,quests:0,perfect:0,phoenix:0,fell:false,cleanSince:Date.now(),bestMs:0,best:0,
  days:{},trig:{},hours:{},urges:0,urgeLog:[],qDay:'',qList:[],qDone:[],hAw:{},hLoot:[],perfectDay:'',log:[],ach:[],pet:freshPet(),
  st:{str:0,int:0,cha:0,wil:0},camp:{ch:0,hp:Math.round(CHAPTERS[0][2]*.85)},inv:[],eq:{weapon:null,armor:null,amulet:null},
- sound:true,rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},ts:0});
+ sound:true,buffXp:0,buffDmg:0,buffGold:0,armTab:'weapon',rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},ts:0});
 function hydrate(o){const s=Object.assign(fresh(),o||{});const f=fresh();
  for(const k of ['pet','st','camp','eq','oath'])s[k]=Object.assign(f[k],(o||{})[k]);
  for(const k of ['inv','rewards','urgeLog','log','ach','qList','qDone','hLoot'])if(!Array.isArray(s[k]))s[k]=f[k];
@@ -683,12 +689,14 @@ const ICONS={
  potion:["...kk...","...kk...","..k..k..",".kaaaak.","kaaAaaak","kaaaaaAk",".kaaaak.","..kkkk.."],
  chest:["........",".kkkkkk.","kaaaaaak","kkkggkkk","kaaggaak","kaaaaaak","kkkkkkkk","........"],
  coin:["..kkkk..",".kggggk.","kggAAggk","kgAggggk","kgAggggk","kggggggk",".kggggk.","..kkkk.."],
+ scroll:[".kkkkkk.","kaaaaaak",".kAaaak.",".kaaaak.",".kaAAak.",".kaaaak.","kaaaaaak",".kkkkkk."],
+ bomb:[".....kg.","....k.g.","..kkkk..",".kaaaak.","kaAaaaak","kaaaaaak",".kaaaak.","..kkkk.."],
  star:["...kk...","...kk...","kkkaakkk",".kaaaak.","..kaak..",".kaaaak.",".kk..kk.","........"]};
 const icon=(n,col,s)=>px(ICONS[n],{k:'#05060a',a:col||'#9aa0a6',A:'#ffffffaa',g:'#f0b541',w:'#dfe6ee'},s||3);
 const coin=s=>px(ICONS.coin,{k:'#05060a',g:'#f0b541',A:'#fff3c4'},s||2.5);
 
 /* ================= ECONOMY ================= */
-function award(xp,cat,why,opt){opt=opt||{};const b=bonus();
+function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();if(S.buffXp>now)b.xp+=1;if(S.buffDmg>now)b.dmg+=1;if(S.buffGold>now)b.gold+=1;
  const ax=Math.round(xp*(1+b.xp)),ag=Math.round(xp/2*(1+b.gold)),ad=Math.round((opt.dmg||xp)*(1+b.dmg));
  const before=lvlInfo(S.xp).l;S.xp+=ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;
  const lv=lvlInfo(S.xp).l;SFX.hit();if(lv>before){SFX.level();const r0=rankOf(before)[1],r1=rankOf(lv)[1];addLog('Уровень '+lv+(r0!==r1?' · ранг '+r1:''));setTimeout(()=>lootSheet('Новый уровень!',null,'Уровень '+lv+(r0!==r1?'. Новый ранг: '+r1:'')+'. Ты становишься тем, кем решил стать.'),700)}
@@ -714,7 +722,8 @@ function checkAch(){for(const a of ACHS)if(!S.ach.includes(a[0])&&a[3](S)){S.ach
 
 /* ================= RENDER ================= */
 function renderHUD(){const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);$('hudRank').textContent=rankOf(li.l)[1];$('hudLvl').textContent='ур. '+li.l+' · '+li.cur+'/'+li.need;
- $('hudXp').style.width=(li.cur/li.need*100)+'%';$('hudGold').innerHTML=coin(2.5)+'<span>'+S.gold+'</span>'}
+ $('hudXp').style.width=(li.cur/li.need*100)+'%';const bf=[S.buffXp>Date.now()?'<span style="color:var(--xp)">×2XP</span>':'',S.buffDmg>Date.now()?'<span style="color:var(--hp)">×2⚔</span>':'',S.buffGold>Date.now()?'<span style="color:var(--gold2)">×2з</span>':''].join(' ');
+ $('hudGold').innerHTML=(bf?'<span style="font:600 11px var(--body);margin-right:4px">'+bf+'</span>':'')+coin(2.5)+'<span>'+S.gold+'</span>'}
 function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
 function taskEl(x,onT,onD){const el=document.createElement('label');el.className='task'+(x.done?' done':'');const b=bonus();
  el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'><span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+'</span>'
@@ -735,9 +744,6 @@ function petLine(){const p=S.pet,st=stageIdx(),T=allTasks(),left=T.filter(x=>!x.
  return nx?'До «'+nx[1]+'»: '+(nx[0]-cleanDays())+' '+plural(nx[0]-cleanDays(),'день','дня','дней')+' без срыва.':'Я Феникс. Ты прошёл путь.'}
 function renderDay(){
  const isT=SEL===today(),diff=Math.round((parseD(SEL)-parseD(today()))/DAY),sd=parseD(SEL);
- // chest
- $('chestBtn').classList.toggle('hide',S.chestDay===today());$('chestIco').innerHTML=icon('chest','#8a5a3b',4);
- $('chestSub').textContent='Серия входов: '+(S.loginStreak||0)+'. Нажми, чтобы открыть';
  // danger time
  const hk=Object.entries(S.hours).sort((a,b)=>b[1]-a[1]),cur=bucket();
  $('danger').classList.toggle('hide',!(S.urges>=3&&hk[0]&&hk[0][0]===cur&&isT));
@@ -792,18 +798,36 @@ function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0
  $('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]);return '<button class="slot '+(it?'r'+it.r:'')+'" data-k="'+k+'">'+(it?icon(k,RCOL[it.r],4):icon(k,'#2b3150',4))+'<span class="'+(it?'t'+it.r:'')+'">'+(it?esc(it.n):v[0]+': пусто')+'</span></button>'}).join('');
  $('slots').querySelectorAll('.slot').forEach(s=>s.onclick=()=>{const it=S.inv.find(i=>i.id===S.eq[s.dataset.k]);if(it)itemSheet(it)});
  $('invCnt').textContent=S.inv.length;
- $('inv').innerHTML=S.inv.length?S.inv.map(i=>'<button class="it r'+i.r+'" data-id="'+i.id+'" aria-label="'+esc(i.n)+'">'+icon(i.k,RCOL[i.r],3.5)+'</button>').join(''):'<div class="empty" style="grid-column:1/-1">Пусто. Вещи выпадают с квестов, сундуков и боссов.</div>';
+ $('inv').innerHTML=S.inv.length?S.inv.map(i=>'<button class="it r'+i.r+'" data-id="'+i.id+'" aria-label="'+esc(i.n)+'">'+icon(i.k,RCOL[i.r],3.5)+'</button>').join(''):'<div class="empty" style="grid-column:1/-1">Пусто. Купи снаряжение в Лавке → Оружейная или победи босса.</div>';
  $('inv').querySelectorAll('.it').forEach(b=>b.onclick=()=>itemSheet(S.inv.find(i=>i.id===b.dataset.id)));
  const o=S.oath;$('oathView').innerHTML='<p style="margin:0 0 6px">Я — человек, который <b style="color:var(--gold2)">'+esc(o.identity||IDENTITY)+'</b>.</p>'+(o.why.length?'<ul style="margin:0;padding-left:18px">'+o.why.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul>':'<span class="mut">Причины не записаны.</span>');
  $('achCnt').textContent=S.ach.length+' / '+ACHS.length;
  $('achs').innerHTML=ACHS.map(a=>'<div class="ach'+(S.ach.includes(a[0])?' got':'')+'"><span class="m">'+a[0]+'</span><div>'+a[1]+'<small>'+a[2]+'</small></div></div>').join('')}
-const SHOP=[['Зелье огня','+50 огня питомцу','potion','#f2843a',30,()=>{feed(50);addLog('Куплено зелье огня')}],
- ['Зелье радости','+40 настроения питомцу','potion','#e66fb0',30,()=>{cheer(40);addLog('Куплено зелье радости')}],
- ['Сундук искателя','Случайная вещь, шанс редкой выше','chest','#8a5a3b',120,()=>{const it=makeItem(Math.random()<.4?1:0);lootSheet('Сундук открыт!',it,'')}],
- ['Королевский сундук','Гарантированно редкая или лучше','chest','#4f8fef',350,()=>{const it=makeItem(Math.random()<.3?2:1);lootSheet('Королевский сундук!',it,'')}]];
+const HOUR=36e5;
+const buff=(k,hours,name)=>{S[k]=Math.max(Date.now(),S[k]||0)+hours*HOUR;addLog('Активирован: '+name)};
+const SHOP=[
+ ['Зелье огня','+50 огня питомцу','potion','#f2843a',30,()=>{feed(50);addLog('Зелье огня')}],
+ ['Зелье радости','+40 настроения питомцу','potion','#e66fb0',30,()=>{cheer(40);addLog('Зелье радости')}],
+ ['Великий эликсир','Огонь и настроение питомца на максимум','potion','#ffd67a',90,()=>{feed(100);cheer(100);addLog('Великий эликсир')}],
+ ['Свиток мудрости','×2 опыт за всё на 24 часа','scroll','#67c84d',150,()=>buff('buffXp',24,'свиток мудрости')],
+ ['Свиток ярости','×2 урон по боссу на 24 часа','scroll','#e0483e',150,()=>buff('buffDmg',24,'свиток ярости')],
+ ['Свиток удачи','×2 золото на 24 часа','scroll','#f0b541',200,()=>buff('buffGold',24,'свиток удачи')],
+ ['Бомба','Сразу 150 урона текущему боссу','bomb','#8d93a0',120,()=>{floatTxt('-150','#ff9a8f');SFX.hit();hitBoss(150);addLog('Брошена бомба: 150 урона')}]];
+const PRICE=[80,250,700,1800],REQ=[1,3,6,10];
+function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(lvlInfo(S.xp).l<REQ[r])return toast('Нужен уровень '+REQ[r]);S.gold-=p;
+ const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,r,n:SLOTS[k][2][r]};S.inv.push(it);
+ const cur=S.inv.find(i=>i.id===S.eq[k]);if(!cur||cur.r<=r)S.eq[k]=it.id;addLog('Куплено: '+it.n);save();render();lootSheet('Куплено!',it,'Надето автоматически. Сменить можно во вкладке «Герой».')}
+function left(k){const t=(S[k]||0)-Date.now();return t>0?Math.ceil(t/HOUR)+' ч':''}
 function renderShop(){$('shopGold').innerHTML=coin(2.5)+S.gold;
- $('shop').innerHTML=SHOP.map((s,i)=>'<div class="shopit">'+icon(s[2],s[3],4)+'<div class="nm"><b>'+s[0]+'</b><span>'+s[1]+'</span></div><button class="btn gold" data-i="'+i+'"'+(S.gold<s[4]?' disabled':'')+'>'+s[4]+'</button></div>').join('');
- $('shop').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const s=SHOP[b.dataset.i];if(S.gold<s[4])return;S.gold-=s[4];s[5]();save();render();if(s[2]==='potion')toast(s[0]+' выпито')});
+ const act={'Свиток мудрости':left('buffXp'),'Свиток ярости':left('buffDmg'),'Свиток удачи':left('buffGold')};
+ $('shop').innerHTML=SHOP.map((s,i)=>'<div class="shopit">'+icon(s[2],s[3],4)+'<div class="nm"><b>'+s[0]+'</b><span>'+s[1]+(act[s[0]]?' · <b style="display:inline;color:var(--xp);font-size:13px">активен ещё '+act[s[0]]+'</b>':'')+'</span></div><button class="btn gold" data-i="'+i+'"'+(S.gold<s[4]?' disabled':'')+'>'+s[4]+'</button></div>').join('');
+ $('shop').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const s=SHOP[b.dataset.i];if(S.gold<s[4])return;S.gold-=s[4];SFX.coin();s[5]();save();render();toast(s[0]+': готово')});
+ const lv=lvlInfo(S.xp).l;$('armLvl').textContent='твой ур. '+lv;
+ $('armTabs').innerHTML=Object.entries(SLOTS).map(([k,v])=>'<button class="chp'+(S.armTab===k?' on':'')+'" data-k="'+k+'">'+v[0]+'</button>').join('');
+ $('armTabs').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{S.armTab=c.dataset.k;renderShop()});
+ const k=S.armTab||'weapon',cur=S.inv.find(i=>i.id===S.eq[k]);
+ $('armory').innerHTML=[0,1,2,3].map(r=>{const lock=lv<REQ[r],own=cur&&cur.r>=r;return '<div class="shopit"'+(lock?' style="opacity:.5"':'')+'>'+icon(k,RCOL[r],4)+'<div class="nm"><b class="t'+r+'">'+SLOTS[k][2][r]+'</b><span>'+RARITY[r][0]+' · +'+RARITY[r][1]+'% '+SLOTS[k][1]+(lock?' · с уровня '+REQ[r]:own?' · уже есть не хуже':'')+'</span></div><button class="btn gold" data-a="'+r+'"'+(lock||S.gold<PRICE[r]?' disabled':'')+'>'+PRICE[r]+'</button></div>'}).join('');
+ $('armory').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>buyItem(k,+b.dataset.a));
  $('rewards').innerHTML=S.rewards.length?S.rewards.map((r,i)=>'<div class="shopit">'+icon('star','#f0b541',4)+'<div class="nm"><b class="body" style="font-weight:600">'+esc(r.t)+'</b><span>куплено: '+(r.n||0)+'</span></div><button class="x" data-del="'+i+'" aria-label="Удалить">×</button><button class="btn gold" data-r="'+i+'"'+(S.gold<r.cost?' disabled':'')+'>'+r.cost+'</button></div>').join(''):'<div class="empty">Добавь свою награду, например: «кино» за 150.</div>';
  $('rewards').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const r=S.rewards[b.dataset.r];if(S.gold<r.cost)return;S.gold-=r.cost;r.n=(r.n||0)+1;addLog('Награда себе: '+r.t);save();render();lootSheet('Заслужено!',null,'«'+r.t+'» — наслаждайся без вины. Ты это заработал.')});
  $('sndBtn').textContent=S.sound?'Вкл':'Выкл';
@@ -918,7 +942,7 @@ const NAV=[['day','День','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','�
 $('nav').innerHTML=NAV.map(([k,n,d])=>'<button data-s="'+k+'"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" shape-rendering="crispEdges" stroke-linejoin="miter"><path d="'+d+'"/></svg>'+n+'</button>').join('');
 function go(s){SFX.tap();document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.s===s));['day','quest','hero','shop','log'].forEach(k=>$('s-'+k).classList.toggle('hide',k!==s));window.scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.s));
-$('chestBtn').onclick=openChest;
+
 $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
  sheet('<h3>Начало отсчёта</h3><p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
  $('csNo').onclick=closeSheet;$('csYes').onclick=()=>{const t=new Date($('csIn').value).getTime();if(!t||t>Date.now())return toast('Впиши дату не позже сегодняшней');
