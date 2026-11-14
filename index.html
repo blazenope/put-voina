@@ -395,10 +395,10 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
 
   <div class="duo" id="duo">
     <div class="pnl pet">
-      <button class="pet-art" id="petArt" aria-label="Погладить питомца"></button>
-      <b id="petName">Искра</b><span class="st" id="petStage"></span>
+      <button class="pet-art" id="petArt" aria-label="Погладить котика"></button>
+      <b id="petName" role="button" style="cursor:pointer">Котик</b><span class="st" id="petStage"></span>
       <div class="say" id="petSay"></div>
-      <div class="bars"><span>Огонь</span><div class="gauge g-gold"><i id="pFuel"></i></div><span>Настроение</span><div class="gauge g-pink"><i id="pMood"></i></div></div>
+      <div class="bars"><span>Сытость</span><div class="gauge g-gold"><i id="pFuel"></i></div><span>Настроение</span><div class="gauge g-pink"><i id="pMood"></i></div></div>
     </div>
     <div class="pnl status">
       <div class="clock" id="clockBox" role="button" style="cursor:pointer"><div class="lb">Без срыва ✎</div><div class="big" id="cBig">0<small>д</small></div><div class="sm" id="cSm"></div><div class="tot" id="cTot"></div></div>
@@ -499,7 +499,7 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
       <div style="flex:1;min-width:0"><h3 id="heroRank"></h3><div class="mut" id="heroLvl"></div>
         <div class="gauge g-xp" style="margin-top:8px"><i id="heroXp"></i></div>
         <div class="mut" id="heroNext" style="margin-top:6px;font-size:13px"></div></div></div>
-    <div class="lore">Ты — Странник, Носитель Света. В фонаре на твоём посохе живёт Искра. Тени — Лень, Скука, Соблазн, Сомнения — растут во тьме и слабеют от каждого твоего шага. Чем ярче твой свет, тем сильнее Искра и тем дальше ты видишь путь.</div>
+    <div class="lore">Ты — Странник, Носитель Света. Рядом с тобой идёт рыжий кот — он растёт с каждым чистым днём. Тени — Лень, Скука, Соблазн, Сомнения — растут во тьме и слабеют от каждого твоего шага. Чем дольше твой путь без срыва, тем взрослее и сильнее твой кот.</div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Характеристики</h2></div>
@@ -536,6 +536,11 @@ summary{text-transform:none;font-weight:700}summary::after{color:var(--gold)}
     <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:6px">Снаряжение покупается здесь за золото. Бонусы: оружие — урон по боссу, броня — золото, амулет — опыт. Ещё вещи падают с боссов и иногда с квестов.</div>
     <div class="chips" id="armTabs" style="margin-bottom:6px"></div>
     <div id="armory"></div>
+  </div>
+  <div class="pnl">
+    <div class="ttl"><h2>Для котика</h2></div>
+    <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:6px">Купленные вещи котик носит на главном экране. Корону легендарный кот получает сам.</div>
+    <div id="catShop"></div>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Кузница</h2></div>
@@ -778,7 +783,7 @@ const BUFFS=[
  [120,'Хозяин желания','Энергия, которую раньше съедал экран, стабильно работает на тебя: в зале, в учёбе, в отношениях.'],
  [180,'Полгода свободы','Старая привычка почти не имеет над тобой власти. Срывы, если и случаются, больше не определяют тебя.'],
  [365,'Легенда','Год. Это уже не борьба, а образ жизни. Ты стал тем, кем решил стать.']];
-const STAGES=[[0,'Искра'],[3,'Огонёк'],[7,'Пламя'],[14,'Костёр'],[30,'Феникс']];
+const STAGES=[[0,'Котёнок'],[5,'Юный кот'],[14,'Кот'],[30,'Кот-страж'],[60,'Легендарный кот']];
 const IDENTITY='держит слово и управляет собой';
 const ACHS=[
  ['1','Первый шаг','1 день без срыва',()=>bestDays()>=1],['3','Разогрев','3 дня без срыва',()=>bestDays()>=3],['7','Неделя воли','7 дней',()=>bestDays()>=7],
@@ -842,7 +847,7 @@ function lvlInfo(xp){let l=1,need=100,acc=0;while(xp>=acc+need){acc+=need;l++;ne
 const rankOf=l=>{let r=RANKS[0];for(const x of RANKS)if(l>=x[0])r=x;return r};
 const statLvl=x=>Math.floor(Math.sqrt(x/15))+1;
 const statProg=x=>{const l=statLvl(x),a=15*(l-1)**2,b=15*l**2;return(x-a)/(b-a)};
-const stageIdx=()=>{const d=cleanDays();let i=0;STAGES.forEach((s,k)=>{if(d>=s[0])i=k});return i};
+const stageIdx=()=>{const d=totalClean();let i=0;STAGES.forEach((s,k)=>{if(d>=s[0])i=k});return i};
 const SLOTB={weapon:'dmg',armor:'gold',amulet:'xp'};
 function bonus(){const b={dmg:0,gold:0,xp:0};for(const sl of ['weapon','armor','amulet']){const it=S.inv.find(i=>i.id===S.eq[sl]);if(it)b[SLOTB[sl]]+=RARITY[it.r][1]/100;b[SLOTB[sl]]+=((S.forge||{})[sl]||0)*FORGE_STEP}return b}
 /* forge: per-slot upgrades +1..+5, each +4% to the slot's bonus */
@@ -897,17 +902,39 @@ function heroSVG(s){const ar=S.inv.find(i=>i.id===S.eq.armor),wp=S.inv.find(i=>i
   +'<ellipse cx="30" cy="19" rx="6.6" ry="5.8" fill="#0b0e1c"/>'
   +'<circle cx="27.6" cy="19.2" r="1.25" fill="'+eye+'"/><circle cx="32.4" cy="19.2" r="1.25" fill="'+eye+'"/>'
   +'<path d="M38.5 30 Q43 28 45 24" stroke="'+cape+'" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg>'}
-function petSVG(){petTick();const st=stageIdx(),p=S.pet,dim=p.fuel<15,mood=p.mood,g=uid('pg'),sc=[.62,.74,.86,.94,1][st];
- const c=dim?['#6b6560','#4a4540','#36322e']:st>=4?['#fff6c8','#ffd67a','#f0a030']:['#ffe08a','#f2843a','#c8401e'];
- const eyes=dim?'<path d="M40 70h6M54 70h6" stroke="#1c0e05" stroke-width="2.4" stroke-linecap="round"/>':'<ellipse cx="43" cy="70" rx="3.4" ry="'+(mood<30?3:4.4)+'" fill="#1c0e05"/><ellipse cx="57" cy="70" rx="3.4" ry="'+(mood<30?3:4.4)+'" fill="#1c0e05"/><circle cx="44.2" cy="68.4" r="1.2" fill="#fff"/><circle cx="58.2" cy="68.4" r="1.2" fill="#fff"/>';
- const mouth=dim?'':'<path d="'+(mood>60?'M45 79 Q50 84 55 79':mood>30?'M46 80 L54 80':'M45 82 Q50 77 55 82')+'" stroke="#1c0e05" stroke-width="2.2" fill="none" stroke-linecap="round"/>';
- const cheeks=!dim&&mood>60?'<ellipse cx="37" cy="77" rx="4" ry="2.3" fill="#ff5a3c" opacity=".4"/><ellipse cx="63" cy="77" rx="4" ry="2.3" fill="#ff5a3c" opacity=".4"/>':'';
- const wings=st>=4&&!dim?'<path d="M24 72 C8 64 2 48 6 36 C14 48 20 54 30 58Z" fill="url(#'+g+')" opacity=".85"/><path d="M76 72 C92 64 98 48 94 36 C86 48 80 54 70 58Z" fill="url(#'+g+')" opacity=".85"/>':'';
- const tongues=st>=2&&!dim?'<path d="M30 52 C24 40 28 30 34 24 C34 36 38 42 40 48Z" fill="url(#'+g+')" opacity=".8"/><path d="M70 52 C76 40 72 30 66 24 C66 36 62 42 60 48Z" fill="url(#'+g+')" opacity=".8"/>':'';
- return '<svg class="art" viewBox="0 0 100 110" width="'+(110*sc)+'" height="'+(121*sc)+'"><defs><radialGradient id="'+g+'" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="'+c[0]+'"/><stop offset=".55" stop-color="'+c[1]+'"/><stop offset="1" stop-color="'+c[2]+'"/></radialGradient></defs>'
-  +(dim?'':'<ellipse cx="50" cy="104" rx="34" ry="6" fill="#f2753a" opacity=".22"/>')+wings+tongues
-  +'<path d="M50 6 C60 26 84 40 82 70 C80 94 64 104 50 104 C36 104 20 94 18 70 C16 40 40 26 50 6Z" fill="url(#'+g+')"/>'
-  +'<path d="M50 40 C56 52 68 60 66 78 C64 92 56 98 50 98 C44 98 36 92 34 78 C32 60 44 52 50 40Z" fill="'+c[0]+'" opacity="'+(dim?.15:.35)+'"/>'+eyes+cheeks+mouth+'</svg>'}
+/* cat: grows with total clean days, wears bought accessories, sleeps at night */
+const CAT_ACC=[['bow','Бантик на ушко',120],['bell','Колокольчик',150],['scarf','Красный шарф',220],['cape','Плащ героя',500],['crown','Корона',900]];
+const catAsleep=()=>{const h=new Date().getHours();return h>=1&&h<7};
+function petSVG(){petTick();const st=stageIdx(),p=S.pet,hungry=p.fuel<15,mood=p.mood,sl=catAsleep(),sc=[.62,.72,.84,.94,1][st];
+ const on=k=>((p.acc||{}).on||[]).includes(k)||(k==='crown'&&st>=4);
+ const fur=hungry?['#a89a8c','#7d7064','#d8cfc4']:['#e8964a','#b9652a','#f7dcb8'],[c1,c2,c3]=fur,ink='#2a1a10';
+ const eyes=sl?'<path d="M37 49 q4 3 8 0M55 49 q4 3 8 0" stroke="'+ink+'" stroke-width="2" fill="none" stroke-linecap="round"/>'
+  :hungry?'<path d="M37 49h8M55 49h8" stroke="'+ink+'" stroke-width="2.2" stroke-linecap="round"/>'
+  :'<ellipse cx="41" cy="48" rx="3.6" ry="'+(mood<30?2.6:4.6)+'" fill="'+ink+'"/><ellipse cx="59" cy="48" rx="3.6" ry="'+(mood<30?2.6:4.6)+'" fill="'+ink+'"/><circle cx="42.2" cy="46.6" r="1.2" fill="#fff"/><circle cx="60.2" cy="46.6" r="1.2" fill="#fff"/>';
+ const mouth=mood>60&&!hungry?'M45 58 Q47.5 61.5 50 58 Q52.5 61.5 55 58':mood>30?'M46.5 59 Q50 60.5 53.5 59':'M46 61 Q50 57.5 54 61';
+ return '<svg class="art" viewBox="0 0 100 110" width="'+(110*sc)+'" height="'+(121*sc)+'">'
+  +'<ellipse cx="50" cy="104" rx="30" ry="4.5" fill="#000" opacity=".22"/>'
+  +(on('cape')?'<path d="M30 64 C22 80 22 96 26 104 L74 104 C78 96 78 80 70 64Z" fill="#8a1e18"/>':'')
+  +'<path d="M68 98 C90 100 96 80 86 68" stroke="'+c1+'" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M90 80 l-6 2M92 73 l-6 1" stroke="'+c2+'" stroke-width="2.4" stroke-linecap="round"/>'
+  +'<path d="M28 102 C24 82 32 64 50 63 C68 64 76 82 72 102Z" fill="'+c1+'"/>'
+  +'<ellipse cx="50" cy="88" rx="12" ry="13" fill="'+c3+'"/>'
+  +'<path d="M30 74 l7 3M28 84 l7 2M70 74 l-7 3M72 84 l-7 2" stroke="'+c2+'" stroke-width="2.4" stroke-linecap="round"/>'
+  +'<ellipse cx="41" cy="102" rx="7" ry="4" fill="'+c3+'"/><ellipse cx="59" cy="102" rx="7" ry="4" fill="'+c3+'"/>'
+  +'<path d="M27 40 L29 '+(hungry?22:15)+' L43 29Z" fill="'+c1+'"/><path d="M73 40 L71 '+(hungry?22:15)+' L57 29Z" fill="'+c1+'"/>'
+  +'<path d="M31 35 L32 22 L40 30Z" fill="#f2a7a0"/><path d="M69 35 L68 22 L60 30Z" fill="#f2a7a0"/>'
+  +'<ellipse cx="50" cy="48" rx="25" ry="21" fill="'+c1+'"/>'
+  +'<path d="M44 29 l2 6M50 28 v7M56 29 l-2 6" stroke="'+c2+'" stroke-width="2.4" stroke-linecap="round"/>'
+  +'<ellipse cx="50" cy="57" rx="10" ry="7" fill="'+c3+'"/>'
+  +eyes+'<path d="M48 54 h4 l-2 2.4Z" fill="#d9706a"/>'
+  +'<path d="'+mouth+'" stroke="'+ink+'" stroke-width="1.6" fill="none" stroke-linecap="round"/>'
+  +'<path d="M36 55 l-12 -2M36 58 l-12 2M64 55 l12 -2M64 58 l12 2" stroke="'+ink+'" stroke-width=".9" opacity=".55"/>'
+  +(mood>60&&!hungry&&!sl?'<ellipse cx="35" cy="56" rx="3.6" ry="2" fill="#e8584a" opacity=".35"/><ellipse cx="65" cy="56" rx="3.6" ry="2" fill="#e8584a" opacity=".35"/>':'')
+  +(on('scarf')?'<path d="M31 64 C40 70 60 70 69 64 L70 70 C60 76 40 76 30 70Z" fill="#c8322a"/><path d="M60 72 l6 14 l5 -3 l-4 -12Z" fill="#a8261f"/>':'')
+  +(on('bell')?'<circle cx="50" cy="70" r="4" fill="#e7b84a" stroke="#9a7420" stroke-width="1"/><path d="M48 71 h4" stroke="#7a5414" stroke-width="1"/>':'')
+  +(on('bow')?'<path d="M64 24 l-7 -5 v10Z M64 24 l7 -5 v10Z" fill="#d9536f"/><circle cx="64" cy="24" r="2" fill="#a83250"/>':'')
+  +(on('crown')?'<path d="M38 30 L39 18 L44.5 25 L50 15 L55.5 25 L61 18 L62 30Z" fill="#e7b84a" stroke="#9a7420" stroke-width="1"/>':'')
+  +(sl?'<text x="74" y="22" font-size="11" font-weight="700" fill="#cfc6b8">z</text><text x="82" y="13" font-size="8" font-weight="700" fill="#cfc6b8">z</text>':'')
+  +'</svg>'}
 function bossSVG(ch,s,hurt){const col=bossOf(ch)[3],g=uid('bg'),w=20*s,h2=17*s;
  return '<svg class="art" viewBox="0 0 100 90" width="'+w+'" height="'+(w*.9)+'"><defs><radialGradient id="'+g+'" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="'+col[0]+'"/><stop offset="1" stop-color="'+col[1]+'"/></radialGradient></defs>'
   +'<ellipse cx="50" cy="86" rx="34" ry="4" fill="#000" opacity=".35"/>'
@@ -1035,14 +1062,15 @@ function renderWeek(){const sel=parseD(SEL),mon=new Date(sel);mon.setDate(sel.ge
   h+='<button class="db'+(k===SEL?' sel':'')+(k===today()?' today':'')+(v==='c'?' c':v==='f'?' f':'')+'" data-d="'+k+'"><small>'+WD[i]+'</small><b>'+d.getDate()+'</b><i></i></button>'}
  $('days').innerHTML=h;$('days').querySelectorAll('.db').forEach(b=>b.onclick=()=>selectDay(b.dataset.d))}
 function petLine(){const p=S.pet,st=stageIdx(),T=allTasks(),left=T.filter(x=>!x.done).length,h=new Date().getHours(),nx=STAGES[st+1];
- if(S.days[today()]==='f')return 'Ничего. Разожжём меня заново. Срыв — это урок, а не конец.';
- if(p.fuel<15)return 'Я почти погас… Сделай любой квест, это моё топливо.';
- if(p.mood<30)return 'Мне грустно. Победи волну или отметь чистый день.';
- if(h>=21&&!S.days[today()])return 'Вечер. Отметь итог дня, и я подрасту.';
- if(T.length&&!left)return 'Все квесты сделаны! Я горю на полную!';
+ if(catAsleep())return 'Мрр… я сплю. И тебе пора — сон тоже часть пути.';
+ if(S.days[today()]==='f')return 'Мяу. Я рядом. Срыв — это урок, а не конец.';
+ if(p.fuel<15)return 'Мяу… я голодный. Сделай любой квест — так ты меня кормишь.';
+ if(p.mood<30)return 'Мне грустно. Погладь меня, победи волну или отметь чистый день.';
+ if(h>=21&&!S.days[today()])return 'Вечер. Отметь чистый день, и я подрасту.';
+ if(T.length&&!left)return 'Все квесты сделаны! Мурр, я горжусь тобой.';
  if(left&&left<=2)return 'Ещё '+left+' '+plural(left,'квест','квеста','квестов')+', и день идеальный!';
- if(left)return 'Осталось '+left+' '+plural(left,'квест','квеста','квестов')+'. Каждый меня кормит.';
- return nx?'До «'+nx[1]+'»: '+(nx[0]-cleanDays())+' '+plural(nx[0]-cleanDays(),'день','дня','дней')+' без срыва.':'Я Феникс. Ты прошёл путь.'}
+ if(left)return 'Осталось '+left+' '+plural(left,'квест','квеста','квестов')+'. Каждый — вкусняшка для меня.';
+ return nx?'До «'+nx[1]+'»: '+(nx[0]-totalClean())+' '+plural(nx[0]-totalClean(),'чистый день','чистых дня','чистых дней')+'.':'Я легендарный кот. Ты прошёл путь.'}
 function renderDay(){
  const isT=SEL===today(),diff=Math.round((parseD(SEL)-parseD(today()))/DAY),sd=parseD(SEL);
  // danger time
@@ -1060,7 +1088,7 @@ function renderDay(){
  $('bMiniHp').style.width=(S.camp.hp/b[2]*100)+'%';const ql=Math.ceil(S.camp.hp/35);$('bMiniTxt').textContent=S.camp.hp+' / '+b[2]+' HP · слабость: '+STATS[weakOf(S.camp.ch)][0]+' ×2';
  // pet
  const st=stageIdx();$('petArt').innerHTML='<div class="bob">'+petSVG()+'</div>';$('petArt').classList.toggle('dim',S.pet.fuel<15);
- $('petName').textContent=STAGES[st][1];$('petStage').textContent='стадия '+(st+1)+'/5';$('petSay').textContent=petLine();
+ $('petName').textContent=S.pet.name||'Котик';$('petStage').textContent=STAGES[st][1]+' · '+(st+1)+'/5';$('petSay').textContent=petLine();
  $('pFuel').style.width=S.pet.fuel+'%';$('pMood').style.width=S.pet.mood+'%';
  const ms=cleanMs(),d=Math.floor(ms/DAY),hh=Math.floor(ms%DAY/36e5),mm=Math.floor(ms%36e5/6e4);
  $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
@@ -1136,9 +1164,9 @@ function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0
 const HOUR=36e5;
 const buff=(k,hours,name)=>{S[k]=Math.max(Date.now(),S[k]||0)+hours*HOUR;addLog('Активирован: '+name)};
 const SHOP=[
- ['Зелье огня','+50 огня питомцу','potion','#f2843a',30,()=>{feed(50);addLog('Зелье огня')}],
- ['Зелье радости','+40 настроения питомцу','potion','#e66fb0',30,()=>{cheer(40);addLog('Зелье радости')}],
- ['Великий эликсир','Огонь и настроение питомца на максимум','potion','#ffd67a',90,()=>{feed(100);cheer(100);addLog('Великий эликсир')}],
+ ['Корм','+50 сытости котику','potion','#e8964a',30,()=>{feed(50);addLog('Котик поел')}],
+ ['Мышка-игрушка','+40 настроения котику','potion','#e66fb0',30,()=>{cheer(40);addLog('Котик наигрался')}],
+ ['Пир для кота','Сытость и настроение на максимум','potion','#ffd67a',90,()=>{feed(100);cheer(100);addLog('Пир для кота')}],
  ['Свиток мудрости','×2 опыт за всё на 24 часа','scroll','#67c84d',260,()=>buff('buffXp',24,'свиток мудрости')],
  ['Свиток ярости','×2 урон по боссу на 24 часа','scroll','#e0483e',260,()=>buff('buffDmg',24,'свиток ярости')],
  ['Свиток удачи','×2 золото на 24 часа','scroll','#f0b541',320,()=>buff('buffGold',24,'свиток удачи')],
@@ -1196,7 +1224,13 @@ function renderGoals(){const D=ds(),list=contractsToday(),done=(S.ct&&S.ct.d===t
  $('forge').querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const k=b.dataset.f,n=S.forge[k]||0,c=FORGE_COST[n];if(S.gold<c||lvlInfo(S.xp).l<3*(n+1))return;S.gold-=c;S.forge[k]=n+1;SFX.coin();addLog('Кузница: '+SLOTS[k][0]+' +'+(n+1));save();render();toast(SLOTS[k][0]+' закалён до +'+(n+1))});
  $('offers').innerHTML=offersWeek().map(i=>{const o=OFFERS[i],got=W.bought.includes(i);return '<div class="shopit"'+(got?' style="opacity:.5"':'')+'>'+icon(o[2],o[3],4)+'<div class="nm"><b>'+o[0]+'</b><span>'+o[1]+(got?' · куплено на этой неделе':'')+'</span></div>'+(got?'':'<button class="btn gold" data-o="'+i+'"'+(S.gold<o[4]?' disabled':'')+'>'+o[4]+'</button>')+'</div>'}).join('');
  $('offers').querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const i=+b.dataset.o,o=OFFERS[i],W=wk();if(S.gold<o[4]||W.bought.includes(i))return;S.gold-=o[4];W.bought.push(i);SFX.coin();o[5]();save();render();toast(o[0]+': готово')})}
-function render(){ensureDay();checkGoals();checkAch();renderGoals();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
+function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
+ $('catShop').innerHTML=CAT_ACC.map(([k,n,c])=>{const own=A.owned.includes(k),wear=A.on.includes(k);
+  return '<div class="shopit">'+icon('star',own?'#e7b84a':'#8a8172',4)+'<div class="nm"><b>'+n+'</b><span>'+(own?(wear?'надето':'в шкафу'):'для котика')+'</span></div>'
+   +(own?'<button class="btn" data-w="'+k+'">'+(wear?'Снять':'Надеть')+'</button>':'<button class="btn gold" data-c="'+k+'"'+(S.gold<c?' disabled':'')+'>'+c+'</button>')+'</div>'}).join('');
+ $('catShop').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const it=CAT_ACC.find(x=>x[0]===b.dataset.c);if(S.gold<it[2])return;S.gold-=it[2];A.owned.push(it[0]);A.on.push(it[0]);cheer(25);SFX.coin();addLog('Котику куплено: '+it[1]);save();render();toast('Котик доволен: '+it[1].toLowerCase())});
+ $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
+function render(){ensureDay();checkGoals();checkAch();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
 
 /* ================= ACTIONS ================= */
 function checkPerfect(){if(SEL!==today())return;const T=allTasks();
@@ -1217,7 +1251,7 @@ function relapse(src,lesson,trig){const ms=cleanMs(),dd=Math.floor(ms/DAY),st=st
  S.cleanSince=Date.now();S.days[today()]='f';SFX.sad();healBoss(S.camp.ch%NB===2?.1:S.camp.ch%NB===11?.15:0);S.fell=true;cheer(-35);healBoss(.1);
  if(lesson&&trig)S.ifthen[trig]=lesson;
  addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+(src?' · '+src:'')+(lesson?' · урок: '+lesson:''));S.xp+=5;save();render();
- lootSheet('Урок, а не конец',null,'Уровень, золото, вещи и '+totalClean()+' '+plural(totalClean(),'чистый день','чистых дня','чистых дней')+' остаются с тобой. Таймер начат заново'+(st>0?', питомец снова Искра':'')+'. Мысль «всё пропало» — главная ловушка, не верь ей. +5 XP за честность.')}
+ lootSheet('Урок, а не конец',null,'Уровень, золото, вещи и '+totalClean()+' '+plural(totalClean(),'чистый день','чистых дня','чистых дней')+' остаются с тобой. Таймер начат заново'+''+'. Мысль «всё пропало» — главная ловушка, не верь ей. +5 XP за честность.')}
 function relapseFlow(src,presetTrig){sheet('<h3>Был срыв?</h3><p>Без самобичевания. Давай превратим это в урок.</p>'
  +'<div class="lbl">Что спровоцировало</div><div class="chips" id="rTrig">'+TRIGS.map(t=>'<button class="chp'+(t===presetTrig?' on':'')+'" data-t="'+t+'">'+t+'</button>').join('')+'</div>'
  +'<label class="lbl" for="rLesson">В следующий раз, если это повторится, я…</label><textarea id="rLesson" rows="2" placeholder="Например: выйду на улицу на 10 минут"></textarea>'
@@ -1383,7 +1417,8 @@ $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+
   S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];{let k=dkey(new Date(t)),n=0;while(k<today()){if(!S.days[k]){S.days[k]='c';n++}k=shift(k,1)}if(n){award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n})}}addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
 $('buffBox').onclick=()=>{const d=dayNum();sheet('<h3>Бафы пути</h3><p>Что ждёт тебя на каждом этапе без срыва. Эффекты индивидуальны: часть подтверждена исследованиями, часть — опыт тех, кто прошёл этот путь.</p>'+BUFFS.map(b=>'<div style="padding:10px 0;border-bottom:2px dashed var(--edge);'+(d>=b[0]?'':'opacity:.55')+'"><div style="font:600 15px var(--body);color:'+(d>=b[0]?'#ff8fc8':'var(--ink)')+'">'+(d>=b[0]?'✓ ':'')+'День '+b[0]+' · '+esc(b[1])+'</div><div style="font:14px/1.45 var(--body);color:var(--ink2);margin-top:4px">'+esc(b[2])+'</div></div>').join('')+'<button class="btn gold" id="bfOk" style="width:100%;margin-top:14px">Понял</button>');$('bfOk').onclick=closeSheet};
 $('petArt').onclick=()=>{const a=$('petArt');a.classList.remove('hop');void a.offsetWidth;a.classList.add('hop');if(S.pet.petDay!==today()){S.pet.petDay=today();S.pet.pets=0}
- SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=rnd(['Тепло!','Мы справимся.','Я с тобой.','Ещё!','Ты молодец, что зашёл.']);$('pMood').style.width=S.pet.mood+'%'};
+ SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=catAsleep()?'…мрр… (сонно мурчит)':rnd(['Мурр!','Мяу! Мы справимся.','Мурр… я с тобой.','Ещё почеши!','Мяу, ты молодец, что зашёл.','*трётся о руку*']);$('pMood').style.width=S.pet.mood+'%'};
+$('petName').onclick=()=>{const n=prompt('Как зовут котика?',S.pet.name||'');if(n===null)return;S.pet.name=n.trim().slice(0,20);save();render()};
 $('voteBtn').onclick=()=>{if(S.votes[today()])return;S.votes[today()]=1;addLog('Голос за себя');award(10,'wil','голос за себя',{dmg:10});save();render()};
 $('newTask').onkeydown=e=>{if(e.key==='Enter')addTask()};$('addBtn').onclick=addTask;
 function grow(n){n.style.height='auto';n.style.height=Math.max(60,n.scrollHeight)+'px'}
