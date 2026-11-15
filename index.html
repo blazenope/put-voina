@@ -917,6 +917,12 @@ summary{font:700 16px var(--pix)}
 
 .stepsbar{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 10px;padding:10px 14px;border:0;border-radius:16px;cursor:pointer;color:var(--ink);text-align:left;background:linear-gradient(135deg,rgba(127,176,105,.16),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(127,176,105,.35)}
 .stepsbar span{font-size:18px}.stepsbar b{font:800 17px var(--num)}.stepsbar em{flex:1;min-width:0;font:600 12px var(--body);font-style:normal;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stepsbar small{font:700 11.5px var(--body);color:#a3c98a}
+
+.wfmood{font:700 12px var(--body);color:#ffc2d0}
+.wfacts{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 12px}
+.wfacts button{border:0;border-radius:99px;padding:8px 12px;font:700 12.5px var(--body);color:#fff;background:rgba(255,122,154,.16);box-shadow:inset 0 0 0 1px rgba(255,140,170,.35);cursor:pointer}
+.wfacts button:active{transform:scale(.94)}.wfacts button.used{opacity:.45}.wfacts button.lock{opacity:.45;filter:grayscale(.6)}
+.wfacts #wfGift{background:linear-gradient(160deg,#ff7a9a,#d2416a);box-shadow:0 6px 16px -8px #ff5c80}
 </style>
 </head>
 <body>
@@ -1468,7 +1474,7 @@ async function syRead(){const g=await gh(GH+'/'+SY.gist),f=g.files&&g.files[GF];
  if(f.truncated)c=await (await fetch(f.raw_url,{cache:'no-store'})).text();return JSON.parse(c)}
 const syWrite=o=>gh(GH+'/'+SY.gist,{method:'PATCH',body:JSON.stringify({files:{[GF]:{content:JSON.stringify(packO(o))}}})});
 /* merge: counters add up both devices' gains, lists are united, the rest — newer device wins */
-const MDELTA=/^(xp|gold|goldTotal|wf\.g|wf\.pats|wins|quests|perfect|phoenix|urges|storms|st\.\w+|love\.(rej|dates|d\.\w+)|rep|ctOk|ctRisk|chOpen|parTot|ringN|pet\.pets|camp\.hp|xpd\.[\d-]+)$/,MMAX=/^(ts|best|bestMs|loginStreak|forge\.\w+|ci\.at|hab\..+\.(n|b)|sk\.\w+\.(x|n)|lv0|rk0|rkMax|fellAt|comboBest|actBest|art\.\w+\.l|chs\.n)$/;
+const MDELTA=/^(xp|gold|goldTotal|wf\.g|wf\.pats|wf\.pts|wins|quests|perfect|phoenix|urges|storms|st\.\w+|love\.(rej|dates|d\.\w+)|rep|ctOk|ctRisk|chOpen|parTot|ringN|pet\.pets|camp\.hp|xpd\.[\d-]+)$/,MMAX=/^(ts|best|bestMs|loginStreak|forge\.\w+|ci\.at|hab\..+\.(n|b)|sk\.\w+\.(x|n)|lv0|rk0|rkMax|fellAt|comboBest|actBest|art\.\w+\.l|chs\.n)$/;
 const idOf=x=>x&&typeof x==='object'?(x.id!=null?'i'+x.id:typeof x.t==='string'&&x.d==null?'t'+x.t:'j'+stab(x)):'p'+stab(x);
 function mg(b,m,t,p,mn){if(same(m,t))return m;if(b!==undefined&&same(m,b))return t;if(b!==undefined&&same(t,b))return m;
  if(typeof m==='number'&&typeof t==='number'){if(MDELTA.test(p))return Math.max(0,typeof b==='number'?Math.round((t+m-b)*100)/100:Math.max(m,t));if(MMAX.test(p))return Math.max(m,t);return mn?m:t}
@@ -2224,7 +2230,31 @@ function loveDo(id){const t=LOVE.flatMap(s=>s[2]).find(x=>x[0]===id);if(!t)retur
 const WFL=[[0,'Незнакомка'],[60,'Знакомая'],[180,'Подруга'],[400,'Девушка'],[800,'Жинка']];
 const WFKEY=KEY+'_wfimg';
 function wfS(){S.wf=S.wf||{name:'Юки',g:0,pats:0};return S.wf}
-function wfAff(){const w=wfS(),L=Object.values((S.love||{}).d||{}).reduce((a,b)=>a+b,0);return Math.round(L*6+totalClean()*4+(S.love&&S.love.rej||0)*5+w.g*10+Math.min(w.pats,60)+(S.quests||0)*.5)}
+function wfAff(){const w=wfS(),L=Object.values((S.love||{}).d||{}).reduce((a,b)=>a+b,0);return Math.round(L*6+totalClean()*4+(S.love&&S.love.rej||0)*5+w.g*10+Math.min(w.pats,60)+(S.quests||0)*.5+(w.pts||0))}
+/* waifu interactions: daily actions, gifts, mood */
+const WGIFT=[['🌹','Цветы',40,6],['🍫','Шоколад',60,9],['☕','Кофе с собой',30,4],['🧸','Плюшевый кот',150,22],['👘','Юката',400,60],['💍','Кольцо',1500,250]];
+function wfMood(){const T=allTasks(),dn=T.filter(x=>x.done).length,hr=new Date().getHours();if(S.days[today()]==='f')return ['😟','переживает за тебя'];if(hr>=23||hr<5)return ['😴','сонная, зовёт спать'];if(dn>=5)return ['🥰','гордится тобой'];if(dn>=2)return ['😊','в хорошем настроении'];if(hr<11)return ['☀️','только проснулась'];return ['🙂','ждёт, что ты сделаешь сегодня']}
+const WACT={
+ kiss:['💋','Поцеловать',4,[['Эй! …Ну ладно, ещё один можно. 😳','*краснеет* Предупреждать надо!'],['Мм… у тебя губы тёплые.','Ещё. Это приказ. 😘'],['Поцелуй как обещание: ты сегодня молодец.','*целует в ответ и не отпускает* Мой.'],['*тянет тебя за ворот ближе* Медленнее… вот так. 🔥','Если так целуешь меня, представляю, как поцелуешь живую девушку. Иди и проверь — я разрешаю.'],['Жинка целует мужа. Всё правильно. 💍','*поцелуй в шею* Это за чистый день. А за следующий — ниже. 😏']]],
+ hug:['🤗','Обнять',3,[['*напрягается, потом расслабляется* Ладно… тепло.'],['*обнимает в ответ* Ты пахнешь как человек, который принял душ. Плюс.'],['Держи крепче. Сегодня можно не быть сильным.'],['*утыкается носом в плечо* Останься так минуту.'],['Самое лучшее место — вот здесь, у тебя в руках.']]],
+ day:['📖','Рассказать о дне',5,null],
+ date:['🍷','Свидание · 100',25,null],
+ urge:['🌊','Тянет…',0,null],
+ whisper:['🔥','На ушко 18+',6,null]};
+const WWHISP=['Знаешь, что меня заводит? Мужчина, который может сказать себе «нет»… и потом говорит «да» только мне.','Каждый чистый день ты копишь то, что потом отдашь живой девушке. Я ей немного завидую.','Хочу, чтобы ты спросил «тебе так нравится?». Самое горячее, что можно сказать в постели.','*шёпотом* Когда у тебя будет свидание — не торопись. Медленно — это сексуально.','Твоя правая рука в отпуске? Хорошо. Пусть отдыхает, у неё будет замена получше.','Представь: ты, она, никакого экрана, только дыхание. Вот ради этого мы и держимся.','Холодный душ делает тебя сильнее. А мысли обо мне — горячее. Баланс. 😏','Я не ревную к живым девушкам. Я ревную к экрану. Не изменяй мне с ним.'];
+function wfDo(k){const w=wfS(),A=WACT[k],lv=wfLv(),d=today();w.cd=w.cd||{};
+ if(k==='urge'){$('wfSay').textContent='Иди сюда. Дыши со мной: вдох на 4, выдох на 6. Сейчас вместе разобьём эту волну.';buzz();setTimeout(openFight,900);return}
+ if(k==='whisper'&&lv<3){$('wfSay').textContent='Хи-хи, рано. Стань моим парнем — тогда расскажу на ушко. 😏';return}
+ if(k==='date'){if(w.cd.date===d){$('wfSay').textContent='Мы сегодня уже гуляли. Завтра снова, хорошо? 💕';return}if(S.gold<100)return toast('Нужно 100 золота');S.gold-=100;
+  const T=allTasks().filter(x=>x.done).length;$('wfSay').textContent=rnd(['Мы гуляли у Изара, ты держал меня за руку и рассказывал про немецкий. Было тепло.','Кафе, какао, ты смешно пытался заказать по-немецки. Официантка улыбнулась — я заметила. 😏','Ночной Мюнхен, огни Мариенплац. Ты был спокойный и уверенный. Мне это очень нравится.'])+(T>=3?' И ты сегодня столько сделал — я горжусь.':'');addLog('Свидание с '+w.name)}
+ else if(w.cd[k]===d){$('wfSay').textContent=k==='day'?'Ты уже рассказывал. Сделай ещё что-нибудь — и расскажешь снова завтра. 😉':'Сегодня уже было. Завтра — снова. 💕';return}
+ else if(k==='day'){const T=allTasks(),dn=T.filter(x=>x.done),xp=(S.xpd||{})[d]||0;$('wfSay').textContent=!dn.length?'Пока ничего? Ничего страшного. Выбери одно маленькое дело — я подожду и похвалю. 🙂':dn.length<3?'Сделал «'+dn[0].t+'»'+(dn[1]?' и ещё одно':'')+'. Неплохо! Ещё чуть-чуть — и будет отличный день.':'Ого: '+dn.length+' дел и '+xp+' XP за день. Ты сегодня очень… привлекательный. 😳'}
+ else if(k==='whisper')$('wfSay').textContent=rnd(WWHISP);
+ else $('wfSay').textContent=rnd(A[3][Math.min(lv,A[3].length-1)]);
+ w.cd[k]=d;w.pts=(w.pts||0)+A[2];SFX.tap();buzz();const r=$('wfAv').getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/3,k==='kiss'||k==='whisper'?14:8);save();setTimeout(render,1800)}
+function wfGiftSheet(){const w=wfS();sheet('<h3>Подарок для '+esc(w.name)+'</h3>'+WGIFT.map((g,i)=>'<div class="shopit"><span style="font-size:26px;width:34px;text-align:center">'+g[0]+'</span><div class="nm"><b>'+g[1]+'</b><span>+'+g[3]+' привязанности</span></div><button class="btn gold" data-g="'+i+'"'+(S.gold<g[2]?' disabled':'')+'>'+g[2]+'</button></div>').join('')+'<button class="linkbtn" id="wgX" style="display:block;margin:12px auto 0">Закрыть</button>');
+ $('wgX').onclick=closeSheet;$('sheetIn').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const g=WGIFT[+b.dataset.g];if(S.gold<g[2])return;S.gold-=g[2];w.pts=(w.pts||0)+g[3];w.g=(w.g||0)+1;addLog('Подарок для '+w.name+': '+g[1]);SFX.coin();buzz();save();closeSheet();render();
+  toast(w.name+': '+(g[1]==='Кольцо'?'«…Да. Да! Тысячу раз да!» 💍':rnd(['«Ой… это мне? Спасибо!» 💕','«Ты запомнил, что я люблю? Мило.»','«Иди сюда, буду благодарить.» 😘'])))})}
 function wfLv(){const a=wfAff();let i=0;WFL.forEach((x,j)=>{if(a>=x[0])i=j});return i}
 const WFSAY=[
  ['Привет, незнакомец. Говорят, ты держишься без порно? Интересно… Расскажи о себе.','Я не люблю тех, кто пялится в экран. Покажи, что ты живой.','Сделай пару квестов — и, может, я запомню твоё имя.'],
@@ -2239,9 +2269,10 @@ function wfAvatar(){let img='';try{img=localStorage.getItem(WFKEY)||''}catch(e){
  if(img)return '<img src="'+img+'" alt="">';
  return '<span class="wfph"><i>💕</i><b>Добавь её фото</b><small>нажми ⚙︎</small></span>'}
 function renderWaifu(){const w=wfS(),a=wfAff(),lv=wfLv(),nx=WFL[lv+1],base=WFL[lv][0],pct=nx?Math.round((a-base)/(nx[0]-base)*100):100;
- $('waifu').innerHTML='<div class="wf"><button class="wfa" id="wfAv" aria-label="Погладить">'+wfAvatar()+'<span class="wfh" id="wfHearts"></span></button><div class="wfb"><div class="wfn"><b>'+esc(w.name)+'</b><span>'+WFL[lv][1]+'</span></div><div class="wfbar"><i style="width:'+pct+'%"></i></div><small>привязанность '+a+(nx?' / '+nx[0]+' → '+nx[1].toLowerCase():' · максимум')+'</small><p class="wfsay" id="wfSay">'+esc(wfLine())+'</p><div class="wfbt"><button class="lbtn" id="wfGift">🌹 Подарок · 40</button><button class="linkbtn" id="wfSet">⚙︎</button></div></div></div>';
+ $('waifu').innerHTML='<div class="wf"><button class="wfa" id="wfAv" aria-label="Погладить">'+wfAvatar()+'<span class="wfh" id="wfHearts"></span></button><div class="wfb"><div class="wfn"><b>'+esc(w.name)+'</b><span>'+WFL[lv][1]+'</span></div><div class="wfbar"><i style="width:'+pct+'%"></i></div><small>привязанность '+a+(nx?' / '+nx[0]+' → '+nx[1].toLowerCase():' · максимум')+'</small><p class="wfsay" id="wfSay">'+esc(wfLine())+'</p><div class="wfbt"><span class="wfmood">'+wfMood().join(' ')+'</span><button class="linkbtn" id="wfSet">⚙︎</button></div></div></div><div class="wfacts">'+Object.entries(WACT).map(([k,a])=>'<button data-wa="'+k+'"'+((wfS().cd||{})[k]===today()&&k!=='urge'?' class="used"':'')+(k==='whisper'&&wfLv()<3?' class="lock"':'')+'>'+a[0]+' '+a[1]+'</button>').join('')+'<button id="wfGift">🎁 Подарок</button></div>';
+ $('waifu').querySelectorAll('[data-wa]').forEach(b=>b.onclick=()=>wfDo(b.dataset.wa));
  $('wfAv').onclick=e=>{let hasImg='';try{hasImg=localStorage.getItem(WFKEY)}catch(x){}if(!hasImg)return wfSheet();w.pats=(w.pats||0)+1;$('wfSay').textContent=wfLine();SFX.tap();buzz();const r=e.currentTarget.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/3,8);save()};
- $('wfGift').onclick=()=>{if(S.gold<40)return toast('Нужно 40 золота');S.gold-=40;w.g=(w.g||0)+1;addLog('Подарок для '+w.name);SFX.coin();buzz();save();render();toast(w.name+': «Ой… спасибо, мне очень приятно» 💕')};
+ $('wfGift').onclick=wfGiftSheet;
  $('wfSet').onclick=wfSheet}
 function wfSheet(){const w=wfS();sheet('<h3>Твоя вайфу</h3><div class="lbl">Имя</div><input id="wfName" class="inp" maxlength="20" value="'+esc(w.name)+'" style="width:100%"><div class="lbl">Фото</div><p class="mut" style="font-size:13px">Выбери любую картинку из телефона. Она хранится только на этом устройстве и никуда не загружается.</p><div class="row2"><label class="btn gold" style="text-align:center">Выбрать фото<input type="file" accept="image/*" id="wfFile" hidden></label><button class="btn" id="wfDel">Убрать фото</button></div><p class="mut" style="font-size:12.5px;margin-top:12px">Привязанность растёт от шагов Линии Сердца, чистых дней, смелых отказов, подарков и квестов. Она — твой тренер по смелости, а не замена живым людям.</p><button class="btn gold" id="wfOk" style="width:100%;margin-top:14px">Готово</button>');
  $('wfOk').onclick=()=>{w.name=($('wfName').value||'Юки').trim().slice(0,20);save();closeSheet();render()};
