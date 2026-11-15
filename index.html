@@ -1099,6 +1099,8 @@ summary{font:700 16px var(--pix)}
 .lspark{display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:6px;max-width:180px}.lspark i{flex:1;background:#e0563f;border-radius:2px 2px 0 0}
 .libs{display:flex;gap:4px}.libs button{flex:1;padding:9px 0;border:1px solid var(--edge2);border-radius:8px;background:var(--panel2);color:var(--ink2);font:700 13px var(--body)}.libs button.on{background:#e0563f;color:#fff;border-color:transparent}
 .chki{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--edge);font:14px var(--body);color:var(--ink)}.chki input{width:20px;height:20px;accent-color:#a3bb72}.chki small{color:var(--ink3)}
+.nav-in{grid-template-columns:repeat(5,1fr)!important;max-width:520px;margin:0 auto}
+.loghd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 6px}.loghd .btn{padding:9px 12px;font-size:12px}
 </style>
 </head>
 <body>
@@ -1108,7 +1110,7 @@ summary{font:700 16px var(--pix)}
   <div class="who"><b id="hudRank">Новичок</b> <span id="hudLvl">ур. 1</span>
     <div class="gauge g-xp"><i id="hudXp" style="width:0"></i></div></div>
   <div class="coins" id="hudGold"></div>
-  <button class="moon" id="hudMoon" aria-label="Вечерний ритуал" lang="ja">月</button><button class="moon" id="hudSet" aria-label="Настройки">⚙︎</button>
+  <button class="moon" id="hudMoon" aria-label="Вечерний ритуал" lang="ja">月</button><button class="moon" id="hudSet" aria-label="Летопись и настройки" lang="ja">記</button>
 </div></header>
 
 <!-- ================= DAY ================= -->
@@ -1347,6 +1349,7 @@ summary{font:700 16px var(--pix)}
 
 <!-- ================= LOG ================= -->
 <main class="screen hide" id="s-log">
+  <div class="loghd"><h1 class="dtitle" style="font-size:32px">Летопись</h1><button class="btn" id="logSetBtn">⚙︎ Настройки</button></div>
   <div class="segm" id="logTabs"></div>
   <div class="pnl">
     <div class="ttl"><h2 id="monTitle">Итоги месяца</h2></div>
@@ -2322,7 +2325,8 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
 function hintify(){document.querySelectorAll('#habSec>.mut,#ctList>.mut,#s-shop .pnl>.mut,#loveSec>.why,#s-hero .lore,#s-quest .pnl>.why').forEach(el=>{if(el.parentElement.tagName==='DETAILS'||el.textContent.length<90)return;const d=document.createElement('details');d.className='hint';d.innerHTML='<summary>'+(el.classList.contains('lore')?'Легенда героя':'Как это работает?')+'</summary>';el.replaceWith(d);d.appendChild(el)})}
 const COLD={'Вайфу 恋':1,'Обязательства 誓':1,'Дракон':1,'Куда деть энергию':1,'Мои параметры':1,'Охота недели':1,'Тренировки дракона':1,'Сексолог спрашивает':1,'Книга дракона 18+':1,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
-document.addEventListener('click',e=>{if(!e.target.closest('#hudSet'))return;go('log');setTimeout(()=>{const p=$('setPnl');if(!p)return;p.classList.remove('shut');S.open['Настройки']=1;p.scrollIntoView({behavior:'smooth',block:'start'})},250)});
+const toSet=()=>setTimeout(()=>{const p=$('setPnl');if(!p)return;p.classList.remove('shut');S.open['Настройки']=1;p.scrollIntoView({behavior:'smooth',block:'start'})},250);
+document.addEventListener('click',e=>{if(e.target.closest('#logSetBtn'))return toSet();if(!e.target.closest('#hudSet'))return;go('log');window.scrollTo(0,0)});
 function colify(){S.open=S.open||{};const st=document.getElementById('s-log').lastElementChild;if(st&&!st.querySelector(':scope>.ttl')){st.insertAdjacentHTML('afterbegin','<div class="ttl"><h2>Настройки</h2></div>');st.id='setPnl'}
  document.querySelectorAll('#s-drg>.pnl,#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
   if(!p.classList.contains('col')){p.classList.add('col');t.addEventListener('click',e=>{if(e.target.closest('button,a,input'))return;const sh=p.classList.toggle('shut');S.open[k]=sh?0:1;SFX.tap();save()})}
@@ -3771,7 +3775,7 @@ function eveSheet(){const d=today(),D=ds(),T=allTasks(),dn=T.filter(x=>x.done).l
   if(first)setTimeout(()=>toast('День закрыт. Котик уже сворачивается клубком'),400)}}
 function evePrompt(){const hr=new Date().getHours();if(hr<21||eveDone()||S.evePop===today())return;if(!$('sheet').classList.contains('hide'))return;S.evePop=today();save();eveSheet()}
 /* ================= WIRING ================= */
-const NAV=[['day','Сегодня','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Путь','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['drg','Дракон',''],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2'],['log','Летопись','M4 2h7l2 2v10H4z M6 6h5 M6 9h5 M6 12h3']];
+const NAV=[['day','Сегодня','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Путь','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['drg','Дракон',''],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2']];
 const NAVK={day:'今',quest:'道',hero:'侍',drg:'龍',shop:'店',log:'記'};$('nav').innerHTML=NAV.map(([k,n])=>'<button data-s="'+k+'"><b class="nk" lang="ja">'+NAVK[k]+'</b>'+n+'</button>').join('');
 if(!document.querySelector('#nav .pill')){const p=document.createElement('i');p.className='pill';$('nav').prepend(p)}
 let lastY=0;addEventListener('scroll',()=>{const y=scrollY,n=document.querySelector('.nav');if(y>lastY+6&&y>120)n.classList.add('mini');else if(y<lastY-6||y<60)n.classList.remove('mini');lastY=y},{passive:true});
