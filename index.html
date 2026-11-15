@@ -1087,7 +1087,8 @@ summary{font:700 16px var(--pix)}
 .cmseal.big{display:inline-grid;place-content:center;width:84px;height:84px;font-size:44px;background:#c6301f;color:#f6ead4;margin:4px auto 10px;animation:cmstamp .5s cubic-bezier(.34,1.56,.64,1)}.cmseal.big.lost{background:#3a3430;color:#8a8073}
 .cmbar{background:linear-gradient(135deg,rgba(198,48,31,.16),rgba(255,255,255,.03))!important;box-shadow:inset 0 0 0 1px rgba(198,48,31,.4)!important}.cmbar span{color:#e0412c;font:700 18px "Yu Mincho",serif}.cmbar small{color:#e0412c!important}
 .rp{display:flex;gap:12px;align-items:center;margin:4px 0 12px}.rp>span{font-size:40px;line-height:1}.rp b{display:block;font:700 18px var(--body);color:var(--ink)}.rp small{font:13px var(--body);color:var(--ink3)}
-.crh,.cr{display:grid;grid-template-columns:1.25fr 1fr 22px 1fr;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--edge)}.crh b{font:700 12px var(--body);color:var(--ink3);text-align:center}.cr span{font:600 12.5px var(--body);color:var(--ink2)}.cr b{font:700 14px var(--body);color:var(--ink);text-align:center}.cr i{font:italic 11px var(--body);color:var(--ink3);text-align:center}.cr.me b:nth-of-type(1){color:#a3bb72}.cr.th b:nth-of-type(2){color:#e0563f}
+.crh,.cr{display:grid;grid-template-columns:1.25fr 1fr 22px 1fr;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--edge)}.crh b{font:700 12px var(--body);color:var(--ink3);text-align:center}.cr span{font:600 12.5px var(--body);color:var(--ink2)}.cr b{font:700 14px var(--body);color:var(--ink);text-align:center}.cr i{font:italic 11px var(--body);color:var(--ink3);text-align:center}.cr.me b:nth-of-type(1){color:#a3bb72}.cr.th b:nth-of-type(2){color:#e0563f}.cr.me{background:linear-gradient(90deg,rgba(163,187,114,.14),transparent 70%)}.cr.th{background:linear-gradient(270deg,rgba(224,86,63,.14),transparent 70%)}.cr i{font-style:normal!important;font-size:13px!important}.cr.me i{color:#a3bb72!important}.cr.th i{color:#e0563f!important}
+.cv{margin:14px 0 0;padding:14px;border-radius:14px;text-align:center}.cv b{display:block;font:800 22px var(--body);letter-spacing:1px}.cv span{display:block;font:800 30px var(--num);margin:2px 0}.cv small{font:13px var(--body);color:var(--ink2)}.cv.w{background:rgba(163,187,114,.15);border:1px solid #a3bb72}.cv.w b,.cv.w span{color:#a3bb72}.cv.l{background:rgba(224,86,63,.13);border:1px solid #e0563f}.cv.l b,.cv.l span{color:#e0563f}.cv.d{background:var(--panel2);border:1px solid var(--edge2)}.cv.d b,.cv.d span{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -3027,7 +3028,7 @@ const FUN=[
  ['f_naked','Свободный дракон','裸','30 ночей голым сном',()=>(S.nkN||0)>=30],
  ['f_hunt','Гроза леса','狩','10 охот дракона',()=>(S.huntN||0)>=10],
  ['f_oath','Слово самурая','誓','Сдержать 3 обязательства',()=>(S.cmWon||0)>=3],
- ['f_rnd','Гражданин мира','球','Сравниться с 20 случайными людьми',()=>(S.rndN||0)>=20],
+ ['f_rnd','Гражданин мира','球','Сравниться с 20 случайными мужчинами',()=>(S.rndN||0)>=20],
  ['f_kegel30','Железный хват','鋼','30 дней Кегеля 3/3',()=>(S.kgFull||0)>=30],
  ['f_mw','Доброе утро, дракон','朝','Отметить утренний стояк 7 раз',()=>(S.mw||0)>=7],
  ['f_drg3','Из червячка в удава','蛇','Дракон 3-го уровня',()=>drgLv()>=2],
@@ -3518,26 +3519,26 @@ const WPOP=[['🇮🇳','Индия',17.8,166,155,21.5,'Рахул Арджун 
  ['🇳🇱','Нидерланды',.22,183,170,25.5,'Дан Сем Люк','Эмма Тесс Сара']];
 const gRnd=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
 function wHuman(){const tot=WPOP.reduce((a,c)=>a+c[2],0);let r=Math.random()*tot,c=WPOP[0];for(const x of WPOP){r-=x[2];if(r<=0){c=x;break}}
- const m=Math.random()<.5;let age;do{age=18+Math.floor(Math.random()*63)}while(Math.random()>(age<40?1:age<55?.8:age<65?.55:.3));
- const h=Math.round((m?c[3]:c[4])+gRnd()*7),bmi=Math.max(16,c[5]+gRnd()*4),w=Math.round(bmi*(h/100)**2);
+ const m=true;let age;do{age=18+Math.floor(Math.random()*63)}while(Math.random()>(age<40?1:age<55?.8:age<65?.55:.3));
+ const zh=gRnd(),h=Math.round((m?c[3]:c[4])+zh*7),bmi=Math.max(16,c[5]+gRnd()*4),w=Math.round(bmi*(h/100)**2);
  const watch=Math.random()<(m?.55:.18),never=!watch&&Math.random()<(m?.35:.7);
  return {c,m,age,h,w,name:rnd((m?c[6]:c[7]).split(' ')),steps:Math.max(600,Math.round(5000+gRnd()*2200)),sleep:Math.max(4,Math.min(10,Math.round((6.9+gRnd()*1.1)*2)/2)),
-  porn:watch?Math.floor(Math.random()*7):never?-1:7+Math.floor(Math.random()*120),kg:Math.random()<.05,len:m?Math.round((13.12+gRnd()*1.66)*10)/10:0,gir:m?Math.round((11.66+gRnd()*1.1)*10)/10:0}}
+  porn:watch?Math.floor(Math.random()*7):never?-1:7+Math.floor(Math.random()*120),kg:Math.random()<.05,...(()=>{const zl=.25*zh+.968*gRnd(),zg=.55*zl+.835*gRnd(),cl=(v,a,b)=>Math.max(a,Math.min(b,v));return {len:cl(Math.round((13.12+zl*1.66)*2)/2,8,20),gir:cl(Math.round((11.66+zg*1.1)*2)/2,8,16)}})()}}
 function rndSheet(){const b=S.body||{},p=wHuman(),st=(S.stp&&S.stp.d===today())?S.stp.n:0,sl=((S.mood||{})[today()]||{}).s||((S.mood||{})[shift(today(),-1)]||{}).s||0,cd=cleanDays(),kgOn=(S.kgFull||0)>0;
- let me=0,they=0;const rows=[];const add=(lab,a,bv,fmt,better)=>{let r='';if(better!=null){if(better>0){me++;r='me'}else if(better<0){they++;r='th'}}rows.push('<div class="cr '+r+'"><span>'+lab+'</span><b>'+fmt(a)+'</b><i>vs</i><b>'+fmt(bv)+'</b></div>')};
- if(b.h)add('Рост',b.h,p.h,v=>v+' см',null);
- if(b.w)add('Вес',b.w,p.w,v=>v+' кг',null);
+ let me=0,they=0;const rows=[];const add=(lab,a,bv,fmt,better)=>{let r='',ic='＝';if(better!=null){if(better>0){me++;r='me';ic='◀'}else if(better<0){they++;r='th';ic='▶'}}rows.push('<div class="cr '+r+'"><span>'+lab+'</span><b>'+fmt(a)+(r==='me'?' 🏆':'')+'</b><i>'+ic+'</i><b>'+fmt(bv)+(r==='th'?' 🏆':'')+'</b></div>')};
+ if(b.h)add('Рост',b.h,p.h,v=>v+' см',Math.sign(b.h-p.h));
+ if(b.w&&b.h)add('Вес (ближе к норме)',b.w,p.w,v=>v+' кг',Math.sign(Math.abs(p.w/(p.h/100)**2-22)-Math.abs(b.w/(b.h/100)**2-22)));
  add('Шаги сегодня',st,p.steps,v=>v?v.toLocaleString('ru-RU'):'—',st?Math.sign(st-p.steps):null);
  if(sl)add('Сон',sl,p.sleep,v=>v+' ч',Math.sign(Math.abs(p.sleep-8)-Math.abs(sl-8)));
  add('Дней без порно',cd,p.porn,v=>v<0?'не смотрит':v+' дн.',p.porn<0?-1:Math.sign(cd-p.porn));
  add('Кегель',kgOn?'тренирует':'нет',p.kg?'тренирует':'нет',v=>v,kgOn===p.kg?0:kgOn?1:-1);
- if(p.m&&b.len)add('Длина в эрекции',b.len,p.len,v=>v+' см',Math.sign(b.len-p.len));
- if(p.m&&b.gir)add('Обхват',b.gir,p.gir,v=>v+' см',Math.sign(b.gir-p.gir));
- let pct='';if(b.h){let n=0,k=0;for(let i=0;i<3000;i++){const q=wHuman();if(q.h<b.h)k++;n++}pct='<p class="mut" style="font-size:12.5px;margin:10px 0 0">Ты выше ~'+Math.round(k/n*100)+'% взрослых людей Земли.</p>'}
- const verdict=me>they?'Ты победил в '+me+' из '+(me+they)+' раундов. Земля, держись.':me<they?p.name+' обходит тебя: '+they+' : '+me+'. Есть куда расти — дракон уже разминается.':'Ничья '+me+' : '+they+'. Достойный соперник.';
- sheet('<h3>🎲 Ты против случайного человека</h3><div class="rp"><span>'+p.c[0]+'</span><div><b>'+esc(p.name)+', '+p.age+'</b><small>'+(p.m?'мужчина':'женщина')+' · '+p.c[1]+'</small></div></div>'
-  +'<div class="crh"><span></span><b>Ты</b><i></i><b>'+esc(p.name)+'</b></div>'+rows.join('')+'<p style="margin:12px 0 0;font-weight:600;color:var(--ink)">'+verdict+'</p>'+pct
-  +'<p class="mut" style="font-size:11.5px;margin-top:8px">Человек выбран случайно с учётом населения стран. Цифры приблизительные: средние по стране плюс естественный разброс.</p>'
+ if(b.len)add('Длина в эрекции',b.len,p.len,v=>v+' см',Math.sign(b.len-p.len));
+ if(b.gir)add('Обхват',b.gir,p.gir,v=>v+' см',Math.sign(b.gir-p.gir));
+ let pct='';if(b.h){let n=0,k=0;for(let i=0;i<3000;i++){const q=wHuman();if(q.h<b.h)k++;n++}pct='<p class="mut" style="font-size:12.5px;margin:10px 0 0">Ты выше ~'+Math.round(k/n*100)+'% взрослых мужчин Земли.</p>'}
+ const verdict='<div class="cv '+(me>they?'w':me<they?'l':'d')+'"><b>'+(me>they?'🏆 ПОБЕДА':me<they?'ПОРАЖЕНИЕ':'НИЧЬЯ')+'</b><span>'+me+' : '+they+'</span><small>'+(me>they?'Ты сильнее, '+esc(p.name)+' уходит пить чай.':me<they?esc(p.name)+' сегодня сильнее. Дракон запомнил его лицо.':'Достойный соперник.')+'</small></div>';
+ sheet('<h3>🎲 Ты против случайного мужчины</h3><div class="rp"><span>'+p.c[0]+'</span><div><b>'+esc(p.name)+', '+p.age+'</b><small>'+p.c[1]+'</small></div></div>'
+  +'<div class="crh"><span></span><b>Ты</b><i></i><b>'+esc(p.name)+'</b></div>'+rows.join('')+verdict+pct
+  +'<p class="mut" style="font-size:11.5px;margin-top:8px">Мужчина 18–80 лет, страна — с учётом населения. Рост и вес — средние по его стране плюс разброс; размер — по замерам 15 тыс. мужчин (Veale 2015), слегка связан с ростом, округлён до 0,5 см, как при реальном замере.</p>'
   +'<div class="row2"><button class="btn gold" id="rpN">🎲 Ещё один</button><button class="btn" id="rpX">Закрыть</button></div>');
  $('rpN').onclick=()=>{buzz();rndSheet()};$('rpX').onclick=closeSheet;S.rndN=(S.rndN||0)+1;if(me>they)S.rndW=(S.rndW||0)+1;save()}
 /* Мои параметры: хранятся только в localStorage телефона, в репозиторий не попадают */
@@ -3552,7 +3553,7 @@ function renderMe(){const el=$('drgMe');if(!el)return;const b=S.body||{};
   if(b.h&&b.w){const bmi=b.w/((b.h/100)**2);r.push(['Рост / вес',b.h+' см · '+b.w+' кг','ИМТ '+bmi.toFixed(1)+(bmi<18.5?' — недобор: ешь больше белка и калорий':bmi<21?' — худощавый: в зале качай массу, +4–6 кг мышц сделают силуэт мощнее':bmi<25?' — норма':' — выше нормы: минус жир = плюс видимая длина')])}
   out+='<div class="mer">'+r.map(x=>'<div><b>'+x[0]+'</b><em>'+esc(x[1])+'</em></div>').join('')+'</div><details class="hint"><summary>Что это значит</summary>'+r.map(x=>'<p class="mut" style="font-size:12.5px;margin:4px 0"><b style="color:var(--ink2)">'+x[0]+':</b> '+esc(x[2])+'</p>').join('');
   if(b.len>=15.5||b.gir>=13)out+='<p class="mut" style="font-size:12.5px;line-height:1.5;margin:6px 0 0"><b style="color:var(--gold)">Дракон выше среднего — значит, бережность важнее силы.</b> Много смазки, входить медленно, когда она очень возбуждена. Позы, где она управляет глубиной (наездница, ложечки, на боку), и без резких глубоких ударов в начале: шейка матки чувствительная. Спроси «так нормально?» — и она будет тебя хотеть ещё. Хвастаться размером не надо: пусть она сама скажет.</p>';out+='</details>'}
- el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details><button class="btn gold" id="meRnd" style="width:100%;margin-top:10px">🎲 Сравнить со случайным человеком Земли</button>';$('meRnd').onclick=rndSheet;
+ el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details><button class="btn gold" id="meRnd" style="width:100%;margin-top:10px">🎲 Сравнить со случайным мужчиной Земли</button>';$('meRnd').onclick=rndSheet;
  $('meOk').onclick=()=>{const g=k=>{const v=parseFloat(String($('me_'+k).value).replace(',','.'));return v>0?Math.round(v*10)/10:0};S.body={len:g('len'),gir:g('gir'),h:g('h'),w:g('w')};save();renderMe();toast('Сохранено на телефоне')}}
 /* ===== 誓 Обязательства: залог, «когда — то», минимум, резерв, подпись-печать, цепочка ===== */
 // шаблон: [id, название, авто-проверка, идентичность, когда-то, минимум, режим дней, срок]
