@@ -932,6 +932,56 @@ summary{font:700 16px var(--pix)}
 
 .whisper.arm .wa button{opacity:.4;pointer-events:none}
 .whisper{z-index:5}
+
+/* ===== unified look: one surface, one hairline, one accent per block ===== */
+#loveSec{box-shadow:none!important}
+#loveSec .ttl h2{color:var(--ink)!important}
+.lst,.lst.now,.lst.done{background:var(--panel2)!important;border:1px solid var(--edge)!important;border-radius:12px!important;box-shadow:none!important}
+.lst.now{border-color:#c27a8a88!important}
+.lst summary>i,.lst.next summary>i,.lst.done summary>i{background:transparent!important;box-shadow:none!important;border:1px solid var(--edge2);color:var(--ink2)!important}
+.lst.now summary>i{border-color:#c27a8a;color:#e2a3b0!important}
+.lst.done summary>i{border-color:#7f9a5a;color:#a3bb72!important}
+.lst small{color:var(--ink3)!important}.lst.now small{color:#e2a3b0!important}
+.lst summary em{color:var(--ink2)!important}
+.lbar{height:3px!important;background:var(--edge)!important}.lbar span{background:#c27a8a!important}
+.lq{background:transparent!important;border-left:0!important;border-top:1px solid var(--edge)!important;border-radius:0!important;margin:0 12px!important;padding:10px 0!important}
+.lqm .xp{color:var(--gold)!important}
+.lbtn{background:transparent!important;box-shadow:inset 0 0 0 1px #c27a8a!important;color:#e2a3b0!important;border-radius:8px!important;font-size:13px!important}
+.lok{background:transparent!important;color:#a3bb72!important}
+.dots u.on{background:#c27a8a!important}
+.wf{background:var(--panel2)!important;border:1px solid var(--edge)!important;border-radius:14px!important;box-shadow:none!important}
+.wfa{border-radius:10px!important;box-shadow:none!important}
+.wfn span{color:var(--ink3)!important}.wfbar{height:3px!important}.wfbar i{background:#c27a8a!important}
+.wfsay{background:rgba(0,0,0,.25)!important;border-radius:10px!important}
+.wfacts button,.wfacts #wfGift{background:transparent!important;box-shadow:inset 0 0 0 1px var(--edge2)!important;color:var(--ink2)!important;border-radius:8px!important;font-weight:600!important}
+.wfmood{color:var(--ink2)!important}
+.stepsbar{background:var(--panel2)!important;box-shadow:inset 0 0 0 1px var(--edge)!important;border-radius:12px!important}
+.nav-in{grid-template-columns:repeat(6,1fr)!important}.nav .pill{width:calc((100% - 12px)/6)!important}
+.drgc{display:flex;gap:14px;align-items:center}
+.drgk{flex:none;width:64px;height:64px;border-radius:12px;display:grid;place-content:center;border:1px solid var(--edge2);background:var(--panel2);font:700 34px "Yu Mincho","Hiragino Mincho ProN",serif;color:var(--gold)}
+.drgb{flex:1;min-width:0}.drgb b{display:block;font:700 18px var(--body);color:var(--ink)}.drgb small{display:block;font:12px var(--body);color:var(--ink3);margin:2px 0 6px}
+.drgm{display:block;margin-top:6px;font:600 12px var(--body);color:var(--ink2)}
+.drgsay{margin:12px 0 4px;padding:10px 12px;border-left:2px solid var(--gold);background:rgba(0,0,0,.2);font:italic 14px/1.45 var(--body);color:var(--ink)}
+.drgrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--edge)}
+.drgrow>div{flex:1;min-width:0}.drgrow b{display:block;font:600 14.5px var(--body);color:var(--ink)}.drgrow small{display:block;font:12px var(--body);color:var(--ink3);margin-top:2px}
+.drgw{display:flex;gap:4px;margin-top:8px}.drgw u{text-decoration:none;flex:1;max-width:34px;text-align:center;padding:3px 0;border-radius:4px;font:600 10px var(--body);color:var(--ink3);background:var(--panel2)}.drgw u.on{background:#c9a46a33;color:var(--gold)}
+.kgring{width:150px;height:150px;margin:14px auto;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--edge2);transition:transform 3s ease-in-out,border-color .3s}
+.kgring.sq{transform:scale(.82);border-color:var(--gold)}.kgring b{font:700 20px var(--body);color:var(--ink)}.kgring small{font:12px var(--body);color:var(--ink3)}
+.engrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.encard{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:10px;border:1px solid var(--edge);border-radius:10px;background:var(--panel2);color:var(--ink);cursor:pointer}
+.encard span{font-size:20px}.encard b{font:600 13.5px var(--body)}.encard small{font:11.5px/1.35 var(--body);color:var(--ink3);flex:1}.encard em{font:700 11.5px var(--body);font-style:normal;color:var(--gold);margin-top:4px}
+.encard.used{opacity:.5}.encard.used em{color:#a3bb72}.encard:active{transform:scale(.97)}
+.kink{border-top:1px solid var(--edge)}.kink summary,.kink.lock{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer}.kink summary::-webkit-details-marker{display:none}
+.kink i{flex:none;width:24px;font:700 12px var(--num);font-style:normal;color:var(--ink3);text-align:center}.kink b{font:600 14px var(--body);color:var(--ink)}
+.kink.rd b{color:var(--ink2)}.kink.lock b{color:var(--ink3);font-weight:400}.kink p{margin:0 0 12px 34px;font:13.5px/1.5 var(--body);color:var(--ink2)}
+.kink[open] summary b{color:var(--gold)}
+.abdg.fun span{font-size:11px;line-height:1.3}.abdg.fun:not(.got){opacity:.55}
+.rmnav{scrollbar-width:none}.rmnav::-webkit-scrollbar{display:none}
+.rmnav button{border-radius:8px}
+.rm.done{opacity:1!important}.rm.done .k{color:#a3bb72!important}.rm.done .r{color:#a3bb72}
+.rm.lock{opacity:.55}.rm.now{background:#c9a46a14!important;box-shadow:inset 2px 0 var(--gold)!important}
+.rm.img{grid-template-columns:48px 1fr auto}.rmi{display:grid;place-items:center;width:48px;height:48px;border-radius:10px;background:var(--panel2);overflow:hidden}.rmi svg{max-width:44px;max-height:44px;width:auto;height:auto}
+.rm.done.img .rmi{filter:grayscale(.6)}
 </style>
 </head>
 <body>
@@ -1105,6 +1155,11 @@ summary{font:700 16px var(--pix)}
 </main>
 
 <!-- ================= SHOP ================= -->
+<main class="screen hide" id="s-drg">
+  <div class="pnl"><div class="ttl"><h2>Дракон</h2><span class="c" id="drgLvN"></span></div><div id="drg"></div></div>
+  <div class="pnl"><div class="ttl"><h2>Куда деть энергию</h2><span class="c" id="enCnt"></span></div><p class="mut" style="font-size:13px;margin:0 0 10px">Тянет или просто много энергии — выбери способ и потрать её с пользой. Каждый способ раз в день даёт опыт и бьёт босса.</p><div class="engrid" id="enGrid"></div></div>
+  <div class="pnl"><div class="ttl"><h2>Энциклопедия кинков 18+</h2><span class="c" id="kinkCnt"></span></div><div id="kinks"></div></div>
+</main>
 <main class="screen hide" id="s-shop">
   <div class="shophd"><h1 class="dtitle" style="font-size:32px">Лавка</h1><span class="coins" id="shopGold"></span></div>
   <div class="segm" id="shopTabs"></div>
@@ -1309,7 +1364,7 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 function plural(n,a,b,c){n=Math.abs(n)%100;const m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
 
 /* ================= DATA ================= */
-const RANKS=[[1,'Раб инкогнито','足軽'],[3,'Беглец с хаба','門弟'],[5,'Хранитель семени','浪人'],[8,'Укротитель стояка','侍'],[12,'Синеяйцый страж','旗本'],[16,'Монах без ладони','剣豪'],[20,'Мастер ледяного душа','剣聖'],[25,'Магнит для дам','大名'],[30,'Император воздержания','将軍'],[40,'Легенда NoFap','伝説'],[50,'Бессмертный кот','不滅']];
+const RANKS=[[1,'Кумер в завязке','足軽'],[3,'Беглец с Порнхаба','門弟'],[5,'Хранитель семени','浪人'],[8,'Укротитель стояка','侍'],[12,'Страж синих яиц','旗本'],[16,'Монах без правой руки','剣豪'],[20,'Морж ледяного душа','剣聖'],[25,'Сигма-самец','大名'],[30,'Гигачад воздержания','将軍'],[40,'Легенда No Nut November','伝説'],[50,'Бессмертный кот','不滅']];
 const STATS={str:['Сила','#c4473b'],int:['Разум','#6d8bb0'],cha:['Харизма','#c27a8a'],wil:['Воля','#c9a46a']};
 const STK={str:'力',int:'知',cha:'心',wil:'志'};
 const KOTOBA=[['七転び八起き','Упади семь раз — встань восемь'],['継続は力なり','Постоянство — это сила'],['石の上にも三年','Даже на холодном камне за три года станет тепло'],['急がば回れ','Спешишь — иди в обход'],['塵も積もれば山となる','Из пылинок вырастает гора'],['初心忘るべからず','Не забывай дух новичка'],['猿も木から落ちる','И обезьяна падает с дерева'],['一期一会','Одна встреча — один шанс'],['雨降って地固まる','После дождя земля твёрже'],['千里の道も一歩から','Путь в тысячу ри начинается с шага'],['案ずるより産むが易し','Сделать легче, чем бояться'],['己に克つ','Победи самого себя']];
@@ -1483,7 +1538,7 @@ async function syRead(){const g=await gh(GH+'/'+SY.gist),f=g.files&&g.files[GF];
  if(f.truncated)c=await (await fetch(f.raw_url,{cache:'no-store'})).text();return JSON.parse(c)}
 const syWrite=o=>gh(GH+'/'+SY.gist,{method:'PATCH',body:JSON.stringify({files:{[GF]:{content:JSON.stringify(packO(o))}}})});
 /* merge: counters add up both devices' gains, lists are united, the rest — newer device wins */
-const MDELTA=/^(xp|gold|goldTotal|wf\.g|wf\.pats|wf\.pts|wins|quests|perfect|phoenix|urges|storms|st\.\w+|love\.(rej|dates|d\.\w+)|rep|ctOk|ctRisk|chOpen|parTot|ringN|pet\.pets|camp\.hp|xpd\.[\d-]+)$/,MMAX=/^(ts|best|bestMs|loginStreak|forge\.\w+|ci\.at|hab\..+\.(n|b)|sk\.\w+\.(x|n)|lv0|rk0|rkMax|fellAt|comboBest|actBest|art\.\w+\.l|chs\.n)$/;
+const MDELTA=/^(xp|gold|goldTotal|kg|mw|enN|wf\.g|wf\.pats|wf\.pts|wins|quests|perfect|phoenix|urges|storms|st\.\w+|love\.(rej|dates|d\.\w+)|rep|ctOk|ctRisk|chOpen|parTot|ringN|pet\.pets|camp\.hp|xpd\.[\d-]+)$/,MMAX=/^(ts|best|bestMs|loginStreak|forge\.\w+|ci\.at|hab\..+\.(n|b)|sk\.\w+\.(x|n)|lv0|rk0|rkMax|fellAt|comboBest|actBest|art\.\w+\.l|chs\.n)$/;
 const idOf=x=>x&&typeof x==='object'?(x.id!=null?'i'+x.id:typeof x.t==='string'&&x.d==null?'t'+x.t:'j'+stab(x)):'p'+stab(x);
 function mg(b,m,t,p,mn){if(same(m,t))return m;if(b!==undefined&&same(m,b))return t;if(b!==undefined&&same(t,b))return m;
  if(typeof m==='number'&&typeof t==='number'){if(MDELTA.test(p))return Math.max(0,typeof b==='number'?Math.round((t+m-b)*100)/100:Math.max(m,t));if(MMAX.test(p))return Math.max(m,t);return mn?m:t}
@@ -1563,7 +1618,7 @@ const trialOk=i=>!TR[i]||TR[i].every(([k,n])=>trVal(k)>=n);
 function rankIdxFor(l){let i=0;RANKS.forEach((r,j)=>{if(l>=r[0])i=j});while(i>0&&!trialOk(i))i--;return i}
 const rankIdx=()=>rankIdxFor(lvlInfo(S.xp).l);
 const rankOf=l=>RANKS[rankIdxFor(l)];
-function nameMig(){const M={'Самурай':'Укротитель стояка','Сёгун':'Император воздержания','Воин':'Укротитель стояка','Владыка':'Император воздержания','Хозяин нэкоматы':'Хозяин кота-духа'};if(M[S.title])S.title=M[S.title]}
+function nameMig(){const M={'Самурай':'Укротитель стояка','Сёгун':'Гигачад воздержания','Воин':'Укротитель стояка','Владыка':'Гигачад воздержания','Хозяин нэкоматы':'Хозяин кота-духа','Император воздержания':'Гигачад воздержания'};if(M[S.title])S.title=M[S.title]}
 function lvRework(){nameMig();if(S.prog2)return;S.prog2=1;const l=lvlInfo(S.xp).l;S.rkMax=rankIdx();addLog('Система уровней пересчитана честно: уровень '+l+', ранг '+RANKS[S.rkMax][1]);setTimeout(()=>lootSheet('Уровни пересчитаны',null,'Опыт сохранён полностью ('+S.xp.toLocaleString('ru-RU')+' XP), но кривая стала честной: теперь ты на уровне '+l+'. Дальше каждый уровень — это реальные недели дел. Ранги требуют испытаний.'),2600)}
 function checkRank(){lvRework();const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами.')},500)}}
 const PERKS=[
@@ -1934,7 +1989,7 @@ function renderWeek(){const sel=parseD(SEL),mon=new Date(sel);mon.setDate(sel.ge
  for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);const k=dkey(d),v=S.days[k];
   h+='<button class="db'+(k===SEL?' sel':'')+(k===today()?' today':'')+(v==='c'?' c':v==='f'?' f':'')+'" data-d="'+k+'"><small>'+WD[i]+'</small><b>'+d.getDate()+'</b><i></i></button>'}
  $('days').innerHTML=h;$('days').querySelectorAll('.db').forEach(b=>b.onclick=()=>selectDay(b.dataset.d))}
-const CAT18=['Мурр. Твоя правая рука сегодня в отпуске. Пусть отдыхает, она заслужила.','Порно — это фастфуд. Ты сейчас на диете для настоящего ужина при свечах.','Если член встал утром — это не повод, это прогноз погоды. Иди в душ.','Я кот. Я лижу себе всё что хочу при всех. Ты — человек. Ты можешь лучше: найди девушку.','Синие яйца — миф. Синий экран — тоже. Просто закрой вкладку.','Каждая победа над тягой — +1 к харизме. Девушки это чуют. Я тоже чую, но мне всё равно.','Инкогнито не скрывает тебя от себя. Мяу.','Настоящая девушка не буферизуется и не просит подписку.','В Мюнхене 700 тысяч девушек. Ни одна не живёт у тебя в телефоне.','Мастурбация без порно — не срыв. Срыв — это когда ты три часа ищешь «тот самый ролик».','Сожми таз, как будто останавливаешь струю. 10 раз. Будущая девушка скажет спасибо.','Холодный душ: 30 секунд — и тяга сморщивается быстрее, чем ты думаешь.','Тяга бьёт сильнее всего, когда ты устал, одинок и лежишь с телефоном. Встань. Мяу.','Энергия, которую ты не слил, уходит в отжимания. Проверено котом.','Слушай, я видел, что у тебя на уме. Иди лучше учи немецкие комплименты.','«Du bist süß» — запомни. Пригодится больше, чем Akkusativ.','Ты не девственник по духу. Ты самурай на перезарядке.','Порно-актёры снимают по 40 дублей. У тебя будет один, но настоящий.','Лучшая прелюдия — это вопрос «тебе так нравится?». Запиши.','Голод — лучшая приправа. Ты сейчас очень вкусно голоден.'];
+const CAT18=['Ноябрь — месяц No Nut November. Ты участвуешь, даже если не записывался. Мяу.','Скуф — это не возраст, это когда сдался. Иди хоть отожмись.','Сигма не листает рилсы в 3 ночи. Сигма спит. Я сплю 16 часов в сутки — я гигасигма.','Альтушка с каре сама себя не найдёт. Сначала зал, потом Hinge.','Батя в здании? Тогда помой посуду. Батя моет посуду.','Дофамин не бесплатный. За ночной скролл ты платишь утренней апатией.','Не трать ману. Мана нужна на свидание.','У меня 9 жизней, у тебя одна. Не трать её на вкладку «инкогнито».','Твой браузер в режиме инкогнито грустит: думает, ты его разлюбил. Так держать.','Мурр. Я видела твою историю поиска. Шучу. Но ты задумался, да?','Чед бы сейчас пошёл в холодный душ. Будь как Чед.','Капибара спокойная, потому что не смотрит порно. Научный факт (нет).','Минус дрочка — плюс уверенность в глазах. Девушки это видят, отвечаю хвостом.','Рука-отпускница прислала открытку: «Тут классно, не зовите».','Пятница, вечер, ты один? Самое время для немецкого. Ладно, хотя бы для отжиманий.','Мурр. Твоя правая рука сегодня в отпуске. Пусть отдыхает, она заслужила.','Порно — это фастфуд. Ты сейчас на диете для настоящего ужина при свечах.','Если член встал утром — это не повод, это прогноз погоды. Иди в душ.','Я кот. Я лижу себе всё что хочу при всех. Ты — человек. Ты можешь лучше: найди девушку.','Синие яйца — миф. Синий экран — тоже. Просто закрой вкладку.','Каждая победа над тягой — +1 к харизме. Девушки это чуют. Я тоже чую, но мне всё равно.','Инкогнито не скрывает тебя от себя. Мяу.','Настоящая девушка не буферизуется и не просит подписку.','В Мюнхене 700 тысяч девушек. Ни одна не живёт у тебя в телефоне.','Мастурбация без порно — не срыв. Срыв — это когда ты три часа ищешь «тот самый ролик».','Сожми таз, как будто останавливаешь струю. 10 раз. Будущая девушка скажет спасибо.','Холодный душ: 30 секунд — и тяга сморщивается быстрее, чем ты думаешь.','Тяга бьёт сильнее всего, когда ты устал, одинок и лежишь с телефоном. Встань. Мяу.','Энергия, которую ты не слил, уходит в отжимания. Проверено котом.','Слушай, я видел, что у тебя на уме. Иди лучше учи немецкие комплименты.','«Du bist süß» — запомни. Пригодится больше, чем Akkusativ.','Ты не девственник по духу. Ты самурай на перезарядке.','Порно-актёры снимают по 40 дублей. У тебя будет один, но настоящий.','Лучшая прелюдия — это вопрос «тебе так нравится?». Запиши.','Голод — лучшая приправа. Ты сейчас очень вкусно голоден.'];
 function petLine(){if(!catAsleep()&&S.days[today()]!=='f'&&S.pet.fuel>=15&&Math.floor(Date.now()/48e4)%2===0)return CAT18[Math.floor(Date.now()/48e4/2)%CAT18.length];const p=S.pet,st=stageIdx(),T=allTasks(),left=T.filter(x=>!x.done).length,h=new Date().getHours(),nx=STAGES[st+1];
  if(catAsleep())return 'Мрр… я сплю. И тебе пора — сон тоже часть пути.';
  if(S.days[today()]==='f')return 'Мяу. Я рядом. Срыв — это урок, а не конец.';
@@ -2121,13 +2176,13 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
  $('catShop').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const it=CAT_ACC.find(x=>x[0]===b.dataset.c);if(S.gold<it[2])return;S.gold-=it[2];A.owned.push(it[0]);A.on.push(it[0]);cheer(25);SFX.coin();addLog('Котику куплено: '+it[1]);save();render();toast('Котик доволен: '+it[1].toLowerCase())});
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
 function hintify(){document.querySelectorAll('#habSec>.mut,#ctList>.mut,#s-shop .pnl>.mut,#loveSec>.why,#s-hero .lore,#s-quest .pnl>.why').forEach(el=>{if(el.parentElement.tagName==='DETAILS'||el.textContent.length<90)return;const d=document.createElement('details');d.className='hint';d.innerHTML='<summary>'+(el.classList.contains('lore')?'Легенда героя':'Как это работает?')+'</summary>';el.replaceWith(d);d.appendChild(el)})}
-const COLD={'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
+const COLD={'Дракон':1,'Куда деть энергию':1,'Энциклопедия кинков 18+':0,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
 document.addEventListener('click',e=>{if(!e.target.closest('#hudSet'))return;go('log');setTimeout(()=>{const p=$('setPnl');if(!p)return;p.classList.remove('shut');S.open['Настройки']=1;p.scrollIntoView({behavior:'smooth',block:'start'})},250)});
 function colify(){S.open=S.open||{};const st=document.getElementById('s-log').lastElementChild;if(st&&!st.querySelector(':scope>.ttl')){st.insertAdjacentHTML('afterbegin','<div class="ttl"><h2>Настройки</h2></div>');st.id='setPnl'}
- document.querySelectorAll('#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
+ document.querySelectorAll('#s-drg>.pnl,#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
   if(!p.classList.contains('col')){p.classList.add('col');t.addEventListener('click',e=>{if(e.target.closest('button,a,input'))return;const sh=p.classList.toggle('shut');S.open[k]=sh?0:1;SFX.tap();save()})}
   const def=k in COLD?COLD[k]:0;p.classList.toggle('shut',!(k in S.open?S.open[k]:def))})}
-function render(){setTimeout(()=>{try{renderSteps()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
+function render(){setTimeout(()=>{try{renderSteps()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog();try{renderDrg()}catch(e){console.error(e)}}
 
 /* ================= ROADMAP 道: the whole future ================= */
 const xpAt=L=>{let s=0;for(let k=1;k<L;k++)s+=needOf(k);return s};
@@ -2142,11 +2197,11 @@ function roadmap(sec){const li=lvlInfo(S.xp),cur=rankOf(li.l),cd=cleanDays(),tc=
  o+=H('cat','Котик 猫','чистых дней: '+tc)+STAGES.map((s,i)=>{const nx=STAGES[i+1],st=tc>=s[0]&&(!nx||tc<nx[0])?'now':tc>=s[0]?'done':'lock';return rmRow(st,['子','猫','猫','守','又'][i],s[1],'с '+s[0]+' '+plural(s[0],'чистого дня','чистых дней','чистых дней')+(i===4?' · два хвоста, кабуто':''),st==='done'?'✓':st==='now'?'сейчас':'ещё '+(s[0]-tc)+' дн.')}).join('')
   +CAT_ACC.map(c=>{const own=((S.pet.acc||{}).owned||[]).includes(c[0]);return rmRow(own?'done':'lock','鈴',esc(c[1]),'аксессуар',own?'✓ есть':c[2]+' з')}).join('');
  o+=H('clean','Путь без срыва','сейчас '+cd+' '+plural(cd,'день','дня','дней'))+BUFFS.map((b,i)=>{const nx=BUFFS[i+1],st=cd>=b[0]&&(!nx||cd<nx[0])?'now':cd>=b[0]?'done':'lock';return rmRow(st,b[0],esc(b[1]),st==='lock'&&(i===0||cd>=BUFFS[i-1][0])?esc(b[2]):'',st==='done'?'✓':st==='now'?'сейчас':'через '+(b[0]-cd)+' дн.')}).join('');
- o+=H('boss','Ёкаи 妖','глава '+(ch+1))+CHAPTERS.map((c,i)=>{const st=i<ch%NB&&circ(ch)===0||circ(ch)>0&&i!==ch%NB?'done':i===ch%NB?'now':'lock';return rmRow(st,BKANJI[i],esc(c[0]),esc(c[1])+' · слабость: '+STATS[WEAK[i]][0]+' · '+baseHp(i)+' HP',st==='done'?'✓':(bossGold(i))+' з · '+bossXp(i)+' XP')}).join('');
- S.forge=S.forge||{};o+=H('forge','Кузница 鍛')+Object.entries(SLOTS).map(([k,v])=>{const n=S.forge[k]||0;return rmRow(n?'now':'lock','+'+n,v[0]+' · +'+Math.round(n*FORGE_STEP*100)+'% '+v[1],FORGE_COST.map((c,i)=>'+'+(i+1)+': '+c+' з, ур. '+3*(i+1)).join(' · '),n>=FORGE_COST.length?'макс.':'след.: '+FORGE_COST[n]+' з')}).join('');
- if(typeof LOVE!=='undefined')o+=H('love','Линия Сердца 心')+LOVE.map((s,i)=>{const t=s[2],dn=t.filter(x=>loveCnt(x[0])>=x[3]).length,st=dn===t.length?'done':dn?'now':'lock';return rmRow(st,i+1,esc(s[0]),t.map(x=>esc(x[1])+(x[3]>1?' ('+Math.min(loveCnt(x[0]),x[3])+'/'+x[3]+')':'')).join(' · '),dn+'/'+t.length)}).join('');
- o+=H('ach','Достижения 印')+ACHS.map(x=>{let d=false;try{d=!!x[3](S)}catch(e){}return rmRow(d?'done':'lock',esc(x[0]),esc(x[1]),esc(x[2]),d?'✓':'')}).join('');
- const nav=[['rank','Ранги'],['stats','Сила'],['cat','Кот'],['clean','Без срыва'],['boss','Ёкаи'],['forge','Кузница'],['love','Сердце'],['ach','Награды']];
+ o+=H('boss','Ёкаи 妖','глава '+(ch+1))+CHAPTERS.map((c,i)=>{const st=i<ch%NB&&circ(ch)===0||circ(ch)>0&&i!==ch%NB?'done':i===ch%NB?'now':'lock';return rmRow(st+' img','<span class="rmi">'+bossSVG(i,2,false)+'</span>',esc(c[0]),esc(c[1])+' · слабость: '+STATS[WEAK[i]][0]+' · '+baseHp(i)+' HP',st==='done'?'✓':(bossGold(i))+' з · '+bossXp(i)+' XP')}).join('');
+ if(0)o+=H('forge','Кузница 鍛')+Object.entries(SLOTS).map(([k,v])=>{const n=S.forge[k]||0;return rmRow(n?'now':'lock','+'+n,v[0]+' · +'+Math.round(n*FORGE_STEP*100)+'% '+v[1],FORGE_COST.map((c,i)=>'+'+(i+1)+': '+c+' з, ур. '+3*(i+1)).join(' · '),n>=FORGE_COST.length?'макс.':'след.: '+FORGE_COST[n]+' з')}).join('');
+ if(0)o+=H('love','Линия Сердца 心')+LOVE.map((s,i)=>{const t=s[2],dn=t.filter(x=>loveCnt(x[0])>=x[3]).length,st=dn===t.length?'done':dn?'now':'lock';return rmRow(st,i+1,esc(s[0]),t.map(x=>esc(x[1])+(x[3]>1?' ('+Math.min(loveCnt(x[0]),x[3])+'/'+x[3]+')':'')).join(' · '),dn+'/'+t.length)}).join('');
+ if(0)o+=H('ach','Достижения 印')+ACHS.map(x=>{let d=false;try{d=!!x[3](S)}catch(e){}return rmRow(d?'done':'lock',esc(x[0]),esc(x[1]),esc(x[2]),d?'✓':'')}).join('');
+ const nav=[['rank','Ранги'],['clean','Без срыва'],['boss','Ёкаи'],['cat','Кот'],['stats','Характеристики']];
  sheet('<h3>Карта пути 道</h3><div class="rmnav">'+nav.map(n=>'<button data-j="'+n[0]+'">'+n[1]+'</button>').join('')+'</div>'+o+'<button class="btn" id="rmClose" style="width:100%;margin-top:14px">Закрыть</button>');
  $('rmClose').onclick=closeSheet;const go=s=>{const e=$('rm-'+s);if(e)e.scrollIntoView({block:'start'})};$('sheetIn').querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>go(b.dataset.j));if(sec)setTimeout(()=>go(sec),30)}
 
@@ -2659,7 +2714,7 @@ const ART=[['kaeru','Презерватив-оберег','護',0,'золота 
  ['kitsune','Маска соблазнителя','仮',1,'опыта за общение',4,'soc'],['inro','Резюме жиголо','履',1,'опыта за карьеру',4,'job'],['chochin','Красный фонарь','灯',1,'опыта за ритуалы',4,'rit'],['tessen','Веер стыдливой гейши','扇',1,'урона по боссу',5,'d'],
  ['oni','Ледяной душ','冷',2,'урона в бою с тягой',8,'urge'],['musashi','Камасутра Мусаси','性',2,'к наградам контрактов',5,'ct'],['maneki','Кот-сводник','招',2,'к шансу сундука с квестов',8,'chest'],
  ['yata','Зеркало «Я секси»','鏡',3,'опыта за всё',2,'x'],['tama','Яйца дракона','玉',3,'опыта за всё',3,'x']];
-const ANEED=[0,2,4,10,20,50,100],AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'],AFUN={kaeru:'Защищает кошелёк так же надёжно, как кое-что другое.',daruma:'Встаёт каждое утро без напоминаний. Учись у него дисциплине.',geta:'Девушки любят руки. Руки любят железо.',fude:'Schatz, Liebling, Mäuschen — и ещё 400 слов, которых нет в учебнике B1.',kitsune:'Надеваешь — и small talk сам льётся. Снимаешь — ты всё тот же, но уже уверенней.',inro:'Опыт работы: обаяние, пунктуальность, выносливость.',chochin:'Светит, когда ты делаешь ритуалы. Квартал красных фонарей тут ни при чём. Почти.',tessen:'Прикрывает лицо гейши, когда ты бьёшь босса особенно жёстко.',oni:'Лучшее оружие против тяги, проверенное поколениями монахов и студентов.',musashi:'Мусаси писал о стратегии. Эту главу он почему-то не опубликовал.',maneki:'Машет лапкой, и сундуки сами идут к тебе в руки.',yata:'Смотришь в него и говоришь: «А я ничего». И это правда.',tama:'Легендарные. Тяжёлые. Полные энергии, которую ты больше не сливаешь на экран.'};
+const ANEED=[0,2,4,10,20,50,100],AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'],AFUN={kaeru:'Защищает кошелёк так же надёжно, как кое-что другое.',daruma:'Встаёт каждое утро без напоминаний. Учись у него дисциплине.',geta:'Девушки любят руки. Руки любят железо.',fude:'«Schatz», «Mäuschen» и ещё 400 слов, которых нет в учебнике B1. Пригодится на свидании в Мюнхене.',kitsune:'Надеваешь — и small talk сам льётся. Снимаешь — ты всё тот же, но уже уверенней.',inro:'Опыт работы: обаяние, пунктуальность, выносливость.',chochin:'Светит, когда ты делаешь ритуалы. Квартал красных фонарей тут ни при чём. Почти.',tessen:'Прикрывает лицо гейши, когда ты бьёшь босса особенно жёстко.',oni:'Лучшее оружие против тяги, проверенное поколениями монахов и студентов.',musashi:'Мусаси писал о стратегии. Эту главу он почему-то не опубликовал.',maneki:'Машет лапкой, и сундуки сами идут к тебе в руки.',yata:'Смотришь в него и говоришь: «А я ничего». И это правда.',tama:'Легендарные. Тяжёлые. Полные энергии, которую ты больше не сливаешь на экран.'};
 const artEqL=()=>(S.artEq||[]).filter(id=>(S.art||{})[id]).slice(0,3);
 function artE(type){let v=0;for(const id of artEqL()){const a=ART.find(x=>x[0]===id);if(a&&a[6]===type)v+=a[5]*S.art[id].l/100}return v}
 const artPk=()=>artEqL().includes('tama')?Math.ceil(S.art.tama.l/2):0;
@@ -2723,7 +2778,7 @@ const AS=[
  ['combo','Комбо в бою','撃','Бой',()=>S.comboBest||0,[20,50,100,200],['Вихрь','Буря клинков']],
  ['storm','Штормы эмоций','嵐','Бой',()=>S.storms||0,[1,5,20,50],['Укротитель бурь','Око бури']],
  ['lvl','Уровень героя','位','Бой',()=>lvlInfo(S.xp).l,[5,10,20,30],['Ветеран','Живая легенда']],
- ['rank','Ранги','侍','Бой',()=>rankIdx(),[2,4,6,8],['Укротитель стояка','Император воздержания']],
+ ['rank','Ранги','侍','Бой',()=>rankIdx(),[2,4,6,8],['Укротитель стояка','Гигачад воздержания']],
  ['gold','Золото за всё время','金','Богатство',()=>S.goldTotal||0,[500,2000,10000,50000],['Богач','Магнат']],
  ['ct','Контракты','契','Богатство',()=>S.ctOk||0,[5,25,100,300],['Наёмник','Мастер гильдии']],
  ['risk','Рискованные контракты','賭','Богатство',()=>S.ctRisk||0,[1,10,30,80],['Игрок','Азартный ронин']],
@@ -2734,22 +2789,56 @@ const AS=[
  ['cat','Котик растёт','猫','Лавка',()=>stageIdx(),[1,2,3,4],['Друг кота','Хозяин кота-духа']]];
 const SECR=[['s_leg','Легендарная вещь','伝','Найти легендарное снаряжение',()=>S.inv.some(i=>i.r===3)],['s_drg','Сундук дракона','龍','Открыть сундук дракона',()=>!!S.chDragon],
  ['s_res','Мастер ветки','極','Открыть все перки одной ветки',()=>Object.keys(PKB).some(b=>PERKS.filter(p=>p[1]===b).every(pkOpen))],['s_vote','Голос за себя ×30','票','30 раз проголосовать за себя',()=>cntK(S.votes)>=30],['s_early','Ранний ронин','曙','Выполнить квест до 7 утра',()=>!!S.early7]];
-const ACAT=['Путь','Воля','Разум','Тело','Сердце','Бой','Богатство','Лавка','Тайные'];
+const FUN=[
+ ['f_nnn','No Nut November','栗','Все дни ноября чистые',()=>{const y=new Date().getFullYear();for(let d=1;d<=30;d++)if(S.days[y+'-11-'+pad(d)]!=='c')return false;return true}],
+ ['f_fri','Пережил пятницу','金','Чистый день в пятницу',()=>Object.entries(S.days).some(([d,v])=>v==='c'&&parseD(d).getDay()===5)],
+ ['f_dop','Дофаминовый детокс','断','7 дней без срыва',()=>bestDays()>=7],
+ ['f_hand','Рука в отпуске','手','14 дней без срыва',()=>bestDays()>=14],
+ ['f_kassa','Касса закрыта','閉','30 дней без срыва',()=>bestDays()>=30],
+ ['f_cold','Холодный душ без мата','冷','Сбросить энергию холодным душем',()=>((S.en||{}).cold||0)>=1],
+ ['f_walrus','Морж','氷','10 холодных душей',()=>((S.en||{}).cold||0)>=10],
+ ['f_push','Отжался вместо того чтобы…','腕','10 раз отжимания до отказа',()=>((S.en||{}).push||0)>=10],
+ ['f_dance','Танцую, как будто никто не видит','舞','Сбросить энергию танцами',()=>((S.en||{}).dance||0)>=1],
+ ['f_monk','Ушёл в монахи','僧','30 раз направить энергию в дело',()=>(S.enN||0)>=30],
+ ['f_kegel','Кегель-мастер','締','7 тренировок Кегеля',()=>(S.kg||0)>=7],
+ ['f_kegel30','Железный хват','鋼','30 тренировок Кегеля',()=>(S.kg||0)>=30],
+ ['f_mw','Доброе утро, дракон','朝','Отметить утренний стояк 7 раз',()=>(S.mw||0)>=7],
+ ['f_drg3','Из червячка в удава','蛇','Дракон 3-го уровня',()=>drgLv()>=2],
+ ['f_drg6','Змей Горыныч','龍','Дракон 6-го уровня',()=>drgLv()>=5],
+ ['f_batya','Батя в здании','父','10-й уровень героя',()=>lvlInfo(S.xp).l>=10],
+ ['f_sigma','Сигма-утро','曙','Квест до 7 утра',()=>!!S.early7],
+ ['f_satan','Не сегодня, Сатана','否','3 победы над тягой',()=>(S.wins||0)>=3],
+ ['f_deaf','Шёпот? Не слышал','耳','25 парированных шёпотов',()=>(S.parTot||0)>=25],
+ ['f_tap','Тапок в пол','速','Комбо 100 в бою',()=>(S.comboBest||0)>=100],
+ ['f_skuf','Скуф отменяется','筋','20 дел для тела',()=>skE('body').n>=20],
+ ['f_alt','Альтушка одобряет','姫','Вайфу 3-го уровня',()=>wfLv()>=3],
+ ['f_rej','Отказ принят, достоинство на месте','勇','Первый отказ',()=>((S.love||{}).rej||0)>=1],
+ ['f_num','Пикап без пикапа','番','Получить номер или инсту',()=>loveCnt('contact')>=1],
+ ['f_chest','Лудоман на сундуках','箱','Открыть 25 сундуков',()=>(S.chOpen||0)>=25],
+ ['f_rich','Жмот','財','Накопить 2000 золота на руках',()=>S.gold>=2000],
+ ['f_de','Без гугл-переводчика','独','30 дел по немецкому',()=>skE('de').n>=30],
+ ['f_kink','Кинк-энциклопедист','典','Прочитать 10 статей энциклопедии',()=>cntK(S.kr)>=10],
+ ['f_steps','Шагомер-маньяк','歩','14 000 шагов за день',()=>!!(S.stp&&S.stp.n>=14000)],
+ ['f_phx','Феникс-рецидивист','鳳','3 раза вернуться после срыва',()=>(S.phoenix||0)>=3],
+ ['f_cat','Кошатник','猫','Котик дорос до 3-й стадии',()=>stageIdx()>=2]];
+const ACAT=['Угар','Путь','Воля','Разум','Тело','Сердце','Бой','Богатство','Лавка','Тайные'];
 const achTop=s=>{let t=-1;s[5].forEach((n,i)=>{if((S.ach2||{})[s[0]+':'+i])t=i});return t};
 const achAP=()=>Object.keys(S.ach2||{}).reduce((a,id)=>{const t=+id.split(':')[1];return a+(isNaN(t)?30:TIERAP[t])},0);
 function checkAch(){S.ach2=S.ach2||{};S.actBest=Math.max(S.actBest||0,actStreak());const retro=S.achV!==1,got=[];
  for(const s of AS){let v=0;try{v=s[4]()}catch(e){}s[5].forEach((n,t)=>{const id=s[0]+':'+t;if(v>=n&&!S.ach2[id]){S.ach2[id]=today();got.push([s,t])}})}
  for(const s of SECR){if(!S.ach2[s[0]]&&s[4]()){S.ach2[s[0]]=today();got.push([s,-1])}}
+ {const fr=!S.funV;for(const s of FUN){let ok=false;try{ok=s[4]()}catch(e){}if(ok&&!S.ach2[s[0]]){S.ach2[s[0]]=today();if(!fr)got.push([s,-1])}}if(fr){S.funV=1;save()}}
  if(retro){S.achV=1;save();if(got.length)setTimeout(()=>lootSheet('Зал славы открыт',null,'Засчитано за прошлые дела: '+got.length+' '+plural(got.length,'достижение','достижения','достижений')+'. Опыт за них не начисляется, но слава и титулы твои. Загляни во вкладку «Герой»'),2200);return}
  for(const[s,t]of got){const nm=t<0?s[1]:s[1]+' · '+TIERN[t],xp=t<0?50:TIERXP[t],g=Math.round(xp*.7);S.xp+=xp;S.gold+=g;S.goldTotal+=g;addLog('Достижение: '+nm);if(t>=2)chGive(t===3?3:2,'достижение');setTimeout(()=>{toast('Достижение: '+nm+' · +'+xp+' XP');SFX.stamp()},1500)}
  if(got.length)save()}
 let ACF='Ближайшие';
-function renderAch(){S.ach2=S.ach2||{};const got=Object.keys(S.ach2).length,tot=AS.length*4+SECR.length;$('achCnt').textContent=got+' / '+tot;
+function renderAch(){S.ach2=S.ach2||{};const got=Object.keys(S.ach2).length,tot=AS.length*4+SECR.length+FUN.length;$('achCnt').textContent=got+' / '+tot;
  const badge=s=>{const top=achTop(s),nx=s[5][top+1];let v=0;try{v=s[4]()}catch(e){}const pct=nx?Math.min(100,v/nx*100):100;
   return '<button class="abdg" data-s="'+s[0]+'" style="--tc:'+(top>=0?TIERC[top]:'#3a342d')+'"><i lang="ja">'+s[2]+'</i><b>'+esc(s[1])+'</b><small>'+(top>=0?TIERN[top]:'не открыто')+'</small><div class="gauge"><i style="width:'+pct+'%;background:'+(TIERC[top+1]||TIERC[3])+'"></i></div><span>'+(nx?Math.min(v,nx).toLocaleString('ru-RU')+' / '+nx.toLocaleString('ru-RU'):'всё взято')+'</span></button>'};
  const sec=s=>S.ach2[s[0]]?'<div class="abdg" style="--tc:#c39bff"><i lang="ja">'+s[2]+'</i><b>'+esc(s[1])+'</b><small>тайное</small><span>'+esc(s[3])+'</span></div>':'<div class="abdg sec" style="--tc:#3a342d"><i>?</i><b>Тайное</b><small>скрыто</small></div>';
  const near=()=>AS.map(s=>{const t=achTop(s),nx=s[5][t+1];let v=0;try{v=s[4]()}catch(e){}return [s,nx?v/nx:-1]}).filter(x=>x[1]>=0).sort((a,b)=>b[1]-a[1]).slice(0,8).map(x=>x[0]);
- const list=ACF==='Ближайшие'?near().map(badge):ACF==='Тайные'?SECR.map(sec):(ACF==='Все'?AS:AS.filter(s=>s[3]===ACF)).map(badge).concat(ACF==='Все'?SECR.map(sec):[]);
+ const fun=s=>'<div class="abdg fun'+(S.ach2[s[0]]?' got':'')+'" style="--tc:'+(S.ach2[s[0]]?'#c9a46a':'#3a342d')+'"><i lang="ja">'+s[2]+'</i><b>'+esc(s[1])+'</b><small>'+(S.ach2[s[0]]?'получено':'угар')+'</small><span>'+esc(s[3])+'</span></div>';
+ const list=ACF==='Угар'?FUN.map(fun):ACF==='Ближайшие'?near().map(badge):ACF==='Тайные'?SECR.map(sec):(ACF==='Все'?AS:AS.filter(s=>s[3]===ACF)).map(badge).concat(ACF==='Все'?FUN.map(fun).concat(SECR.map(sec)):[]);
  $('achs').innerHTML='<div class="ahd"><div><b>'+achAP()+'</b><span>славы</span></div><div><b>'+got+'</b><span>из '+tot+'</span></div><div><b>'+(S.title?esc(S.title):'—')+'</b><span>титул</span></div></div>'
   +'<div class="chips acf">'+['Ближайшие','Все'].concat(ACAT).map(c=>'<button class="chp'+(ACF===c?' on':'')+'" data-c="'+c+'">'+c+'</button>').join('')+'</div><div class="agrid">'+list.join('')+'</div>';
  $('achs').querySelectorAll('.acf .chp').forEach(b=>b.onclick=()=>{ACF=b.dataset.c;SFX.tap();renderAch()});$('achs').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>achSheet(b.dataset.s));
@@ -2796,6 +2885,65 @@ function stepsGuide(){sheet('<h3>👟 Шаги из «Здоровья»</h3><p 
  +'<div class="row2"><button class="btn" id="stHand">Ввести вручную</button><button class="btn gold" id="stOk">Понятно</button></div>');
  $('stOk').onclick=()=>{S.stpOn=1;save();closeSheet();render()};$('stHand').onclick=()=>{const v=prompt('Сколько шагов сегодня?');closeSheet();if(v)stepsSet(parseInt(String(v).replace(/\D/g,'')),'вручную')}}
 {const sp=new URLSearchParams(location.search).get('steps');if(sp){setTimeout(()=>{S.stpOn=1;stepsSet(parseInt(sp.replace(/\D/g,'')),'Здоровье')},800);history.replaceState(null,'',location.pathname)}}
+
+/* ===== 龍 Dragon tab ===== */
+const DRL=[[0,'Червячок'],[60,'Шланг'],[160,'Удав'],[320,'Питон'],[550,'Анаконда'],[850,'Змей Горыныч'],[1300,'Древний дракон']];
+const drgPow=()=>cleanDays()*10+totalClean()*3+(S.kg||0)*4+(S.mw||0)*2+(S.enN||0)*3;
+function drgLv(){const p=drgPow();let i=0;DRL.forEach((x,j)=>{if(p>=x[0])i=j});return i}
+const DRSAY=['Я не сплю, я коплю силы. Не буди без повода.','Экран — это не повод. Повод — живая девушка, которая сказала «да».','Утром я встаю раньше тебя. Бери пример.','Холодный душ? Опять? Ладно, я понял намёк.','Кегель — это день ног, только для меня. Не пропускай.','Я дракон, а не хомяк. Хомяков кормят каждый день, драконы ждут достойную добычу.','Если я рвусь в бой — иди на турник. Энергия должна куда-то уйти.','Пятничный вечер — моя слабость. Займи руки заранее.','Мне не нужна быстрая разрядка. Мне нужна история, которую не стыдно вспомнить.','Каждый чистый день я расту. Не в сантиметрах, в самоуважении. Хотя кто знает.','Я не прошу многого: сон, спорт и девушку, а не вкладку.','Говорят, размер не главное. Главное — кто им управляет. Управляй.'];
+function drgMood(){const d=today();if(S.days[d]==='f')return ['похмелье','Срыв. Ничего, драконы тоже падают. Завтра чистый день — и я снова в форме.'];
+ if((S.mwD||{})[d])return ['бодрый','Утро началось правильно. Кровоток в порядке, сон работает. Горжусь нами.'];
+ if(cleanDays()>=7)return ['рвётся в бой','Энергии через край. Отправь её в зал или в холодный душ — не в экран.'];
+ const h=new Date().getHours();if(h>=23||h<6)return ['сонный','Спать. Ночью я самый слабый и самый глупый.'];return ['дремлет',DRSAY[Math.floor(Date.now()/36e5)%DRSAY.length]]}
+function renderDrg(){if(!$('drg'))return;const p=drgPow(),i=drgLv(),cur=DRL[i],nx=DRL[i+1],m=drgMood(),d=today(),kgT=S.kgD===d,mwT=!!(S.mwD||{})[d];
+ $('drgLvN').textContent='ур. '+(i+1);
+ const wk=Array.from({length:7},(_,k)=>{const x=new Date();x.setDate(x.getDate()-6+k);const kk=dkey(x);return '<u class="'+((S.mwD||{})[kk]?'on':'')+'">'+['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][x.getDay()]+'</u>'}).join('');
+ $('drg').innerHTML='<div class="drgc"><div class="drgk" lang="ja">龍</div><div class="drgb"><b>'+cur[1]+'</b><small>сила '+p+(nx?' · до «'+nx[1]+'» ещё '+(nx[0]-p):' · максимум')+'</small><div class="gauge g-xp"><i style="width:'+(nx?Math.round((p-cur[0])/(nx[0]-cur[0])*100):100)+'%"></i></div><span class="drgm">настроение: '+m[0]+'</span></div></div>'
+  +'<p class="drgsay">'+esc(m[1])+'</p>'
+  +'<div class="drgrow"><div><b>Тренировка Кегеля</b><small>2 минуты · всего '+(S.kg||0)+'</small></div><button class="btn'+(kgT?'':' gold')+'" id="kgBtn"'+(kgT?' disabled':'')+'>'+(kgT?'Сегодня ✓':'Начать')+'</button></div>'
+  +'<div class="drgrow"><div><b>Утренний стояк</b><small>признак хорошего сна и кровотока</small><div class="drgw">'+wk+'</div></div><button class="btn'+(mwT?'':' gold')+'" id="mwBtn"'+(mwT?' disabled':'')+'>'+(mwT?'Был ✓':'Был')+'</button></div>'
+  +'<details class="hint"><summary>Откуда сила дракона</summary><p class="mut" style="font-size:12.5px;line-height:1.5">Дни без срыва подряд ×10, все чистые дни ×3, Кегель ×4, утренние отметки ×2, энергия в дело ×3. Срыв обнуляет серию — сила падает, но не до нуля. Если утренних эрекций нет неделями, это повод спросить врача: часто дело в сне, стрессе или кровотоке, и это решаемо.</p></details>';
+ $('kgBtn').onclick=kegelSheet;
+ $('mwBtn').onclick=()=>{if((S.mwD||{})[today()])return;S.mwD=S.mwD||{};S.mwD[today()]=1;const ks=Object.keys(S.mwD).sort();while(ks.length>60)delete S.mwD[ks.shift()];S.mw=(S.mw||0)+1;award(5,'wil','',{t:'Утренний стояк отмечен'});save();render()};
+ renderEnergy();renderKinks()}
+function kegelSheet(){let n=0,iv=null;sheet('<h3>Кегель · 2 минуты</h3><p class="mut" style="font-size:13px;line-height:1.5">Это мышцы, которыми ты останавливаешь мочеиспускание (только не тренируй их в туалете). Сжал 3 секунды — расслабил 3 секунды, 20 раз. Дыши спокойно, живот и ягодицы не напрягай.</p><div class="kgring" id="kgR"><b id="kgT">Готов?</b><small id="kgN">0 / 20</small></div><button class="btn gold" id="kgGo" style="width:100%">Старт</button><button class="linkbtn" id="kgX" style="display:block;margin:10px auto 0">Закрыть</button>');
+ const stop=()=>{clearInterval(iv);iv=null};$('kgX').onclick=()=>{stop();closeSheet()};
+ $('kgGo').onclick=()=>{if(iv)return;$('kgGo').disabled=true;let t=0;iv=setInterval(()=>{if(!$('kgR')){stop();return}const sq=Math.floor(t/3)%2===0;$('kgR').classList.toggle('sq',sq);$('kgT').textContent=sq?'Сжать':'Расслабить';if(t%6===0&&t)n++;$('kgN').textContent=Math.min(n,20)+' / 20';if(sq&&t%3===0)buzz();t++;
+  if(n>=20){stop();$('kgT').textContent='Готово';S.kg=(S.kg||0)+1;S.kgD=today();award(15,'str','',{t:'Тренировка Кегеля'});save();setTimeout(()=>{closeSheet();render()},900)}},1000)}}
+const ENERGY=[['cold','🚿','Холодный душ','60 секунд под холодной водой. Мат разрешён, но без него — ачивка.',20,'wil'],
+ ['push','💪','Отжимания до отказа','Сколько сможешь. Потом ещё один раз.',15,'str'],['squat','🦵','50 приседаний','Ноги — самая большая мышца. Туда и уходит энергия.',15,'str'],
+ ['gym','🏋️','Силовая на максимум','Лучший способ переработать тестостерон в мышцы.',35,'str'],['run','🏃','Пробежка 20 минут','Или быстрая ходьба. Голова очищается к 10-й минуте.',25,'str'],
+ ['box','🥊','Бой с тенью','3 раунда по 2 минуты. Бей тень по-настоящему.',20,'str'],['dance','🕺','Танцы под 3 трека','Как будто никто не видит. Потому что никто не видит.',15,'cha'],
+ ['sing','🎤','Петь в душе','Во весь голос. Соседи переживут.',10,'cha'],['clean','🧹','Уборка под музыку','15 минут. Энергия уходит, комната становится чище.',15,'wil'],
+ ['art','🎬','Монтаж или рисование','30 минут творчества. Сублимация — это когда энергия становится искусством.',25,'int'],['de','📚','20 карточек немецкого','Мозг занят — тяга голодает.',15,'int'],
+ ['walk','🚶','Выйти на улицу','10 минут, телефон в кармане.',10,'wil'],['call','📞','Написать другу','Живой человек вместо экрана. Можно просто мем.',15,'cha'],
+ ['write','✍️','Выписать мысли','Что сейчас чувствуешь — на бумагу. 5 минут.',10,'wil'],['breath','🌬','Медленное дыхание','Вдох 4, выдох 6. Две минуты, без усилия.',10,'wil']];
+function renderEnergy(){const d=today(),u=(S.enD&&S.enD.d===d)?S.enD.l:[];$('enCnt').textContent=u.length+' сегодня';
+ $('enGrid').innerHTML=ENERGY.map(e=>'<button class="encard'+(u.includes(e[0])?' used':'')+'" data-en="'+e[0]+'"><span>'+e[1]+'</span><b>'+e[2]+'</b><small>'+e[3]+'</small><em>'+(u.includes(e[0])?'✓ сегодня':'+'+e[4]+' XP')+'</em></button>').join('');
+ $('enGrid').querySelectorAll('[data-en]').forEach(b=>b.onclick=()=>{const e=ENERGY.find(x=>x[0]===b.dataset.en),d=today();if(!S.enD||S.enD.d!==d)S.enD={d,l:[]};if(S.enD.l.includes(e[0]))return toast('Сегодня уже было');
+  S.enD.l.push(e[0]);S.en=S.en||{};S.en[e[0]]=(S.en[e[0]]||0)+1;S.enN=(S.enN||0)+1;award(e[4],e[5],'',{t:'Энергия в дело: '+e[2]});addLog('Энергия в дело: '+e[2]);save();render()})}
+const KINKS=[['Стоп-слово','Не кинк, а фундамент всех кинков. «Красный» — стоп, «жёлтый» — помедленнее. Без него никакой экзотики.'],
+ ['Praise kink','Многих заводит похвала: «ты такая красивая», «мне так нравится, как ты…». Самый недооценённый кинк, и он бесплатный.'],
+ ['Грязные разговоры','Dirty talk начинается не с фраз из порно, а с честного «мне нравится, когда ты…». Начни шёпотом и смотри на реакцию.'],
+ ['Ролевые игры','Незнакомцы в баре, учитель и ученица, ниндзя и гейша. Сценарий обсуждается заранее. Смех посреди сцены — нормально и даже мило.'],
+ ['Повязка на глаза','Без зрения остальное чувствуется в два раза ярче. Самый простой вход в мир кинков.'],
+ ['Массаж с маслом','Самая недооценённая прелюдия. 20 минут массажа спины — и в её глазах ты уже бог.'],
+ ['Засосы и укусы','Лёгкие укусы шеи и плеч сводят с ума многих. Засосы на видном месте — только с разрешения: ей завтра на работу.'],
+ ['Фут-фетиш','Один из самых частых фетишей в мире. Массаж стоп — безопасный старт, приятный даже тем, кто не в теме.'],
+ ['Чулки и бельё','Визуальный кинк: иногда то, что надето, заводит сильнее, чем то, что снято. Комплимент её выбору белья работает отлично.'],
+ ['Косплей','Аниме-вайфу в реальной жизни бывают. Многие девушки любят косплей. Вопрос только в том, кто платит за парик.'],
+ ['Доминирование и подчинение','Игра во власть: один ведёт, другой следует. Власть отдаёт тот, кто подчиняется, и он же может забрать её стоп-словом в любой момент.'],
+ ['Шлепки','Spanking: только мягкие места, сила нарастает постепенно, всё время вопрос «ещё?». Утром на память может остаться отпечаток ладони.'],
+ ['Связывание','Шёлковый шарф вместо наручников из секс-шопа. Не туго, никогда не на шее, ножницы рядом, связанного не оставлять одного.'],
+ ['Игра с температурой','Кубик льда, потом тёплое дыхание. Воск — только специальный, низкотемпературный, и не в первый же вечер.'],
+ ['Тантра и медленный секс','Противоположность порно: медленно, спокойное дыхание, контакт глаз. Отлично подходит тем, кто учится управлять возбуждением.'],
+ ['Edging','Игра с краем: почти до финиша и остановка. Тренирует выносливость. На твоём пути — только с партнёршей, не с экраном.'],
+ ['Игрушки для пары','Вибратор — не конкурент, а союзник. Выбирать вместе — уже отличное свидание.'],
+ ['Вуайеризм и эксгибиционизм','Смотреть или показывать — частая фантазия. В жизни только с согласия всех участников, иначе это преступление, а не кинк.'],
+ ['Aftercare','После любой игры — объятия, вода, тёплые слова. Именно это делает кинк безопасным, а её — желающей повторить.']];
+function renderKinks(){const lv=lvlInfo(S.xp).l,n=Math.min(KINKS.length,3+totalClean()+Math.floor(lv/2));S.kr=S.kr||{};$('kinkCnt').textContent=n+' / '+KINKS.length;
+ $('kinks').innerHTML='<p class="mut" style="font-size:12.5px;margin:0 0 8px">Новая статья — за каждый чистый день и каждые 2 уровня. Всё строится на согласии: спроси, договорись, уважай «нет».</p>'+KINKS.map((k,i)=>i<n?'<details class="kink'+(S.kr[i]?' rd':'')+'" data-k="'+i+'"><summary><i>'+(i+1)+'</i><b>'+esc(k[0])+'</b></summary><p>'+esc(k[1])+'</p></details>':'<div class="kink lock"><i>'+(i+1)+'</i><b>Откроется позже</b></div>').join('');
+ $('kinks').querySelectorAll('details[data-k]').forEach(el=>el.addEventListener('toggle',()=>{if(el.open&&!S.kr[el.dataset.k]){S.kr[el.dataset.k]=1;el.classList.add('rd');save()}}))}
 /* ===== Evening ritual: close the day ===== */
 const eveDone=()=>!!(S.eve&&S.eve[today()]);
 function eveSheet(){const d=today(),D=ds(),T=allTasks(),dn=T.filter(x=>x.done).length,xp=(S.xpd||{})[d]||0,st=S.days[d],m=S.mood[d]||{},tp=todayPlan();
@@ -2821,11 +2969,11 @@ function eveSheet(){const d=today(),D=ds(),T=allTasks(),dn=T.filter(x=>x.done).l
   if(first)setTimeout(()=>toast('День закрыт. Котик уже сворачивается клубком'),400)}}
 function evePrompt(){const hr=new Date().getHours();if(hr<21||eveDone()||S.evePop===today())return;if(!$('sheet').classList.contains('hide'))return;S.evePop=today();save();eveSheet()}
 /* ================= WIRING ================= */
-const NAV=[['day','Сегодня','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Путь','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2'],['log','Летопись','M4 2h7l2 2v10H4z M6 6h5 M6 9h5 M6 12h3']];
-const NAVK={day:'今',quest:'道',hero:'侍',shop:'店',log:'記'};$('nav').innerHTML=NAV.map(([k,n])=>'<button data-s="'+k+'"><b class="nk" lang="ja">'+NAVK[k]+'</b>'+n+'</button>').join('');
+const NAV=[['day','Сегодня','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Путь','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['drg','Дракон',''],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2'],['log','Летопись','M4 2h7l2 2v10H4z M6 6h5 M6 9h5 M6 12h3']];
+const NAVK={day:'今',quest:'道',hero:'侍',drg:'龍',shop:'店',log:'記'};$('nav').innerHTML=NAV.map(([k,n])=>'<button data-s="'+k+'"><b class="nk" lang="ja">'+NAVK[k]+'</b>'+n+'</button>').join('');
 if(!document.querySelector('#nav .pill')){const p=document.createElement('i');p.className='pill';$('nav').prepend(p)}
 let lastY=0;addEventListener('scroll',()=>{const y=scrollY,n=document.querySelector('.nav');if(y>lastY+6&&y>120)n.classList.add('mini');else if(y<lastY-6||y<60)n.classList.remove('mini');lastY=y},{passive:true});
-function go(s){SFX.tap();buzz();document.querySelector('.nav').classList.remove('mini');{const ks=['day','quest','hero','shop','log'],p=document.querySelector('#nav .pill');if(p)p.style.transform='translateX('+(ks.indexOf(s)*100)+'%)'}document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.s===s));['day','quest','hero','shop','log'].forEach(k=>$('s-'+k).classList.toggle('hide',k!==s));window.scrollTo(0,0)}
+function go(s){SFX.tap();buzz();document.querySelector('.nav').classList.remove('mini');{const ks=['day','quest','hero','drg','shop','log'],p=document.querySelector('#nav .pill');if(p)p.style.transform='translateX('+(ks.indexOf(s)*100)+'%)'}document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.s===s));['day','quest','hero','drg','shop','log'].forEach(k=>$('s-'+k).classList.toggle('hide',k!==s));window.scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.s));
 
 $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
