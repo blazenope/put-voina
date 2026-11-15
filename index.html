@@ -816,6 +816,23 @@ summary{font:700 16px var(--pix)}
 #chfx .chrw{margin-top:4px}#chfx .chrw .rv{animation:rvIn .4s var(--spring) both}
 .oddsT{margin-top:12px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair)}.oddsT .lbl{margin-top:0}
 .oddsT>div:not(.lbl){display:flex;flex-direction:column;padding:6px 0;border-top:1px solid rgba(255,255,255,.05)}.oddsT b{font:700 12.5px var(--body)}.oddsT small{text-align:left}
+
+/* chest show v3: soft glow instead of hard rays */
+#chfx .rays{background:conic-gradient(from 0deg,transparent,color-mix(in srgb,var(--rc) 55%,transparent) 10%,transparent 22%,color-mix(in srgb,var(--rc) 40%,transparent) 35%,transparent 50%,color-mix(in srgb,var(--rc) 55%,transparent) 62%,transparent 75%,color-mix(in srgb,var(--rc) 40%,transparent) 88%,transparent)!important;filter:blur(38px);width:120vmax!important;height:120vmax!important;-webkit-mask:radial-gradient(circle,#000 0,transparent 42%)!important;mask:radial-gradient(circle,#000 0,transparent 42%)!important;opacity:.55!important;animation:raySpin 22s linear infinite!important}
+#chfx.open .rays{opacity:.85!important}
+#chfx::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 80%,#ffe9b0,transparent),radial-gradient(1.5px 1.5px at 30% 90%,#fff,transparent),radial-gradient(2px 2px at 52% 85%,#ffd27a,transparent),radial-gradient(1.5px 1.5px at 70% 95%,#fff,transparent),radial-gradient(2px 2px at 88% 82%,#ffe9b0,transparent),radial-gradient(1.5px 1.5px at 20% 60%,#fff,transparent),radial-gradient(2px 2px at 80% 65%,#ffd27a,transparent);background-size:100% 100%;animation:sparkUp 6s linear infinite;opacity:.8}
+@keyframes sparkUp{from{transform:translateY(30%);opacity:0}20%{opacity:.9}to{transform:translateY(-70%);opacity:0}}
+#chfx .chbox svg{filter:drop-shadow(0 0 26px color-mix(in srgb,#ffd27a 45%,transparent))}
+.bigc{position:relative;overflow:hidden;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:28px!important;padding:26px 30px!important}
+.bigc::after{content:'';position:absolute;inset:-40% auto -40% -60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:rotate(18deg);animation:shine 1.6s .4s ease-out both}
+@keyframes shine{from{left:-60%}to{left:130%}}
+.bigc .bci .ak{box-shadow:0 0 30px -4px var(--rc)}
+#chfx .chname{font:800 22px var(--body)!important;letter-spacing:.3px;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+#chfx .chtop{font-size:13px!important;padding:6px 14px;border-radius:99px;background:rgba(255,210,122,.12);border:1px solid rgba(255,210,122,.35)}
+#chfx.fl2::after{background:radial-gradient(circle at 50% 40%,#c39bff66,transparent 60%)!important}#chfx.fl3::after{background:radial-gradient(circle at 50% 40%,#ffd27a99,transparent 65%)!important}
+#chfx .chbox::before{content:'';position:absolute;left:50%;top:55%;width:260px;height:260px;transform:translate(-50%,-50%);background:radial-gradient(circle,color-mix(in srgb,#ffd27a 55%,transparent),transparent 65%);filter:blur(10px);z-index:-1;animation:glowP 2.4s ease-in-out infinite}
+#chfx .chbox{position:relative;isolation:isolate}@keyframes glowP{50%{opacity:.6;transform:translate(-50%,-50%) scale(1.12)}}
+.chsv .spk{transform-origin:32px 32px;animation:spk 2s ease-in-out infinite}@keyframes spk{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.9;transform:scale(1)}}
 </style>
 </head>
 <body>
@@ -2395,11 +2412,19 @@ const chLeft=c=>c&&c.un?Math.max(0,c.un-Date.now()):null;
 const fmtLeft=ms=>{const m=Math.ceil(ms/6e4);return m>=60?Math.floor(m/60)+' ч '+(m%60)+' мин':m+' мин'};
 const chCost=ms=>Math.max(5,Math.ceil(ms/18e4));
 function chSpeed(min){const C=chS(),k=Object.keys(C.sl).find(k=>C.sl[k]&&C.sl[k].un>Date.now());if(k)C.sl[k].un-=min*6e4}
-function chestSVG(t,s){const c=CHT[t][2];return '<svg viewBox="0 0 100 92" width="'+s+'" height="'+Math.round(s*.92)+'" class="chsv"><ellipse cx="50" cy="86" rx="38" ry="5" fill="#000" opacity=".35"/>'
- +'<rect x="12" y="42" width="76" height="42" rx="5" fill="'+c+'"/><rect x="12" y="42" width="76" height="42" rx="5" fill="#000" opacity=".12"/><rect x="12" y="50" width="76" height="5" fill="#000" opacity=".22"/>'
- +'<rect x="12" y="42" width="7" height="42" fill="#e2c48e" opacity=".85"/><rect x="81" y="42" width="7" height="42" fill="#e2c48e" opacity=".85"/>'
- +'<rect x="41" y="46" width="18" height="21" rx="3" fill="#e2c48e"/><text x="50" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#2a1d14" font-family=\'"Yu Mincho","Hiragino Mincho ProN",serif\'>'+CHT[t][1]+'</text>'
- +'<g class="lid"><path d="M12 44 Q12 16 50 16 Q88 16 88 44Z" fill="'+c+'"/><path d="M12 44 Q12 16 50 16 Q88 16 88 44Z" fill="#fff" opacity=".1"/><rect x="12" y="38" width="76" height="6" fill="#000" opacity=".2"/><path d="M19 44 Q19 22 30 19 L30 44Z M81 44 Q81 22 70 19 L70 44Z" fill="#e2c48e" opacity=".85"/></g></svg>'}
+function chestSVG(t,s){const c=CHT[t][2],u='g'+t+Math.random().toString(36).slice(2,6),MF="Yu Mincho,serif";return '<svg viewBox="0 0 120 110" width="'+s+'" height="'+Math.round(s*.92)+'" class="chsv"><defs>'
+ +'<linearGradient id="'+u+'b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+c+'"/><stop offset="1" stop-color="'+c+'" stop-opacity=".55"/></linearGradient>'
+ +'<linearGradient id="'+u+'m" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".45" stop-color="#e2b768"/><stop offset="1" stop-color="#8a6026"/></linearGradient>'
+ +'<radialGradient id="'+u+'g"><stop offset="0" stop-color="#ffe9a8"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs>'
+ +'<ellipse cx="60" cy="104" rx="44" ry="5" fill="#000" opacity=".45"/>'
+ +'<rect x="14" y="52" width="92" height="50" rx="7" fill="#1a120c"/><rect x="14" y="52" width="92" height="50" rx="7" fill="url(#'+u+'b)"/>'
+ +'<path d="M18 62 H102 M18 76 H102 M18 90 H102" stroke="#000" stroke-opacity=".18" stroke-width="1.2"/>'
+ +'<rect x="14" y="52" width="9" height="50" rx="3" fill="url(#'+u+'m)"/><rect x="97" y="52" width="9" height="50" rx="3" fill="url(#'+u+'m)"/><rect x="14" y="94" width="92" height="8" rx="3" fill="url(#'+u+'m)"/>'
+ +'<g class="lid"><path d="M14 56 Q14 20 60 20 Q106 20 106 56Z" fill="#1a120c"/><path d="M14 56 Q14 20 60 20 Q106 20 106 56Z" fill="url(#'+u+'b)"/><path d="M24 40 Q34 26 60 25" stroke="#fff" stroke-opacity=".35" stroke-width="3" fill="none" stroke-linecap="round"/>'
+ +'<path d="M14 56 Q14 26 26 22 L28 56Z M106 56 Q106 26 94 22 L92 56Z" fill="url(#'+u+'m)"/><rect x="12" y="50" width="96" height="8" rx="3" fill="url(#'+u+'m)"/></g>'
+ +'<circle cx="60" cy="66" r="20" fill="url(#'+u+'g)" opacity=".7"/><rect x="48" y="54" width="24" height="26" rx="5" fill="url(#'+u+'m)" stroke="#5a3c14" stroke-width="1"/>'
+ +'<text x="60" y="73" text-anchor="middle" font-size="15" font-weight="800" fill="#3a2408" font-family="'+MF+'">'+CHT[t][1]+'</text>'
+ +'<path d="M30 30 l2 -5 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2z" fill="#fff" opacity=".85" class="spk"/></svg>'}
 function chOpen(k){const C=chS(),c=C.sl[k];if(!c||CHBUSY)return;const T=CHT[c.t];C.sl[k]=null;C.n=(C.n||0)+1;S.chOpen=(S.chOpen||0)+1;if(c.t===4)S.chDragon=1;
  const g=Math.round(T[4][0]+Math.random()*(T[4][1]-T[4][0]));S.gold+=g;S.goldTotal+=g;const cards=artRoll(T[5],T[6]);let it=null;if(Math.random()<[.08,.25,.45,.75,1][T[6]])it=makeItem([0,1,1,2,2][T[6]]);
  addLog('Открыт '+T[0].toLowerCase()+': +'+g+' золота'+(cards.length?', карты: '+cards.map(x=>ART.find(a=>a[0]===x[0])[1]+' ×'+x[1]).join(', '):''));save();render();chReveal(c.t,T[0],g,cards,it)}
