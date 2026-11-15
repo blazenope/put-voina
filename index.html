@@ -1187,7 +1187,6 @@ summary{font:700 16px var(--pix)}
   <div class="pnl" id="cmSec"><div class="ttl"><h2>Обязательства 誓</h2><span class="c" id="cmCnt"></span></div><div id="cmList"></div></div>
   <div class="pnl" id="loveSec" style="box-shadow:inset 0 0 0 2px #a8323e">
     <div class="ttl"><h2 style="color:#ff6b7a">Линия Сердца</h2><span class="c" id="loveCnt"></span></div>
-    <div id="waifu"></div>
     <div class="why" style="margin-bottom:10px">Сюжетная линия к живой близости: от формы героя до свиданий. Делай в любом порядке, всё прокачивает Харизму. Отказы тоже дают опыт.</div>
     <div class="row2" style="margin-bottom:12px"><button class="btn" id="loveRej">Отказ / игнор</button><button class="btn" id="loveCode">Кодекс</button></div>
     <button class="btn gold" id="loveStreet" style="width:100%;margin:-4px 0 12px">Шпаргалка улицы: фразы и психология</button>
@@ -1269,6 +1268,7 @@ summary{font:700 16px var(--pix)}
   <div class="pnl"><div class="ttl"><h2>Тренировки дракона</h2><span class="c" id="drgXc"></span></div><div id="drgX"></div></div>
   <div class="pnl"><div class="ttl"><h2>Сексолог спрашивает</h2><span class="c">вопрос дня</span></div><div id="drgQz"></div></div>
   <div class="pnl" id="enSec" style="display:none"><div class="ttl"><h2>Куда деть энергию</h2><span class="c" id="enCnt"></span></div><p class="mut" style="font-size:13px;margin:0 0 10px">Тянет или просто много энергии — выбери способ и потрать её с пользой. Каждый способ раз в день даёт опыт и бьёт босса.</p><div class="engrid" id="enGrid"></div></div>
+  <div class="pnl" id="wfSec"><div class="ttl"><h2>Вайфу 恋</h2><span class="c">ведёт тебя к живой девушке</span></div><div id="waifu"></div></div>
   <div class="pnl"><div class="ttl"><h2>Книга дракона 18+</h2><span class="c" id="kinkCnt"></span></div><div id="kinks"></div></div>
   <div class="pnl"><div class="ttl"><h2>Мои параметры</h2><span class="c">дракон в цифрах</span></div><div id="drgMe"></div></div>
 </main>
@@ -2292,7 +2292,7 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
  $('catShop').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const it=CAT_ACC.find(x=>x[0]===b.dataset.c);if(S.gold<it[2])return;S.gold-=it[2];A.owned.push(it[0]);A.on.push(it[0]);cheer(25);SFX.coin();addLog('Котику куплено: '+it[1]);save();render();toast('Котик доволен: '+it[1].toLowerCase())});
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
 function hintify(){document.querySelectorAll('#habSec>.mut,#ctList>.mut,#s-shop .pnl>.mut,#loveSec>.why,#s-hero .lore,#s-quest .pnl>.why').forEach(el=>{if(el.parentElement.tagName==='DETAILS'||el.textContent.length<90)return;const d=document.createElement('details');d.className='hint';d.innerHTML='<summary>'+(el.classList.contains('lore')?'Легенда героя':'Как это работает?')+'</summary>';el.replaceWith(d);d.appendChild(el)})}
-const COLD={'Обязательства 誓':1,'Дракон':1,'Куда деть энергию':1,'Мои параметры':1,'Охота недели':1,'Тренировки дракона':1,'Сексолог спрашивает':1,'Книга дракона 18+':1,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
+const COLD={'Вайфу 恋':1,'Обязательства 誓':1,'Дракон':1,'Куда деть энергию':1,'Мои параметры':1,'Охота недели':1,'Тренировки дракона':1,'Сексолог спрашивает':1,'Книга дракона 18+':1,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
 document.addEventListener('click',e=>{if(!e.target.closest('#hudSet'))return;go('log');setTimeout(()=>{const p=$('setPnl');if(!p)return;p.classList.remove('shut');S.open['Настройки']=1;p.scrollIntoView({behavior:'smooth',block:'start'})},250)});
 function colify(){S.open=S.open||{};const st=document.getElementById('s-log').lastElementChild;if(st&&!st.querySelector(':scope>.ttl')){st.insertAdjacentHTML('afterbegin','<div class="ttl"><h2>Настройки</h2></div>');st.id='setPnl'}
  document.querySelectorAll('#s-drg>.pnl,#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
