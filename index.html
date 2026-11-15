@@ -2870,6 +2870,12 @@ const FUN=[
  ['f_push','Отжался вместо того чтобы…','腕','10 раз отжимания до отказа',()=>((S.en||{}).push||0)>=10],
  ['f_dance','Танцую, как будто никто не видит','舞','Сбросить энергию танцами',()=>((S.en||{}).dance||0)>=1],
  ['f_monk','Ушёл в монахи','僧','30 раз направить энергию в дело',()=>(S.enN||0)>=30],
+ ['f_blue','Синие яйца','藍','14 дней без срыва подряд',()=>bestDays()>=14],
+ ['f_seed','Хранитель семени','守','21 день без срыва подряд',()=>bestDays()>=21],
+ ['f_tank','Ходячая цистерна','満','30 дней без срыва подряд',()=>bestDays()>=30],
+ ['f_bank','Банк спермы','銀','45 дней без срыва: вклады принимаются, снятие — только с живой девушкой',()=>bestDays()>=45],
+ ['f_faberge','Яйца Фаберже','卵','60 дней без срыва подряд',()=>bestDays()>=60],
+ ['f_ebyr','Ебырь-самурай','豪','90 дней без срыва подряд',()=>bestDays()>=90],
  ['f_kegel','Кегель-мастер','締','7 дней Кегеля 3/3',()=>(S.kgFull||0)>=7],
  ['f_book','Начитанный дракон','書','Прочитать 40 статей книги дракона',()=>Object.keys(S.kr2||{}).length>=40],
  ['f_qz','Диплом сексолога','博','10 верных ответов в квизе',()=>(S.qzOk||0)>=10],
@@ -2965,6 +2971,8 @@ function stepsGuide(){sheet('<h3>👟 Шаги из «Здоровья»</h3><p 
 
 /* ===== 龍 Dragon tab ===== */
 const DRL=[[0,'Червячок'],[60,'Шланг'],[160,'Удав'],[320,'Питон'],[550,'Анаконда'],[850,'Змей Горыныч'],[1300,'Древний дракон'],[1900,'Дракон-император'],[2700,'Небесный змей'],[3800,'Бессмертный дракон']];
+const STRK=[[0,'Чистый лист'],[3,'Разогрев'],[7,'Полный бак'],[14,'Синие яйца'],[21,'Хранитель семени'],[30,'Ходячая цистерна'],[45,'Банк спермы'],[60,'Яйца Фаберже'],[90,'Ебырь-самурай'],[180,'Легенда без слива']];
+function strkT(){const c=cleanDays();let i=0;STRK.forEach((x,j)=>{if(c>=x[0])i=j});return [STRK[i][1],STRK[i+1],c]}
 const drgPow=()=>cleanDays()*10+totalClean()*3+(S.kg||0)+(S.kgFull||0)*5+(S.mw||0)*2+(S.enN||0)*3+(S.dp||0)+(S.qzOk||0)*2;
 function drgLv(){const p=drgPow();let i=0;DRL.forEach((x,j)=>{if(p>=x[0])i=j});return i}
 const DRSAY=['Я не сплю, я коплю силы. Не буди без повода.','Экран — это не повод. Повод — живая девушка, которая сказала «да».','Утром я встаю раньше тебя. Бери пример.','Холодный душ? Опять? Ладно, я понял намёк.','Кегель — это день ног, только для меня. Не пропускай.','Я дракон, а не хомяк. Хомяков кормят каждый день, драконы ждут достойную добычу.','Если я рвусь в бой — иди на турник. Энергия должна куда-то уйти.','Пятничный вечер — моя слабость. Займи руки заранее.','Мне не нужна быстрая разрядка. Мне нужна история, которую не стыдно вспомнить.','Каждый чистый день я расту. Не в сантиметрах, в самоуважении. Хотя кто знает.','Я не прошу многого: сон, спорт и девушку, а не вкладку.','Говорят, размер не главное. Главное — кто им управляет. Управляй.'];
@@ -2975,7 +2983,7 @@ function drgMood(){const d=today();if(S.days[d]==='f')return ['похмелье'
 function renderDrg(){if(!$('drg'))return;const p=drgPow(),i=drgLv(),cur=DRL[i],nx=DRL[i+1],m=drgMood(),d=today(),kgN=kgToday(),kgT=kgN>=3,kl=kgLv(),mwT=!!(S.mwD||{})[d];
  $('drgLvN').textContent='ур. '+(i+1);
  const wk=Array.from({length:7},(_,k)=>{const x=new Date();x.setDate(x.getDate()-6+k);const kk=dkey(x);return '<u class="'+((S.mwD||{})[kk]?'on':'')+'">'+['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][x.getDay()]+'</u>'}).join('');
- $('drg').innerHTML='<button class="dstage" id="drgK" title="Погладить дракона">'+drgSvg(i,m[0])+'<span class="dtap">погладь</span></button><div class="drgc"><div class="drgb"><b>'+cur[1]+'</b><small>сила '+p+(nx?' · до «'+nx[1]+'» ещё '+(nx[0]-p):' · максимум')+'</small><div class="gauge g-xp"><i style="width:'+(nx?Math.round((p-cur[0])/(nx[0]-cur[0])*100):100)+'%"></i></div><span class="drgm">настроение: '+m[0]+'</span></div></div>'
+ $('drg').innerHTML='<button class="dstage" id="drgK" title="Погладить дракона">'+drgSvg(i,m[0])+'<span class="dtap">погладь</span></button><div class="drgc"><div class="drgb"><b>'+cur[1]+'</b><small>сила '+p+(nx?' · до «'+nx[1]+'» ещё '+(nx[0]-p):' · максимум')+'</small><div class="gauge g-xp"><i style="width:'+(nx?Math.round((p-cur[0])/(nx[0]-cur[0])*100):100)+'%"></i></div><span class="drgm">настроение: '+m[0]+'</span><span class="drgm">звание серии: <b style="display:inline;color:var(--gold);font-size:12px">'+strkT()[0]+'</b>'+(strkT()[1]?' · до «'+strkT()[1][1]+'» '+(strkT()[1][0]-strkT()[2])+' дн.':'')+'</span></div></div>'
   +'<p class="drgld">'+esc(DRLD[i]||'')+'</p><p class="drgsay" id="drgSay">'+esc(m[1])+'</p>'
   +'<div class="drgrow"><div><b>Дракон рвётся наружу?</b><small>бой с тягой — 90 секунд, и волна спадёт</small></div><button class="btn red" id="drgSos">Тянет</button></div>'
   +'<div class="drgrow"><div><b>Кегель · '+kgN+' / 3</b><small>'+KGL[kl][1]+' · '+KGL[kl][2]+' с × '+KGL[kl][4]+' + '+KGL[kl][5]+' быстрых · серия '+(S.kgStr&&S.kgLast&&dkey(new Date(Date.now()-864e5))<=S.kgLast?S.kgStr:0)+' дн.</small><div class="drgw">'+kgWeek()+'</div></div><button class="btn'+(kgT?'':' gold')+'" id="kgBtn">'+(kgT?'3/3 ✓':'Подход')+'</button></div>'
