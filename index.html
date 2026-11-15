@@ -903,6 +903,7 @@ summary{font:700 16px var(--pix)}
 .oddsT summary{list-style:none;cursor:pointer;margin:0}.oddsT summary::-webkit-details-marker{display:none}.oddsT summary::before{content:'ⓘ '}
 #s-shop [data-st=gear]{display:none!important}
 #s-shop [data-st=cons]{display:none!important}
+.gearlink{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:10px;padding:12px 14px;border:0;border-radius:18px;cursor:pointer;color:var(--ink);background:linear-gradient(135deg,rgba(226,196,142,.18),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(226,196,142,.4);text-align:left}.gearlink span{font-size:22px}.gearlink b{flex:1;font:800 15px var(--body)}.gearlink small{font:700 12px var(--body);color:var(--gold2)}
 </style>
 </head>
 <body>
@@ -1078,6 +1079,7 @@ summary{font:700 16px var(--pix)}
 <main class="screen hide" id="s-shop">
   <div class="shophd"><h1 class="dtitle" style="font-size:32px">Лавка</h1><span class="coins" id="shopGold"></span></div>
   <div class="segm" id="shopTabs"></div>
+  <button class="gearlink" id="gearLink" data-st="chest"><span>⚔️</span><b>Оружие и броня</b><small>купить и заточить →</small></button>
   <div class="pnl" data-st="chest">
     <div class="ttl"><h2>Сундуки</h2><span class="c" id="chCnt"></span></div>
     <div class="chslots" id="chSlots"></div>
@@ -2318,9 +2320,9 @@ const HTABS=[['me','Обзор'],['gear','Снаряжение'],['sk','Навы
 function renderHeroTabs(){const cur=HTABS.some(t=>t[0]===S.heroTab)?S.heroTab:'me';$('heroTabs').innerHTML=HTABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
  $('heroTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.heroTab=b.dataset.k;SFX.tap();buzz();save();renderHeroTabs();scrollTo({top:0})});
  document.querySelectorAll('#s-hero>.pnl').forEach(p=>{if(p.classList.contains('gold'))return p.classList.toggle('hide',cur!=='me');const t=(p.querySelector('h2')||{}).textContent;const g=HMAP[t];if(!g)return;p.dataset.ht=g;if(p.id==='bagPnl'&&cur==='gear')return;p.classList.toggle('hidet',g!==cur)})}
-function renderGear(){renderHeroTabs();const lv=lvlInfo(S.xp).l;S.forge=S.forge||{};
+function renderGear(){renderHeroTabs();if($("gearLink"))$("gearLink").onclick=()=>{S.heroTab="gear";go("hero");render();scrollTo({top:0})};const lv=lvlInfo(S.xp).l;S.forge=S.forge||{};
  $('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]),r=it?it.r:-1,fn=S.forge[k]||0,tot=(it?RARITY[r][1]:0)+Math.round(fn*FORGE_STEP*100),nr=r+1,others=S.inv.filter(i=>i.k===k&&i.id!==S.eq[k]).length;
-  let up='';if(nr<=3){const lock=lv<REQ[nr];up='<button class="gb gold" data-up="'+k+'" '+(lock||S.gold<PRICE[nr]?'disabled':'')+'><b>'+(lock?'🔒 ур. '+REQ[nr]:'Улучшить')+'</b><small>'+SLOTS[k][2][nr]+' · '+PRICE[nr]+' з</small></button>'}
+  let up='';if(nr<=3){const lock=lv<REQ[nr];up='<button class="gb gold" data-up="'+k+'" '+(lock||S.gold<PRICE[nr]?'disabled':'')+'><b>'+(lock?'🔒 Купить с ур. '+REQ[nr]:'Купить · '+PRICE[nr]+' з')+'</b><small>'+SLOTS[k][2][nr]+' · +'+RARITY[nr][1]+'% '+SLOTS[k][1]+'</small></button>'}
   let fg='';if(fn<FORGE_COST.length){const need=3*(fn+1),lock=lv<need;fg='<button class="gb" data-fg="'+k+'" '+(lock||S.gold<FORGE_COST[fn]?'disabled':'')+'><b>'+(lock?'🔒 ур. '+need:'Заточить +'+(fn+1))+'</b><small>+'+Math.round(FORGE_STEP*100)+'% · '+FORGE_COST[fn]+' з</small></button>'}
   return '<div class="gcard'+(it?' r'+r:'')+'" style="--gc:'+(it?RCOL[r]:'#555')+'"><div class="gtop"><span class="gic">'+icon(k,it?RCOL[r]:'#3a3f55',4.5)+'</span><div class="gname"><small>'+v[0]+(fn?' · заточка +'+fn:'')+'</small><b class="'+(it?'t'+r:'')+'">'+(it?esc(it.n):'Пусто')+'</b><span>+'+tot+'% '+v[1]+(it?' · '+RARITY[r][0].toLowerCase():'')+'</span></div>'+(others?'<button class="gsw" data-sw="'+k+'">Сменить · '+others+'</button>':'')+'</div><div class="gbtns">'+up+fg+(!up&&!fg?'<span class="gmax">Максимум ✦</span>':'')+'</div></div>'}).join('');
  $('slots').querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const k=b.dataset.up,it=S.inv.find(i=>i.id===S.eq[k]);buyItem(k,(it?it.r:-1)+1)});
