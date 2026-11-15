@@ -2219,7 +2219,7 @@ function renderDay(){
   if(!nl){const n=document.createElement('div');n.className='nowl';n.textContent='сейчас '+nowT;box.appendChild(n)}
   if(P.tasks.length&&!open.length){const e=document.createElement('div');e.className='empty';e.textContent='Всё сделано. Сильный день.';box.appendChild(e)}
   if(closed.length){const d=document.createElement('details');d.className='donebox';d.open=DONEOPEN;d.ontoggle=()=>{DONEOPEN=d.open};d.innerHTML='<summary>Выполнено · '+closed.length+'</summary>';closed.forEach(([x,i])=>d.appendChild(taskEl(x,()=>togglePlan(i),null)));box.appendChild(d)}}
- $('habSec').classList.toggle('hide',!isT);$('checkSec').classList.toggle('hide',diff>=0);$('ctSec').classList.toggle('hide',!isT);
+ $('habSec').classList.toggle('hide',!isT);$('checkSec').classList.toggle('hide',diff>0);$('ctSec').classList.toggle('hide',!isT);
  if(isT){const hb=$('habits');
   const half=(S.qHalf&&S.qHalf.d===today())?S.qHalf.l:[],b=bonus();
   hb.innerHTML=[...S.qList].sort((a,b)=>(RITK[HABITS[a][0]]?0:1)-(RITK[HABITS[b][0]]?0:1)).map(i=>{const r=RITK[HABITS[i][0]],on=S.qDone.includes(i),hi=habInfo(i),xp=Math.round(HABITS[i][1]*(1+b.xp));
@@ -3882,6 +3882,7 @@ function gearFix(){let back=0;const seen={};const keep=[];for(const it of [...S.
  S.inv=keep;S.eq={weapon:null,armor:null,amulet:null};gearHeal();if(back){S.gold+=back}return back}
 function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.applied.includes(o.id)){planPart(o,true);return null}S.applied.push(o.id);const msgs=[];
  if(o.cleanSince){const t=new Date(o.cleanSince).getTime();if(t&&t<=Date.now())S.cleanSince=t}
+ if(o.relapse){const r=o.relapse,t=r.at?new Date(r.at).getTime():Date.now();if(t&&t<=Date.now()&&t>S.cleanSince){const ms=t-S.cleanSince,dd=Math.floor(ms/DAY);S.bestMs=Math.max(S.bestMs||0,ms);S.best=Math.max(S.best||0,dd);S.cleanSince=t;S.fellAt=t;S.days[dkey(new Date(t))]='f';S.fell=true;healBoss(.1);if(r.lesson&&r.trig)S.ifthen[r.trig]=r.lesson;S.xp+=5;addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+' · отмечен через Claude'+(r.lesson?' · урок: '+r.lesson:''));msgs.push('Срыв отмечен, отсчёт заново. Урок записан. +5 XP за честность')}}
  let n=0;for(const[k,v]of Object.entries(o.days||{})){if(S.days[k]!==v){if(v==='c')n++;S.days[k]=v}}
  if(n)award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n});
  if(Array.isArray(o.grants)&&o.grants.length){const d=o.date||today(),key=planKey(d);let pl={tasks:[],note:'',best:''};try{const v=JSON.parse(localStorage.getItem(key)||'null');if(v)pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v}catch(e){}
