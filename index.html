@@ -1347,10 +1347,9 @@ summary{font:700 16px var(--pix)}
       <div class="whisper hide" id="fWh"><div class="wl">Тень шепчет: <small style="opacity:.6;font-weight:600">· тапни текст — +8 сек</small></div><div class="wq" id="fWhQ"></div><div class="wt"><i id="fWhT"></i></div><div class="wa" id="fWhA"></div></div>
       <div class="fbar me"><span>Твоя воля</span><div class="gauge g-xp"><i id="fWill"></i></div><b id="fTimer">0:00</b></div>
     </div>
-    <div class="fhint" id="fHint">Бей по тени — тапай! Реальные действия и дыхание бьют сильнее.</div>
+    <div class="fhint" id="fHint">Бей по тени — тапай! Дыхание 4·6 бьёт сильнее.</div>
     <button class="btn blue fbr" id="fBreath">Дыхание 4 · 6 — спецудар</button>
-    <div class="lbl" style="margin-top:14px">Реальные удары — сделай и нажми</div>
-    <div class="facts" id="fActs"></div>
+    <div class="facts" id="fActs" style="display:none"></div>
     <div class="row2" style="margin-top:14px"><button class="btn" id="fLose">Сорвался</button><button class="btn" id="fCancel2">Выйти</button></div>
   </div>
 
@@ -2565,7 +2564,37 @@ const WHISPERS=[['Один раз ничего не изменит.','Кажды
  ['Тяга не пройдёт, пока не сдашься.','Тяга — волна. Она спадает сама за минуты.','Да, она только растёт.'],
  ['Начнёшь заново с понедельника.','Самый сильный ход — выстоять сейчас.','Понедельник — хорошая дата.'],
  ['Одиноко. Это поможет.','Одиночество лечит живой человек. Напишу кому-нибудь.','Хоть так станет легче.'],
- ['Ты ничего не теряешь.','Теряю серию, энергию и уважение к себе.','Правда, ничего не теряю.']];
+ ['Ты ничего не теряешь.','Теряю серию, энергию и уважение к себе.','Правда, ничего не теряю.'],
+ ['Просто проверю, что там нового.','Там ничего нового. Те же пиксели, та же пустота после.','Ну, проверить же можно.'],
+ ['Ты уже возбуждён, надо снять напряжение.','Напряжение уйдёт в отжимания, душ или сон. Возбуждение — не приказ.','Да, иначе не успокоюсь.'],
+ ['Девушки у тебя всё равно нет.','Пока нет. Энергия, которую я сохраню, — для той, что будет.','Вот именно, так хоть что-то.'],
+ ['Всего пять минут.','Пять минут превращаются в час и вечер в тумане. Знаю этот трюк.','Пять минут — это ерунда.'],
+ ['Это же не порно, просто картинки.','Картинки — та же дверь. Закрываю вкладку.','Картинки не считаются.'],
+ ['Ты слишком устал, чтобы бороться.','Когда устал — спать, а не скроллить. Телефон на зарядку подальше.','Сил нет, сдаюсь.'],
+ ['Завтра будет тяжело, расслабься сегодня.','Завтра будет легче, если сегодня выстою.','Да, завтра начну сначала.'],
+ ['Ты всё равно уже наполовину сорвался.','Наполовину — это не сорвался. Останавливаюсь прямо сейчас.','Раз начал, надо закончить.'],
+ ['Дракон хочет.','Дракон хочет живую девушку, а не экран. Корми его смелостью.','Нельзя спорить с природой.'],
+ ['Это нормально, наука говорит, что мастурбация полезна.','Дело не в мастурбации, а в порно-привычке. Мой путь — про экран.','Значит, можно и с порно.'],
+ ['В Мюнхене ты никого не знаешь, тебе можно.','Одиночество лечится тандемом, залом и людьми. Завтра напишу кому-нибудь.','Да, мне можно, я один.'],
+ ['Сегодня пятница.','Пятница — день, когда побеждать особенно круто.','Пятница — святое.'],
+ ['Ты же контролируешь, это не зависимость.','Контроль — это когда я могу остановиться. Проверяю прямо сейчас.','Да, у меня всё под контролем.'],
+ ['Посмотри последний раз, на прощание.','«Последний раз» — самая старая ложь привычки.','Последний раз — красиво.'],
+ ['Никто тебя не любит, хоть так приятно.','Мне плохо, и это пройдёт. Заслуживаю заботы, а не дофаминовой подачки.','Хоть так.'],
+ ['Серия всё равно не важна.','Важна не цифра, а то, кем я становлюсь каждый день.','Да, это просто цифра.'],
+ ['Ну хоть одним глазком на ту актрису.','У неё дубли, свет и монтаж. Живые люди красивее.','Одним глазком не считается.'],
+ ['Ты три дня держался, заслужил награду.','Награда — это сила дракона и уважение к себе. Не сливаю.','Да, бонус за терпение.'],
+ ['Ночь, все спят, никто не заметит.','Ночью я самый слабый. Телефон за дверь, спать.','Ночью можно.'],
+ ['Немецкий не учится, ничего не получается — хоть это.','Плохой день в немецком — не повод для плохого вечера. 10 карточек — и спать.','Хоть тут без усилий.'],
+ ['Просто полистаю инсту, там ничего такого.','Знаю, куда ведёт эта лента. Закрываю и кладу телефон.','Инста — это же безопасно.'],
+ ['Тяга сильнее тебя.','Тяга сильная, но временная. Я — постоянный.','Да, против неё не устоять.'],
+ ['Это поможет от стресса.','Стресс снимет душ, прогулка и медленный выдох. После срыва стресса будет больше.','Да, это лучший антистресс.'],
+ ['Ты мужик, тебе нужно.','Мужик — тот, кто решает сам, а не кнопка в браузере.','Природа требует.'],
+ ['Все друзья так делают и нормально живут.','Мне не нужно «нормально». Мне нужно сильно.','Значит, и мне можно.'],
+ ['Смотри, ты уже открыл браузер.','Открыл — значит, могу и закрыть. Закрываю.','Раз открыл, уже поздно.'],
+ ['Секс с девушкой ещё нескоро, а это прямо сейчас.','Чем меньше экрана, тем быстрее будет девушка: больше энергии и смелости.','Да, синица в руке.'],
+ ['Подумаешь, срыв. Феникс же поднимается.','Феникс — для тех, кто упал случайно. Я вижу волну и выбираю не падать.','Да, потом поднимусь.'],
+ ['Эта тяга особенная, её не переждать.','Все тяги так говорят. Через 10–15 минут она спадёт.','Эта точно не пройдёт.'],
+ ['Хотя бы на секунду представь…','Представляю живую девушку, которая сама хочет меня. Это стоит ожидания.','Ну представить же можно.']];
 let FB=null,fBr=null;
 function startFight(){const hp=Math.round(260+fFrom*55);FB={hp,mx:hp,will:100,combo:0,last:0,maxC:0,par:0,miss:0,acts:0,t0:Date.now(),lastDmg:Date.now(),nextWh:Date.now()+6000,wh:null,stun:0,p2:false,done:false,tapS:0,wp:null,nextWp:Date.now()+2500,shake:0};fShow(2);
  const pre=[];if(fTrig&&S.ifthen[fTrig])pre.push(S.ifthen[fTrig]);if(fHalt)pre.push(HALT[fHalt]);const pool=[...ACTIONS].sort(()=>Math.random()-.5);
@@ -2573,7 +2602,7 @@ function startFight(){const hp=Math.round(260+fFrom*55);FB={hp,mx:hp,will:100,co
  $('fActs').querySelectorAll('.fa').forEach(el=>el.querySelector('button').onclick=()=>{if(el.classList.contains('done')||FB.done)return;el.classList.add('done');el.querySelector('button').textContent='✓';FB.acts++;FB.will=Math.min(100,FB.will+15);FB.stun=0;
   const r=$('foe').getBoundingClientRect();fDmg(95,r.left+r.width/2,r.top+r.height/2,'big');SFX.crit();fHint('Реальный удар! Тень шатается.')});
  $('fSpr').innerHTML=bossSVG(2,7,false);$('arena').classList.remove('p2','stun');$('foe').classList.remove('dead');$('fWh').classList.add('hide');$('fBreath').disabled=false;$('fBreath').textContent='Дыхание 4 · 6 — спецудар';$('fBreath').style.setProperty('--p','0%');
- fHint('Бей по тени — тапай! Реальные действия и дыхание бьют сильнее.');clearInterval(fT);fT=setInterval(fTick,100);fTick()}
+ fHint('Бей по тени — тапай! Дыхание 4·6 бьёт сильнее.');clearInterval(fT);fT=setInterval(fTick,100);fTick()}
 function fHint(t){$('fHint').textContent=t}
 function fShake(){const a=$('arena');a.classList.remove('shk');void a.offsetWidth;a.classList.add('shk')}
 function fSpot(){const f=$('foe'),s=document.createElement('button');s.className='wspot';s.style.left=(18+Math.random()*64)+'%';s.style.top=(15+Math.random()*60)+'%';s.textContent='弱';
@@ -2596,7 +2625,7 @@ function fWhisper(){const w=WHISPERS[Math.floor(Math.random()*WHISPERS.length)],
 function fParry(good){if(!FB||!FB.wh)return;const w=FB.wh.w;FB.wh=null;$('fWh').classList.add('hide');FB.nextWh=Date.now()+(FB.p2?11000:15000);const r=$('foe').getBoundingClientRect();
  if(good){FB.par++;S.parTot=(S.parTot||0)+1;FB.will=Math.min(100,FB.will+6);SFX.parry();buzz();fDmg(45+Math.min(FB.combo,20),r.left+r.width/2,r.top+r.height*.35,'cr');fHint('Парировал! Правда сильнее шёпота.')}
  else{FB.miss++;FB.will=Math.max(hasP('stoic')?30:0,FB.will-18);FB.hp=Math.min(FB.mx,FB.hp+Math.round(FB.mx*.04));SFX.err();const f=document.createElement('div');f.className='flash';document.body.appendChild(f);setTimeout(()=>f.remove(),520);fHint('Правда: '+w[1]);
-  if(FB.will<=0){FB.stun=Date.now()+4000;FB.will=40;$('arena').classList.add('stun');setTimeout(()=>$('arena').classList.remove('stun'),4000);fHint('Оглушён на 4 сек. Сделай реальное действие или подыши — это снимает оглушение.')}}fTick()}
+  if(FB.will<=0){FB.stun=Date.now()+4000;FB.will=40;$('arena').classList.add('stun');setTimeout(()=>$('arena').classList.remove('stun'),4000);fHint('Оглушён на 4 сек. Подыши 4·6 — это снимает оглушение.')}}fTick()}
 $('fBreath').onclick=()=>{if(!FB||FB.done||fBr)return;const b=$('fBreath'),t0=Date.now();b.disabled=true;SFX.whoosh();
  fBr=setInterval(()=>{const e=(Date.now()-t0)/1000;if(!FB||FB.done){clearInterval(fBr);fBr=null;return}b.style.setProperty('--p',Math.min(100,e/10*100)+'%');b.textContent=e<4?'Вдох носом… '+Math.ceil(4-e):e<10?'Медленный выдох… '+Math.ceil(10-e):'';
   if(e>=10){clearInterval(fBr);fBr=null;b.disabled=false;b.style.setProperty('--p','0%');b.textContent='Ещё раз: дыхание 4 · 6';FB.stun=0;$('arena').classList.remove('stun');FB.will=Math.min(100,FB.will+10);const r=$('foe').getBoundingClientRect();fDmg(70,r.left+r.width/2,r.top+r.height/2,'big');SFX.parry()}},100)};
