@@ -1650,7 +1650,8 @@ const SFX={tap:()=>wood(1900,0,.07),
  open:()=>nz(0,.35,'bandpass',300,1.2,.18,.3,3200),
  whoosh:()=>nz(0,.28,'bandpass',2400,1,.1,.2,500),
  err:()=>wood(620,0,.12)};
-['touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{passive:true,capture:true}));
+/* iPhone: never grab the audio session on a plain tap — that pauses the user's music/video. Audio starts only when a sound is actually played. */
+setSession();{const ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(ios&&!navigator.audioSession&&S.sndMig!==1){S.sndMig=1;S.sound=false;save()}}
 
 /* ambience: soft wind, crickets at night */
 let AMB=null,ambC=0;
