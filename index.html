@@ -2026,7 +2026,7 @@ const SHOP=[
  ['День отдыха','Серия активности не прервётся, босс сегодня не восстановится','scroll','#7fa7c9',120,()=>{S.rest=S.rest||{};S.rest[today()]=1;addLog('День отдыха')},()=>(S.rest||{})[today()]?'Сегодня уже день отдыха':''],
  ['Щит серии','Сам спасёт серию активности, если пропустишь один день','armor','#c9a46a',200,()=>{S.shield=(S.shield||0)+1;addLog('Куплен щит серии')}]];
 const PRICE=[80,250,700,1800],REQ=[1,3,6,10];
-function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(lvlInfo(S.xp).l<REQ[r])return toast('Нужен уровень '+REQ[r]);S.gold-=p;
+function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(S.inv.some(i=>i.k===k&&i.r>=r))return toast('Уже есть не хуже — купи следующую редкость');if(lvlInfo(S.xp).l<REQ[r])return toast('Нужен уровень '+REQ[r]);S.gold-=p;
  const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,r,n:SLOTS[k][2][r]};S.inv.push(it);
  const cur=S.inv.find(i=>i.id===S.eq[k]);if(!cur||cur.r<=r)S.eq[k]=it.id;addLog('Куплено: '+it.n);SFX.coin();buzz();save();render();toast('Улучшено: '+it.n+' · надето')}
 function left(k){const t=(S[k]||0)-Date.now();return t>0?Math.ceil(t/HOUR)+' ч':''}
@@ -2038,7 +2038,7 @@ function renderShop(){$('shopGold').innerHTML=coin(2.5)+S.gold;
  $('armTabs').innerHTML=Object.entries(SLOTS).map(([k,v])=>'<button class="chp'+(S.armTab===k?' on':'')+'" data-k="'+k+'">'+v[0]+'</button>').join('');
  $('armTabs').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{S.armTab=c.dataset.k;renderShop()});
  const k=S.armTab||'weapon',cur=S.inv.find(i=>i.id===S.eq[k]);
- $('armory').innerHTML=[0,1,2,3].map(r=>{const lock=lv<REQ[r],own=cur&&cur.r>=r;return '<div class="shopit"'+(lock?' style="opacity:.5"':'')+'>'+icon(k,RCOL[r],4)+'<div class="nm"><b class="t'+r+'">'+SLOTS[k][2][r]+'</b><span>'+RARITY[r][0]+' · +'+RARITY[r][1]+'% '+SLOTS[k][1]+(lock?' · с уровня '+REQ[r]:own?' · уже есть не хуже':'')+'</span></div><button class="btn gold" data-a="'+r+'"'+(lock||S.gold<PRICE[r]?' disabled':'')+'>'+PRICE[r]+'</button></div>'}).join('');
+ $('armory').innerHTML=[0,1,2,3].map(r=>{const lock=lv<REQ[r],own=cur&&cur.r>=r;return '<div class="shopit"'+(lock?' style="opacity:.5"':'')+'>'+icon(k,RCOL[r],4)+'<div class="nm"><b class="t'+r+'">'+SLOTS[k][2][r]+'</b><span>'+RARITY[r][0]+' · +'+RARITY[r][1]+'% '+SLOTS[k][1]+(lock?' · с уровня '+REQ[r]:own?' · уже есть не хуже':'')+'</span></div><button class="btn gold" data-a="'+r+'"'+(lock||own||S.gold<PRICE[r]?' disabled':'')+'>'+(own?'✓':PRICE[r])+'</button></div>'}).join('');
  $('armory').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>buyItem(k,+b.dataset.a));
  $('rewards').innerHTML=S.rewards.length?S.rewards.map((r,i)=>'<div class="shopit">'+icon('star','#f0b541',4)+'<div class="nm"><b class="body" style="font-weight:600">'+esc(r.t)+'</b><span>куплено: '+(r.n||0)+'</span></div><button class="x" data-del="'+i+'" aria-label="Удалить">×</button><button class="btn gold" data-r="'+i+'"'+(S.gold<r.cost?' disabled':'')+'>'+r.cost+'</button></div>').join(''):'<div class="empty">Добавь свою награду, например: «кино» за 150.</div>';
  $('rewards').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const r=S.rewards[b.dataset.r];if(S.gold<r.cost)return;S.gold-=r.cost;r.n=(r.n||0)+1;addLog('Награда себе: '+r.t);save();render();lootSheet('Заслужено!',null,'«'+r.t+'» — наслаждайся без вины. Ты это заработал.')});
