@@ -1029,6 +1029,18 @@ summary{font:700 16px var(--pix)}
 #s-day .db.sel{padding-bottom:6px!important;background-size:34px 34px!important;background-position:center calc(100% - 2px)!important;background-repeat:no-repeat!important}
 #s-day .clock .big{font-size:38px!important}#s-day .clock .sm{font-size:12.5px}#s-day .clock .tot{margin-top:2px}
 #ctSec,#habSec{display:none!important}
+/* живой босс */
+#bossSpr{position:relative;animation:bossFl 4.2s ease-in-out infinite!important;transform-origin:50% 90%}
+#bossSpr svg{position:relative;z-index:2;filter:drop-shadow(0 10px 14px #000a)}
+#bossSpr::before{content:"";position:absolute;left:50%;top:52%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(198,48,31,.38),rgba(198,48,31,.08) 55%,transparent 70%);z-index:1;animation:bossAu 3.2s ease-in-out infinite}
+#bossSpr .orb{position:absolute;z-index:3;width:12px;height:16px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#e8f4ff,#7fb7ff 45%,rgba(80,140,255,0) 72%);filter:blur(.4px);box-shadow:0 0 14px 4px rgba(110,170,255,.45);animation:bossOrb 5s ease-in-out infinite}
+#bossSpr .orb.o1{left:-26px;top:30%}#bossSpr .orb.o2{right:-28px;top:16%;animation-delay:-1.7s;animation-duration:6s}#bossSpr .orb.o3{right:-12px;bottom:6%;animation-delay:-3.1s;width:9px;height:12px}
+#bossSpr.weak{animation:bossFl 4.2s ease-in-out infinite,bossTr .18s linear infinite!important}#bossSpr.weak::before{background:radial-gradient(circle,rgba(120,120,140,.3),transparent 70%)}
+.bossbig.hit #bossSpr{animation:bossHit .45s ease-out!important}.bossbig.hit #bossSpr svg{filter:drop-shadow(0 0 18px #fff) brightness(1.8)}
+@keyframes bossFl{0%,100%{transform:translateY(0) rotate(-1.5deg) scale(1)}50%{transform:translateY(-9px) rotate(1.5deg) scale(1.025)}}
+@keyframes bossAu{50%{transform:translate(-50%,-50%) scale(1.15);opacity:.75}}
+@keyframes bossOrb{0%,100%{transform:translate(0,0) scale(1);opacity:.9}25%{transform:translate(6px,-12px) scale(1.15)}50%{transform:translate(-4px,-22px) scale(.85);opacity:.5}75%{transform:translate(-8px,-8px) scale(1.1)}}
+@keyframes bossTr{50%{translate:1px 0}}@keyframes bossHit{20%{transform:translateX(-10px) rotate(-6deg) scale(.94)}50%{transform:translateX(8px) rotate(4deg)}100%{transform:none}}
 </style>
 </head>
 <body>
@@ -1114,16 +1126,6 @@ summary{font:700 16px var(--pix)}
 
 <!-- ================= QUEST ================= -->
 <main class="screen hide" id="s-quest">
-  <div class="pnl" id="loveSec" style="box-shadow:inset 0 0 0 2px #a8323e">
-    <div class="ttl"><h2 style="color:#ff6b7a">Линия Сердца</h2><span class="c" id="loveCnt"></span></div>
-    <div id="waifu"></div>
-    <div class="why" style="margin-bottom:10px">Сюжетная линия к живой близости: от формы героя до свиданий. Делай в любом порядке, всё прокачивает Харизму. Отказы тоже дают опыт.</div>
-    <div class="row2" style="margin-bottom:12px"><button class="btn" id="loveRej">Отказ / игнор</button><button class="btn" id="loveCode">Кодекс</button></div>
-    <button class="btn gold" id="loveStreet" style="width:100%;margin:-4px 0 12px">Шпаргалка улицы: фразы и психология</button>
-    <button class="btn" id="loveScrolls" style="width:100%;margin:-4px 0 12px">Свитки знаний 伝書</button>
-    <div class="mut" id="loveStats" style="font-size:13px;margin-bottom:6px"></div>
-    <div id="loveList"></div>
-  </div>
   <div class="pnl gold">
     <div class="bossbig" id="bossBig">
       <div class="spr" id="bossSpr"></div>
@@ -1135,6 +1137,16 @@ summary{font:700 16px var(--pix)}
       <button class="linkbtn" id="howBtn" style="margin-top:10px">Как устроен бой ?</button>
       <template id="howTpl"><div class="prose"><p>Каждое дело бьёт босса. Чем труднее дело, тем сильнее удар: дело на 25 XP наносит ~29 урона, на 60 XP — ~84, на 150 XP — 300. Победа над тягой: 60 урона. Чистый день: 40.</p><p><b>Две фазы:</b> на половине HP босс впадает в ярость и меняет слабость — переключайся на другую характеристику.</p><p><b>Сила босса</b> подстраивается под твой средний урон: каждый бой рассчитан на 3–10 дней, весь поход — примерно на 100 дней.</p><p><b>Золото</b> больше дают привычки и мелкие дела, серия и броня. После 6 дел одной характеристики за день золото за неё вдвое меньше — чередуй.</p><p>У каждого босса есть <b>слабость</b>: квесты нужной характеристики бьют ×2. И <b>способность</b>: большинство восстанавливают HP за дни без квестов, поэтому хотя бы один квест в день не даёт им отрасти.</p><p>Срыв лечит босса на 10%. Это не наказание, а напоминание: поход продолжается.</p><p><b>Серия активности:</b> каждый день подряд хотя бы с одним квестом даёт +5% золота, до +50%.</p><p>За победу: золото, опыт, редкая добыча и новая локация.</p></div></template>
     </div>
+  </div>
+  <div class="pnl" id="loveSec" style="box-shadow:inset 0 0 0 2px #a8323e">
+    <div class="ttl"><h2 style="color:#ff6b7a">Линия Сердца</h2><span class="c" id="loveCnt"></span></div>
+    <div id="waifu"></div>
+    <div class="why" style="margin-bottom:10px">Сюжетная линия к живой близости: от формы героя до свиданий. Делай в любом порядке, всё прокачивает Харизму. Отказы тоже дают опыт.</div>
+    <div class="row2" style="margin-bottom:12px"><button class="btn" id="loveRej">Отказ / игнор</button><button class="btn" id="loveCode">Кодекс</button></div>
+    <button class="btn gold" id="loveStreet" style="width:100%;margin:-4px 0 12px">Шпаргалка улицы: фразы и психология</button>
+    <button class="btn" id="loveScrolls" style="width:100%;margin:-4px 0 12px">Свитки знаний 伝書</button>
+    <div class="mut" id="loveStats" style="font-size:13px;margin-bottom:6px"></div>
+    <div id="loveList"></div>
   </div>
   <div class="pnl" id="voteBox">
     <div class="vote"><p id="voteTxt"></p><button class="btn gold" id="voteBtn">Голос</button></div>
@@ -2138,7 +2150,7 @@ function renderDay(){
   $('cleanBtn').onclick=()=>isT?checkClean():markPast('c');$('fallBtn').onclick=()=>isT?relapseFlow(''):markPast('f')}}
 function markPast(v){S.days[SEL]=v;if(v==='c'){addLog('Чистый день: '+parseD(SEL).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}));award(20,'wil','чистый день',{dmg:40})}else addLog('Срыв отмечен: '+parseD(SEL).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}));save();render()}
 function renderQuest(){renderLove();const ch=S.camp.ch,b=bossOf(ch);
- $('bossSpr').innerHTML=bossSVG(ch,8,S.camp.hp<b[2]*.35);$('bossName').innerHTML='<span lang="ja" class="bk">'+BKANJI[ch%NB]+'</span>'+esc(b[0]);$('bossLoc').textContent='Глава '+(ch+1)+' · '+b[1];
+ $('bossSpr').innerHTML=bossSVG(ch,8,S.camp.hp<b[2]*.35)+'<i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i>';$('bossSpr').classList.toggle('weak',S.camp.hp<b[2]*.35);$('bossName').innerHTML='<span lang="ja" class="bk">'+BKANJI[ch%NB]+'</span>'+esc(b[0]);$('bossLoc').textContent='Глава '+(ch+1)+' · '+b[1];
  $('bossHp').style.width=(S.camp.hp/b[2]*100)+'%';$('bossHp').parentNode.style.setProperty('--g',(S.camp.hp/b[2]*100)+'%');$('bossTxt').textContent=S.camp.hp+' / '+b[2]+' HP';
  const ql=Math.ceil(S.camp.hp/25),wk=weakOf(ch),st=actStreak();$('bossTip').innerHTML='<b style="color:#ffd67a">Слабость'+(S.camp.ph?' (2-я фаза)':'')+':</b> '+STATS[wk][0]+' — дела этой характеристики бьют ×2 (КРИТ).'+(S.camp.ph?'':' На половине HP сменится на «'+STATS[WEAK2[ch%NB]][0]+'».')+'<br><b style="color:#ff9a8f">Способность:</b> '+esc(abilOf(ch))+'.<br><b style="color:var(--xp)">Награда:</b> '+bossGold(ch)+' золота, '+bossXp(ch)+' XP и '+(ch>=6?'эпическая или легендарная':ch>=2?'эпическая':'редкая')+' вещь.<br>Осталось примерно '+ql+' '+plural(ql,'квест','квеста','квестов')+'. Серия активности: '+st+' '+plural(st,'день','дня','дней')+' (+'+Math.min(50,st*5)+'% золота).'
  const n=Math.max(CHAPTERS.length,ch+2);let h='';for(let i=0;i<n;i++){const bb=bossOf(i);h+='<div class="node '+(i<ch?'done':i===ch?'now':'lock')+'"><div class="dot">'+(i<ch?'✓':i+1)+'</div><div><div class="nm">'+(i<=ch?esc(bb[0]):'???')+'</div><div class="loc">'+esc(bb[1])+'</div></div></div>'}
@@ -2431,7 +2443,7 @@ function renderLove(){renderWaifu();const[a,b]=loveProg(),si=loveStage(),st=LOVE
   return '<details class="lst '+st+'"'+(i===si?' open':'')+'><summary><i lang="ja">'+(st==='done'?'✓':KJ[i]||'心')+'</i><div><small>Этап '+(i+1)+(st==='now'?' · сейчас':'')+'</small><b>'+esc(s[0])+'</b><div class="lbar"><span style="width:'+Math.round(got/tot*100)+'%"></span></div></div><em>'+got+'/'+tot+'</em></summary>'
   +'<p class="ldesc">'+esc(s[1])+'</p>'+s[2].map(t=>{const c=Math.min(t[3],loveCnt(t[0])),done=c>=t[3];return '<div class="lq'+(done?' ok':'')+'"><div class="lqt">'+esc(t[1])+'<div class="lqm">'+(t[3]>1?'<span class="dots">'+Array.from({length:t[3]},(_,k)=>'<u class="'+(k<c?'on':'')+'"></u>').join('')+'</span>':'')+'<span class="xp">+'+t[2]+' XP</span></div></div>'+(done?'<span class="lok">✓</span>':'<button class="lbtn" data-l="'+t[0]+'">'+(t[3]>1?'+1':'Готово')+'</button>')+'</div>'}).join('')+'</details>'}).join('')}
  $('loveList').querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{SFX.check();loveDo(b.dataset.l)})}
-$('loveMini').onclick=()=>go('quest');$('loveStreet').onclick=streetSheet;
+$('loveMini').onclick=()=>go('quest');$('bossSpr').onclick=()=>{const b=$('bossBig');b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');buzz();setTimeout(()=>b.classList.remove('hit'),460)};$('loveStreet').onclick=streetSheet;
 $('loveRej').onclick=()=>{S.love=S.love||{d:{},rej:0};S.love.rej=(S.love.rej||0)+1;addLog('Отказ принят с достоинством');award(15,'cha','смелость',{dmg:15});cheer(5);save();render();
  lootSheet('Смелость +1',null,rnd(LOVE_REJ))};
 $('loveCode').onclick=()=>sheet('<h3>Кодекс</h3>'+[['Согласие','Близость только когда хотят оба. «Нет», молчание или сомнение — это нет. Спрашивать «так нормально?» — сексуально, а не неловко.'],
