@@ -1061,6 +1061,16 @@ summary{font:700 16px var(--pix)}
 .sftr{margin:8px 0 0!important;font:13px/1.45 var(--body)!important;color:#a3bb72!important}
 .sfob{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:var(--panel2);border:1px solid var(--edge);margin-bottom:10px}.sfob b{font:800 30px var(--num);color:#8db8ff;min-width:40px;text-align:center}.sfob span{font:13.5px/1.45 var(--body);color:var(--ink2)}
 .sfin{width:100%;box-sizing:border-box;margin-top:10px;padding:10px;border-radius:10px;border:1px solid var(--edge2);background:var(--panel2);color:var(--ink);font:14px var(--body)}
+/* нижняя панель: лаковая полоса с киноварью */
+.nav{left:0!important;right:0!important;bottom:0!important;max-width:none!important;margin:0!important;border-radius:0!important;background:linear-gradient(180deg,#17130f,#0a0907)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border:0!important;box-shadow:0 -1px 0 rgba(201,164,106,.22),0 -16px 30px -12px #000!important;padding-bottom:env(safe-area-inset-bottom)!important}
+.nav::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(198,48,31,.7),transparent)}
+.nav .pill{display:none!important}
+.nav button{padding:9px 0 6px!important;border-radius:0!important;gap:2px!important;color:#7f766a!important;font:600 10px/1.2 var(--body)!important;letter-spacing:.3px!important}
+.nav button .nk{width:auto!important;height:28px!important;background:none!important;box-shadow:none!important;transform:none!important;border-radius:0!important;font-size:21px!important;color:#9b9081!important;transition:color .25s,transform .25s cubic-bezier(.34,1.56,.64,1)!important}
+.nav button.on{color:#efe4d0!important}
+.nav button.on .nk{color:#e0412c!important;transform:translateY(-1px) scale(1.12)!important;text-shadow:0 0 16px rgba(224,65,44,.55)}
+.nav button.on::before{content:"";position:absolute;top:0;left:30%;right:30%;height:2px;background:#e0412c;border-radius:0 0 2px 2px;box-shadow:0 0 12px #e0412c}
+.nav button:active .nk{transform:scale(.9)!important}
 </style>
 </head>
 <body>
