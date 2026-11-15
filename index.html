@@ -1028,6 +1028,7 @@ summary{font:700 16px var(--pix)}
 #s-day .sc-top{top:9px!important}#s-day .sc-bot{padding:6px 12px 7px!important}#s-day .sc-name b{font-size:14px!important}
 #s-day .db.sel{padding-bottom:6px!important;background-size:34px 34px!important;background-position:center calc(100% - 2px)!important;background-repeat:no-repeat!important}
 #s-day .clock .big{font-size:38px!important}#s-day .clock .sm{font-size:12.5px}#s-day .clock .tot{margin-top:2px}
+#ctSec,#habSec{display:none!important}
 </style>
 </head>
 <body>
@@ -1952,7 +1953,7 @@ const WEEKLY=[
  ['Тренировки: 4 дня с делом на силу',()=>weekDays().filter(d=>((S.ds||{})[d]||{}).str).length,4],
  ['Учёба: 5 дней с делом на разум',()=>weekDays().filter(d=>((S.ds||{})[d]||{}).int).length,5],
  ['Чистые дни: 6',()=>weekDays().filter(d=>S.days[d]==='c').length,6],
- ['Контракты: 8',()=>wk().ct,8]];
+ ['Кегель 3/3: 5 дней',()=>weekDays().filter(d=>((S.kgH||{})[d]||0)>=3).length,5]];
 let gained=false;function gain(x,g){S.xp+=x;S.gold+=g;S.goldTotal+=g;gained=true}
 function checkGoals(){gained=false;const W=wk();const c0=S.c2&&S.c2.d;if(ctCheck()||c0!==today())gained=true;
  WEEKLY.forEach((w,i)=>{if(!W.done.includes(i)&&w[1]()>=w[2]){W.done.push(i);gain(60,120);addLog('Цель недели: '+w[0]);setTimeout(()=>toast('Цель недели · +60 XP · +120 золота'),1800)}});
@@ -2030,7 +2031,7 @@ function nextPick(U){const d=new Date(),now=d.getHours()*60+d.getMinutes(),tm=x=
  if(d.getHours()<11){const r=U.find(x=>x.k==='h'&&/Утро/.test(x.t));if(r)return {...r,why:'утренний ритуал задаёт весь день'}}
  const P2=U.filter(x=>x.k==='p'&&tm(x)==null).sort((a,b)=>(b.xp||0)-(a.xp||0)||(b.c===wk)-(a.c===wk));const w=P2[0]||U[0];
  return {...w,why:((w.xp||0)>=40?'самое важное из открытого':'быстрая победа')+' · +'+(w.xp||0)+' XP'+crit(w)}}
-function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
+function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=[]&&SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
 function taskEl(x,onT,onD){const el=document.createElement('label');el.className='task'+(x.done?' done':'');const b=bonus();
  el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'><span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+(x.c===weakOf(S.camp.ch)&&!x.done?' ×2':'')+'</span>'
   +(onD?'<button class="x" aria-label="Удалить">×</button>':'')+'<span class="rw">+'+Math.round(x.xp*(1+b.xp))+'<em>+'+Math.round(goldOf(x.xp)*(1+b.gold))+'з</em></span>';
@@ -2705,10 +2706,10 @@ function sceneExtra(sc,night,P){let s='';
  if(((S.pet.acc||{}).on||[]).includes('furin'))s+='<g class="fu"><line x1="360" y1="0" x2="360" y2="18" stroke="#2a1d14" stroke-width="1.2"/><path d="M352 30 Q352 18 360 18 Q368 18 368 30Z" fill="#cfe3ee" opacity=".9"/><path d="M354 26 h12" stroke="#b8281e" stroke-width="1.4"/><line x1="360" y1="30" x2="360" y2="40" stroke="#2a1d14" stroke-width=".8"/><rect x="356" y="40" width="8" height="16" rx="1" fill="#f3ecdf"/><path d="M357 44 h6 M357 48 h6" stroke="#b8281e" stroke-width=".8"/></g>';
  return s}
 function renderRings(){const el=$('ringsT');if(!el.querySelector('svg')){const R=[[50,'#e0563f'],[38,'#e2c48e'],[26,'#a3bb72']];el.innerHTML='<svg viewBox="0 0 120 120" class="rings">'+R.map(([r,c])=>'<circle cx="60" cy="60" r="'+r+'" stroke="'+c+'" stroke-opacity=".16" stroke-width="10" fill="none"/>').join('')+R.map(([r,c])=>{const L=(2*Math.PI*r).toFixed(1);return '<circle class="rg" cx="60" cy="60" r="'+r+'" stroke="'+c+'" stroke-width="10" fill="none" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="'+L+'" stroke-dashoffset="'+L+'"/>'}).join('')+'</svg><div class="rgl" id="rgl"></div>';el.onclick=()=>$('tasks').scrollIntoView({behavior:'smooth',block:'start'})}
- const tp=todayPlan(),T=(tp.tasks||[]),qd=T.filter(x=>x.done).length,half=(S.qHalf&&S.qHalf.d===today())?S.qHalf.l:[],rd=FIX.reduce((a,i)=>a+(S.qDone.includes(i)?(half.includes(i)?.5:1):0),0),B=S.c2&&S.c2.d===today()?S.c2.offers:[],ct=B.filter(o=>o.st).length,co=B.filter(o=>o.st==='ok').length;
- const v=[T.length?qd/T.length:0,rd/FIX.length,ct?co/ct:0];
+ const tp=todayPlan(),T=(tp.tasks||[]),qd=T.filter(x=>x.done).length,half=(S.qHalf&&S.qHalf.d===today())?S.qHalf.l:[],kg=Math.min(3,kgToday()),dpn=DP.filter(x=>dpHas(x[0])).length;
+ const v=[T.length?qd/T.length:0,kg/3,Math.min(1,dpn/5)];
  requestAnimationFrame(()=>el.querySelectorAll('.rg').forEach((c,i)=>{const L=2*Math.PI*(+c.getAttribute('r'));c.style.strokeDashoffset=(L*(1-Math.min(1,v[i]))).toFixed(1)}));
- $('rgl').innerHTML=[['#e0563f','Квесты',qd+'/'+T.length],['#e2c48e','Ритуалы',(rd%1?rd.toFixed(1):rd)+'/'+FIX.length],['#a3bb72','Контракты',co+'/'+(ct||2)]].map(r=>'<div><i style="background:'+r[0]+'"></i>'+r[1]+'<b>'+r[2]+'</b></div>').join('');
+ $('rgl').innerHTML=[['#e0563f','Квесты',qd+'/'+T.length],['#e2c48e','Кегель',kg+'/3'],['#a3bb72','Дракон',Math.min(dpn,5)+'/5']].map(r=>'<div><i style="background:'+r[0]+'"></i>'+r[1]+'<b>'+r[2]+'</b></div>').join('');
  if(v.every(x=>x>=1)&&S.ringDay!==today()){S.ringDay=today();S.ringN=(S.ringN||0)+1;chGive(2,'все кольца дня');save();setTimeout(()=>{const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+70,28);SFX.win();toast('Все кольца дня закрыты!')},600)}}
 /* cat behaviour */
 function catAnim(c,ms){const sv=document.querySelector('#petArt svg.cat');if(!sv||sv.classList.contains(c))return;sv.classList.add(c);setTimeout(()=>sv.classList.remove(c),ms)}
