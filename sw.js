@@ -1,4 +1,4 @@
-const VER='pv-v8', FONTS='pv-fonts';
+const VER='pv-v9', FONTS='pv-fonts';
 const FILES=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./fonts/pt-serif-cyrillic-400-normal.woff2','./fonts/pt-serif-cyrillic-700-normal.woff2','./fonts/pt-serif-latin-400-normal.woff2','./fonts/pt-serif-latin-700-normal.woff2','./fonts/pt-sans-cyrillic-400-normal.woff2','./fonts/pt-sans-cyrillic-700-normal.woff2','./fonts/pt-sans-latin-400-normal.woff2','./fonts/pt-sans-latin-700-normal.woff2',];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VER).then(c=>c.addAll(FILES.map(u=>new Request(u,{cache:'reload'})))));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VER).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
