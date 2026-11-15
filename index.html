@@ -474,7 +474,8 @@ summary{font:700 16px var(--pix)}
 .stp{display:inline-block;width:9px;height:9px;margin-right:5px;border:1px solid var(--gold2);transform:rotate(45deg);opacity:.55}
 .stp.on{background:var(--gold2);opacity:1}.stp.cur{box-shadow:0 0 7px var(--gold2)}
 .pth{display:flex;justify-content:space-between;font-size:13px}.pth b{color:var(--gold2)}
-.pg{height:6px!important;margin:4px 0}.pg i{background:linear-gradient(90deg,#b8862b,#e6b94f)}.rdesc{font:italic 13px var(--body);opacity:.8;margin:0 0 10px}.unl{font-size:12px;color:var(--gold2);margin:8px 0 2px;line-height:1.4}
+.pg{height:6px!important;margin:4px 0}.pg i{background:linear-gradient(90deg,#b8862b,#e6b94f)}.wk{display:flex;gap:5px;align-items:flex-end;height:50px;margin:8px 0 2px}.wk div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.wk i{width:100%;background:#4a4337;border-radius:2px}.wk i.ok{background:#5fc48d}.wk span{font-size:9px;opacity:.55;margin-top:2px}
+.rdesc{font:italic 13px var(--body);opacity:.8;margin:0 0 10px}.unl{font-size:12px;color:var(--gold2);margin:8px 0 2px;line-height:1.4}
 .pg.day i{background:linear-gradient(90deg,#2f7d58,#5fc48d)}.pg.day.ok i{box-shadow:0 0 8px #5fc48d}
 .pg.top i{background:linear-gradient(90deg,#8e3b32,#d9473b)}
 #heroNext small{font-size:12px;opacity:.7}
@@ -1018,6 +1019,10 @@ function unlocks(l,to){const o=[];REQ.forEach((rq,i)=>{if(rq>l&&rq<=to)o.push('�
  for(let n=1;n<=FORGE_COST.length;n++){const rq=3*n;if(rq>l&&rq<=to)o.push('ур. '+rq+': кузница +'+n)}
  return o.sort((a,b)=>parseInt(a.slice(3))-parseInt(b.slice(3)))}
 const RANK_DESC={'Асигару':'Пехотинец. Учишься стоять на ногах каждый день.','Ученик додзё':'Привычки складываются в ритм.','Ронин':'Сам себе хозяин, без хозяина-слабости.','Самурай':'Дисциплина стала характером.','Хатамото':'Ты держишь слово даже когда тяжело.','Мастер меча':'Мастерство в мелочах и ежедневности.','Кэнсэй':'Пример для себя прежнего.','Даймё':'Под тобой целая жизнь, и она в порядке.','Сёгун':'Путь стал твоей природой.','Легенда':'Тебя пересказывают другим.','Бессмертный':'Вершина. Дальше только путь ради пути.'};
+/* неделя: 7 столбиков XP по дням, зелёный — цель закрыта */
+function weekStrip(gl){const x=S.xpd||{},days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push([d,x[dkey(d)]||0])}
+ const mx=Math.max(gl,...days.map(d=>d[1])),hit=days.filter(d=>d[1]>=gl).length;let st=0;for(let i=6;i>=0;i--){if(days[i][1]>=gl)st++;else if(i<6)break}
+ return '<div class="wk">'+days.map(([d,v])=>'<div title="'+v+' XP"><i class="'+(v>=gl?'ok':'')+'" style="height:'+Math.max(3,Math.round(v/mx*34))+'px"></i><span>'+'вспнвтсрчтптсбвс'.slice(d.getDay()*2,d.getDay()*2+2)+'</span></div>').join('')+'</div><small>'+hit+' из 7 дней с целью'+(st>1?' · серия '+st:'')+'</small>'}
 /* дневная цель: чуть выше среднего за неделю, но в разумных пределах */
 function dayGoal(){const a=avgXp();return Math.max(60,Math.min(250,Math.round((a*1.1||80)/10)*10))}
 const stepDots=(n,cur)=>Array.from({length:n},(_,k)=>'<i class="stp'+(k<cur?' on':'')+(k===cur-1?' cur':'')+'"></i>').join('');
@@ -1343,7 +1348,7 @@ function renderQuest(){renderLove();const ch=S.camp.ch,b=bossOf(ch);
 function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0]>li.l);
  $('heroSpr').innerHTML=heroSVG(6);$('heroRank').textContent=r[1];$('heroKanji').textContent=r[2]||'道';{const k=KOTOBA[seedPick(today()+'w',1,KOTOBA.length)[0]];$('kotoba').innerHTML='<b lang="ja">'+k[0]+'</b><span>«'+k[1]+'»</span><small>слово дня</small>'}const pi=pathInfo();$('heroLvl').textContent='Уровень '+li.l+' · '+li.cur+' / '+li.need+' XP до следующего';$('heroXp').style.width=(li.cur/li.need*100)+'%';
  const gl=dayGoal(),tdx=(S.xpd||{})[today()]||0,gp=Math.min(1,tdx/gl);
- $('heroNext').innerHTML='<div class="rdesc">'+esc(RANK_DESC[r[1]]||'')+'</div><div class="pth"><span>Сегодня</span><b>'+tdx+' / '+gl+' XP'+(gp>=1?' ✓':'')+'</b></div><div class="gauge pg day'+(gp>=1?' ok':'')+'"><i style="width:'+(gp*100)+'%"></i></div><small>'+(gp>=1?'дневная цель закрыта — всё сверху бонус':'ещё '+(gl-tdx)+' XP ≈ '+Math.ceil((gl-tdx)/25)+' '+plural(Math.ceil((gl-tdx)/25),'квест','квеста','квестов')+' по 25')+'</small><div style="height:10px"></div>'+(pi.nx?'<div class="stps">'+stepDots(pi.steps,pi.step)+'<span>ступень '+pi.step+' из '+pi.steps+'</span></div>'
+ $('heroNext').innerHTML='<div class="rdesc">'+esc(RANK_DESC[r[1]]||'')+'</div><div class="pth"><span>Сегодня</span><b>'+tdx+' / '+gl+' XP'+(gp>=1?' ✓':'')+'</b></div><div class="gauge pg day'+(gp>=1?' ok':'')+'"><i style="width:'+(gp*100)+'%"></i></div><small>'+(gp>=1?'дневная цель закрыта — всё сверху бонус':'ещё '+(gl-tdx)+' XP ≈ '+Math.ceil((gl-tdx)/25)+' '+plural(Math.ceil((gl-tdx)/25),'квест','квеста','квестов')+' по 25')+'</small>'+weekStrip(gl)+'<div style="height:10px"></div>'+(pi.nx?'<div class="stps">'+stepDots(pi.steps,pi.step)+'<span>ступень '+pi.step+' из '+pi.steps+'</span></div>'
   +'<div class="pth"><span>До ранга «'+esc(pi.nx[1])+'»</span><b>'+Math.round(pi.rankPct*100)+'%</b></div><div class="gauge pg"><i style="width:'+(pi.rankPct*100)+'%"></i></div>'
   +'<small>ещё '+pi.left.toLocaleString('ru-RU')+' XP'+(pi.days?' ≈ '+pi.days+' '+plural(pi.days,'день','дня','дней'):'')+' · ур. '+pi.nx[0]+'</small>'
   +'<div class="pth" style="margin-top:10px"><span>Вершина: «'+esc(pi.top[1])+'»</span><b>'+(pi.topPct*100).toFixed(1).replace('.0','')+'%</b></div><div class="gauge pg top"><i style="width:'+(pi.topPct*100)+'%"></i></div>'
