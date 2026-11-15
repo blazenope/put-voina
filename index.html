@@ -1222,7 +1222,7 @@ summary{font:700 16px var(--pix)}
 <!-- ================= SHOP ================= -->
 <main class="screen hide" id="s-drg">
   <div class="pnl"><div class="ttl"><h2>Дракон</h2><span class="c" id="drgLvN"></span></div><div id="drg"></div></div>
-  <div class="pnl"><div class="ttl"><h2>Мои параметры</h2><span class="c">только на телефоне</span></div><div id="drgMe"></div></div>
+  <div class="pnl"><div class="ttl"><h2>Мои параметры</h2><span class="c">дракон в цифрах</span></div><div id="drgMe"></div></div>
   <div class="pnl"><div class="ttl"><h2>Охота недели</h2><span class="c" id="drgHuntC"></span></div><div id="drgHunt"></div></div>
   <div class="pnl"><div class="ttl"><h2>Тренировки дракона</h2><span class="c" id="drgXc"></span></div><div id="drgX"></div></div>
   <div class="pnl"><div class="ttl"><h2>Сексолог спрашивает</h2><span class="c">вопрос дня</span></div><div id="drgQz"></div></div>
@@ -3437,7 +3437,7 @@ function renderMe(){const el=$('drgMe');if(!el)return;const b=S.body||{};
   if(b.h&&b.w){const bmi=b.w/((b.h/100)**2);r.push(['Рост / вес',b.h+' см · '+b.w+' кг','ИМТ '+bmi.toFixed(1)+(bmi<18.5?' — недобор: ешь больше белка и калорий':bmi<21?' — худощавый: в зале качай массу, +4–6 кг мышц сделают силуэт мощнее':bmi<25?' — норма':' — выше нормы: минус жир = плюс видимая длина')])}
   out+='<div class="mer">'+r.map(x=>'<div><b>'+x[0]+'</b><em>'+esc(x[1])+'</em><small>'+esc(x[2])+'</small></div>').join('')+'</div>';
   if(b.len>=15.5||b.gir>=13)out+='<p class="mut" style="font-size:12.5px;line-height:1.5;margin:8px 0 0"><b style="color:var(--gold)">Дракон выше среднего — значит, бережность важнее силы.</b> Много смазки, входить медленно, когда она очень возбуждена. Позы, где она управляет глубиной (наездница, ложечки, на боку), и без резких глубоких ударов в начале: шейка матки чувствительная. Спроси «так нормально?» — и она будет тебя хотеть ещё. Хвастаться размером не надо: пусть она сама скажет.</p>'}
- el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить параметры':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Хранится только на этом телефоне, никуда не отправляется.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details>';
+ el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить параметры':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details>';
  $('meOk').onclick=()=>{const g=k=>{const v=parseFloat(String($('me_'+k).value).replace(',','.'));return v>0?Math.round(v*10)/10:0};S.body={len:g('len'),gir:g('gir'),h:g('h'),w:g('w')};save();renderMe();toast('Сохранено на телефоне')}}
 /* ===== Evening ritual: close the day ===== */
 const eveDone=()=>!!(S.eve&&S.eve[today()]);
