@@ -902,6 +902,7 @@ summary{font:700 16px var(--pix)}
 #s-log .hidet{display:none!important}
 .oddsT summary{list-style:none;cursor:pointer;margin:0}.oddsT summary::-webkit-details-marker{display:none}.oddsT summary::before{content:'ⓘ '}
 #s-shop [data-st=gear]{display:none!important}
+#s-shop [data-st=cons]{display:none!important}
 </style>
 </head>
 <body>
@@ -2610,7 +2611,7 @@ function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().inc
  $('aX').onclick=closeSheet;$('aEq').onclick=()=>{let L=artEqL();if(eq)L=L.filter(x=>x!==id);else{if(L.length>=3)return toast('Все 3 слота заняты: сначала сними артефакт');L.push(id)}S.artEq=L;SFX.tap();save();closeSheet();render()};
  if($('aUp'))$('aUp').onclick=()=>{if(!can)return;s.c-=need;S.gold-=gc;s.l++;addLog('Артефакт улучшен: '+a[1]+' · ур. '+s.l);SFX.level();buzz();save();closeSheet();render();burst(innerWidth/2,innerHeight/2,24);toast(a[1]+' — уровень '+s.l)}}
 /* ===== shop tabs, scenes, reward templates ===== */
-const STABS=[['chest','Сокровища',['chest','art']],['buy','Товары',['cons','cat']],['rw','Награды',['rw']]];
+const STABS=[['chest','Сокровища',['chest','art']],['buy','Котик',['cat']],['rw','Награды',['rw']]];
 function renderShopTabs(){if(!STABS.some(t=>t[0]===S.shopTab))S.shopTab='chest';const cur=S.shopTab,grp=STABS.find(t=>t[0]===cur)[2];$('shopTabs').innerHTML=STABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
  $('shopTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.shopTab=b.dataset.k;SFX.tap();buzz();save();renderShopTabs()});document.querySelectorAll('#s-shop [data-st]').forEach(p=>p.classList.toggle('hide',!grp.includes(p.dataset.st)))}
 const SCN=[['fuji','Фудзи и тории',0],['bamboo','Бамбуковая роща',400],['snow','Зимний храм',600],['munich','Мюнхен: Фрауэнкирхе',900]];
