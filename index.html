@@ -975,6 +975,21 @@ summary{font:700 16px var(--pix)}
 .encard span{font-size:20px}.encard b{font:600 13.5px var(--body)}.encard small{font:11.5px/1.35 var(--body);color:var(--ink3);flex:1}.encard em{font:700 11.5px var(--body);font-style:normal;color:var(--gold);margin-top:4px}
 .encard.used{opacity:.5}.encard.used em{color:#a3bb72}.encard:active{transform:scale(.97)}
 .drgk{cursor:pointer;color:inherit}
+.dj{position:relative;width:100%;height:100%;overflow:hidden;display:grid;place-items:center;background:linear-gradient(180deg,#f3e6cc10,transparent 60%)}
+.djsun{position:absolute;width:96px;height:96px;border-radius:50%;right:16%;top:12px;background:radial-gradient(circle,#d2402c,#a8291c);opacity:.85;box-shadow:0 0 30px #c6301f55}
+.djk{position:absolute;left:12px;top:6px;font:700 64px "Yu Mincho","Hiragino Mincho ProN",serif;color:var(--ink);opacity:.07;writing-mode:vertical-rl}
+.djw{position:absolute;left:0;right:0;bottom:0;height:30px;opacity:.5;background:radial-gradient(circle at 50% 100%,transparent 9px,#7fa7c9 10px,transparent 11px,transparent 15px,#7fa7c9 16px,transparent 17px,transparent 21px,#7fa7c9 22px,transparent 23px) 0 0/44px 22px repeat-x,radial-gradient(circle at 50% 100%,transparent 9px,#7fa7c9 10px,transparent 11px,transparent 15px,#7fa7c9 16px,transparent 17px,transparent 21px,#7fa7c9 22px,transparent 23px) 22px 11px/44px 22px repeat-x}
+.djb{position:relative;z-index:2;display:flex;align-items:flex-end;gap:2px;animation:djfl 4s ease-in-out infinite;filter:drop-shadow(0 6px 6px #0008)}.dj.sl .djb{animation-duration:8s;filter:drop-shadow(0 6px 6px #0008) saturate(.6) brightness(.85)}
+.dje{line-height:1}.dj.l5 .dje:not(.big){transform:translateY(-14px)}
+.dj.l7 .djb,.dj.l8 .djb,.dj.l9 .djb{filter:drop-shadow(0 0 14px #e0c27aaa) drop-shadow(0 6px 6px #0008)}.dj.l9 .djsun{background:radial-gradient(circle,#f6d36b,#c9a46a);box-shadow:0 0 40px #f6d36b88}
+.djc{position:absolute;font-size:30px;opacity:.7;z-index:1;animation:djcl 12s linear infinite}.djc.c1{top:22px;left:-40px}.djc.c2{top:96px;left:-40px;animation-delay:-6s;font-size:24px}
+.djs{position:absolute;right:20%;top:16px;font-size:20px;z-index:3;animation:djsp 2.4s ease-in-out infinite}
+.djz{position:absolute;right:26%;top:28px;font-size:22px;z-index:3;animation:djsp 3s ease-in-out infinite}.djh{position:absolute;left:28%;top:30px;font-size:20px;z-index:3;animation:djsp 1.6s ease-in-out infinite}
+.djf{position:absolute;z-index:4;font-size:44px;left:22%;top:34%;opacity:0;pointer-events:none}
+.dstage.roar .djf{animation:djfi 1s ease-out}.dstage.roar .djb{animation:djro .5s ease}
+@keyframes djfl{50%{transform:translateY(-6px)}}@keyframes djcl{to{transform:translateX(480px)}}@keyframes djsp{50%{transform:translateY(-6px) scale(1.15);opacity:.7}}
+@keyframes djfi{0%{opacity:0;transform:scale(.3)}30%{opacity:1;transform:scale(1.3) translateX(-10px)}100%{opacity:0;transform:scale(1.6) translate(-40px,-20px)}}@keyframes djro{30%{transform:rotate(-8deg) scale(1.08)}70%{transform:rotate(5deg)}}
+.devo .dj{border-radius:14px}
 .dstage{display:block;position:relative;width:100%;height:170px;margin:0 0 12px;padding:0;border:1px solid var(--edge);border-radius:14px;cursor:pointer;background:radial-gradient(ellipse at 50% 85%,rgba(201,164,106,.14),transparent 65%),var(--panel2);overflow:hidden}
 .dstage .dtap{position:absolute;right:10px;bottom:8px;font:600 10.5px var(--body);color:var(--ink3);letter-spacing:.5px}
 .dsvg{width:100%;height:100%}.dsvg .dbody{transform-origin:60px 80px;animation:dbr 3.6s ease-in-out infinite}.dsvg.sl .dbody{animation-duration:7s}.dsvg .dwing{transform-origin:76px 60px;animation:dwg 2.8s ease-in-out infinite}
@@ -1389,7 +1404,7 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 function plural(n,a,b,c){n=Math.abs(n)%100;const m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
 
 /* ================= DATA ================= */
-const RANKS=[[1,'Кумер в завязке','足軽'],[3,'Беглец с Порнхаба','門弟'],[5,'Хранитель семени','浪人'],[8,'Укротитель стояка','侍'],[12,'Страж синих яиц','旗本'],[16,'Монах без правой руки','剣豪'],[20,'Морж ледяного душа','剣聖'],[25,'Сигма-самец','大名'],[30,'Гигачад воздержания','将軍'],[40,'Легенда No Nut November','伝説'],[50,'Бессмертный кот','不滅']];
+const RANKS=[[1,'Асигару','足軽'],[3,'Ученик додзё','門弟'],[5,'Ронин','浪人'],[8,'Самурай','侍'],[12,'Хатамото','旗本'],[16,'Кэнго, мастер меча','剣豪'],[20,'Кэнсэй, святой меча','剣聖'],[25,'Даймё','大名'],[30,'Сёгун','将軍'],[40,'Легенда пути','伝説'],[50,'Бессмертный','不滅']];
 const STATS={str:['Сила','#c4473b'],int:['Разум','#6d8bb0'],cha:['Харизма','#c27a8a'],wil:['Воля','#c9a46a']};
 const STK={str:'力',int:'知',cha:'心',wil:'志'};
 const KOTOBA=[['七転び八起き','Упади семь раз — встань восемь'],['継続は力なり','Постоянство — это сила'],['石の上にも三年','Даже на холодном камне за три года станет тепло'],['急がば回れ','Спешишь — иди в обход'],['塵も積もれば山となる','Из пылинок вырастает гора'],['初心忘るべからず','Не забывай дух новичка'],['猿も木から落ちる','И обезьяна падает с дерева'],['一期一会','Одна встреча — один шанс'],['雨降って地固まる','После дождя земля твёрже'],['千里の道も一歩から','Путь в тысячу ри начинается с шага'],['案ずるより産むが易し','Сделать легче, чем бояться'],['己に克つ','Победи самого себя']];
@@ -1643,7 +1658,7 @@ const trialOk=i=>!TR[i]||TR[i].every(([k,n])=>trVal(k)>=n);
 function rankIdxFor(l){let i=0;RANKS.forEach((r,j)=>{if(l>=r[0])i=j});while(i>0&&!trialOk(i))i--;return i}
 const rankIdx=()=>rankIdxFor(lvlInfo(S.xp).l);
 const rankOf=l=>RANKS[rankIdxFor(l)];
-function nameMig(){const M={'Самурай':'Укротитель стояка','Сёгун':'Гигачад воздержания','Воин':'Укротитель стояка','Владыка':'Гигачад воздержания','Хозяин нэкоматы':'Хозяин кота-духа','Император воздержания':'Гигачад воздержания'};if(M[S.title])S.title=M[S.title]}
+function nameMig(){const M={'Укротитель стояка':'Самурай','Гигачад воздержания':'Сёгун','Воин':'Самурай','Владыка':'Сёгун','Хозяин нэкоматы':'Хозяин кота-духа','Император воздержания':'Сёгун'};if(M[S.title])S.title=M[S.title]}
 function lvRework(){nameMig();if(S.prog2)return;S.prog2=1;const l=lvlInfo(S.xp).l;S.rkMax=rankIdx();addLog('Система уровней пересчитана честно: уровень '+l+', ранг '+RANKS[S.rkMax][1]);setTimeout(()=>lootSheet('Уровни пересчитаны',null,'Опыт сохранён полностью ('+S.xp.toLocaleString('ru-RU')+' XP), но кривая стала честной: теперь ты на уровне '+l+'. Дальше каждый уровень — это реальные недели дел. Ранги требуют испытаний.'),2600)}
 function checkRank(){lvRework();const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами.')},500)}}
 const PERKS=[
@@ -2833,7 +2848,7 @@ const AS=[
  ['combo','Комбо в бою','撃','Бой',()=>S.comboBest||0,[20,50,100,200],['Вихрь','Буря клинков']],
  ['storm','Штормы эмоций','嵐','Бой',()=>S.storms||0,[1,5,20,50],['Укротитель бурь','Око бури']],
  ['lvl','Уровень героя','位','Бой',()=>lvlInfo(S.xp).l,[5,10,20,30],['Ветеран','Живая легенда']],
- ['rank','Ранги','侍','Бой',()=>rankIdx(),[2,4,6,8],['Укротитель стояка','Гигачад воздержания']],
+ ['rank','Ранги','侍','Бой',()=>rankIdx(),[2,4,6,8],['Самурай','Сёгун']],
  ['gold','Золото за всё время','金','Богатство',()=>S.goldTotal||0,[500,2000,10000,50000],['Богач','Магнат']],
  ['ct','Контракты','契','Богатство',()=>S.ctOk||0,[5,25,100,300],['Наёмник','Мастер гильдии']],
  ['risk','Рискованные контракты','賭','Богатство',()=>S.ctRisk||0,[1,10,30,80],['Игрок','Азартный ронин']],
@@ -3260,24 +3275,12 @@ MYTH2.push(['«Джелкинг увеличивает член»','Нет до�
  ['«От воздержания член растёт»','Нет. Растёт чувствительность к живому контакту и уверенность — это и правда ощущается как «больше силы».']);
 /* ===== 龍 Живой дракон: рисунок растёт с уровнем, охота недели, эволюция ===== */
 const DCOL=['#7d8a5c','#8f9a58','#5f9a6a','#4f8f8a','#4f7fa8','#6f5fa8','#a8483f','#c9a46a','#e0c27a','#f4ead2'];
-function drgSvg(i,mood){const c=DCOL[i]||DCOL[0],w=7+i*1.3,sl=mood==='сонный',hot=mood==='рвётся в бой',heads=i>=5?3:1;
- const head=(x,y,s,r)=>'<g transform="translate('+x+' '+y+') rotate('+r+') scale('+s+')">'
-  +(i>=2?'<path d="M-4 -6 L-9 -17 L-1 -8 M3 -7 L1 -19 L7 -8" fill="'+c+'" stroke="#0006" stroke-width=".8"/>':'')
-  +'<ellipse cx="0" cy="0" rx="11" ry="8" fill="'+c+'" stroke="#0007" stroke-width="1"/><path d="M6 -3 Q17 -2 18 3 Q12 7 4 6 Z" fill="'+c+'" stroke="#0007" stroke-width="1"/>'
-  +'<circle cx="16" cy="0" r=".9" fill="#0009"/>'
-  +(sl?'<path d="M1 -2 q3 2 6 0" stroke="#111" stroke-width="1.4" fill="none"/>':'<circle cx="4" cy="-2" r="2.6" fill="#fff8e0"/><circle cx="4.6" cy="-2" r="1.4" fill="'+(hot?'#c6301f':'#111')+'"/>')
-  +(i>=6?'<path d="M17 3 q8 4 12 -2 M16 5 q6 8 13 6" stroke="'+c+'" stroke-width=".9" fill="none" opacity=".8"/>':'')
-  +'<g class="dfire"><path d="M19 2 q12 -6 26 0 q-10 2 -14 6 q6 1 10 6 q-14 0 -22 -8 Z" fill="#e2803a"/><path d="M19 2 q8 -2 15 1 q-6 2 -8 4 q-4 -2 -7 -5Z" fill="#f6d36b"/></g></g>';
- let s='<svg class="dsvg'+(sl?' sl':'')+(hot?' hot':'')+'" viewBox="0 0 160 110" aria-label="Дракон">';
- if(i>=7)s+='<defs><radialGradient id="dau"><stop offset="0" stop-color="'+c+'" stop-opacity=".35"/><stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient></defs><circle cx="80" cy="58" r="56" fill="url(#dau)"/>';
- if(i>=4)s+='<g class="dwing" fill="'+c+'" fill-opacity=".55" stroke="#0007" stroke-width="1"><path d="M70 62 L52 18 L66 30 L72 14 L80 32 L90 22 L86 58 Z"/></g>';
- const body='M14 92 C 34 62, 52 104, 76 80 S 104 52, 112 46';
- s+='<g class="dbody"><path d="'+body+'" stroke="#0008" stroke-width="'+(w+2)+'" fill="none" stroke-linecap="round"/><path d="'+body+'" stroke="'+c+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>'
-  +'<path d="'+body+'" stroke="#fff" stroke-opacity=".22" stroke-width="'+(w/3)+'" stroke-dasharray="3 4" fill="none" stroke-linecap="round"/>'
-  +(i>=3?'<path d="'+body+'" stroke="#0005" stroke-width="2" stroke-dasharray="1 7" fill="none" transform="translate(0 -'+(w/2)+')"/>':'')+'</g>';
- if(i>=1)s+='<path d="M14 92 l-8 6 l4 -10 Z" fill="'+c+'" stroke="#0007"/>';
- if(heads===3){s+='<path d="M104 52 Q90 34 96 14 M108 52 Q130 58 136 76" stroke="#0008" stroke-width="'+(w*.7+2)+'" fill="none" stroke-linecap="round"/><path d="M104 52 Q90 34 96 14 M108 52 Q130 58 136 76" stroke="'+c+'" stroke-width="'+(w*.7)+'" fill="none" stroke-linecap="round"/>'+head(98,13,.72,-18)+head(137,77,.72,20)}
- s+=head(118,42,1,-6)+'</svg>';return s}
+const DEMO=['🪱','🐍','🐍','🦎','🐲','🐲','🐉','🐉','🐉','🐉'];
+function drgSvg(i,mood){const sl=mood==='сонный',hot=mood==='рвётся в бой',e=DEMO[i]||'🐉',fs=54+i*6;
+ const body=i===5?'<span class="dje" style="font-size:'+(fs-14)+'px">🐲</span><span class="dje big" style="font-size:'+fs+'px">🐲</span><span class="dje" style="font-size:'+(fs-14)+'px">🐲</span>':'<span class="dje big" style="font-size:'+fs+'px">'+e+'</span>';
+ return '<div class="dj l'+i+(sl?' sl':'')+(hot?' hot':'')+'"><span class="djsun"></span><span class="djk" lang="ja">龍</span>'
+  +(i>=6?'<span class="djc c1">☁️</span><span class="djc c2">☁️</span>':'')+(i>=8?'<span class="djs">✨</span>':'')
+  +'<div class="djb">'+body+'</div>'+(sl?'<span class="djz">💤</span>':'')+(hot?'<span class="djh">♨️</span>':'')+'<span class="djf">🔥</span><span class="djw"></span></div>'}
 function wkStart(){const x=new Date();x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
 function wkDays(){const a=[],s=wkStart(),t=today();for(let k=0;k<7;k++){const x=new Date(s);x.setDate(s.getDate()+k);const d=dkey(x);a.push(d);if(d===t)break}return a}
 const cntDays=f=>wkDays().filter(f).length;
@@ -3301,7 +3304,7 @@ function renderHunt(){const el=$('drgHunt');if(!el)return;const h=huntWeek(),lef
   award(60,'str','',{t:'Охота дракона: '+x[1]});if(h.got.length===3)award(100,'wil','',{t:'Дракон: вся охота недели'});addLog('Охота дракона: '+x[1]);SFX.tap&&SFX.tap();buzz();save();render();toast('🐉 '+x[1]+' · +60 XP')})}
 function drgEvo(i){if(S.drgSeen==null){S.drgSeen=i;return}if(i<=S.drgSeen)return;S.drgSeen=i;save();
  setTimeout(()=>sheet('<div style="text-align:center"><p class="mut" style="margin:0">Дракон эволюционировал</p><div class="devo">'+drgSvg(i,'рвётся в бой')+'</div><h3 style="margin:4px 0">'+DRL[i][1]+'</h3><p class="mut" style="font-size:13.5px;line-height:1.5">'+esc(DRLD[i]||'')+'</p>'
-  +'<p style="font-size:13px;color:var(--gold)">'+['','Появился хвост.','Выросли рога.','Покрылся чешуёй.','Расправил крылья.','Три головы! Змей Горыныч.','Отрастил усы мудреца.','Засиял золотой аурой.','Сияет ярче.','Бессмертное пламя.'][i]+'</p><button class="btn gold" id="evOk2" style="width:100%">Рррр</button></div>'),400);
+  +'<p style="font-size:13px;color:var(--gold)">'+['','Сбросил кожу: из червячка — в змея.','Змей окреп и вытянулся.','Отрастил лапы.','Голова настоящего дракона!','Три головы! Змей Горыныч.','Истинный рю: летает в облаках.','Засиял золотой аурой.','Звёздная пыль в чешуе.','Солнце за спиной стало золотым.'][i]+'</p><button class="btn gold" id="evOk2" style="width:100%">Рррр</button></div>'),400);
  setTimeout(()=>{if($('evOk2'))$('evOk2').onclick=closeSheet},450);addLog('Дракон эволюционировал: '+DRL[i][1])}
 /* ===== Evening ritual: close the day ===== */
 const eveDone=()=>!!(S.eve&&S.eve[today()]);
