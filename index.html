@@ -1091,6 +1091,9 @@ summary{font:700 16px var(--pix)}
 .cv{margin:14px 0 0;padding:14px;border-radius:14px;text-align:center}.cv b{display:block;font:800 22px var(--body);letter-spacing:1px}.cv span{display:block;font:800 30px var(--num);margin:2px 0}.cv small{font:13px var(--body);color:var(--ink2)}.cv.w{background:rgba(163,187,114,.15);border:1px solid #a3bb72}.cv.w b,.cv.w span{color:#a3bb72}.cv.l{background:rgba(224,86,63,.13);border:1px solid #e0563f}.cv.l b,.cv.l span{color:#e0563f}.cv.d{background:var(--panel2);border:1px solid var(--edge2)}.cv.d b,.cv.d span{color:var(--gold)}
 .catm{display:grid;grid-template-columns:1fr 1fr;gap:8px}.catm button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 8px;border:1px solid var(--edge);border-radius:14px;background:var(--panel2);color:var(--ink);font:600 13.5px var(--body);cursor:pointer}.catm button span{font:700 24px/1 "Yu Mincho",serif;color:var(--gold)}.catm button:active{transform:scale(.96)}
 #petSay{cursor:pointer}
+.achb{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:60;max-width:480px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid rgba(201,164,106,.6);border-radius:18px;background:linear-gradient(135deg,#2a1f12,#15110c);box-shadow:0 14px 40px -10px #000,0 0 30px -8px rgba(201,164,106,.5);color:var(--ink);text-align:left;transform:translateY(-140%);transition:transform .45s cubic-bezier(.34,1.56,.64,1);cursor:pointer}
+.achb.in{transform:none}.achb i{flex:none;display:grid;place-content:center;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3cf,#c9a46a 60%,#8a6a35);color:#2a1a02;font:700 24px/1 "Yu Mincho",serif;font-style:normal;box-shadow:0 0 0 3px rgba(201,164,106,.35);animation:achspin .9s ease-out}.achb small{display:block;font:700 11px var(--body);letter-spacing:1px;text-transform:uppercase;color:var(--gold)}.achb b{display:block;font:700 16px/1.25 var(--body)}.achb span{font:700 12.5px var(--body);color:#a3bb72}
+@keyframes achspin{0%{transform:scale(.3) rotate(-120deg)}70%{transform:scale(1.15) rotate(10deg)}100%{transform:none}}
 </style>
 </head>
 <body>
@@ -3070,12 +3073,22 @@ const FUN=[
 const ACAT=['Угар','Путь','Воля','Разум','Тело','Сердце','Бой','Богатство','Лавка','Тайные'];
 const achTop=s=>{let t=-1;s[5].forEach((n,i)=>{if((S.ach2||{})[s[0]+':'+i])t=i});return t};
 const achAP=()=>Object.keys(S.ach2||{}).reduce((a,id)=>{const t=+id.split(':')[1];return a+(isNaN(t)?30:TIERAP[t])},0);
+/* достижение: звук, вибрация, баннер и системное уведомление */
+const ACHQ=[];let achBusy=false;
+function achFx(nm,k,xp){ACHQ.push([nm,k,xp]);if(!achBusy)achNext()}
+function achNext(){const q=ACHQ.shift();if(!q){achBusy=false;return}achBusy=true;const[nm,k,xp]=q;
+ try{SFX.level()}catch(e){}buzz();setTimeout(buzz,180);setTimeout(buzz,360);
+ const b=document.createElement('button');b.className='achb';b.innerHTML='<i lang="ja">'+esc(k||'★')+'</i><div><small>Достижение!</small><b>'+esc(nm)+'</b><span>+'+xp+' XP</span></div>';
+ b.onclick=()=>{b.remove();try{go('hero')}catch(e){}};document.body.appendChild(b);requestAnimationFrame(()=>b.classList.add('in'));
+ try{if('Notification' in window&&Notification.permission==='granted'&&navigator.serviceWorker)navigator.serviceWorker.ready.then(r=>r.showNotification('🏆 '+nm,{body:'+'+xp+' XP · Путь Воина',icon:'./icon-192.png',badge:'./icon-192.png',tag:'ach-'+nm}))}catch(e){}
+ setTimeout(()=>{b.classList.remove('in');setTimeout(()=>{b.remove();achNext()},400)},3600)}
+function achNotifAsk(){if(!('Notification' in window))return toast('Уведомления работают, если сайт добавлен на экран «Домой» (iOS 16.4+)');Notification.requestPermission().then(p=>{toast(p==='granted'?'Уведомления о достижениях включены 🔔':'Уведомления не разрешены — включи в настройках iPhone');render()})}
 function checkAch(){S.ach2=S.ach2||{};S.actBest=Math.max(S.actBest||0,actStreak());const retro=S.achV!==1,got=[];
  for(const s of AS){let v=0;try{v=s[4]()}catch(e){}s[5].forEach((n,t)=>{const id=s[0]+':'+t;if(v>=n&&!S.ach2[id]){S.ach2[id]=today();got.push([s,t])}})}
  for(const s of SECR){if(!S.ach2[s[0]]&&s[4]()){S.ach2[s[0]]=today();got.push([s,-1])}}
  {const fr=!S.funV;for(const s of FUN){let ok=false;try{ok=s[4]()}catch(e){}if(ok&&!S.ach2[s[0]]){S.ach2[s[0]]=today();if(!fr)got.push([s,-1])}}if(fr){S.funV=1;save()}}
  if(retro){S.achV=1;save();if(got.length)setTimeout(()=>lootSheet('Зал славы открыт',null,'Засчитано за прошлые дела: '+got.length+' '+plural(got.length,'достижение','достижения','достижений')+'. Опыт за них не начисляется, но слава и титулы твои. Загляни во вкладку «Герой»'),2200);return}
- for(const[s,t]of got){const nm=t<0?s[1]:s[1]+' · '+TIERN[t],xp=t<0?50:TIERXP[t],g=Math.round(xp*.7);S.xp+=xp;S.gold+=g;S.goldTotal+=g;addLog('Достижение: '+nm);if(t>=2)chGive(t===3?3:2,'достижение');setTimeout(()=>{toast('Достижение: '+nm+' · +'+xp+' XP');SFX.stamp()},1500)}
+ for(const[s,t]of got){const nm=t<0?s[1]:s[1]+' · '+TIERN[t],xp=t<0?50:TIERXP[t],g=Math.round(xp*.7);S.xp+=xp;S.gold+=g;S.goldTotal+=g;addLog('Достижение: '+nm);if(t>=2)chGive(t===3?3:2,'достижение');setTimeout(()=>achFx(nm,s[2],xp),1500)}
  if(got.length)save()}
 let ACF='Ближайшие';
 function renderAch(){S.ach2=S.ach2||{};const got=Object.keys(S.ach2).length,tot=AS.length*4+SECR.length+FUN.length;$('achCnt').textContent=got+' / '+tot;
@@ -3085,8 +3098,9 @@ function renderAch(){S.ach2=S.ach2||{};const got=Object.keys(S.ach2).length,tot=
  const near=()=>AS.map(s=>{const t=achTop(s),nx=s[5][t+1];let v=0;try{v=s[4]()}catch(e){}return [s,nx?v/nx:-1]}).filter(x=>x[1]>=0).sort((a,b)=>b[1]-a[1]).slice(0,8).map(x=>x[0]);
  const fun=s=>'<div class="abdg fun'+(S.ach2[s[0]]?' got':'')+'" style="--tc:'+(S.ach2[s[0]]?'#c9a46a':'#3a342d')+'"><i lang="ja">'+s[2]+'</i><b>'+esc(s[1])+'</b><small>'+(S.ach2[s[0]]?'получено':'угар')+'</small><span>'+esc(s[3])+'</span></div>';
  const list=ACF==='Угар'?FUN.map(fun):ACF==='Ближайшие'?near().map(badge):ACF==='Тайные'?SECR.map(sec):(ACF==='Все'?AS:AS.filter(s=>s[3]===ACF)).map(badge).concat(ACF==='Все'?FUN.map(fun).concat(SECR.map(sec)):[]);
- $('achs').innerHTML='<div class="ahd"><div><b>'+achAP()+'</b><span>славы</span></div><div><b>'+got+'</b><span>из '+tot+'</span></div><div><b>'+(S.title?esc(S.title):'—')+'</b><span>титул</span></div></div>'
+ $('achs').innerHTML=(('Notification' in window)&&Notification.permission==='default'?'<button class="btn" id="achNt" style="width:100%;margin-bottom:10px">🔔 Включить уведомления о достижениях</button>':'')+'<div class="ahd"><div><b>'+achAP()+'</b><span>славы</span></div><div><b>'+got+'</b><span>из '+tot+'</span></div><div><b>'+(S.title?esc(S.title):'—')+'</b><span>титул</span></div></div>'
   +'<div class="chips acf">'+['Ближайшие','Все'].concat(ACAT).map(c=>'<button class="chp'+(ACF===c?' on':'')+'" data-c="'+c+'">'+c+'</button>').join('')+'</div><div class="agrid">'+list.join('')+'</div>';
+ if($('achNt'))$('achNt').onclick=achNotifAsk;
  $('achs').querySelectorAll('.acf .chp').forEach(b=>b.onclick=()=>{ACF=b.dataset.c;SFX.tap();renderAch()});$('achs').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>achSheet(b.dataset.s));
  if(S.title&&!$('heroLvl').textContent.includes('«'))$('heroLvl').textContent+=' · «'+S.title+'»'}
 function achSheet(k){const s=AS.find(x=>x[0]===k);let v=0;try{v=s[4]()}catch(e){}
@@ -3525,22 +3539,49 @@ function drgEvo(i){if(S.drgSeen==null){S.drgSeen=i;return}if(i<=S.drgSeen)return
  setTimeout(()=>{if($('evOk2'))$('evOk2').onclick=closeSheet},450);addLog('Дракон эволюционировал: '+DRL[i][1])}
 /* 🎲 Случайный человек Земли: сравнение со мной (данные приблизительные: рост NCD-RisC, ИМТ ВОЗ, шаги Althoff 2017, размеры Veale 2015) */
 // [флаг, страна, доля населения %, рост М, рост Ж, ИМТ, муж. имена, жен. имена]
-const WPOP=[['🇮🇳','Индия',17.8,166,155,21.5,'Рахул Арджун Викрам','Прия Ананья Дивья'],['🇨🇳','Китай',17.6,172,160,24,'Вэй Лэй Цзюнь','Мэй Лин Сяо'],['🇺🇸','США',4.2,177,163,29,'Джейк Тайлер Майкл','Эшли Эмили Сара'],
- ['🇮🇩','Индонезия',3.5,166,154,23.5,'Агус Буди Риски','Сити Путри Дэви'],['🇵🇰','Пакистан',3,167,154,24,'Али Хасан Билал','Аиша Фатима Зайнаб'],['🇳🇬','Нигерия',2.8,168,157,23.5,'Чиди Эмека Тунде','Нгози Аделе Чиома'],
- ['🇧🇷','Бразилия',2.7,174,161,26.5,'Лукас Габриэл Матеус','Ана Жулия Беатрис'],['🇧🇩','Бангладеш',2.2,165,152,21.5,'Рафик Карим Тарек','Насрин Руми Шила'],['🇷🇺','Россия',1.8,178,165,26.5,'Дмитрий Артём Илья','Анастасия Дарья Алина'],
- ['🇪🇹','Эфиопия',1.6,168,157,20.5,'Абебе Йонас Дави','Хана Мерон Тигист'],['🇲🇽','Мексика',1.6,170,157,28,'Хосе Диего Луис','Мария Гуадалупе Фернанда'],['🇯🇵','Япония',1.5,172,158,22.5,'Харуто Рэн Сота','Юи Хина Сакура'],
- ['🇪🇬','Египет',1.4,170,158,28.5,'Мухаммед Ахмед Омар','Нур Мариам Ясмин'],['🇵🇭','Филиппины',1.4,165,154,23,'Хуан Марк Джон','Мария Анджелика Кэт'],['🇨🇩','ДР Конго',1.3,166,156,22,'Жан Патрик Феликс','Грейс Мари Эсте'],
- ['🇻🇳','Вьетнам',1.2,165,154,21,'Минь Хоанг Дык','Лан Хоа Тхао'],['🇮🇷','Иран',1.1,174,160,26,'Реза Амир Али','Зохре Нилуфар Сара'],['🇹🇷','Турция',1.1,175,161,27.5,'Мехмет Эмре Бурак','Элиф Зейнеп Айше'],
- ['🇩🇪','Германия',1.05,180,166,26.5,'Лукас Леон Финн','Мия Ханна Лена'],['🇹🇭','Таиланд',.9,170,159,24,'Сомчай Нат Ким','Мали Пим Нок'],['🇬🇧','Британия',.85,178,164,27.5,'Оливер Гарри Джек','Оливия Эми Хлоя'],
- ['🇫🇷','Франция',.8,178,164,25.5,'Луи Габриэль Юго','Луиза Эмма Шарлотта'],['🇮🇹','Италия',.73,177,164,26,'Марко Лоренцо Алессандро','Джулия София Аурора'],['🇰🇪','Кения',.7,170,158,22.5,'Брайан Кевин Отьено','Фейт Мерси Ачиенг'],
- ['🇰🇷','Корея',.65,175,162,24,'Мин-джун Джи-ху До-юн','Со-юн Ха-юн Джи-у'],['🇪🇸','Испания',.6,176,163,26.5,'Уго Мартин Пабло','Лусия Паула Мартина'],['🇺🇦','Украина',.5,178,165,26,'Андрей Максим Богдан','Олена Катерина Софія'],
- ['🇳🇱','Нидерланды',.22,183,170,25.5,'Дан Сем Люк','Эмма Тесс Сара']];
+// Европа, СНГ и США: [флаг, страна, население млн, рост муж. см (NCD-RisC), -, ИМТ муж., имена, -, шаги в день (Althoff 2017, где нет — около 5300)]
+const WPOP=[
+ ['🇷🇺','Россия',144,178,0,26.5,'Дмитрий Артём Илья Сергей Алексей','',5969],
+ ['🇩🇪','Германия',84,180,0,27,'Лукас Леон Финн Йонас Максимилиан','',5205],
+ ['🇬🇧','Британия',68,178,0,27.5,'Оливер Гарри Джек Джеймс Томас','',5444],
+ ['🇫🇷','Франция',68,178,0,26,'Луи Габриэль Юго Артур Жюль','',5141],
+ ['🇮🇹','Италия',59,177,0,26.5,'Марко Лоренцо Алессандро Франческо Маттео','',5296],
+ ['🇪🇸','Испания',48,176,0,27,'Уго Мартин Пабло Алехандро Даниэль','',5936],
+ ['🇺🇦','Украина',37,178,0,26,'Андрій Максим Богдан Олександр Дмитро','',6107],
+ ['🇵🇱','Польша',37,179,0,27,'Якуб Кацпер Шимон Михал Ян','',5249],
+ ['🇷🇴','Румыния',19,177,0,26.5,'Андрей Александру Михай Ионуц Габриэль','',5100],
+ ['🇳🇱','Нидерланды',18,183,0,26,'Дан Сем Люк Тим Бас','',5600],
+ ['🇧🇪','Бельгия',11.7,180,0,26.5,'Арно Люка Нуах Тибо Томас','',5300],
+ ['🇨🇿','Чехия',10.9,181,0,27.5,'Якуб Ян Томаш Лукаш Матей','',5508],
+ ['🇸🇪','Швеция',10.5,180,0,26.5,'Вильям Лиам Эрик Оскар Лукас','',5863],
+ ['🇵🇹','Португалия',10.4,174,0,26.5,'Жуан Родригу Мартин Франсишку Тиагу','',5100],
+ ['🇬🇷','Греция',10.4,178,0,27,'Георгиос Димитрис Никос Костас Яннис','',5200],
+ ['🇭🇺','Венгрия',9.6,177,0,27.5,'Бенце Мате Левенте Адам Даниэль','',5100],
+ ['🇦🇹','Австрия',9.1,179,0,26.5,'Пауль Якоб Максимилиан Феликс Тобиас','',5300],
+ ['🇧🇾','Беларусь',9.2,179,0,26.5,'Артём Максим Никита Дмитрий Иван','',5800],
+ ['🇨🇭','Швейцария',8.8,178,0,26,'Ной Лиам Лука Нико Ян','',5512],
+ ['🇷🇸','Сербия',6.6,182,0,26.5,'Лука Стефан Никола Милош Марко','',5000],
+ ['🇧🇬','Болгария',6.4,178,0,26.5,'Георги Александр Мартин Иван Николай','',5000],
+ ['🇩🇰','Дания',5.9,181,0,26,'Вильям Оскар Карл Ной Альфред','',5500],
+ ['🇫🇮','Финляндия',5.6,180,0,27,'Ээту Лео Онни Микаэль Юхо','',5600],
+ ['🇳🇴','Норвегия',5.5,180,0,26.5,'Якоб Эмиль Фильип Ларс Магнус','',5700],
+ ['🇮🇪','Ирландия',5.2,179,0,27.5,'Джек Ноа Финн Шон Киран','',5300],
+ ['🇭🇷','Хорватия',3.9,180,0,27,'Лука Иван Давид Марко Петар','',5100],
+ ['🇰🇿','Казахстан',20,173,0,26,'Алихан Нурсултан Ерлан Данияр Арман','',5800],
+ ['🇺🇿','Узбекистан',36,172,0,25.5,'Азиз Шахзод Бобур Жасур Сардор','',5500],
+ ['🇦🇿','Азербайджан',10,173,0,26.5,'Али Мурад Эльвин Турал Рашад','',5300],
+ ['🇹🇯','Таджикистан',10,172,0,25,'Фирдавс Рустам Далер Сухроб Мехрон','',5500],
+ ['🇰🇬','Кыргызстан',7,172,0,25.5,'Эмир Нурлан Бакыт Айбек Данияр','',5600],
+ ['🇦🇲','Армения',3,175,0,26.5,'Арам Давид Нарек Тигран Арман','',5400],
+ ['🇬🇪','Грузия',3.7,176,0,27,'Гиорги Лука Давити Ника Сандро','',5200],
+ ['🇲🇩','Молдова',2.5,175,0,26,'Ион Андрей Михай Николай Влад','',5300],
+ ['🇺🇸','США',335,177,0,29,'Джейк Тайлер Майкл Итан Брэндон','',4774]];
 const gRnd=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
 function wHuman(){const tot=WPOP.reduce((a,c)=>a+c[2],0);let r=Math.random()*tot,c=WPOP[0];for(const x of WPOP){r-=x[2];if(r<=0){c=x;break}}
  const m=true;let age;do{age=18+Math.floor(Math.random()*63)}while(Math.random()>(age<40?1:age<55?.8:age<65?.55:.3));
  const zh=gRnd(),h=Math.round((m?c[3]:c[4])+zh*7),bmi=Math.max(16,c[5]+gRnd()*4),w=Math.round(bmi*(h/100)**2);
- const watch=Math.random()<(m?.55:.18),never=!watch&&Math.random()<(m?.35:.7);
- return {c,m,age,h,w,name:rnd((m?c[6]:c[7]).split(' ')),steps:Math.max(600,Math.round(5000+gRnd()*2200)),sleep:Math.max(4,Math.min(10,Math.round((6.9+gRnd()*1.1)*2)/2)),
+ const watch=Math.random()<(m?.6:.18),never=!watch&&Math.random()<(m?.35:.7);
+ return {c,m,age,h,w,name:rnd((m?c[6]:c[7]).split(' ')),steps:Math.max(600,Math.round(c[8]+gRnd()*2200)),sleep:Math.max(4,Math.min(10,Math.round((6.9+gRnd()*1.1)*2)/2)),
   porn:watch?Math.floor(Math.random()*7):never?-1:7+Math.floor(Math.random()*120),kg:Math.random()<.05,...(()=>{const zl=.25*zh+.968*gRnd(),zg=.55*zl+.835*gRnd(),cl=(v,a,b)=>Math.max(a,Math.min(b,v));return {len:cl(Math.round((13.12+zl*1.66)*2)/2,8,20),gir:cl(Math.round((11.66+zg*1.1)*2)/2,8,16)}})()}}
 function rndSheet(){const b=S.body||{},p=wHuman(),st=(S.stp&&S.stp.d===today())?S.stp.n:0,sl=((S.mood||{})[today()]||{}).s||((S.mood||{})[shift(today(),-1)]||{}).s||0,cd=cleanDays(),kgOn=(S.kgFull||0)>0;
  let me=0,they=0;const rows=[];const add=(lab,a,bv,fmt,better)=>{let r='',ic='＝';if(better!=null){if(better>0){me++;r='me';ic='◀'}else if(better<0){they++;r='th';ic='▶'}}rows.push('<div class="cr '+r+'"><span>'+lab+'</span><b>'+fmt(a)+(r==='me'?' 🏆':'')+'</b><i>'+ic+'</i><b>'+fmt(bv)+(r==='th'?' 🏆':'')+'</b></div>')};
@@ -3552,11 +3593,11 @@ function rndSheet(){const b=S.body||{},p=wHuman(),st=(S.stp&&S.stp.d===today())?
  add('Кегель',kgOn?'тренирует':'нет',p.kg?'тренирует':'нет',v=>v,kgOn===p.kg?0:kgOn?1:-1);
  if(b.len)add('Длина в эрекции',b.len,p.len,v=>v+' см',Math.sign(b.len-p.len));
  if(b.gir)add('Обхват',b.gir,p.gir,v=>v+' см',Math.sign(b.gir-p.gir));
- let pct='';if(b.h){let n=0,k=0;for(let i=0;i<3000;i++){const q=wHuman();if(q.h<b.h)k++;n++}pct='<p class="mut" style="font-size:12.5px;margin:10px 0 0">Ты выше ~'+Math.round(k/n*100)+'% взрослых мужчин Земли.</p>'}
+ let pct='';if(b.h){let n=0,k=0;for(let i=0;i<3000;i++){const q=wHuman();if(q.h<b.h)k++;n++}pct='<p class="mut" style="font-size:12.5px;margin:10px 0 0">Ты выше ~'+Math.round(k/n*100)+'% взрослых мужчин Европы, СНГ и США.</p>'}
  const verdict='<div class="cv '+(me>they?'w':me<they?'l':'d')+'"><b>'+(me>they?'🏆 ПОБЕДА':me<they?'ПОРАЖЕНИЕ':'НИЧЬЯ')+'</b><span>'+me+' : '+they+'</span><small>'+(me>they?'Ты сильнее, '+esc(p.name)+' уходит пить чай.':me<they?esc(p.name)+' сегодня сильнее. Дракон запомнил его лицо.':'Достойный соперник.')+'</small></div>';
- sheet('<h3>🎲 Ты против случайного мужчины</h3><div class="rp"><span>'+p.c[0]+'</span><div><b>'+esc(p.name)+', '+p.age+'</b><small>'+p.c[1]+'</small></div></div>'
+ sheet('<h3>🎲 Ты против случайного мужчины Европы, СНГ и США</h3><div class="rp"><span>'+p.c[0]+'</span><div><b>'+esc(p.name)+', '+p.age+'</b><small>'+p.c[1]+'</small></div></div>'
   +'<div class="crh"><span></span><b>Ты</b><i></i><b>'+esc(p.name)+'</b></div>'+rows.join('')+verdict+pct
-  +'<p class="mut" style="font-size:11.5px;margin-top:8px">Мужчина 18–80 лет, страна — с учётом населения. Рост и вес — средние по его стране плюс разброс; размер — по замерам 15 тыс. мужчин (Veale 2015), слегка связан с ростом, округлён до 0,5 см, как при реальном замере.</p>'
+  +'<p class="mut" style="font-size:11.5px;margin-top:8px">Мужчина 18–80 лет из Европы, СНГ или США, страна — с учётом населения. Рост и вес — средние по его стране плюс разброс; размер — по замерам 15 тыс. мужчин (Veale 2015), слегка связан с ростом, округлён до 0,5 см, как при реальном замере.</p>'
   +'<div class="row2"><button class="btn gold" id="rpN">🎲 Ещё один</button><button class="btn" id="rpX">Закрыть</button></div>');
  $('rpN').onclick=()=>{buzz();rndSheet()};$('rpX').onclick=closeSheet;S.rndN=(S.rndN||0)+1;if(me>they)S.rndW=(S.rndW||0)+1;save()}
 /* Мои параметры: хранятся только в localStorage телефона, в репозиторий не попадают */
@@ -3571,7 +3612,7 @@ function renderMe(){const el=$('drgMe');if(!el)return;const b=S.body||{};
   if(b.h&&b.w){const bmi=b.w/((b.h/100)**2);r.push(['Рост / вес',b.h+' см · '+b.w+' кг','ИМТ '+bmi.toFixed(1)+(bmi<18.5?' — недобор: ешь больше белка и калорий':bmi<21?' — худощавый: в зале качай массу, +4–6 кг мышц сделают силуэт мощнее':bmi<25?' — норма':' — выше нормы: минус жир = плюс видимая длина')])}
   out+='<div class="mer">'+r.map(x=>'<div><b>'+x[0]+'</b><em>'+esc(x[1])+'</em></div>').join('')+'</div><details class="hint"><summary>Что это значит</summary>'+r.map(x=>'<p class="mut" style="font-size:12.5px;margin:4px 0"><b style="color:var(--ink2)">'+x[0]+':</b> '+esc(x[2])+'</p>').join('');
   if(b.len>=15.5||b.gir>=13)out+='<p class="mut" style="font-size:12.5px;line-height:1.5;margin:6px 0 0"><b style="color:var(--gold)">Дракон выше среднего — значит, бережность важнее силы.</b> Много смазки, входить медленно, когда она очень возбуждена. Позы, где она управляет глубиной (наездница, ложечки, на боку), и без резких глубоких ударов в начале: шейка матки чувствительная. Спроси «так нормально?» — и она будет тебя хотеть ещё. Хвастаться размером не надо: пусть она сама скажет.</p>';out+='</details>'}
- el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details><button class="btn gold" id="meRnd" style="width:100%;margin-top:10px">🎲 Сравнить со случайным мужчиной Земли</button>';$('meRnd').onclick=rndSheet;
+ el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details><button class="btn gold" id="meRnd" style="width:100%;margin-top:10px">🎲 Сравнить со случайным мужчиной</button>';$('meRnd').onclick=rndSheet;
  $('meOk').onclick=()=>{const g=k=>{const v=parseFloat(String($('me_'+k).value).replace(',','.'));return v>0?Math.round(v*10)/10:0};S.body={len:g('len'),gir:g('gir'),h:g('h'),w:g('w')};save();renderMe();toast('Сохранено на телефоне')}}
 /* ===== 誓 Обязательства: залог, «когда — то», минимум, резерв, подпись-печать, цепочка ===== */
 // шаблон: [id, название, авто-проверка, идентичность, когда-то, минимум, режим дней, срок]
