@@ -1047,6 +1047,20 @@ summary{font:700 16px var(--pix)}
 .megrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mef span{display:block;font:600 11.5px var(--body);color:var(--ink3);margin-bottom:3px}.mef input{width:100%;box-sizing:border-box;padding:9px 10px;border-radius:9px;border:1px solid var(--edge2);background:var(--panel2);color:var(--ink);font:15px var(--body)}
 .rule{margin:6px 0 12px;padding:10px 12px;border-radius:10px;border:1px solid #a8323e88;background:rgba(168,50,62,.12)}.rule b{display:block;font:700 13.5px var(--body);color:#ff8fa3;margin-bottom:3px}.rule span{font:12.5px/1.45 var(--body);color:var(--ink2)}
 .snote{margin:10px 0 0;padding:10px 12px;border-left:2px solid #8db8ff;background:rgba(141,184,255,.08);font:italic 14px/1.45 var(--body);color:var(--ink)}.snote small{display:block;font:600 11.5px var(--body);font-style:normal;color:var(--ink3);margin-bottom:2px}
+.surf{position:relative;height:200px;margin-top:8px;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 64% 26%,rgba(198,48,31,.55) 0 30px,transparent 31px),linear-gradient(180deg,#1d2230,#121620);border:1px solid var(--hair)}
+.sfk{position:absolute;left:14px;bottom:10px;font:700 90px/1 "Yu Mincho","Hiragino Mincho ProN",serif;color:#fff;opacity:.05;z-index:1}
+.sfl{position:absolute;left:16px;top:12px;z-index:3;font:600 11.5px var(--body);color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.5px}.sfl b{display:block;font:800 34px/1.05 var(--num);color:#fff;letter-spacing:0}.sfl small{display:block;text-transform:none;letter-spacing:0;font:600 12px var(--body);color:rgba(255,255,255,.75)}
+.sftm{position:absolute;right:16px;top:14px;z-index:3;font:700 13px var(--num);color:rgba(255,255,255,.7)}
+.sea{position:absolute;left:0;right:0;bottom:0;height:100px;z-index:2;background:linear-gradient(180deg,var(--sc,#3f6fa8),color-mix(in srgb,var(--sc,#3f6fa8) 55%,#05070c));transition:height 1.2s cubic-bezier(.3,.8,.3,1),background 1.2s}
+.sea svg{position:absolute;left:0;bottom:calc(100% - 1px);width:200%;height:22px;animation:sfwv 3.6s linear infinite}.sea svg.w2{height:30px;opacity:.45;animation-duration:5.5s;animation-direction:reverse}.sea svg path{fill:var(--sc,#3f6fa8);transition:fill 1.2s}
+.sea .surfer{position:absolute;left:44%;bottom:calc(100% + 4px);font-size:36px;line-height:1;transform-origin:50% 100%;animation:sfsb 2.4s ease-in-out infinite;filter:drop-shadow(0 4px 4px #0006)}
+@keyframes sfwv{to{transform:translateX(-50%)}}@keyframes sfsb{50%{transform:translateY(-6px) rotate(-7deg)}}
+#sfCard .sft2{display:block;font:700 19px/1.25 var(--body);color:#8db8ff;margin-bottom:6px}#sfCard .why{margin-bottom:12px}
+.sfo{display:block;width:100%;text-align:left;margin:0 0 7px;padding:11px 12px;border:1px solid var(--edge);border-radius:12px;background:var(--panel2);color:var(--ink);font:600 14px/1.35 var(--body);cursor:pointer}.sfo.on{border-color:#8db8ff;color:#8db8ff}.sfo.bad{border-color:var(--hp);color:var(--hp)}
+.sfwh{padding:12px;border-radius:14px;background:rgba(20,10,12,.6);border:1px solid #e0563f55;margin-bottom:10px}.sfwh small{font:600 11px var(--body);color:#e0563f;text-transform:uppercase;letter-spacing:.5px}.sfwh p{margin:4px 0 0;font:italic 700 16px/1.35 var(--pix);color:#f3e6e2}
+.sftr{margin:8px 0 0!important;font:13px/1.45 var(--body)!important;color:#a3bb72!important}
+.sfob{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:var(--panel2);border:1px solid var(--edge);margin-bottom:10px}.sfob b{font:800 30px var(--num);color:#8db8ff;min-width:40px;text-align:center}.sfob span{font:13.5px/1.45 var(--body);color:var(--ink2)}
+.sfin{width:100%;box-sizing:border-box;margin-top:10px;padding:10px;border-radius:10px;border:1px solid var(--edge2);background:var(--panel2);color:var(--ink);font:14px var(--body)}
 </style>
 </head>
 <body>
@@ -1366,21 +1380,16 @@ summary{font:700 16px var(--pix)}
     <div class="pnl"><div class="lbl">Насколько сильно тянет сейчас?</div><div class="scale" id="fFrom"></div></div>
     <div class="pnl"><div class="lbl">Что сейчас со мной (HALT)</div><div class="chips" id="fHalt"></div>
       <div class="lbl">Что спровоцировало</div><div class="chips" id="fTrig"></div></div>
-    <button class="btn red" id="fStart" style="width:100%;margin-top:16px" disabled>В бой</button>
+    <p class="mut" style="font-size:13px;line-height:1.45;margin:12px 4px 0">Тягу не нужно побеждать силой. Это волна: она поднимается, достигает пика и спадает. Твоя задача — проехать её на доске за 7 шагов.</p>
+    <button class="btn red" id="fStart" style="width:100%;margin-top:12px" disabled>Оседлать волну</button>
     <p style="text-align:center;margin-top:14px"><button class="linkbtn" id="fCancel1">Нажал случайно</button></p>
   </div>
 
   <div id="fStep2" class="hide">
-    <div class="arena2" id="arena">
-      <div class="fbar"><span>Тень тяги</span><div class="gauge g-hp"><i id="fHp"></i></div><b id="fHpN"></b></div>
-      <div class="foe" id="foe"><div class="spr" id="fSpr"></div></div>
-      <div class="fcombo" id="fCombo"></div>
-      <div class="whisper hide" id="fWh"><div class="wl">Тень шепчет: <small style="opacity:.6;font-weight:600">· тапни текст — +8 сек</small></div><div class="wq" id="fWhQ"></div><div class="wt"><i id="fWhT"></i></div><div class="wa" id="fWhA"></div></div>
-      <div class="fbar me"><span>Твоя воля</span><div class="gauge g-xp"><i id="fWill"></i></div><b id="fTimer">0:00</b></div>
-    </div>
-    <div class="fhint" id="fHint">Бей по тени — тапай! Дыхание 4·6 бьёт сильнее.</div>
-    <button class="btn blue fbr" id="fBreath">Дыхание 4 · 6 — спецудар</button>
-    <div class="facts" id="fActs" style="display:none"></div>
+    <div class="surf"><span class="sfk" lang="ja">波</span><div class="sfl"><span>тяга</span><b id="sfN">0</b><small id="sfS"></small></div><div class="sftm" id="fTimer">0:00</div>
+      <div class="sea" id="sfSea"><svg class="w2" viewBox="0 0 200 18" preserveAspectRatio="none"><path d="M0 9 Q12.5 0 25 9 T50 9 T75 9 T100 9 T125 9 T150 9 T175 9 T200 9 V18 H0Z"/></svg><svg viewBox="0 0 200 18" preserveAspectRatio="none"><path d="M0 9 Q12.5 0 25 9 T50 9 T75 9 T100 9 T125 9 T150 9 T175 9 T200 9 V18 H0Z"/></svg><span class="surfer">🏄</span></div></div>
+    <div class="fhint" id="fHint"></div>
+    <div class="pnl act" id="sfCard"></div>
     <div class="row2" style="margin-top:14px"><button class="btn" id="fLose">Сорвался</button><button class="btn" id="fCancel2">Выйти</button></div>
   </div>
 
@@ -1611,7 +1620,7 @@ async function syRead(){const g=await gh(GH+'/'+SY.gist),f=g.files&&g.files[GF];
  if(f.truncated)c=await (await fetch(f.raw_url,{cache:'no-store'})).text();return JSON.parse(c)}
 const syWrite=o=>gh(GH+'/'+SY.gist,{method:'PATCH',body:JSON.stringify({files:{[GF]:{content:JSON.stringify(packO(o))}}})});
 /* merge: counters add up both devices' gains, lists are united, the rest — newer device wins */
-const MDELTA=/^(xp|gold|goldTotal|kg|mw|enN|wf\.g|wf\.pats|wf\.pts|wins|quests|perfect|phoenix|urges|storms|st\.\w+|love\.(rej|dates|d\.\w+)|rep|ctOk|ctRisk|chOpen|parTot|ringN|pet\.pets|camp\.hp|xpd\.[\d-]+)$/,MMAX=/^(ts|best|bestMs|loginStreak|forge\.\w+|ci\.at|hab\..+\.(n|b)|sk\.\w+\.(x|n)|lv0|rk0|rkMax|fellAt|comboBest|actBest|art\.\w+\.l|chs\.n)$/;
+const MDELTA=/^(xp|gold|goldTotal|kg|mw|enN|wf\.g|wf\.pats|wf\.pts|wins|quests|perfect|phoenix|urges|storms|st\.\w+|love\.(rej|dates|d\.\w+)|rep|ctOk|ctRisk|chOpen|parTot|surfSteps|surfFull|ringN|pet\.pets|camp\.hp|xpd\.[\d-]+)$/,MMAX=/^(ts|best|bestMs|loginStreak|forge\.\w+|ci\.at|hab\..+\.(n|b)|sk\.\w+\.(x|n)|lv0|rk0|rkMax|fellAt|comboBest|actBest|art\.\w+\.l|chs\.n)$/;
 const idOf=x=>x&&typeof x==='object'?(x.id!=null?'i'+x.id:typeof x.t==='string'&&x.d==null?'t'+x.t:'j'+stab(x)):'p'+stab(x);
 function mg(b,m,t,p,mn){if(same(m,t))return m;if(b!==undefined&&same(m,b))return t;if(b!==undefined&&same(t,b))return m;
  if(typeof m==='number'&&typeof t==='number'){if(MDELTA.test(p))return Math.max(0,typeof b==='number'?Math.round((t+m-b)*100)/100:Math.max(m,t));if(MMAX.test(p))return Math.max(m,t);return mn?m:t}
@@ -2662,55 +2671,63 @@ const WHISPERS=[['Один раз ничего не изменит.','Кажды
  ['Подумаешь, срыв. Феникс же поднимается.','Феникс — для тех, кто упал случайно. Я вижу волну и выбираю не падать.','Да, потом поднимусь.'],
  ['Эта тяга особенная, её не переждать.','Все тяги так говорят. Через 10–15 минут она спадёт.','Эта точно не пройдёт.'],
  ['Хотя бы на секунду представь…','Представляю живую девушку, которая сама хочет меня. Это стоит ожидания.','Ну представить же можно.']];
+/* ===== Сёрфинг тяги: психологическая игра вместо тапов (urge surfing, ACT, КПТ) ===== */
 let FB=null,fBr=null;
-function startFight(){const hp=Math.round(260+fFrom*55);FB={hp,mx:hp,will:100,combo:0,last:0,maxC:0,par:0,miss:0,acts:0,t0:Date.now(),lastDmg:Date.now(),nextWh:Date.now()+6000,wh:null,stun:0,p2:false,done:false,tapS:0,wp:null,nextWp:Date.now()+2500,shake:0};fShow(2);
- const pre=[];if(fTrig&&S.ifthen[fTrig])pre.push(S.ifthen[fTrig]);if(fHalt)pre.push(HALT[fHalt]);const pool=[...ACTIONS].sort(()=>Math.random()-.5);
- const acts=[...new Set(pre.concat(pool))].slice(0,4);$('fActs').innerHTML=acts.map((t,i)=>'<div class="fa" data-i="'+i+'"><span>'+esc(t)+'</span><button>Сделал · 95</button></div>').join('');
- $('fActs').querySelectorAll('.fa').forEach(el=>el.querySelector('button').onclick=()=>{if(el.classList.contains('done')||FB.done)return;el.classList.add('done');el.querySelector('button').textContent='✓';FB.acts++;FB.will=Math.min(100,FB.will+15);FB.stun=0;
-  const r=$('foe').getBoundingClientRect();fDmg(95,r.left+r.width/2,r.top+r.height/2,'big');SFX.crit();fHint('Реальный удар! Тень шатается.')});
- $('fSpr').innerHTML=bossSVG(2,7,false);$('arena').classList.remove('p2','stun');$('foe').classList.remove('dead');$('fWh').classList.add('hide');$('fBreath').disabled=false;$('fBreath').textContent='Дыхание 4 · 6 — спецудар';$('fBreath').style.setProperty('--p','0%');
- fHint('Бей по тени — тапай! Дыхание 4·6 бьёт сильнее.');clearInterval(fT);fT=setInterval(fTick,100);fTick()}
-function fHint(t){$('fHint').textContent=t}
-function fShake(){const a=$('arena');a.classList.remove('shk');void a.offsetWidth;a.classList.add('shk')}
-function fSpot(){const f=$('foe'),s=document.createElement('button');s.className='wspot';s.style.left=(18+Math.random()*64)+'%';s.style.top=(15+Math.random()*60)+'%';s.textContent='弱';
- const life=FB.p2?900:1300;FB.wp=s;f.appendChild(s);
- s.onpointerdown=e=>{e.preventDefault();e.stopPropagation();if(!FB||FB.done)return;s.remove();FB.wp=null;FB.combo+=3;FB.last=Date.now();FB.maxC=Math.max(FB.maxC,FB.combo);SFX.crit();buzz();fShake();fDmg(28+Math.min(FB.combo,30),e.clientX,e.clientY,'cr');fHint(rnd(['В слабое место! ×3','Точно в цель!','Тень взвыла!','Комбо +3!']))};
- setTimeout(()=>{if(s.isConnected){s.remove();if(FB&&FB.wp===s)FB.wp=null}},life)}
-function fDmg(d,x,y,cls){if(!FB||FB.done)return;const el=Date.now()-FB.t0,floor=el<75000?Math.round(FB.mx*.06):0;if(hasP('unbend'))d*=1.3;d*=1+artE('urge');FB.hp=Math.max(floor,FB.hp-d);FB.lastDmg=Date.now();
- const n=document.createElement('div');n.className='dmgn'+(cls?' '+cls:'');n.textContent='-'+Math.round(d);n.style.left=x+'px';n.style.top=(y-10)+'px';document.body.appendChild(n);setTimeout(()=>n.remove(),820);
- const f=$('foe');f.classList.remove('hit');void f.offsetWidth;f.classList.add('hit');
- if(floor&&FB.hp===floor)fHint('Тень цепляется. Продержись ещё '+Math.ceil((75000-el)/1000)+' сек — волна должна спасть.');
- if(!FB.p2&&FB.hp<=FB.mx/2){FB.p2=true;$('arena').classList.add('p2');fHint('Тень в ярости! Шёпот чаще, но ты уже на полпути.');SFX.hit()}
- if(FB.hp<=0)fWinNow();fTick()}
-$('foe').onpointerdown=e=>{if(!FB||FB.done||FB.wh)return;e.preventDefault();const n=Date.now();if(n-FB.tapS<55)return;FB.tapS=n;
- FB.combo=n-FB.last<900?FB.combo+1:1;FB.last=n;FB.maxC=Math.max(FB.maxC,FB.combo);const cr=Math.random()<.08,stun=FB.stun>n;let d=(3.5+Math.random()*3.5)*(1+Math.min(FB.combo,30)/12)*(cr?3:1)*(stun?.3:1);
- const s=document.createElement('i');s.className='spark';s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),320);
- if(cr){SFX.crit();buzz();fShake()}else{wood(900+Math.min(FB.combo,20)*40,0,.05);if(FB.combo%3===0)buzz()}fDmg(d,e.clientX,e.clientY,cr?'cr':'')};
-function fWhisper(){const w=WHISPERS[Math.floor(Math.random()*WHISPERS.length)],ok=Math.random()<.5;const dur=Math.min(28000,Math.max(16000,10000+(w[0].length+w[1].length+w[2].length)*55));FB.wh={w,until:Date.now()+dur+1500,dur,ext:false,arm:Date.now()+1200};if(FB.wp){FB.wp.remove();FB.wp=null}$('fWhQ').textContent='«'+w[0]+'»';$('fWhQ').onclick=()=>{if(!FB||!FB.wh||FB.wh.ext)return;FB.wh.ext=true;FB.wh.until+=8000;FB.wh.dur+=8000;fHint('+8 секунд на подумать');buzz()};
- $('fWhA').innerHTML=(ok?[w[1],w[2]]:[w[2],w[1]]).map(t=>'<button data-t="'+(t===w[1]?1:0)+'">'+esc(t)+'</button>').join('');$('fWh').classList.remove('hide');$('fWh').classList.add('arm');setTimeout(()=>$('fWh').classList.remove('arm'),1200);fHint('Пауза. Спокойно прочитай и выбери правду.');SFX.whoosh();
- $('fWhA').querySelectorAll('button').forEach(b=>b.onclick=()=>{if(Date.now()<FB.wh.arm)return;fParry(b.dataset.t==='1')})}
-function fParry(good){if(!FB||!FB.wh)return;const w=FB.wh.w;FB.wh=null;$('fWh').classList.add('hide');FB.nextWh=Date.now()+(FB.p2?11000:15000);const r=$('foe').getBoundingClientRect();
- if(good){FB.par++;S.parTot=(S.parTot||0)+1;FB.will=Math.min(100,FB.will+6);SFX.parry();buzz();fDmg(45+Math.min(FB.combo,20),r.left+r.width/2,r.top+r.height*.35,'cr');fHint('Парировал! Правда сильнее шёпота.')}
- else{FB.miss++;FB.will=Math.max(hasP('stoic')?30:0,FB.will-18);FB.hp=Math.min(FB.mx,FB.hp+Math.round(FB.mx*.04));SFX.err();const f=document.createElement('div');f.className='flash';document.body.appendChild(f);setTimeout(()=>f.remove(),520);fHint('Правда: '+w[1]);
-  if(FB.will<=0){FB.stun=Date.now()+4000;FB.will=40;$('arena').classList.add('stun');setTimeout(()=>$('arena').classList.remove('stun'),4000);fHint('Оглушён на 4 сек. Подыши 4·6 — это снимает оглушение.')}}fTick()}
-$('fBreath').onclick=()=>{if(!FB||FB.done||fBr)return;const b=$('fBreath'),t0=Date.now();b.disabled=true;SFX.whoosh();
- fBr=setInterval(()=>{const e=(Date.now()-t0)/1000;if(!FB||FB.done){clearInterval(fBr);fBr=null;return}b.style.setProperty('--p',Math.min(100,e/10*100)+'%');b.textContent=e<4?'Вдох носом… '+Math.ceil(4-e):e<10?'Медленный выдох… '+Math.ceil(10-e):'';
-  if(e>=10){clearInterval(fBr);fBr=null;b.disabled=false;b.style.setProperty('--p','0%');b.textContent='Ещё раз: дыхание 4 · 6';FB.stun=0;$('arena').classList.remove('stun');FB.will=Math.min(100,FB.will+10);const r=$('foe').getBoundingClientRect();fDmg(70,r.left+r.width/2,r.top+r.height/2,'big');SFX.parry()}},100)};
-function fTick(){if(!FB)return;const n=Date.now(),el=Math.floor((n-FB.t0)/1000);
- if(!FB.done){if(n-FB.lastDmg>3000&&!FB.wh)FB.hp=Math.min(FB.mx,FB.hp+FB.mx*.0012);if(!FB.wh&&n>=FB.nextWh)fWhisper();if(!FB.wh&&!FB.wp&&n>=FB.nextWp){fSpot();FB.nextWp=n+(FB.p2?1100:1700)+Math.random()*1200}const sp=$('fSpr');sp.style.transform=FB.wh?'':'translate('+(Math.sin(n/(FB.p2?260:420))*(FB.p2?26:16)).toFixed(1)+'px,'+(Math.cos(n/530)*6).toFixed(1)+'px)';if(FB.wh){const k=Math.min(1,(FB.wh.until-n)/FB.wh.dur);$('fWhT').style.width=Math.max(0,k*100)+'%';if(k<=0)fParry(false)}}
- if(n-FB.last>900)FB.combo=0;const c=$('fCombo');c.classList.toggle('on',FB.combo>=3);if(FB.combo>=3)c.innerHTML='×'+FB.combo+'<small>комбо · урон +'+Math.round(Math.min(FB.combo,30)/15*100)+'%</small>';
- $('fHp').style.width=(FB.hp/FB.mx*100)+'%';$('fHp').parentNode.style.setProperty('--g',(FB.hp/FB.mx*100)+'%');$('fHpN').textContent=Math.ceil(FB.hp);$('fWill').style.width=FB.will+'%';$('fTimer').textContent=Math.floor(el/60)+':'+pad(el%60);$('fEl').textContent=FB.p2?'2-я фаза':''}
-function fWinNow(){FB.done=true;clearInterval(fT);clearInterval(fBr);fBr=null;$('fWh').classList.add('hide');$('foe').classList.add('dead');SFX.win();const r=$('foe').getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,30);fHint('Тень рассеялась. Ты сильнее волны.');
- setTimeout(()=>{fShow(3);$('fFinish').disabled=true;scale($('fTo'),n=>{fTo=n;$('fFinish').disabled=false})},1400)}
+function mchips(el,list,set,onch){el.innerHTML=list.map(t=>'<button class="chp" data-t="'+esc(t)+'">'+esc(t)+'</button>').join('');
+ el.querySelectorAll('.chp').forEach(c=>c.onclick=()=>{c.classList.toggle('on');const t=c.dataset.t;set.has(t)?set.delete(t):set.add(t);buzz();onch&&onch()})}
+const SURF=[
+ {k:'Шаг 1 · Назови',t:'Это волна, а не приказ',d:'Тяга поднимается, доходит до пика и спадает сама, обычно за 10–20 минут. Ты не обязан ничего с ней делать. Выбери фразу и скажи её про себя:',
+  run:b=>{b.innerHTML=['Это просто тяга. Она пройдёт.','Мозг просит дофамин. Я замечаю это и не подчиняюсь.','Я на доске, а не под водой.'].map(t=>'<button class="sfo">'+esc(t)+'</button>').join('');
+   b.querySelectorAll('.sfo').forEach(x=>x.onclick=()=>{if(FB.lock)return;FB.lock=1;x.classList.add('on');sfDown(.10,true,'Названная волна слабее');setTimeout(surfNext,900)})}},
+ {k:'Шаг 2 · Найди в теле',t:'Где она сейчас?',d:'Тяга — это просто ощущения в теле. Отметь, где и какие:',
+  run:b=>{const w=new Set(),q=new Set();b.innerHTML='<div class="lbl">Где</div><div class="chips" id="sfWh"></div><div class="lbl">Какая</div><div class="chips" id="sfQ"></div><button class="btn blue" id="sfGo" style="width:100%;margin-top:12px" disabled>Наблюдать 20 секунд</button>';
+   const upd=()=>$('sfGo').disabled=!(w.size&&q.size);mchips($('sfWh'),['Пах','Живот','Грудь','Голова','Руки','Горло'],w,upd);mchips($('sfQ'),['Жар','Давление','Пульсация','Беспокойство','Пустота','Напряжение'],q,upd);
+   $('sfGo').onclick=()=>{let n=20;b.innerHTML='<div class="sfob"><b id="sfC">20</b><span>Смотри на ощущение, как учёный: где у него край? Оно сильнее или слабее, чем секунду назад? Не борись и не корми его — просто наблюдай.</span></div>';
+    fBr=setInterval(()=>{n--;if(!$('sfC')){clearInterval(fBr);fBr=null;return}$('sfC').textContent=n;if(n<=0){clearInterval(fBr);fBr=null;sfDown(.12,true,'Ощущения меняются — значит, пройдут');setTimeout(surfNext,700)}},1000)}}},
+ {k:'Шаг 3 · Дыхание',t:'Медленный выдох',d:'Три спокойных цикла: вдох 4 секунды, выдох 6. Без усилия и без задержек. Длинный выдох включает режим «отдых», и тяга теряет топливо.',
+  run:b=>{b.innerHTML='<div class="kgring" id="sfR"><b id="sfRT">Готов?</b><small id="sfRN">3 цикла</small></div><button class="btn blue" id="sfGo" style="width:100%">Начать</button>';
+   $('sfGo').onclick=()=>{$('sfGo').remove();let t=0;const step=()=>{if(!$('sfR')){clearInterval(fBr);fBr=null;return}const c=Math.floor(t/10),p=t%10,r=$('sfR');
+     if(c>=3){clearInterval(fBr);fBr=null;sfDown(.15,true,'Тело спокойнее — тяга слабее');setTimeout(surfNext,600);return}
+     if(p===0){r.style.transitionDuration='4s';r.classList.add('open');buzz()}if(p===4){r.style.transitionDuration='6s';r.classList.remove('open')}
+     $('sfRT').textContent=p<4?'Вдох · '+(4-p):'Выдох · '+(10-p);$('sfRN').textContent='цикл '+(c+1)+' из 3';t++};step();fBr=setInterval(step,1000)}}},
+ {k:'Шаг 4 · Шёпоты',t:'Тень уговаривает',d:'Тяга говорит голосом «логики». Прочитай спокойно и выбери правду — времени сколько угодно.',
+  run:b=>{const pool=[...WHISPERS].sort(()=>Math.random()-.5).slice(0,3);let k=0;
+   const one=()=>{const w=pool[k],ok=Math.random()<.5;b.innerHTML='<div class="sfwh"><small>Тень шепчет · '+(k+1)+' из 3</small><p>«'+esc(w[0])+'»</p></div>'+(ok?[w[1],w[2]]:[w[2],w[1]]).map(t=>'<button class="sfo" data-t="'+(t===w[1]?1:0)+'">'+esc(t)+'</button>').join('');
+    b.querySelectorAll('.sfo').forEach(x=>x.onclick=()=>{if(FB.lock)return;FB.lock=1;const good=x.dataset.t==='1';
+     if(good){x.classList.add('on');FB.par++;S.parTot=(S.parTot||0)+1;sfDown(.07,false,'Правда сильнее шёпота');SFX.parry&&SFX.parry()}else{x.classList.add('bad');FB.miss++;FB.L=Math.min(100,FB.L+4);sfDraw();SFX.err&&SFX.err();b.insertAdjacentHTML('beforeend','<p class="sftr">Правда: '+esc(w[1])+'</p>')}
+     setTimeout(()=>{FB.lock=0;k++;if(k<3)one();else{FB.steps++;S.surfSteps=(S.surfSteps||0)+1;surfNext()}},good?900:2600)})};one()}},
+ {k:'Шаг 5 · Проиграй плёнку',t:'Досмотри фильм до конца',d:'Тяга показывает только первые 5 минут. Досмотри, что будет через полчаса.',
+  run:b=>{const a=new Set(),c=new Set();b.innerHTML='<div class="lbl">Если сорвусь, через 30 минут</div><div class="chips" id="sfA"></div><div class="lbl">Если выстою</div><div class="chips" id="sfB"></div><button class="btn blue" id="sfGo" style="width:100%;margin-top:12px" disabled>Вижу разницу</button>';
+   const upd=()=>$('sfGo').disabled=!(a.size&&c.size);mchips($('sfA'),['Пустота','Стыд','Серия с нуля','Вялость','«Зачем я это сделал»','Дракон слабеет'],a,upd);mchips($('sfB'),['Гордость','Ясная голова','Серия растёт','Энергия на завтра','Сила дракона','Ближе к живой девушке'],c,upd);
+   $('sfGo').onclick=()=>{if(FB.lock)return;FB.lock=1;sfDown(.12,true,'Ты видишь весь фильм');setTimeout(surfNext,700)}}},
+ {k:'Шаг 6 · Зачем',t:'Ради чего ты это делаешь',d:'Вспомни свою причину. Тяга сильна, когда забываешь, зачем всё это.',
+  run:b=>{const r=new Set();b.innerHTML='<div class="chips" id="sfY"></div><input type="text" id="sfYN" maxlength="140" placeholder="Своими словами: я держусь, потому что…" value="'+esc(S.whyNote||'')+'" class="sfin"><button class="btn blue" id="sfGo" style="width:100%;margin-top:10px"'+(S.whyNote?'':' disabled')+'>Это моё</button>';
+   const upd=()=>$('sfGo').disabled=!(r.size||$('sfYN').value.trim());mchips($('sfY'),['Живая девушка','Энергия и сила','Самоуважение','Канал и видео','Немецкий и работа','Свобода от экрана','Нормальный сон'],r,upd);$('sfYN').oninput=upd;
+   $('sfGo').onclick=()=>{if(FB.lock)return;FB.lock=1;S.why=S.why||{};r.forEach(x=>S.why[x]=(S.why[x]||0)+1);const n=$('sfYN').value.trim();if(n)S.whyNote=n;sfDown(.10,true,'Твоя причина сильнее волны');setTimeout(surfNext,700)}}},
+ {k:'Шаг 7 · Не сейчас',t:'Не «никогда», а «не сейчас»',d:'Обещать себе вечность тяжело. Пообещай только ближайшие 15 минут. Потом решишь заново — и почти всегда волны уже не будет.',
+  run:b=>{const tips=[];if(fTrig&&S.ifthen&&S.ifthen[fTrig])tips.push('Твой план на «'+fTrig+'»: '+S.ifthen[fTrig]);if(fHalt&&HALT[fHalt])tips.push('Сейчас тебе нужно: '+HALT[fHalt].toLowerCase());
+   b.innerHTML=(tips.length?'<div class="sfob"><span>'+tips.map(esc).join('<br>')+'</span></div>':'')+'<button class="btn gold" id="sfGo" style="width:100%">Договорились: не сейчас</button>';
+   $('sfGo').onclick=()=>{if(FB.lock)return;FB.lock=1;sfDown(.08,true,'15 минут — и ты свободен');setTimeout(surfEnd,700)}}}];
+function sfCol(L){return 'hsl('+Math.round(215+L*1.4)%360+' 46% 38%)'}
+function sfDraw(){if(!FB)return;const sea=$('sfSea');sea.style.height=(16+FB.L*1.15)+'px';sea.style.setProperty('--sc',sfCol(FB.L));$('sfN').textContent=(FB.L/10).toFixed(1);$('sfS').textContent=FB.L>70?'волна на пике':FB.L>40?'волна высокая':FB.L>15?'волна спадает':'штиль'}
+function sfDown(w,step,msg){const d=FB.L0*w;FB.L=Math.max(0,FB.L-d);if(step){FB.steps++;S.surfSteps=(S.surfSteps||0)+1}sfDraw();buzz();const r=$('sfSea').getBoundingClientRect();floatTxt('−'+(d/10).toFixed(1),'#8db8ff',r.left+r.width/2-20,r.top-20);if(msg)$('fHint').textContent=msg}
+function surfStep(){const st=SURF[FB.i];FB.lock=0;$('fEl').textContent='шаг '+(FB.i+1)+' из '+SURF.length;
+ $('sfCard').innerHTML='<div class="lbl">'+st.k+'</div><b class="sft2">'+esc(st.t)+'</b><div class="why">'+esc(st.d)+'</div><div id="sfBody"></div><button class="linkbtn" id="sfSkip" style="display:block;margin:10px auto 0">пропустить шаг</button>';
+ $('sfSkip').onclick=()=>{clearInterval(fBr);fBr=null;surfNext()};st.run($('sfBody'))}
+function surfNext(){if(!FB||FB.done)return;FB.i++;if(FB.i>=SURF.length)return surfEnd();surfStep()}
+function startFight(){const L0=Math.max(30,fFrom*10);FB={L:L0,L0,i:0,steps:0,par:0,miss:0,t0:Date.now(),done:false,lock:0};fShow(2);$('fHint').textContent='Ты не бьёшь волну — ты на ней едешь, пока она не спадёт.';sfDraw();clearInterval(fT);fT=setInterval(fTick,1000);fTick();surfStep()}
+function fTick(){if(!FB||FB.done)return;const el=Math.floor((Date.now()-FB.t0)/1000);FB.L=Math.max(0,FB.L-.05);$('fTimer').textContent=Math.floor(el/60)+':'+pad(el%60);sfDraw()}
+function surfEnd(){if(!FB)return;FB.done=true;clearInterval(fT);clearInterval(fBr);fBr=null;SFX.win();const r=$('sfSea').getBoundingClientRect();burst(r.left+r.width/2,r.top,26);$('fHint').textContent='Ты проехал волну до берега.';
+ setTimeout(()=>{fShow(3);$('fFinish').disabled=true;scale($('fTo'),n=>{fTo=n;$('fFinish').disabled=false})},1100)}
 function closeFight(){clearInterval(fT);clearInterval(fRot);clearInterval(fBr);fBr=null;FB&&(FB.done=true);$('fight').classList.add('hide');document.body.style.overflow=''}
 let fRot=null;
 function logUrge(win){S.urges=(S.urges||0)+1;const b=bucket();S.hours[b]=(S.hours[b]||0)+1;if(fTrig)S.trig[fTrig]=(S.trig[fTrig]||0)+1;
  S.urgeLog.unshift({ts:Date.now(),from:fFrom,to:win?fTo:null,trig:fTrig,halt:fHalt,win});S.urgeLog=S.urgeLog.slice(0,100)}
 $('fStart').onclick=startFight;
 $('fFinish').onclick=()=>{logUrge(true);closeFight();S.wins++;cheer(25);feed(10);const dropped=fFrom-fTo;
- const bon=FB?Math.min(40,FB.par*6+Math.floor(FB.maxC/10)*4+FB.acts*5):0,stats=FB?'Парировано шёпотов: '+FB.par+'. Лучшее комбо: ×'+FB.maxC+'. Реальных ударов: '+FB.acts+'.':'';
- addLog('Тень тяги побеждена: '+fFrom+' → '+fTo+(fTrig?' · '+fTrig.toLowerCase():''));award(60+bon,'wil','тень побеждена',{dmg:60+bon});S.comboBest=Math.max(S.comboBest||0,FB?FB.maxC:0);chGive(fFrom>=8?2:1,'победа над тягой');save();render();
- setTimeout(()=>lootSheet('Тень тяги побеждена!',null,(dropped>0?'Тяга упала с '+fFrom+' до '+fTo+'. Ты сильнее волны. ':'Ты выстоял, даже когда было тяжело. ')+stats+(bon?' Бонус за мастерство: +'+bon+' XP.':'')),400)};
+ const bon=FB?Math.min(40,FB.steps*4+FB.par*4):0,stats=FB?'Шагов пройдено: '+FB.steps+' из '+SURF.length+'. Шёпотов распознано: '+FB.par+' из 3.':'';if(FB&&FB.steps>=SURF.length&&FB.par===3)S.surfFull=(S.surfFull||0)+1;
+ addLog('Волна тяги пройдена: '+fFrom+' → '+fTo+(fTrig?' · '+fTrig.toLowerCase():''));award(60+bon,'wil','тень побеждена',{dmg:60+bon});chGive(fFrom>=8?2:1,'победа над тягой');save();render();
+ setTimeout(()=>lootSheet('Волна пройдена!',null,(dropped>0?'Тяга упала с '+fFrom+' до '+fTo+'. Ты сильнее волны. ':'Ты выстоял, даже когда было тяжело. ')+stats+(bon?' Бонус за мастерство: +'+bon+' XP.':'')),400)};
 $('fLose').onclick=()=>{logUrge(false);const t=fTrig;closeFight();relapseFlow('',t)};
 $('fCancel1').onclick=closeFight;$('fCancel2').onclick=closeFight;$('sosBtn').onclick=openFight;$('stormBtn').onclick=stormSheet;
 $('weekBtn').onclick=()=>{const days=[];for(let i=6;i>=0;i--)days.push(shift(today(),-i));let q=0,qa=0,best=[];
@@ -2941,7 +2958,7 @@ const AS=[
  ['rej','Отказы с достоинством','勇','Сердце',()=>(S.love||{}).rej||0,[1,10,30,100],['Бесстрашный','Стальные нервы']],
  ['boss','Боссы','鬼','Бой',()=>S.camp.ch,[1,3,6,12],['Охотник','Истребитель ёкаев']],
  ['par','Парированные шёпоты','盾','Бой',()=>S.parTot||0,[10,50,200,500],['Щит правды','Непробиваемый']],
- ['combo','Комбо в бою','撃','Бой',()=>S.comboBest||0,[20,50,100,200],['Вихрь','Буря клинков']],
+ ['surf','Шаги сёрфинга','浪','Бой',()=>S.surfSteps||0,[20,60,150,400],['Наблюдатель','Мастер волны']],
  ['storm','Штормы эмоций','嵐','Бой',()=>S.storms||0,[1,5,20,50],['Укротитель бурь','Око бури']],
  ['lvl','Уровень героя','位','Бой',()=>lvlInfo(S.xp).l,[5,10,20,30],['Ветеран','Живая легенда']],
  ['rank','Ранги','侍','Бой',()=>rankIdx(),[2,4,6,8],['Укротитель стояка','Гигачад воздержания']],
@@ -2988,7 +3005,7 @@ const FUN=[
  ['f_sigma','Сигма-утро','曙','Квест до 7 утра',()=>!!S.early7],
  ['f_satan','Не сегодня, Сатана','否','3 победы над тягой',()=>(S.wins||0)>=3],
  ['f_deaf','Шёпот? Не слышал','耳','25 парированных шёпотов',()=>(S.parTot||0)>=25],
- ['f_tap','Тапок в пол','速','Комбо 100 в бою',()=>(S.comboBest||0)>=100],
+ ['f_tap','Дзен-сёрфер','禅','5 волн до конца: все шаги и все шёпоты',()=>(S.surfFull||0)>=5],
  ['f_skuf','Скуф отменяется','筋','20 дел для тела',()=>skE('body').n>=20],
  ['f_alt','Альтушка одобряет','姫','Вайфу 3-го уровня',()=>wfLv()>=3],
  ['f_rej','Отказ принят, достоинство на месте','勇','Первый отказ',()=>((S.love||{}).rej||0)>=1],
