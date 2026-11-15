@@ -904,6 +904,16 @@ summary{font:700 16px var(--pix)}
 #s-shop [data-st=gear]{display:none!important}
 #s-shop [data-st=cons]{display:none!important}
 .gearlink{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:10px;padding:12px 14px;border:0;border-radius:18px;cursor:pointer;color:var(--ink);background:linear-gradient(135deg,rgba(226,196,142,.18),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(226,196,142,.4);text-align:left}.gearlink span{font-size:22px}.gearlink b{flex:1;font:800 15px var(--body)}.gearlink small{font:700 12px var(--body);color:var(--gold2)}
+
+/* ===== one page per tab, collapsible blocks ===== */
+#shopTabs,#heroTabs,#logTabs{display:none!important}
+.pnl.col>.ttl{cursor:pointer;user-select:none}
+.pnl.col>.ttl h2::after{content:'';display:inline-block;width:7px;height:7px;margin-left:10px;border-right:2px solid var(--ink3);border-bottom:2px solid var(--ink3);transform:translateY(-3px) rotate(45deg);transition:transform .25s}
+.pnl.col.shut>.ttl h2::after{transform:translateY(0) rotate(-45deg)}
+.pnl.col.shut>*:not(.ttl){display:none!important}
+.pnl.col.shut>.ttl{margin-bottom:0!important;padding-bottom:0!important;border-bottom:0!important}
+.pnl.col.shut{padding-top:11px!important;padding-bottom:11px!important}
+#hudSet{margin-left:6px;font-size:16px}
 </style>
 </head>
 <body>
@@ -913,7 +923,7 @@ summary{font:700 16px var(--pix)}
   <div class="who"><b id="hudRank">Новичок</b> <span id="hudLvl">ур. 1</span>
     <div class="gauge g-xp"><i id="hudXp" style="width:0"></i></div></div>
   <div class="coins" id="hudGold"></div>
-  <button class="moon" id="hudMoon" aria-label="Вечерний ритуал" lang="ja">月</button>
+  <button class="moon" id="hudMoon" aria-label="Вечерний ритуал" lang="ja">月</button><button class="moon" id="hudSet" aria-label="Настройки">⚙︎</button>
 </div></header>
 
 <!-- ================= DAY ================= -->
@@ -1079,7 +1089,10 @@ summary{font:700 16px var(--pix)}
 <main class="screen hide" id="s-shop">
   <div class="shophd"><h1 class="dtitle" style="font-size:32px">Лавка</h1><span class="coins" id="shopGold"></span></div>
   <div class="segm" id="shopTabs"></div>
-  <button class="gearlink" id="gearLink" data-st="chest"><span>⚔️</span><b>Оружие и броня</b><small>купить и заточить →</small></button>
+  <div class="pnl" data-st="chest">
+    <div class="ttl"><h2>Оружие и броня</h2><span class="c" id="shopGearLv"></span></div>
+    <div class="slots" id="shopGear"></div>
+  </div>
   <div class="pnl" data-st="chest">
     <div class="ttl"><h2>Сундуки</h2><span class="c" id="chCnt"></span></div>
     <div class="chslots" id="chSlots"></div>
@@ -2088,7 +2101,13 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
  $('catShop').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const it=CAT_ACC.find(x=>x[0]===b.dataset.c);if(S.gold<it[2])return;S.gold-=it[2];A.owned.push(it[0]);A.on.push(it[0]);cheer(25);SFX.coin();addLog('Котику куплено: '+it[1]);save();render();toast('Котик доволен: '+it[1].toLowerCase())});
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
 function hintify(){document.querySelectorAll('#habSec>.mut,#ctList>.mut,#s-shop .pnl>.mut,#loveSec>.why,#s-hero .lore,#s-quest .pnl>.why').forEach(el=>{if(el.parentElement.tagName==='DETAILS'||el.textContent.length<90)return;const d=document.createElement('details');d.className='hint';d.innerHTML='<summary>'+(el.classList.contains('lore')?'Легенда героя':'Как это работает?')+'</summary>';el.replaceWith(d);d.appendChild(el)})}
-function render(){setTimeout(hintify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
+const COLD={'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
+document.addEventListener('click',e=>{if(!e.target.closest('#hudSet'))return;go('log');setTimeout(()=>{const p=$('setPnl');if(!p)return;p.classList.remove('shut');S.open['Настройки']=1;p.scrollIntoView({behavior:'smooth',block:'start'})},250)});
+function colify(){S.open=S.open||{};const st=document.getElementById('s-log').lastElementChild;if(st&&!st.querySelector(':scope>.ttl')){st.insertAdjacentHTML('afterbegin','<div class="ttl"><h2>Настройки</h2></div>');st.id='setPnl'}
+ document.querySelectorAll('#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
+  if(!p.classList.contains('col')){p.classList.add('col');t.addEventListener('click',e=>{if(e.target.closest('button,a,input'))return;const sh=p.classList.toggle('shut');S.open[k]=sh?0:1;SFX.tap();save()})}
+  const def=k in COLD?COLD[k]:0;p.classList.toggle('shut',!(k in S.open?S.open[k]:def))})}
+function render(){setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
 
 /* ================= ROADMAP 道: the whole future ================= */
 const xpAt=L=>{let s=0;for(let k=1;k<L;k++)s+=needOf(k);return s};
@@ -2173,17 +2192,17 @@ function relapseFlow(src,presetTrig){sheet('<h3>Был срыв?</h3><p>Без �
 const LOVE=[
  ['Подготовка героя','Внешний вид и уверенность — первое, что видят. Делается за 1–2 недели.',[
   ['hair','Сходить к барберу, свежая стрижка',30,1],['clothes','Купить 2–3 вещи, которые хорошо сидят',30,1],
-  ['groom','Уход за собой: душ, дезодорант, парфюм, ногти',10,7],['gym','Силовая тренировка',20,8],
-  ['smile','2 минуты перед зеркалом: расслабить лоб и брови, мягкая улыбка',10,5],['photo','Сделать 6 хороших фото при дневном свете (лицо, в полный рост, за делом)',40,1]]],
+  ['groom','Привести себя в порядок: ногти, парфюм, свежая одежда',15,1],['gym','Силовая тренировка',20,3],
+  ['smile','Потренировать перед зеркалом спокойный взгляд и улыбку',10,1],['photo','Сделать 6 хороших фото при дневном свете (лицо, в полный рост, за делом)',40,1]]],
  ['Профиль','Приложения — самый быстрый путь к свиданиям в Мюнхене.',[
   ['app','Установить Hinge и Tinder (можно Bumble)',15,1],['bio','Написать био: имя, 22, Мюнхен, 2–3 живых факта и вопрос-крючок',25,1],
-  ['upload','Загрузить фото: первое — лицо с улыбкой, без очков и толпы',15,1],['likes','10 лайков с личным комментарием к фото или ответу',15,7]]],
+  ['upload','Загрузить фото: первое — лицо с улыбкой, без очков и толпы',15,1],['likes','10 лайков с личным комментарием к фото или ответу',15,3]]],
  ['Выход в мир','Живые знакомства тренируют смелость и дают больше шансов.',[
-  ['event','Сходить на событие: языковой тандем, Stammtisch, вечеринка, бег-клуб, боулдеринг',40,3],
-  ['talk','Заговорить с незнакомой девушкой: просто small talk, без цели',30,5],['contact','Получить номер или инстаграм',40,2]]],
+  ['event','Сходить на событие: языковой тандем, Stammtisch, вечеринка, бег-клуб, боулдеринг',40,2],
+  ['talk','Заговорить с незнакомой девушкой: просто small talk, без цели',30,3],['contact','Получить номер или инстаграм',40,1]]],
  ['Свидания','Переписка — только мост к встрече. Через 3–5 дней общения предлагай увидеться.',[
-  ['first','Написать первым: вопрос по её профилю, не «привет»',15,5],['ask','Предложить встречу: конкретный день, время и место',30,3],
-  ['date','Сходить на свидание: 60–90 минут, прогулка или напитки',60,3],['follow','Написать после свидания вечером или утром',15,3]]],
+  ['first','Написать первым: вопрос по её профилю, не «привет»',15,3],['ask','Предложить встречу: конкретный день, время и место',30,2],
+  ['date','Сходить на свидание: 60–90 минут, прогулка или напитки',60,2],['follow','Написать после свидания вечером или утром',15,1]]],
  ['Близость','Всё по взаимному желанию. Твоя задача — создать условия и быть внимательным.',[
   ['room','Своя комната, куда можно пригласить (квест переезда)',80,1],['prep','Подготовиться: презервативы, чистое бельё, порядок',20,1],
   ['invite','Пригласить к себе после хорошего свидания',50,1],['intim','Близость по взаимному желанию',100,1]]]];
@@ -2317,18 +2336,20 @@ function nextLoot(){const q=LQ.shift();if(q)showLoot(q[0],q[1],q[2])}
 function showLoot(title,it,txt){(it?SFX.chest:SFX.win)();sheet('<div class="loot">'+(it?'<div class="spr">'+icon(it.k,RCOL[it.r],9)+'</div><b class="t'+it.r+'" style="font-size:20px">'+esc(it.n)+'</b><span class="t'+it.r+'">'+RARITY[it.r][0]+' · +'+RARITY[it.r][1]+'% '+SLOTS[it.k][1]+'</span>':'<div class="spr">'+icon('star','#f0b541',8)+'</div>')+'</div><h3 style="text-align:center">'+esc(title)+'</h3>'+(txt?(()=>{const p=String(txt).split(/\.\s+(?=[А-ЯЁA-Z0-9+])/).map(s=>s.trim().replace(/\.$/,'')).filter(Boolean);return p.length>2?'<ul class="lootl">'+p.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ul>':'<p style="text-align:center">'+esc(txt)+'</p>'})():'')+'<button class="btn gold" id="lOk" style="width:100%">Отлично</button>');$('lOk').onclick=closeSheet}
 /* ===== gear: one place, cards with upgrade / forge / swap ===== */
 const HTABS=[['me','Обзор'],['gear','Снаряжение'],['sk','Навыки'],['glory','Слава']],HMAP={'Навыки':'sk','Перки':'sk','Характеристики':'me','Клятва героя':'me','Снаряжение':'gear','Сумка':'gear','Достижения':'glory'};
-function renderHeroTabs(){const cur=HTABS.some(t=>t[0]===S.heroTab)?S.heroTab:'me';$('heroTabs').innerHTML=HTABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
+function renderHeroTabs(){$('heroTabs').classList.add('hide');document.querySelectorAll('#s-hero>.pnl').forEach(p=>p.classList.remove('hidet'));document.querySelector('#s-hero>.pnl.gold')?.classList.remove('hide');return;const cur=HTABS.some(t=>t[0]===S.heroTab)?S.heroTab:'me';$('heroTabs').innerHTML=HTABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
  $('heroTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.heroTab=b.dataset.k;SFX.tap();buzz();save();renderHeroTabs();scrollTo({top:0})});
  document.querySelectorAll('#s-hero>.pnl').forEach(p=>{if(p.classList.contains('gold'))return p.classList.toggle('hide',cur!=='me');const t=(p.querySelector('h2')||{}).textContent;const g=HMAP[t];if(!g)return;p.dataset.ht=g;if(p.id==='bagPnl'&&cur==='gear')return;p.classList.toggle('hidet',g!==cur)})}
-function renderGear(){renderHeroTabs();if($("gearLink"))$("gearLink").onclick=()=>{S.heroTab="gear";go("hero");render();scrollTo({top:0})};const lv=lvlInfo(S.xp).l;S.forge=S.forge||{};
- $('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]),r=it?it.r:-1,fn=S.forge[k]||0,tot=(it?RARITY[r][1]:0)+Math.round(fn*FORGE_STEP*100),nr=r+1,others=S.inv.filter(i=>i.k===k&&i.id!==S.eq[k]).length;
+function renderGear(){renderHeroTabs();renderGearInto('shopGear',true);renderGearInto('slots',false);if($('shopGearLv'))$('shopGearLv').textContent='твой ур. '+lvlInfo(S.xp).l;renderBag()}
+function renderGearInto(id,shop){if(!$(id))return;if($("gearLink"))$("gearLink").onclick=()=>{S.heroTab="gear";go("hero");render();scrollTo({top:0})};const lv=lvlInfo(S.xp).l;S.forge=S.forge||{};
+ $(id).innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]),r=it?it.r:-1,fn=S.forge[k]||0,tot=(it?RARITY[r][1]:0)+Math.round(fn*FORGE_STEP*100),nr=r+1,others=S.inv.filter(i=>i.k===k&&i.id!==S.eq[k]).length;
   let up='';if(nr<=3){const lock=lv<REQ[nr];up='<button class="gb gold" data-up="'+k+'" '+(lock||S.gold<PRICE[nr]?'disabled':'')+'><b>'+(lock?'🔒 Купить с ур. '+REQ[nr]:'Купить · '+PRICE[nr]+' з')+'</b><small>'+SLOTS[k][2][nr]+' · +'+RARITY[nr][1]+'% '+SLOTS[k][1]+'</small></button>'}
   let fg='';if(fn<FORGE_COST.length){const need=3*(fn+1),lock=lv<need;fg='<button class="gb" data-fg="'+k+'" '+(lock||S.gold<FORGE_COST[fn]?'disabled':'')+'><b>'+(lock?'🔒 ур. '+need:'Заточить +'+(fn+1))+'</b><small>+'+Math.round(FORGE_STEP*100)+'% · '+FORGE_COST[fn]+' з</small></button>'}
-  return '<div class="gcard'+(it?' r'+r:'')+'" style="--gc:'+(it?RCOL[r]:'#555')+'"><div class="gtop"><span class="gic">'+icon(k,it?RCOL[r]:'#3a3f55',4.5)+'</span><div class="gname"><small>'+v[0]+(fn?' · заточка +'+fn:'')+'</small><b class="'+(it?'t'+r:'')+'">'+(it?esc(it.n):'Пусто')+'</b><span>+'+tot+'% '+v[1]+(it?' · '+RARITY[r][0].toLowerCase():'')+'</span></div>'+(others?'<button class="gsw" data-sw="'+k+'">Сменить · '+others+'</button>':'')+'</div><div class="gbtns">'+up+fg+(!up&&!fg?'<span class="gmax">Максимум ✦</span>':'')+'</div></div>'}).join('');
- $('slots').querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const k=b.dataset.up,it=S.inv.find(i=>i.id===S.eq[k]);buyItem(k,(it?it.r:-1)+1)});
- $('slots').querySelectorAll('[data-fg]').forEach(b=>b.onclick=()=>{const k=b.dataset.fg,n=S.forge[k]||0,c=FORGE_COST[n];if(S.gold<c||lvlInfo(S.xp).l<3*(n+1))return;S.gold-=c;S.forge[k]=n+1;SFX.coin();buzz();addLog('Кузница: '+SLOTS[k][0]+' +'+(n+1));save();render();toast(SLOTS[k][0]+' заточен до +'+(n+1))});
- $('slots').querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{const k=b.dataset.sw;document.getElementById('bagPnl').scrollIntoView({behavior:'smooth',block:'start'})});
- const bag=S.inv.filter(i=>S.eq[i.k]!==i.id).sort((a,b)=>b.r-a.r);$('bagPnl').classList.toggle('hide',!bag.length);$('invCnt').textContent=bag.length;
+  return '<div class="gcard'+(it?' r'+r:'')+'" style="--gc:'+(it?RCOL[r]:'#555')+'"><div class="gtop"><span class="gic">'+icon(k,it?RCOL[r]:'#3a3f55',4.5)+'</span><div class="gname"><small>'+v[0]+(fn?' · заточка +'+fn:'')+'</small><b class="'+(it?'t'+r:'')+'">'+(it?esc(it.n):'Пусто')+'</b><span>+'+tot+'% '+v[1]+(it?' · '+RARITY[r][0].toLowerCase():'')+'</span></div>'+(!shop&&others?'<button class="gsw" data-sw="'+k+'">Сменить · '+others+'</button>':'')+'</div>'+(shop?'<div class="gbtns">'+up+fg+(!up&&!fg?'<span class="gmax">Максимум ✦</span>':'')+'</div>':'')+'</div>'}).join('')+(shop?'':'<button class="linkbtn" id="toShopGear" style="display:block;margin:10px auto 0">Купить или заточить → Лавка</button>');
+ if($('toShopGear'))$('toShopGear').onclick=()=>{go('shop');setTimeout(()=>$('shopGear').scrollIntoView({behavior:'smooth',block:'start'}),250)};
+ $(id).querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const k=b.dataset.up,it=S.inv.find(i=>i.id===S.eq[k]);buyItem(k,(it?it.r:-1)+1)});
+ $(id).querySelectorAll('[data-fg]').forEach(b=>b.onclick=()=>{const k=b.dataset.fg,n=S.forge[k]||0,c=FORGE_COST[n];if(S.gold<c||lvlInfo(S.xp).l<3*(n+1))return;S.gold-=c;S.forge[k]=n+1;SFX.coin();buzz();addLog('Кузница: '+SLOTS[k][0]+' +'+(n+1));save();render();toast(SLOTS[k][0]+' заточен до +'+(n+1))});
+ $(id).querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{const p=$('bagPnl');p.classList.remove('shut');S.open=S.open||{};S.open['Сумка']=1;p.scrollIntoView({behavior:'smooth',block:'start'})})}
+function renderBag(){ const bag=S.inv.filter(i=>S.eq[i.k]!==i.id).sort((a,b)=>b.r-a.r);$('bagPnl').classList.toggle('hide',!bag.length);$('invCnt').textContent=bag.length;
  $('inv').innerHTML=bag.map(i=>{const cur=S.inv.find(x=>x.id===S.eq[i.k]),better=!cur||cur.r<i.r;return '<div class="brow"><span class="gic sm">'+icon(i.k,RCOL[i.r],3.2)+'</span><div class="gname"><b class="t'+i.r+'">'+esc(i.n)+'</b><span>+'+RARITY[i.r][1]+'% '+SLOTS[i.k][1]+(better?' · <em>лучше надетого</em>':'')+'</span></div><button class="gb sm'+(better?' gold':'')+'" data-eq="'+i.id+'"><b>Надеть</b></button><button class="gb sm" data-sell="'+i.id+'"><b>'+RARITY[i.r][2]+' з</b><small>продать</small></button></div>'}).join('');
  $('inv').querySelectorAll('[data-eq]').forEach(b=>b.onclick=()=>{const it=S.inv.find(i=>i.id===b.dataset.eq);S.eq[it.k]=it.id;SFX.tap();buzz();save();render();toast('Надето: '+it.n)});
  $('inv').querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>{const it=S.inv.find(i=>i.id===b.dataset.sell),s=RARITY[it.r][2];S.inv=S.inv.filter(i=>i!==it);S.gold+=s;S.goldTotal+=s;SFX.coin();save();render();toast('Продано: +'+s+' золота')})}
@@ -2614,7 +2635,7 @@ function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().inc
  if($('aUp'))$('aUp').onclick=()=>{if(!can)return;s.c-=need;S.gold-=gc;s.l++;addLog('Артефакт улучшен: '+a[1]+' · ур. '+s.l);SFX.level();buzz();save();closeSheet();render();burst(innerWidth/2,innerHeight/2,24);toast(a[1]+' — уровень '+s.l)}}
 /* ===== shop tabs, scenes, reward templates ===== */
 const STABS=[['chest','Сокровища',['chest','art']],['buy','Котик',['cat']],['rw','Награды',['rw']]];
-function renderShopTabs(){if(!STABS.some(t=>t[0]===S.shopTab))S.shopTab='chest';const cur=S.shopTab,grp=STABS.find(t=>t[0]===cur)[2];$('shopTabs').innerHTML=STABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
+function renderShopTabs(){$('shopTabs').classList.add('hide');document.querySelectorAll('#s-shop [data-st]').forEach(p=>p.classList.remove('hide'));return;if(!STABS.some(t=>t[0]===S.shopTab))S.shopTab='chest';const cur=S.shopTab,grp=STABS.find(t=>t[0]===cur)[2];$('shopTabs').innerHTML=STABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
  $('shopTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.shopTab=b.dataset.k;SFX.tap();buzz();save();renderShopTabs()});document.querySelectorAll('#s-shop [data-st]').forEach(p=>p.classList.toggle('hide',!grp.includes(p.dataset.st)))}
 const SCN=[['fuji','Фудзи и тории',0],['bamboo','Бамбуковая роща',400],['snow','Зимний храм',600],['munich','Мюнхен: Фрауэнкирхе',900]];
 function renderScenes(){S.scn=S.scn||['fuji'];const on=S.scnOn||'fuji';$('scenes').innerHTML=SCN.map(([k,n,c])=>{const own=S.scn.includes(k)||!c;return '<div class="shopit">'+icon('star',own?'#e2c48e':'#8a8172',4)+'<div class="nm"><b>'+n+'</b><span>'+(on===k?'на сцене':own?'куплено':'фон сцены')+'</span></div>'+(on===k?'':own?'<button class="btn" data-sn="'+k+'">Выбрать</button>':'<button class="btn gold" data-sb="'+k+'"'+(S.gold<c?' disabled':'')+'>'+c+'</button>')+'</div>'}).join('');
@@ -2696,7 +2717,7 @@ const LT=[[/^(Уровень|Новый ранг)/,'位','#e2c48e','Подвиг
  [/^(Волна|Тень тяги)/,'波','#7fa7c9','Путь'],[/Линия Сердца|Отказ|свидан/i,'心','#ff8fa3','Сердце'],[/^(Куплено|Котику|Награда себе|Сундук|Открыт|Подношение|Артефакт|Кузница|Активирован|Добыча|Котик|Пир|Щит|День отдыха|Кошачья|Ключ)/,'店','#e2b04a','Лавка']];
 const logT=t=>LT.find(x=>x[0].test(t))||[null,'記','#9a8f7a','Прочее'];
 const LTABS=[['feed','Лента'],['stats','Аналитика'],['set','Настройки']];
-function renderLogTabs(){const cur=LTABS.some(t=>t[0]===S.logTab)?S.logTab:'feed';$('logTabs').innerHTML=LTABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
+function renderLogTabs(){$('logTabs').classList.add('hide');document.querySelectorAll('#s-log>.pnl').forEach(p=>p.classList.remove('hidet'));return;const cur=LTABS.some(t=>t[0]===S.logTab)?S.logTab:'feed';$('logTabs').innerHTML=LTABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
  $('logTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.logTab=b.dataset.k;SFX.tap();buzz();save();renderLogTabs();scrollTo({top:0})});
  document.querySelectorAll('#s-log>.pnl').forEach(p=>{const t=(p.querySelector('.ttl h2')||{}).textContent||'';const g=!t?'set':/^(Итоги|Летопись)/.test(t)?'feed':'stats';p.classList.toggle('hidet',g!==cur)})}
 function renderChron(){renderLogTabs();const F=['Все','Подвиги','Путь','Сердце','Лавка'];$('logF').innerHTML=F.map(f=>'<button class="chp'+(LOGF===f?' on':'')+'" data-f="'+f+'">'+f+'</button>').join('');
