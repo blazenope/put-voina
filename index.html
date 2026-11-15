@@ -1723,6 +1723,8 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.ap
    if(ex){ex.done=true;ex.aw=aw;ex.lt=true}else pl.tasks.push({t:String(g.t).slice(0,140),time:g.time||'',xp,c,done:true,aw,lt:true});S.quests++;feed(10)}
   try{localStorage.setItem(key,JSON.stringify(pl))}catch(e){}if(d===SEL)loadPlan(SEL);
   if(sum)msgs.push('+'+sum+' XP и +'+(S.gold-gold0)+' золота за '+o.grants.length+' '+plural(o.grants.length,'дело','дела','дел'))}
+ if(Array.isArray(o.penalties)){for(const g of o.penalties){if(!g||!g.t)continue;const xp=Math.max(5,Math.min(200,Number(g.xp)||20)),c=STATS[g.c]?g.c:'wil',gl=Math.round(xp/2);
+  S.xp=Math.max(0,S.xp-xp);S.gold=Math.max(0,S.gold-gl);S.st[c]=Math.max(0,(S.st[c]||0)-xp);addLog('Штраф: '+g.t+' (−'+xp+' XP)');msgs.push('Штраф: '+g.t+' −'+xp+' XP, −'+gl+' золота')}}
  if(o.love&&typeof o.love==='object'){S.love=S.love||{d:{},rej:0};S.love.d=S.love.d||{};let lx=0;const all=LOVE.flatMap(s=>s[2]);
   for(const[id,n]of Object.entries(o.love)){if(id==='rej'){for(let i=0;i<n;i++){S.love.rej=(S.love.rej||0)+1;lx+=award(15,'cha','',{dmg:15}).xp}continue}const t=all.find(x=>x[0]===id);if(!t)continue;
    for(let i=0;i<n&&(S.love.d[id]||0)<t[3];i++){S.love.d[id]=(S.love.d[id]||0)+1;if(id==='date')S.love.dates=(S.love.dates||0)+1;lx+=award(t[2],'cha','',{dmg:t[2]}).xp;addLog('Линия Сердца: '+t[1])}}
