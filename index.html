@@ -469,6 +469,13 @@ summary{font:700 16px var(--pix)}
 #sakura{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 #sakura i{position:absolute;top:-6vh;width:10px;height:7px;border-radius:70% 0 70% 0;background:linear-gradient(135deg,#f6c9c3,#d98f8a);opacity:.5;animation:petal linear infinite}
 @keyframes petal{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(18px,28vh) rotate(110deg)}50%{transform:translate(-14px,56vh) rotate(220deg)}75%{transform:translate(20px,84vh) rotate(320deg)}100%{transform:translate(-6px,112vh) rotate(420deg)}}
+
+.stps{display:flex;align-items:center;gap:2px;margin:2px 0 8px}.stps span{margin-left:8px;font-size:12px;opacity:.75}
+.stp{display:inline-block;width:9px;height:9px;margin-right:5px;border:1px solid var(--gold2);transform:rotate(45deg);opacity:.55}
+.stp.on{background:var(--gold2);opacity:1}.stp.cur{box-shadow:0 0 7px var(--gold2)}
+.pth{display:flex;justify-content:space-between;font-size:13px}.pth b{color:var(--gold2)}
+.pg{height:6px!important;margin:4px 0}.pg i{background:linear-gradient(90deg,#b8862b,#e6b94f)}.pg.top i{background:linear-gradient(90deg,#8e3b32,#d9473b)}
+#heroNext small{font-size:12px;opacity:.7}
 </style>
 </head>
 <body>
@@ -998,6 +1005,13 @@ const bestDays=()=>Math.max(S.best||0,Math.floor((S.bestMs||0)/DAY),cleanDays())
 const totalClean=()=>Object.values(S.days).filter(v=>v==='c').length;
 function lvlInfo(xp){let l=1,need=100,acc=0;while(xp>=acc+need){acc+=need;l++;need=Math.round(100+(l-1)*40)}return{l,cur:xp-acc,need}}
 const rankOf=l=>{let r=RANKS[0];for(const x of RANKS)if(l>=x[0])r=x;return r};
+/* путь: ранг → ступени (уровни внутри ранга) → вершина */
+function pathInfo(){const li=lvlInfo(S.xp),r=rankOf(li.l),i=RANKS.indexOf(r),nx=RANKS[i+1]||null,top=RANKS[RANKS.length-1];
+ const base=xpAt(r[0]),end=nx?xpAt(nx[0]):null,steps=nx?nx[0]-r[0]:1,step=Math.min(steps,li.l-r[0]+1);
+ const inRank=S.xp-base,rankPct=nx?Math.min(1,inRank/(end-base)):1,left=nx?end-S.xp:0,topXp=xpAt(top[0]);
+ const a=avgXp(),days=left>0&&a>0?Math.ceil(left/a):0;
+ return{li,r,nx,top,steps,step,rankPct,left,days,topPct:Math.min(1,S.xp/topXp),topLeft:Math.max(0,topXp-S.xp),idx:i,cnt:RANKS.length}}
+const stepDots=(n,cur)=>Array.from({length:n},(_,k)=>'<i class="stp'+(k<cur?' on':'')+(k===cur-1?' cur':'')+'"></i>').join('');
 const statLvl=x=>Math.floor(Math.sqrt(x/15))+1;
 const statProg=x=>{const l=statLvl(x),a=15*(l-1)**2,b=15*l**2;return(x-a)/(b-a)};
 const stageIdx=()=>{const d=totalClean();let i=0;STAGES.forEach((s,k)=>{if(d>=s[0])i=k});return i};
@@ -1138,7 +1152,7 @@ function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();
  D[cat]++;D.n++;if(new Date().getHours()<12)D.am++;if(xp>=40)D.big++;if(crit)D.crit++;D.dmg+=ad;
  if(!S.act)S.act={};S.act[today()]=1;
  const before=lvlInfo(S.xp).l;S.xp+=ax;S.xpd=S.xpd||{};S.xpd[today()]=(S.xpd[today()]||0)+ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;
- const lv=lvlInfo(S.xp).l;SFX.hit();if(lv>before){SFX.level();const r0=rankOf(before)[1],r1=rankOf(lv)[1];addLog('Уровень '+lv+(r0!==r1?' · ранг '+r1:''));setTimeout(()=>lootSheet('Новый уровень!',null,'Уровень '+lv+(r0!==r1?'. Новый ранг: '+r1:'')+'. Ты становишься тем, кем решил стать.'),700)}
+ const lv=lvlInfo(S.xp).l;SFX.hit();if(lv>before){SFX.level();const r0=rankOf(before)[1],r1=rankOf(lv)[1];addLog('Уровень '+lv+(r0!==r1?' · ранг '+r1:''));setTimeout(()=>lootSheet('Новый уровень!',null,'Уровень '+lv+(r0!==r1?'. Новый ранг: '+r1:'')+'. '+(()=>{const q=pathInfo();return q.nx?'До ранга «'+q.nx[1]+'» ещё '+q.left.toLocaleString('ru-RU')+' XP (ступень '+q.step+' из '+q.steps+').':'Ты на вершине.'})()),700)}
  else{toast('+'+ax+' XP · +'+ag+' золота'+(why?' · '+why:''));setTimeout(SFX.coin,120)}
  floatTxt((crit?'КРИТ -':'-')+ad,crit?'#ffd67a':'#ff9a8f');hitBoss(ad);
  return{xp:ax,g:ag,d:ad,c:cat,day:today(),cr:crit,big:xp>=40}}
@@ -1217,7 +1231,7 @@ const offersWeek=()=>seedPick(weekStart()+'o',3,OFFERS.length);
 function checkAch(){for(const a of ACHS)if(!S.ach.includes(a[0])&&a[3](S)){S.ach.push(a[0]);S.xp+=30;S.gold+=20;S.goldTotal+=20;addLog('Достижение: '+a[1]);setTimeout(()=>toast('Достижение: '+a[1]+' · +30 XP · +20 золота'),1500)}}
 
 /* ================= RENDER ================= */
-function renderHUD(){const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);{const rk=rankOf(li.l);$('hudRank').innerHTML='<i class="hk" lang="ja">'+rk[2][0]+'</i>'+esc(rk[1])}$('hudLvl').textContent='ур. '+li.l+' · '+li.cur+'/'+li.need;
+function renderHUD(){const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);{const rk=rankOf(li.l);$('hudRank').innerHTML='<i class="hk" lang="ja">'+rk[2][0]+'</i>'+esc(rk[1])+(()=>{const q=pathInfo();return q.nx?' <small style="opacity:.6">'+q.step+'/'+q.steps+'</small>':''})()}$('hudLvl').textContent='ур. '+li.l+' · '+li.cur+'/'+li.need;
  $('hudXp').style.width=(li.cur/li.need*100)+'%';const bf=[S.buffXp>Date.now()?'<span style="color:var(--xp)">×2XP</span>':'',S.buffDmg>Date.now()?'<span style="color:var(--hp)">×2⚔</span>':'',S.buffGold>Date.now()?'<span style="color:var(--gold2)">×2з</span>':''].join(' ');
  $('hudGold').innerHTML=(bf?'<span style="font:600 11px var(--body);margin-right:4px">'+bf+'</span>':'')+coin(2.5)+'<span>'+S.gold+'</span>'}
 function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
@@ -1318,8 +1332,13 @@ function renderQuest(){renderLove();const ch=S.camp.ch,b=bossOf(ch);
  const n=Math.max(CHAPTERS.length,ch+2);let h='';for(let i=0;i<n;i++){const bb=bossOf(i);h+='<div class="node '+(i<ch?'done':i===ch?'now':'lock')+'"><div class="dot">'+(i<ch?'✓':i+1)+'</div><div><div class="nm">'+(i<=ch?esc(bb[0]):'???')+'</div><div class="loc">'+esc(bb[1])+'</div></div></div>'}
  $('map').innerHTML=h;$('mapCnt').textContent='побеждено: '+ch}
 function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0]>li.l);
- $('heroSpr').innerHTML=heroSVG(6);$('heroRank').textContent=r[1];$('heroKanji').textContent=r[2]||'道';{const k=KOTOBA[seedPick(today()+'w',1,KOTOBA.length)[0]];$('kotoba').innerHTML='<b lang="ja">'+k[0]+'</b><span>«'+k[1]+'»</span><small>слово дня</small>'}$('heroLvl').textContent='Уровень '+li.l+' · '+li.cur+' / '+li.need+' XP';$('heroXp').style.width=(li.cur/li.need*100)+'%';
- $('heroNext').textContent=nx?'Ранг «'+nx[1]+'» с уровня '+nx[0]:'Высший ранг';
+ $('heroSpr').innerHTML=heroSVG(6);$('heroRank').textContent=r[1];$('heroKanji').textContent=r[2]||'道';{const k=KOTOBA[seedPick(today()+'w',1,KOTOBA.length)[0]];$('kotoba').innerHTML='<b lang="ja">'+k[0]+'</b><span>«'+k[1]+'»</span><small>слово дня</small>'}const pi=pathInfo();$('heroLvl').textContent='Уровень '+li.l+' · '+li.cur+' / '+li.need+' XP до следующего';$('heroXp').style.width=(li.cur/li.need*100)+'%';
+ $('heroNext').innerHTML=pi.nx?'<div class="stps">'+stepDots(pi.steps,pi.step)+'<span>ступень '+pi.step+' из '+pi.steps+'</span></div>'
+  +'<div class="pth"><span>До ранга «'+esc(pi.nx[1])+'»</span><b>'+Math.round(pi.rankPct*100)+'%</b></div><div class="gauge pg"><i style="width:'+(pi.rankPct*100)+'%"></i></div>'
+  +'<small>ещё '+pi.left.toLocaleString('ru-RU')+' XP'+(pi.days?' ≈ '+pi.days+' '+plural(pi.days,'день','дня','дней'):'')+' · ур. '+pi.nx[0]+'</small>'
+  +'<div class="pth" style="margin-top:10px"><span>Вершина: «'+esc(pi.top[1])+'»</span><b>'+(pi.topPct*100).toFixed(1).replace('.0','')+'%</b></div><div class="gauge pg top"><i style="width:'+(pi.topPct*100)+'%"></i></div>'
+  +'<small>ранг '+(pi.idx+1)+' из '+pi.cnt+' · ещё '+pi.topLeft.toLocaleString('ru-RU')+' XP</small>'
+  :'<div class="stps">'+stepDots(1,1)+'<span>высший ранг — вершина достигнута</span></div>';
  $('stats').innerHTML=Object.entries(STATS).map(([k,[n,col]])=>'<div class="statrow"><b style="color:'+col+'"><i lang="ja" class="kj">'+STK[k]+'</i>'+n+'</b><div class="gauge"><i style="width:'+(statProg(S.st[k]||0)*100)+'%;background:'+col+'"></i></div><span>ур. '+statLvl(S.st[k]||0)+'</span></div>').join('');
  const b=bonus();$('bonusTxt').textContent='+'+Math.round(b.dmg*100)+'% урона · +'+Math.round(b.gold*100)+'% золота · +'+Math.round(b.xp*100)+'% XP';
  $('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]);return '<button class="slot '+(it?'r'+it.r:'')+'" data-k="'+k+'">'+(it?icon(k,RCOL[it.r],4):icon(k,'#2b3150',4))+'<span class="'+(it?'t'+it.r:'')+'">'+(it?esc(it.n):v[0]+': пусто')+'</span></button>'}).join('');
@@ -1408,7 +1427,7 @@ function eta(x){const a=avgXp();if(x<=0||a<=0)return '';const d=Math.ceil(x/a);r
 const rmRow=(st,k,nm,sub,r)=>'<div class="rm '+st+'"><b class="k" lang="ja">'+k+'</b><div>'+nm+(sub?'<small>'+sub+'</small>':'')+'</div><span class="r">'+r+'</span></div>';
 function roadmap(sec){const li=lvlInfo(S.xp),cur=rankOf(li.l),cd=cleanDays(),tc=totalClean(),ch=S.camp.ch,a=avgXp();let o='';
  const H=(id,t,n)=>'<h4 class="rmh" id="rm-'+id+'">'+t+(n?'<span>'+n+'</span>':'')+'</h4>';
- o+=H('rank','Ранги 位','ур. '+li.l)+RANKS.map(r=>{const need=xpAt(r[0])-S.xp,st=r===cur?'now':li.l>=r[0]?'done':'lock';return rmRow(st,r[2],esc(r[1]),'с уровня '+r[0]+' · '+xpAt(r[0]).toLocaleString('ru-RU')+' XP',st==='done'?'✓':st==='now'?'ты здесь':'ещё '+need.toLocaleString('ru-RU')+' XP'+eta(need))}).join('');
+ o+=H('rank','Ранги 位','ур. '+li.l)+RANKS.map(r=>{const need=xpAt(r[0])-S.xp,st=r===cur?'now':li.l>=r[0]?'done':'lock';return rmRow(st,r[2],esc(r[1]),'с уровня '+r[0]+' · '+xpAt(r[0]).toLocaleString('ru-RU')+' XP',st==='done'?'✓':st==='now'?'ты здесь · ступень '+pathInfo().step+'/'+pathInfo().steps:'ещё '+need.toLocaleString('ru-RU')+' XP'+eta(need))}).join('');
  o+=H('lvl','Ближайшие уровни',a?'в среднем '+Math.round(a)+' XP в день':'')+Array.from({length:6},(_,i)=>li.l+1+i).map(L=>{const need=xpAt(L)-S.xp;return rmRow('lock',L,'Уровень '+L,'всего '+xpAt(L).toLocaleString('ru-RU')+' XP','ещё '+need.toLocaleString('ru-RU')+eta(need))}).join('');
  o+=H('stats','Характеристики')+Object.entries(STATS).map(([k,[n]])=>{const x=S.st[k]||0,l=statLvl(x);return rmRow('now',STK[k],n+' · ур. '+l,[1,2,3].map(i=>'ур. '+(l+i)+' — '+(15*(l+i-1)**2).toLocaleString('ru-RU')).join(' · '),'до ур. '+(l+1)+': '+(15*l*l-x))}).join('');
  o+=H('cat','Котик 猫','чистых дней: '+tc)+STAGES.map((s,i)=>{const nx=STAGES[i+1],st=tc>=s[0]&&(!nx||tc<nx[0])?'now':tc>=s[0]?'done':'lock';return rmRow(st,['子','猫','猫','守','又'][i],s[1],'с '+s[0]+' '+plural(s[0],'чистого дня','чистых дней','чистых дней')+(i===4?' · два хвоста, кабуто':''),st==='done'?'✓':st==='now'?'сейчас':'ещё '+(s[0]-tc)+' дн.')}).join('')
