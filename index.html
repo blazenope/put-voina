@@ -3745,7 +3745,7 @@ function buffSheet(){const d=dayNum(),x=true;
 $('buffBox').onclick=buffSheet;
 $('petArt').onclick=()=>{const a=$('petArt');a.classList.remove('hop');void a.offsetWidth;a.classList.add('hop');hearts(catAsleep()?1:3,catAsleep()?'z':'♥');buzz();if(S.pet.petDay!==today()){S.pet.petDay=today();S.pet.pets=0}
  SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=catAsleep()?'…мрр… (сонно мурчит)':Math.random()<.45?rnd(CAT18):rnd(['Мурр!','Мяу! Мы справимся.','Мурр… я с тобой.','Ещё почеши!','Мяу, ты молодец, что зашёл.','*трётся о руку*']);$('pMood').style.width=S.pet.mood+'%'};
-$('petArt').addEventListener('click',()=>setTimeout(catMenu,350));$('petSay').onclick=()=>{if(CATACT)CATACT();else catMenu()};
+$('petSay').onclick=()=>{if(CATACT)CATACT()};
 $('petName').onclick=()=>{const n=prompt('Как зовут котика?',S.pet.name||'');if(n===null)return;S.pet.name=n.trim().slice(0,20);save();render()};
 $('voteBtn').onclick=()=>{if(S.votes[today()])return;S.votes[today()]=1;addLog('Голос за себя');award(10,'wil','голос за себя',{dmg:10});save();render()};
 $('hudMoon').onclick=()=>{SFX.tap();eveSheet()};$('howBtn').onclick=()=>{sheet('<h3>Как устроен бой</h3>'+$('howTpl').innerHTML+'<button class="btn gold" id="howOk" style="width:100%;margin-top:14px">Понял</button>');$('howOk').onclick=closeSheet};
