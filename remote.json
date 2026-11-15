@@ -463,6 +463,18 @@
     }
    ],
    "note": "Подвиг: 6 заявок в Steuer- и Anwaltskanzleien отправлены"
+  },
+  {
+   "id": "2026-11-15-jobcenter-nachweis",
+   "date": "2026-11-15",
+   "grants": [
+    {
+     "t": "Отправил в Jobcenter подтверждение 6 заявок (jobcenter.digital)",
+     "xp": 45,
+     "c": "int"
+    }
+   ],
+   "note": "Заявки задокументированы и отправлены в Jobcenter до термина"
   }
  ]
 }
