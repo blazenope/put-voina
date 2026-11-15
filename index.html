@@ -966,6 +966,9 @@ summary{font:700 16px var(--pix)}
 .drgrow>div{flex:1;min-width:0}.drgrow b{display:block;font:600 14.5px var(--body);color:var(--ink)}.drgrow small{display:block;font:12px var(--body);color:var(--ink3);margin-top:2px}
 .drgw{display:flex;gap:4px;margin-top:8px}.drgw u{text-decoration:none;flex:1;max-width:34px;text-align:center;padding:3px 0;border-radius:4px;font:600 10px var(--body);color:var(--ink3);background:var(--panel2)}.drgw u.on{background:#c9a46a33;color:var(--gold)}
 .kgring{width:150px;height:150px;margin:14px auto;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--edge2);transition:transform 3s ease-in-out,border-color .3s}
+.kgbar{background:linear-gradient(135deg,rgba(201,164,106,.16),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(201,164,106,.35)}.kgbar small{color:var(--gold)}.kgbar.done{opacity:.6}
+.kgdots{display:flex;gap:6px;justify-content:center;margin:6px 0 2px}.kgdots i{width:10px;height:10px;border-radius:50%;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--edge2)}.kgdots i.on{background:var(--gold);box-shadow:none}
+.kghold{width:100%;padding:22px 0;font-size:16px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}.kghold.act{background:var(--gold);color:#2a1a02}.kgbar2{height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;margin:8px 0}.kgbar2 i{display:block;height:100%;background:var(--gold);width:0;transition:width .2s linear}
 .kgring.sq{transform:scale(.82);border-color:var(--gold)}.kgring b{font:700 20px var(--body);color:var(--ink)}.kgring small{font:12px var(--body);color:var(--ink3)}
 .engrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .encard{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:10px;border:1px solid var(--edge);border-radius:10px;background:var(--panel2);color:var(--ink);cursor:pointer}
@@ -1027,6 +1030,7 @@ summary{font:700 16px var(--pix)}
     <button class="pnl ringsT" id="ringsT" aria-label="Кольца дня"></button>
   </div>
   <button class="stepsbar" id="stepsBar"><span>👟</span><b id="stepsN">—</b><em id="stepsT">шаги из «Здоровья»</em><small id="stepsH">подключить</small></button>
+  <button class="stepsbar kgbar" id="kgBar"><span lang="ja">締</span><b id="kgBarN">0/3</b><em id="kgBarT">Кегель: подход, когда удобно</em><small>подход</small></button>
 
   <div class="pnl">
     <div class="ttl"><h2>Квесты</h2><span class="c" id="tCount"></span></div>
@@ -2182,7 +2186,7 @@ function colify(){S.open=S.open||{};const st=document.getElementById('s-log').la
  document.querySelectorAll('#s-drg>.pnl,#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
   if(!p.classList.contains('col')){p.classList.add('col');t.addEventListener('click',e=>{if(e.target.closest('button,a,input'))return;const sh=p.classList.toggle('shut');S.open[k]=sh?0:1;SFX.tap();save()})}
   const def=k in COLD?COLD[k]:0;p.classList.toggle('shut',!(k in S.open?S.open[k]:def))})}
-function render(){setTimeout(()=>{try{renderSteps()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog();try{renderDrg()}catch(e){console.error(e)}}
+function render(){setTimeout(()=>{try{renderSteps()}catch(e){}try{renderKgBar()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog();try{renderDrg()}catch(e){console.error(e)}}
 
 /* ================= ROADMAP 道: the whole future ================= */
 const xpAt=L=>{let s=0;for(let k=1;k<L;k++)s+=needOf(k);return s};
@@ -2800,8 +2804,8 @@ const FUN=[
  ['f_push','Отжался вместо того чтобы…','腕','10 раз отжимания до отказа',()=>((S.en||{}).push||0)>=10],
  ['f_dance','Танцую, как будто никто не видит','舞','Сбросить энергию танцами',()=>((S.en||{}).dance||0)>=1],
  ['f_monk','Ушёл в монахи','僧','30 раз направить энергию в дело',()=>(S.enN||0)>=30],
- ['f_kegel','Кегель-мастер','締','7 тренировок Кегеля',()=>(S.kg||0)>=7],
- ['f_kegel30','Железный хват','鋼','30 тренировок Кегеля',()=>(S.kg||0)>=30],
+ ['f_kegel','Кегель-мастер','締','7 дней Кегеля 3/3',()=>(S.kgFull||0)>=7],
+ ['f_kegel30','Железный хват','鋼','30 дней Кегеля 3/3',()=>(S.kgFull||0)>=30],
  ['f_mw','Доброе утро, дракон','朝','Отметить утренний стояк 7 раз',()=>(S.mw||0)>=7],
  ['f_drg3','Из червячка в удава','蛇','Дракон 3-го уровня',()=>drgLv()>=2],
  ['f_drg6','Змей Горыныч','龍','Дракон 6-го уровня',()=>drgLv()>=5],
@@ -2888,28 +2892,76 @@ function stepsGuide(){sheet('<h3>👟 Шаги из «Здоровья»</h3><p 
 
 /* ===== 龍 Dragon tab ===== */
 const DRL=[[0,'Червячок'],[60,'Шланг'],[160,'Удав'],[320,'Питон'],[550,'Анаконда'],[850,'Змей Горыныч'],[1300,'Древний дракон']];
-const drgPow=()=>cleanDays()*10+totalClean()*3+(S.kg||0)*4+(S.mw||0)*2+(S.enN||0)*3;
+const drgPow=()=>cleanDays()*10+totalClean()*3+(S.kg||0)+(S.kgFull||0)*5+(S.mw||0)*2+(S.enN||0)*3;
 function drgLv(){const p=drgPow();let i=0;DRL.forEach((x,j)=>{if(p>=x[0])i=j});return i}
 const DRSAY=['Я не сплю, я коплю силы. Не буди без повода.','Экран — это не повод. Повод — живая девушка, которая сказала «да».','Утром я встаю раньше тебя. Бери пример.','Холодный душ? Опять? Ладно, я понял намёк.','Кегель — это день ног, только для меня. Не пропускай.','Я дракон, а не хомяк. Хомяков кормят каждый день, драконы ждут достойную добычу.','Если я рвусь в бой — иди на турник. Энергия должна куда-то уйти.','Пятничный вечер — моя слабость. Займи руки заранее.','Мне не нужна быстрая разрядка. Мне нужна история, которую не стыдно вспомнить.','Каждый чистый день я расту. Не в сантиметрах, в самоуважении. Хотя кто знает.','Я не прошу многого: сон, спорт и девушку, а не вкладку.','Говорят, размер не главное. Главное — кто им управляет. Управляй.'];
 function drgMood(){const d=today();if(S.days[d]==='f')return ['похмелье','Срыв. Ничего, драконы тоже падают. Завтра чистый день — и я снова в форме.'];
  if((S.mwD||{})[d])return ['бодрый','Утро началось правильно. Кровоток в порядке, сон работает. Горжусь нами.'];
  if(cleanDays()>=7)return ['рвётся в бой','Энергии через край. Отправь её в зал или в холодный душ — не в экран.'];
  const h=new Date().getHours();if(h>=23||h<6)return ['сонный','Спать. Ночью я самый слабый и самый глупый.'];return ['дремлет',DRSAY[Math.floor(Date.now()/36e5)%DRSAY.length]]}
-function renderDrg(){if(!$('drg'))return;const p=drgPow(),i=drgLv(),cur=DRL[i],nx=DRL[i+1],m=drgMood(),d=today(),kgT=S.kgD===d,mwT=!!(S.mwD||{})[d];
+function renderDrg(){if(!$('drg'))return;const p=drgPow(),i=drgLv(),cur=DRL[i],nx=DRL[i+1],m=drgMood(),d=today(),kgN=kgToday(),kgT=kgN>=3,kl=kgLv(),mwT=!!(S.mwD||{})[d];
  $('drgLvN').textContent='ур. '+(i+1);
  const wk=Array.from({length:7},(_,k)=>{const x=new Date();x.setDate(x.getDate()-6+k);const kk=dkey(x);return '<u class="'+((S.mwD||{})[kk]?'on':'')+'">'+['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][x.getDay()]+'</u>'}).join('');
  $('drg').innerHTML='<div class="drgc"><div class="drgk" lang="ja">龍</div><div class="drgb"><b>'+cur[1]+'</b><small>сила '+p+(nx?' · до «'+nx[1]+'» ещё '+(nx[0]-p):' · максимум')+'</small><div class="gauge g-xp"><i style="width:'+(nx?Math.round((p-cur[0])/(nx[0]-cur[0])*100):100)+'%"></i></div><span class="drgm">настроение: '+m[0]+'</span></div></div>'
   +'<p class="drgsay">'+esc(m[1])+'</p>'
-  +'<div class="drgrow"><div><b>Тренировка Кегеля</b><small>2 минуты · всего '+(S.kg||0)+'</small></div><button class="btn'+(kgT?'':' gold')+'" id="kgBtn"'+(kgT?' disabled':'')+'>'+(kgT?'Сегодня ✓':'Начать')+'</button></div>'
+  +'<div class="drgrow"><div><b>Кегель · '+kgN+' / 3</b><small>'+KGL[kl][1]+' · '+KGL[kl][2]+' с × '+KGL[kl][4]+' + '+KGL[kl][5]+' быстрых · серия '+(S.kgStr&&S.kgLast&&dkey(new Date(Date.now()-864e5))<=S.kgLast?S.kgStr:0)+' дн.</small><div class="drgw">'+kgWeek()+'</div></div><button class="btn'+(kgT?'':' gold')+'" id="kgBtn">'+(kgT?'3/3 ✓':'Подход')+'</button></div>'
   +'<div class="drgrow"><div><b>Утренний стояк</b><small>признак хорошего сна и кровотока</small><div class="drgw">'+wk+'</div></div><button class="btn'+(mwT?'':' gold')+'" id="mwBtn"'+(mwT?' disabled':'')+'>'+(mwT?'Был ✓':'Был')+'</button></div>'
-  +'<details class="hint"><summary>Откуда сила дракона</summary><p class="mut" style="font-size:12.5px;line-height:1.5">Дни без срыва подряд ×10, все чистые дни ×3, Кегель ×4, утренние отметки ×2, энергия в дело ×3. Срыв обнуляет серию — сила падает, но не до нуля. Если утренних эрекций нет неделями, это повод спросить врача: часто дело в сне, стрессе или кровотоке, и это решаемо.</p></details>';
+  +'<details class="hint"><summary>Откуда сила дракона</summary><p class="mut" style="font-size:12.5px;line-height:1.5">Дни без срыва подряд ×10, все чистые дни ×3, подход Кегеля ×1, полный день Кегеля (3/3) ×5, утренние отметки ×2, энергия в дело ×3. Срыв обнуляет серию — сила падает, но не до нуля. Если утренних эрекций нет неделями, это повод спросить врача: часто дело в сне, стрессе или кровотоке, и это решаемо.</p></details>';
  $('kgBtn').onclick=kegelSheet;
  $('mwBtn').onclick=()=>{if((S.mwD||{})[today()])return;S.mwD=S.mwD||{};S.mwD[today()]=1;const ks=Object.keys(S.mwD).sort();while(ks.length>60)delete S.mwD[ks.shift()];S.mw=(S.mw||0)+1;award(5,'wil','',{t:'Утренний стояк отмечен'});save();render()};
  renderEnergy();renderKinks()}
-function kegelSheet(){let n=0,iv=null;sheet('<h3>Кегель · 2 минуты</h3><p class="mut" style="font-size:13px;line-height:1.5">Это мышцы, которыми ты останавливаешь мочеиспускание (только не тренируй их в туалете). Сжал 3 секунды — расслабил 3 секунды, 20 раз. Дыши спокойно, живот и ягодицы не напрягай.</p><div class="kgring" id="kgR"><b id="kgT">Готов?</b><small id="kgN">0 / 20</small></div><button class="btn gold" id="kgGo" style="width:100%">Старт</button><button class="linkbtn" id="kgX" style="display:block;margin:10px auto 0">Закрыть</button>');
- const stop=()=>{clearInterval(iv);iv=null};$('kgX').onclick=()=>{stop();closeSheet()};
- $('kgGo').onclick=()=>{if(iv)return;$('kgGo').disabled=true;let t=0;iv=setInterval(()=>{if(!$('kgR')){stop();return}const sq=Math.floor(t/3)%2===0;$('kgR').classList.toggle('sq',sq);$('kgT').textContent=sq?'Сжать':'Расслабить';if(t%6===0&&t)n++;$('kgN').textContent=Math.min(n,20)+' / 20';if(sq&&t%3===0)buzz();t++;
-  if(n>=20){stop();$('kgT').textContent='Готово';S.kg=(S.kg||0)+1;S.kgD=today();award(15,'str','',{t:'Тренировка Кегеля'});save();setTimeout(()=>{closeSheet();render()},900)}},1000)}}
+/* Кегель: 3 подхода в день, когда удобно (лёжа / сидя / стоя), прогрессия по полным дням 3/3 */
+const KGL=[[0,'Новичок',3,3,10,10],[7,'Ученик',5,5,10,10],[14,'Боец',6,6,10,15],[28,'Мастер',8,8,10,15],[42,'Железный хват',10,10,10,20]]; // [дней 3/3, имя, сжатие с, отдых с, медленных, быстрых]
+const KGPOS=['лёжа на спине, колени согнуты','сидя, спина прямая','стоя, ноги на ширине плеч'];
+function kgMig(){if(S.kgFull==null){S.kgFull=S.kg||0;S.kgH=S.kgH||{}}S.kgH=S.kgH||{}}
+function kgLv(){kgMig();let i=0;KGL.forEach((x,j)=>{if(S.kgFull>=x[0])i=j});return i}
+function kgToday(){kgMig();return S.kgH[today()]||0}
+function kgWeek(){kgMig();return Array.from({length:7},(_,k)=>{const x=new Date();x.setDate(x.getDate()-6+k);const n=S.kgH[dkey(x)]||0;return '<u class="'+(n>=3?'on':'')+'"'+(n&&n<3?' style="color:var(--gold)"':'')+'>'+(n>=3?'✓':n?n+'/3':['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][x.getDay()])+'</u>'}).join('')}
+function kgSlot(){const h=new Date().getHours();return h<12?'утро':h<18?'день':'вечер'}
+function renderKgBar(){const b=$('kgBar');if(!b)return;const n=kgToday(),l=KGL[kgLv()];$('kgBarN').textContent=Math.min(n,3)+'/3';b.classList.toggle('done',n>=3);
+ $('kgBarT').textContent=n>=3?'Кегель на сегодня закрыт · '+l[1]:'Кегель · '+KGPOS[n]+' · ~'+Math.round((l[4]*(l[2]+l[3])+l[5]*2)/60*2)/2+' мин';b.querySelector('small').textContent=n>=3?'ещё?':'подход'}
+function kgDone(){kgMig();const d=today(),n=(S.kgH[d]||0)+1;S.kgH[d]=n;S.kg=(S.kg||0)+1;const ks=Object.keys(S.kgH).sort();while(ks.length>90)delete S.kgH[ks.shift()];
+ let msg='Подход '+n+'/3';
+ if(n<=3)award(8,'str','',{t:'Кегель: подход '+n+'/3'});
+ if(n===3){const y=dkey(new Date(Date.now()-864e5)),lv0=kgLv();S.kgStr=S.kgLast===y?(S.kgStr||0)+1:1;S.kgLast=d;S.kgD=d;S.kgFull++;
+  award(12+Math.min(S.kgStr,10),'str','',{t:'Кегель: день закрыт 3/3 (серия '+S.kgStr+')'});addLog('Кегель 3/3 · серия '+S.kgStr+' дн.');msg='День Кегеля закрыт · серия '+S.kgStr;
+  const lv1=kgLv();if(lv1>lv0){msg='Новый уровень Кегеля: '+KGL[lv1][1]+' — сжатие '+KGL[lv1][2]+' с';addLog(msg)}}
+ save();render();toast('締 '+msg)}
+function kegelSheet(){kgMig();const L=KGL[kgLv()],[,nm,H,R,NS,NF]=L,n=kgToday(),nx=KGL[kgLv()+1];let iv=null,mode=null;
+ sheet('<h3>締 Кегель · подход '+Math.min(n+1,3)+' / 3</h3><div class="kgdots">'+[0,1,2].map(i=>'<i class="'+(i<n?'on':'')+'"></i>').join('')+'</div>'
+  +'<p class="mut" style="font-size:13px;line-height:1.5;margin-top:8px"><b style="color:var(--ink)">'+nm+'</b>: '+NS+' медленных сжатий по '+H+' с (отдых '+R+' с) + '+NF+' быстрых. '+(n<3?'Положение сейчас — <b style="color:var(--ink)">'+KGPOS[n]+'</b>.':'Норма на сегодня выполнена, этот подход — бонус без XP.')+(nx?' До уровня «'+nx[1]+'»: '+(nx[0]-S.kgFull)+' дн. 3/3.':'')+'</p>'
+  +'<div id="kgBody"><div class="row2"><button class="btn gold" id="kgTm">С таймером</button><button class="btn" id="kgHd">Сам, кнопкой</button></div>'
+  +'<p class="mut" style="font-size:12px;line-height:1.5;margin-top:10px">«Сам» — зажимаешь кнопку, пока сжимаешь мышцу, отпускаешь — расслабляешь. Удобно в любой момент дня, хоть в очереди.</p></div>'
+  +'<details class="hint"><summary>Как правильно и когда будет результат</summary><p class="mut" style="font-size:12.5px;line-height:1.55">Мышца — та, которой останавливаешь мочеиспускание и сдерживаешь газы (проверить можно один раз, тренировать в туалете не надо). Сжимай вверх и внутрь, живот, ягодицы и бёдра расслаблены. <b>Дыхание обычное, спокойное, не задерживай.</b> Расслабление так же важно, как сжатие: отпускай полностью.<br><br>Схема: 3 подхода в день — лёжа, сидя, стоя, каждый день. Первые изменения (контроль, твёрже эрекция) — через 4–6 недель, стабильный результат — к 12 неделям, дальше можно поддерживать 1–2 подходами в день. Сила растёт уровнями: 3 → 5 → 6 → 8 → 10 секунд удержания.<br><br>Если появилась боль, тяжесть внизу живота или стало хуже с мочеиспусканием — сделай перерыв и меньше силы: мышца перенапряжена.</p></details>'
+  +'<button class="linkbtn" id="kgX" style="display:block;margin:10px auto 0">Закрыть</button>');
+ const stop=()=>{if(iv)clearInterval(iv);iv=null};$('kgX').onclick=()=>{stop();closeSheet()};
+ const fin=()=>{stop();if(!$('kgBody'))return;$('kgBody').innerHTML='<div class="kgring"><b>Готово</b><small>подход засчитан</small></div>';kgDone();setTimeout(closeSheet,1100)};
+ // режим с таймером
+ $('kgTm').onclick=()=>{const ph=[];for(let i=0;i<NS;i++)ph.push(['sq',H,i],['rl',R,i]);for(let i=0;i<NF;i++)ph.push(['fs',1,i],['fr',1,i]);
+  $('kgBody').innerHTML='<div class="kgring" id="kgR"><b id="kgT">Готов</b><small id="kgN"></small></div><div class="kgbar2"><i id="kgP"></i></div>';
+  const tot=ph.reduce((a,x)=>a+x[1],0);let k=0,t=0,el=0;
+  const step=()=>{if(!$('kgR')){stop();return}const[p,dur,i]=ph[k],sq=p==='sq'||p==='fs',r=$('kgR');
+   if(t===0){r.style.transitionDuration=(p[0]==='f'?.4:Math.min(dur,3))+'s';r.classList.toggle('sq',sq);if(sq)buzz()}
+   $('kgT').textContent=p==='sq'?'Сжать · '+(dur-t):p==='rl'?'Расслабить · '+(dur-t):p==='fs'?'Быстро сжать':'Отпустить';
+   $('kgN').textContent=p[0]==='f'?'быстрые '+(i+1)+' / '+NF:'медленные '+(i+1)+' / '+NS;$('kgP').style.width=Math.round(el/tot*100)+'%';
+   t++;el++;if(t>=dur){t=0;k++;if(k>=ph.length)fin()}};
+  step();iv=setInterval(step,1000)};
+ // режим «сам»: зажал = сжал
+ $('kgHd').onclick=()=>{let rep=0,fast=0,t0=0,lock=0;
+  $('kgBody').innerHTML='<div class="kgring" id="kgR"><b id="kgT">Зажми и сожми</b><small id="kgN">медленные 0 / '+NS+'</small></div><div class="kgbar2"><i id="kgP"></i></div><button class="btn kghold" id="kgH">Держу</button><p class="mut" id="kgS" style="font-size:12px;text-align:center;margin-top:8px">держи '+H+' с — телефон дрогнет, когда хватит</p>';
+  const b=$('kgH'),r=$('kgR');let tk=null;
+  const prog=()=>$('kgP').style.width=Math.round((rep+fast)/(NS+NF)*100)+'%';
+  const down=e=>{e.preventDefault();if(Date.now()<lock||t0)return;t0=Date.now();b.classList.add('act');r.style.transitionDuration=rep<NS?Math.min(H,3)+'s':'.3s';r.classList.add('sq');
+   if(rep<NS){let z=0;tk=setInterval(()=>{const s=(Date.now()-t0)/1000;$('kgT').textContent=s>=H?'Отпускай':'Сжато · '+Math.max(0,Math.ceil(H-s));if(s>=H&&!z){z=1;buzz()}},100)}};
+  const up=e=>{e.preventDefault();if(!t0)return;const s=(Date.now()-t0)/1000;t0=0;clearInterval(tk);b.classList.remove('act');r.classList.remove('sq');
+   if(rep<NS){if(s>=H-.3){rep++;lock=Date.now()+R*1000-300;b.disabled=true;let left=R;$('kgT').textContent='Расслабь · '+left;
+     const rl=setInterval(()=>{left--;if(!$('kgT')){clearInterval(rl);return}if(left>0)$('kgT').textContent='Расслабь · '+left;else{clearInterval(rl);b.disabled=false;$('kgT').textContent=rep<NS?'Зажми и сожми':'Быстрые: жми коротко';if(rep>=NS){b.textContent='Сжал-отпустил';$('kgS').textContent='короткое сильное сжатие на каждое нажатие'}buzz()}},1000)}
+    else{$('kgT').textContent='Чуть дольше';$('kgS').textContent='нужно '+H+' с, было '+s.toFixed(1)+' с'}
+    $('kgN').textContent='медленные '+rep+' / '+NS}
+   else{if(s<.15)return;fast++;lock=Date.now()+500;$('kgN').textContent='быстрые '+fast+' / '+NF;$('kgT').textContent=fast<NF?'Ещё':'Всё';if(fast>=NF){prog();fin();return}}
+   prog()};
+  b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('pointerleave',up);b.oncontextmenu=e=>e.preventDefault()}}
+$('kgBar').onclick=kegelSheet;
 const ENERGY=[['cold','🚿','Холодный душ','60 секунд под холодной водой. Мат разрешён, но без него — ачивка.',20,'wil'],
  ['push','💪','Отжимания до отказа','Сколько сможешь. Потом ещё один раз.',15,'str'],['squat','🦵','50 приседаний','Ноги — самая большая мышца. Туда и уходит энергия.',15,'str'],
  ['gym','🏋️','Силовая на максимум','Лучший способ переработать тестостерон в мышцы.',35,'str'],['run','🏃','Пробежка 20 минут','Или быстрая ходьба. Голова очищается к 10-й минуте.',25,'str'],
