@@ -475,6 +475,24 @@
     }
    ],
    "note": "Заявки задокументированы и отправлены в Jobcenter до термина"
+  },
+  {
+   "id": "2026-11-15-move-ausbildungsuchend",
+   "remove": [
+    {
+     "date": "2026-11-15",
+     "t": "Зарегистрироваться ausbildungsuchend (онлайн, eService Berufsberatung)"
+    }
+   ],
+   "date": "2026-11-16",
+   "tasks": [
+    {
+     "t": "На термине: попросить регистрацию ausbildungsuchend + Bestätigung для Familienkasse",
+     "xp": 40,
+     "c": "int",
+     "time": "11:00"
+    }
+   ]
   }
  ]
 }
