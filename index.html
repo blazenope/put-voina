@@ -783,6 +783,39 @@ summary{font:700 16px var(--pix)}
 .lbtn{flex:none;min-width:58px;padding:10px 14px;border:0;border-radius:12px;font:800 14px var(--body);color:#fff;background:linear-gradient(160deg,#ff7a9a,#d2416a);box-shadow:0 6px 18px -8px #ff5c80;cursor:pointer;transition:transform .15s}
 .lbtn:active{transform:scale(.92)}.lok{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-content:center;background:#a3bb7233;color:#b9d68a;font-weight:800}
 #s-quest .pnl:has(#map),.vote:has(#loudBtn){display:none!important}
+
+/* chest show v2 */
+#chfx{overflow:hidden;cursor:pointer;user-select:none;background:radial-gradient(circle at 50% 38%,#2a2018 0,#0b0907 60%)!important}
+#chfx .rays{position:absolute;left:50%;top:38%;width:180vmax;height:180vmax;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--rc) 35%,transparent) 0 8deg,transparent 8deg 20deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%);animation:raySpin 14s linear infinite;opacity:.3;pointer-events:none}
+#chfx.open .rays{opacity:.6;animation-duration:6s}
+@keyframes raySpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#chfx>*:not(.rays){position:relative}
+#chfx .chtop{font:800 14px var(--body);letter-spacing:3px;text-transform:uppercase;color:#ffd27a;animation:rvIn .5s var(--spring) both}
+#chfx .chbox.falling{animation:chFall .9s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes chFall{0%{transform:translateY(-110vh) rotate(-20deg) scale(.6)}70%{transform:translateY(10px) rotate(3deg) scale(1.05)}100%{transform:none}}
+#chfx .chbox{animation:chIdle 2.2s ease-in-out infinite;filter:drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+@keyframes chIdle{50%{transform:translateY(-8px) scale(1.02)}}
+#chfx .chbox.sh{animation:chHit .35s ease-out}
+@keyframes chHit{0%{transform:scale(1)}30%{transform:scale(1.12,.9) rotate(-5deg)}60%{transform:scale(.95,1.08) rotate(4deg)}100%{transform:scale(1)}}
+#chfx .chbox.gone{animation:chGone .45s ease-in forwards}
+@keyframes chGone{to{transform:scale(1.6);opacity:0;filter:brightness(3)}}
+#chfx .tapo{font:700 13px var(--body);color:rgba(255,255,255,.65);min-height:18px;animation:tapP 1.4s ease-in-out infinite}
+@keyframes tapP{50%{opacity:.35}}
+#chfx .chsrc{font:600 12.5px var(--body);color:var(--ink3);margin-top:-6px}
+#chfx .odds,.oddsT small{font:700 11.5px var(--body);text-align:center;line-height:1.5}
+#chfx .chbtns{display:flex;gap:10px;width:min(100%,320px)}#chfx .chbtns .btn{flex:1}
+#chfx.open .chbox,#chfx.open .chname{display:none}
+.cstage{min-height:0}.bigc{display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 26px;border-radius:24px;min-width:220px;background:radial-gradient(circle at 50% 20%,color-mix(in srgb,var(--rc) 40%,transparent),rgba(20,18,16,.92) 70%);box-shadow:0 0 0 1.5px var(--rc),0 0 60px -10px var(--rc);animation:cardIn .55s var(--spring) both;text-align:center}
+.bigc .bci{transform:scale(1.9);margin:18px 0 14px}.bigc b{font:800 19px var(--body);color:#fff}.bigc span{font:800 11.5px var(--body);letter-spacing:1.5px;text-transform:uppercase;color:var(--rc)}
+.bigc.r3{animation:cardIn .55s var(--spring) both,legGlow 1.2s ease-in-out infinite .55s}
+@keyframes cardIn{0%{transform:perspective(600px) rotateY(90deg) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+@keyframes legGlow{50%{box-shadow:0 0 0 2px var(--rc),0 0 90px 0 var(--rc)}}
+#chfx.fl2::after,#chfx.fl3::after{content:"";position:fixed;inset:0;pointer-events:none;animation:flash .7s ease-out forwards}
+#chfx.fl2::after{background:radial-gradient(circle,#c39bff99,transparent 70%)}#chfx.fl3::after{background:radial-gradient(circle,#ffd27acc,transparent 75%)}
+@keyframes flash{from{opacity:1}to{opacity:0}}
+#chfx .chrw{margin-top:4px}#chfx .chrw .rv{animation:rvIn .4s var(--spring) both}
+.oddsT{margin-top:12px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair)}.oddsT .lbl{margin-top:0}
+.oddsT>div:not(.lbl){display:flex;flex-direction:column;padding:6px 0;border-top:1px solid rgba(255,255,255,.05)}.oddsT b{font:700 12.5px var(--body)}.oddsT small{text-align:left}
 </style>
 </head>
 <body>
@@ -960,7 +993,7 @@ summary{font:700 16px var(--pix)}
     <div class="ttl"><h2>Сундуки</h2><span class="c" id="chCnt"></span></div>
     <div class="chslots" id="chSlots"></div>
     <div id="chFree"></div>
-    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">Сундуки падают с квестов, контрактов, боссов, побед над тягой и за достижения. Отпирается один за раз. Каждый выполненный квест ускоряет его на 30 минут.</div>
+    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">Сундуки выпадают сами: с квестов (каждый 5-й, с трудных чаще), контрактов, боссов, побед над тягой, закрытых колец дня и достижений. Открываются сразу.</div>
   </div>
   <div class="pnl" data-st="art">
     <div class="ttl"><h2>Артефакты</h2><span class="c" id="artCnt"></span></div>
@@ -1152,7 +1185,7 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 function plural(n,a,b,c){n=Math.abs(n)%100;const m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
 
 /* ================= DATA ================= */
-const RANKS=[[1,'Новобранец','足軽'],[3,'Ученик','門弟'],[5,'Странник','浪人'],[8,'Воин','侍'],[12,'Страж','旗本'],[16,'Мастер меча','剣豪'],[20,'Мудрец меча','剣聖'],[25,'Полководец','大名'],[30,'Владыка','将軍'],[40,'Легенда','伝説'],[50,'Бессмертный','不滅']];
+const RANKS=[[1,'Раб инкогнито','足軽'],[3,'Беглец с хаба','門弟'],[5,'Хранитель семени','浪人'],[8,'Укротитель стояка','侍'],[12,'Синеяйцый страж','旗本'],[16,'Монах без ладони','剣豪'],[20,'Мастер ледяного душа','剣聖'],[25,'Магнит для дам','大名'],[30,'Император воздержания','将軍'],[40,'Легенда NoFap','伝説'],[50,'Бессмертный кот','不滅']];
 const STATS={str:['Сила','#c4473b'],int:['Разум','#6d8bb0'],cha:['Харизма','#c27a8a'],wil:['Воля','#c9a46a']};
 const STK={str:'力',int:'知',cha:'心',wil:'志'};
 const KOTOBA=[['七転び八起き','Упади семь раз — встань восемь'],['継続は力なり','Постоянство — это сила'],['石の上にも三年','Даже на холодном камне за три года станет тепло'],['急がば回れ','Спешишь — иди в обход'],['塵も積もれば山となる','Из пылинок вырастает гора'],['初心忘るべからず','Не забывай дух новичка'],['猿も木から落ちる','И обезьяна падает с дерева'],['一期一会','Одна встреча — один шанс'],['雨降って地固まる','После дождя земля твёрже'],['千里の道も一歩から','Путь в тысячу ри начинается с шага'],['案ずるより産むが易し','Сделать легче, чем бояться'],['己に克つ','Победи самого себя']];
@@ -1406,7 +1439,7 @@ const trialOk=i=>!TR[i]||TR[i].every(([k,n])=>trVal(k)>=n);
 function rankIdxFor(l){let i=0;RANKS.forEach((r,j)=>{if(l>=r[0])i=j});while(i>0&&!trialOk(i))i--;return i}
 const rankIdx=()=>rankIdxFor(lvlInfo(S.xp).l);
 const rankOf=l=>RANKS[rankIdxFor(l)];
-function nameMig(){const M={'Самурай':'Воин','Сёгун':'Владыка','Хозяин нэкоматы':'Хозяин кота-духа'};if(M[S.title])S.title=M[S.title]}
+function nameMig(){const M={'Самурай':'Укротитель стояка','Сёгун':'Император воздержания','Воин':'Укротитель стояка','Владыка':'Император воздержания','Хозяин нэкоматы':'Хозяин кота-духа'};if(M[S.title])S.title=M[S.title]}
 function lvRework(){nameMig();if(S.prog2)return;S.prog2=1;const l=lvlInfo(S.xp).l;S.rkMax=rankIdx();addLog('Система уровней пересчитана честно: уровень '+l+', ранг '+RANKS[S.rkMax][1]);setTimeout(()=>lootSheet('Уровни пересчитаны',null,'Опыт сохранён полностью ('+S.xp.toLocaleString('ru-RU')+' XP), но кривая стала честной: теперь ты на уровне '+l+'. Дальше каждый уровень — это реальные недели дел. Ранги требуют испытаний.'),2600)}
 function checkRank(){lvRework();const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами.')},500)}}
 const PERKS=[
@@ -1626,7 +1659,7 @@ function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();
  if(md.m!==1)why=(why?why+' · ':'')+md.L.filter(x=>x[1].startsWith('Ночь')||x[1].startsWith('Истощ')||x[1].startsWith('Высп')).map(x=>x[1].split(':')[0].toLowerCase()+(md.m<1?' ':' ')+x[1].split(':')[1].trim()).join(', ');
  D[cat]++;D.n++;if(new Date().getHours()<12)D.am++;if(xp>=40)D.big++;if(crit)D.crit++;D.dmg+=ad;
  if(!S.act)S.act={};S.act[today()]=1;
- const before=lvlInfo(S.xp).l;S.xp+=ax;S.xpd=S.xpd||{};S.xpd[today()]=(S.xpd[today()]||0)+ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;skAdd(skk,ax);if(opt.manual){const h2=new Date().getHours();if(h2>=4&&h2<7)S.early7=1;chSpeed(30);if(Math.random()<(opt.rit?.05:.14)*(1+artE('chest'))){const r=Math.random();chGive(r<.7?0:r<.93?1:2,'с квеста')}}
+ const before=lvlInfo(S.xp).l;S.xp+=ax;S.xpd=S.xpd||{};S.xpd[today()]=(S.xpd[today()]||0)+ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;skAdd(skk,ax);if(opt.manual){const h2=new Date().getHours();if(h2>=4&&h2<7)S.early7=1;chSpeed(30);if(Math.random()<(opt.rit?.08:xp>=40?.3:.2)*(1+artE('chest'))){const r=Math.random();chGive(r<.7?0:r<.93?1:2,'с квеста')}}
  const lv=lvlInfo(S.xp).l;SFX.hit();buzz();if(ag>0)setTimeout(()=>coinFly(Math.ceil(ag/8)),80);setTimeout(()=>catReact('joy'),250);
  if(lv>before){SFX.level();const r0=rankOf(before)[1],r1=rankOf(lv)[1];lvlFx(lv,rankOf(lv)[2][0]);addLog('Уровень '+lv+(r0!==r1?' · ранг '+r1:''));setTimeout(()=>lootSheet('Новый уровень!',null,'Уровень '+lv+(r0!==r1?'. Новый ранг: '+r1:'')+'. Ты становишься тем, кем решил стать.'),2700)}
  else{toast('+'+ax+' XP · +'+ag+' золота'+(why?' · '+why:''))}
@@ -1767,7 +1800,8 @@ function renderWeek(){const sel=parseD(SEL),mon=new Date(sel);mon.setDate(sel.ge
  for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);const k=dkey(d),v=S.days[k];
   h+='<button class="db'+(k===SEL?' sel':'')+(k===today()?' today':'')+(v==='c'?' c':v==='f'?' f':'')+'" data-d="'+k+'"><small>'+WD[i]+'</small><b>'+d.getDate()+'</b><i></i></button>'}
  $('days').innerHTML=h;$('days').querySelectorAll('.db').forEach(b=>b.onclick=()=>selectDay(b.dataset.d))}
-function petLine(){const p=S.pet,st=stageIdx(),T=allTasks(),left=T.filter(x=>!x.done).length,h=new Date().getHours(),nx=STAGES[st+1];
+const CAT18=['Мурр. Твоя правая рука сегодня в отпуске. Пусть отдыхает, она заслужила.','Порно — это фастфуд. Ты сейчас на диете для настоящего ужина при свечах.','Если член встал утром — это не повод, это прогноз погоды. Иди в душ.','Я кот. Я лижу себе всё что хочу при всех. Ты — человек. Ты можешь лучше: найди девушку.','Синие яйца — миф. Синий экран — тоже. Просто закрой вкладку.','Каждая победа над тягой — +1 к харизме. Девушки это чуют. Я тоже чую, но мне всё равно.','Инкогнито не скрывает тебя от себя. Мяу.','Настоящая девушка не буферизуется и не просит подписку.','В Мюнхене 700 тысяч девушек. Ни одна не живёт у тебя в телефоне.','Мастурбация без порно — не срыв. Срыв — это когда ты три часа ищешь «тот самый ролик».','Сожми таз, как будто останавливаешь струю. 10 раз. Будущая девушка скажет спасибо.','Холодный душ: 30 секунд — и тяга сморщивается быстрее, чем ты думаешь.','Тяга бьёт сильнее всего, когда ты устал, одинок и лежишь с телефоном. Встань. Мяу.','Энергия, которую ты не слил, уходит в отжимания. Проверено котом.','Слушай, я видел, что у тебя на уме. Иди лучше учи немецкие комплименты.','«Du bist süß» — запомни. Пригодится больше, чем Akkusativ.','Ты не девственник по духу. Ты самурай на перезарядке.','Порно-актёры снимают по 40 дублей. У тебя будет один, но настоящий.','Лучшая прелюдия — это вопрос «тебе так нравится?». Запиши.','Голод — лучшая приправа. Ты сейчас очень вкусно голоден.'];
+function petLine(){if(!catAsleep()&&S.days[today()]!=='f'&&S.pet.fuel>=15&&Math.floor(Date.now()/48e4)%2===0)return CAT18[Math.floor(Date.now()/48e4/2)%CAT18.length];const p=S.pet,st=stageIdx(),T=allTasks(),left=T.filter(x=>!x.done).length,h=new Date().getHours(),nx=STAGES[st+1];
  if(catAsleep())return 'Мрр… я сплю. И тебе пора — сон тоже часть пути.';
  if(S.days[today()]==='f')return 'Мяу. Я рядом. Срыв — это урок, а не конец.';
  if(p.fuel<15)return 'Мяу… я голодный. Сделай любой квест — так ты меня кормишь.';
@@ -1892,8 +1926,7 @@ const SHOP=[
  ['Свиток удачи','×2 золото на 24 часа','scroll','#f0b541',320,()=>buff('buffGold',24,'свиток удачи')],
  ['Кошачья мята','Котик в восторге: настроение 100 и два часа игр','potion','#7fb069',60,()=>{cheer(100);S.pet.nip=Date.now()+2*36e5;addLog('Кошачья мята для котика')}],
  ['День отдыха','Серия активности не прервётся, босс сегодня не восстановится','scroll','#7fa7c9',120,()=>{S.rest=S.rest||{};S.rest[today()]=1;addLog('День отдыха')},()=>(S.rest||{})[today()]?'Сегодня уже день отдыха':''],
- ['Щит серии','Сам спасёт серию активности, если пропустишь один день','armor','#c9a46a',200,()=>{S.shield=(S.shield||0)+1;addLog('Куплен щит серии')}],
- ['Ключ от сундука','Сразу отпирает сундук, который сейчас открывается','chest','#e2c48e',220,()=>{const C=chS(),k=Object.keys(C.sl).find(k=>C.sl[k]&&C.sl[k].un>Date.now());C.sl[k].un=Date.now();addLog('Ключ от сундука')},()=>{const C=chS();return Object.values(C.sl).some(c=>c&&c.un>Date.now())?'':'Сначала начни отпирать сундук'}]];
+ ['Щит серии','Сам спасёт серию активности, если пропустишь один день','armor','#c9a46a',200,()=>{S.shield=(S.shield||0)+1;addLog('Куплен щит серии')}]];
 const PRICE=[80,250,700,1800],REQ=[1,3,6,10];
 function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(lvlInfo(S.xp).l<REQ[r])return toast('Нужен уровень '+REQ[r]);S.gold-=p;
  const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,r,n:SLOTS[k][2][r]};S.inv.push(it);
@@ -2292,7 +2325,7 @@ function renderRings(){const el=$('ringsT');if(!el.querySelector('svg')){const R
  const v=[T.length?qd/T.length:0,rd/FIX.length,ct?co/ct:0];
  requestAnimationFrame(()=>el.querySelectorAll('.rg').forEach((c,i)=>{const L=2*Math.PI*(+c.getAttribute('r'));c.style.strokeDashoffset=(L*(1-Math.min(1,v[i]))).toFixed(1)}));
  $('rgl').innerHTML=[['#e0563f','Квесты',qd+'/'+T.length],['#e2c48e','Ритуалы',(rd%1?rd.toFixed(1):rd)+'/'+FIX.length],['#a3bb72','Контракты',co+'/'+(ct||2)]].map(r=>'<div><i style="background:'+r[0]+'"></i>'+r[1]+'<b>'+r[2]+'</b></div>').join('');
- if(v.every(x=>x>=1)&&S.ringDay!==today()){S.ringDay=today();S.ringN=(S.ringN||0)+1;save();setTimeout(()=>{const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+70,28);SFX.win();toast('Все кольца дня закрыты!')},600)}}
+ if(v.every(x=>x>=1)&&S.ringDay!==today()){S.ringDay=today();S.ringN=(S.ringN||0)+1;chGive(2,'все кольца дня');save();setTimeout(()=>{const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+70,28);SFX.win();toast('Все кольца дня закрыты!')},600)}}
 /* cat behaviour */
 function catAnim(c,ms){const sv=document.querySelector('#petArt svg.cat');if(!sv||sv.classList.contains(c))return;sv.classList.add(c);setTimeout(()=>sv.classList.remove(c),ms)}
 setInterval(()=>{if(document.hidden||$('s-day').classList.contains('hide'))return;const sl=catAsleep(),r=Math.random();
@@ -2347,8 +2380,17 @@ function moodSheet(){const d=today(),m=S.mood[d]||{};const row=(k,vals)=>'<div c
 const CHT=[['Деревянный ящик','木','#8a6a44',3,[30,60],3,0],['Лаковая шкатулка','漆','#b8281e',8,[80,140],7,1],['Бронзовый сундук','銅','#b07a3e',12,[150,250],14,2],['Золотой сундук','金','#d9b56a',24,[300,500],26,3],['Сундук дракона','龍','#4f86c6',24,[600,900],45,4]];
 function chS(){S.chs=S.chs||{};const C=S.chs;if(!C.sl||Array.isArray(C.sl))C.sl={s0:null,s1:null,s2:null,s3:null};return C}
 const chFree=()=>{const C=chS();return ['s0','s1','s2','s3'].find(k=>!C.sl[k])};
-function chGive(t,src){const C=chS(),k=chFree();if(!k){const g=Math.round(CHT[t][4][0]/2);S.gold+=g;S.goldTotal+=g;setTimeout(()=>toast('Слоты заняты: '+CHT[t][0].toLowerCase()+' → +'+g+' золота'),1400);return false}
- C.sl[k]={t,id:Date.now().toString(36)+k,un:0,src:src||''};addLog('Сундук: '+CHT[t][0]+(src?' · '+src:''));setTimeout(()=>{toast('Получен сундук: '+CHT[t][0]);SFX.chest()},1300);return true}
+function chGive(t,src){const C=chS(),k=chFree();if(!k){const g=Math.round(CHT[t][4][0]/2);S.gold+=g;S.goldTotal+=g;setTimeout(()=>toast('Слоты полны: '+CHT[t][0].toLowerCase()+' → +'+g+' золота'),1400);return false}
+ C.sl[k]={t,id:Date.now().toString(36)+k,un:1,src:src||''};addLog('Сундук: '+CHT[t][0]+(src?' · '+src:''));CHQ.push(k);setTimeout(chNext,1500);return true}
+const CHQ=[];let CHBUSY=false;
+function chNext(){if(CHBUSY||document.getElementById('chfx'))return setTimeout(chNext,1500);const k=CHQ.shift();if(!k)return;const c=chS().sl[k];if(!c)return chNext();chDrop(k)}
+const ODDS=[[80,18,2,0],[70,24,5,1],[60,28,10,2],[50,30,15,5],[40,30,20,10]];
+const oddsTxt=t=>ODDS[t].map((p,i)=>p?'<span style="color:'+ARC[i]+'">'+['обычн.','редк.','эпик','легенда'][i]+' '+p+'%</span>':'').filter(Boolean).join(' · ');
+function chDrop(k){const c=chS().sl[k];if(!c)return;CHBUSY=true;const T=CHT[c.t],d=document.createElement('div');d.id='chfx';d.className='drop';
+ d.innerHTML='<div class="rays" style="--rc:'+T[2]+'"></div><div class="chtop">Выпал сундук!</div><div class="chbox falling">'+chestSVG(c.t,180)+'</div><div class="chname">'+esc(T[0])+'</div><div class="chsrc">'+esc(c.src?'награда: '+c.src:'')+'</div><div class="odds">'+oddsTxt(c.t)+'</div><div class="chbtns"><button class="btn" id="chLater">Потом</button><button class="btn gold" id="chNow">Открыть</button></div>';
+ document.body.appendChild(d);SFX.chest();buzz();
+ const close=()=>{d.classList.add('out');setTimeout(()=>{d.remove();CHBUSY=false;chNext()},350)};
+ $('chLater').onclick=()=>{close();render()};$('chNow').onclick=()=>{d.remove();CHBUSY=false;chOpen(k)}}
 const chLeft=c=>c&&c.un?Math.max(0,c.un-Date.now()):null;
 const fmtLeft=ms=>{const m=Math.ceil(ms/6e4);return m>=60?Math.floor(m/60)+' ч '+(m%60)+' мин':m+' мин'};
 const chCost=ms=>Math.max(5,Math.ceil(ms/18e4));
@@ -2358,32 +2400,39 @@ function chestSVG(t,s){const c=CHT[t][2];return '<svg viewBox="0 0 100 92" width
  +'<rect x="12" y="42" width="7" height="42" fill="#e2c48e" opacity=".85"/><rect x="81" y="42" width="7" height="42" fill="#e2c48e" opacity=".85"/>'
  +'<rect x="41" y="46" width="18" height="21" rx="3" fill="#e2c48e"/><text x="50" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#2a1d14" font-family=\'"Yu Mincho","Hiragino Mincho ProN",serif\'>'+CHT[t][1]+'</text>'
  +'<g class="lid"><path d="M12 44 Q12 16 50 16 Q88 16 88 44Z" fill="'+c+'"/><path d="M12 44 Q12 16 50 16 Q88 16 88 44Z" fill="#fff" opacity=".1"/><rect x="12" y="38" width="76" height="6" fill="#000" opacity=".2"/><path d="M19 44 Q19 22 30 19 L30 44Z M81 44 Q81 22 70 19 L70 44Z" fill="#e2c48e" opacity=".85"/></g></svg>'}
-function chOpen(k){const C=chS(),c=C.sl[k];if(!c)return;const T=CHT[c.t];C.sl[k]=null;C.n=(C.n||0)+1;S.chOpen=(S.chOpen||0)+1;if(c.t===4)S.chDragon=1;
+function chOpen(k){const C=chS(),c=C.sl[k];if(!c||CHBUSY)return;const T=CHT[c.t];C.sl[k]=null;C.n=(C.n||0)+1;S.chOpen=(S.chOpen||0)+1;if(c.t===4)S.chDragon=1;
  const g=Math.round(T[4][0]+Math.random()*(T[4][1]-T[4][0]));S.gold+=g;S.goldTotal+=g;const cards=artRoll(T[5],T[6]);let it=null;if(Math.random()<[.08,.25,.45,.75,1][T[6]])it=makeItem([0,1,1,2,2][T[6]]);
  addLog('Открыт '+T[0].toLowerCase()+': +'+g+' золота'+(cards.length?', карты: '+cards.map(x=>ART.find(a=>a[0]===x[0])[1]+' ×'+x[1]).join(', '):''));save();render();chReveal(c.t,T[0],g,cards,it)}
-function chReveal(t,name,g,cards,it){const d=document.createElement('div');d.id='chfx';
- const items=[['<b class="cg">'+coin(2.6)+'+'+g+'</b>','золото',0]].concat(cards.map(([id,k,nw])=>{const a=ART.find(x=>x[0]===id);return ['<i class="ak r'+a[3]+'" lang="ja">'+a[2]+'</i>',a[1]+' ×'+k+(nw?' · новый!':''),a[3]]}));if(it)items.push([icon(it.k,RCOL[it.r],4),it.n,it.r]);
- d.innerHTML='<div class="chbox">'+chestSVG(t,170)+'</div><div class="chname">'+esc(name)+'</div><div class="chrw">'+items.map((x,i)=>'<div class="rv r'+x[2]+'" style="animation-delay:'+(1.25+i*.28).toFixed(2)+'s">'+x[0]+'<span>'+esc(x[1])+'</span></div>').join('')+'</div><button class="btn gold chok" style="animation-delay:'+(1.4+items.length*.28).toFixed(2)+'s">Забрать</button>';
- document.body.appendChild(d);SFX.open();buzz();setTimeout(()=>{d.classList.add('open');SFX.chest();buzz();const r=d.querySelector('.chbox').getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,30);if(cards.some(c=>ART.find(a=>a[0]===c[0])[3]>=2))setTimeout(()=>gong(98,0,.15),300)},1100);
- d.querySelector('.chok').onclick=()=>{d.classList.add('out');setTimeout(()=>d.remove(),350)}}
+function chReveal(t,name,g,cards,it){CHBUSY=true;const d=document.createElement('div');d.id='chfx';
+ const items=[{h:'<b class="cg">'+coin(3)+'+'+g+'</b>',n:'золото',r:0}].concat(cards.map(([id,k,nw])=>{const a=ART.find(x=>x[0]===id);return {h:'<i class="ak r'+a[3]+'" lang="ja">'+a[2]+'</i>',n:a[1],s:'×'+k+(nw?' · НОВЫЙ!':''),r:a[3]}}));if(it)items.push({h:icon(it.k,RCOL[it.r],5),n:it.n,s:'снаряжение',r:it.r});
+ const top=Math.max(...items.map(x=>x.r));
+ d.innerHTML='<div class="rays" style="--rc:'+CHT[t][2]+'"></div><div class="chbox">'+chestSVG(t,190)+'</div><div class="chname">'+esc(name)+'</div><div class="tapo">нажми, чтобы открыть</div><div class="cstage"></div><div class="chrw"></div><button class="btn gold chok hide">Забрать всё</button>';
+ document.body.appendChild(d);let taps=0,i=0,opened=false;const box=d.querySelector('.chbox'),stage=d.querySelector('.cstage'),grid=d.querySelector('.chrw');
+ const showNext=()=>{if(i>=items.length){stage.innerHTML='';d.querySelector('.chok').classList.remove('hide');d.querySelector('.tapo').textContent='';return}
+  const x=items[i++];stage.innerHTML='<div class="bigc r'+x.r+'" style="--rc:'+ARC[x.r]+'"><div class="bci">'+x.h+'</div><b>'+esc(x.n)+'</b><span>'+(x.s?esc(x.s)+' · ':'')+['обычный','редкий','эпический','ЛЕГЕНДАРНЫЙ'][x.r]+'</span></div>';
+  d.querySelector('.tapo').textContent=i<items.length?'нажми — ещё '+(items.length-i+1-1)+' '+plural(items.length-i,'награда','награды','наград'):'нажми, чтобы забрать';
+  if(x.r>=2){d.classList.remove('fl2','fl3');void d.offsetWidth;d.classList.add('fl'+x.r);gong(x.r===3?73:98,0,.18)}SFX.coin();buzz();const r=stage.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,10+x.r*12);
+  grid.insertAdjacentHTML('beforeend','<div class="rv r'+x.r+'">'+x.h+'<span>'+esc(x.n)+'</span></div>')};
+ d.onclick=e=>{if(e.target.closest('.chok'))return;if(!opened){taps++;box.classList.remove('sh');void box.offsetWidth;box.classList.add('sh');SFX.tap();buzz();
+   if(taps>=(top>=2?3:2)){opened=true;d.classList.add('open');box.classList.add('gone');SFX.chest();const r=box.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,40);setTimeout(showNext,450)}else d.querySelector('.tapo').textContent=top>=2?'что-то сильное внутри… ещё!':'ещё раз!';return}
+  showNext()};
+ d.querySelector('.chok').onclick=()=>{d.classList.add('out');setTimeout(()=>{d.remove();CHBUSY=false;chNext()},350)}}
 function renderChests(){const C=chS(),now=Date.now();
- $('chSlots').innerHTML=['s0','s1','s2','s3'].map(k=>{const c=C.sl[k];if(!c)return '<div class="chsl empty"><span>Пустой слот</span></div>';const T=CHT[c.t],left=chLeft(c);
-  const st=!c.un?'<button class="ctb" data-cs="'+k+'">Отпереть · '+T[3]+' ч</button>':left>0?'<span class="cht">'+fmtLeft(left)+'</span><button class="ctb ghost" data-cn="'+k+'"'+(S.gold<chCost(left)?' disabled':'')+'>Сейчас · '+chCost(left)+' з</button>':'<button class="ctb gold" data-co="'+k+'">Открыть!</button>';
-  return '<div class="chsl'+(c.un&&left===0?' ready':'')+(c.un&&left>0?' busy':'')+'">'+chestSVG(c.t,78)+'<b>'+T[0]+'</b>'+st+'</div>'}).join('');
- $('chSlots').querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>{const c=C.sl[b.dataset.cs];if(Object.values(C.sl).some(x=>x&&x.un>Date.now()))return toast('Отпирается другой сундук. По одному за раз');c.un=Date.now()+CHT[c.t][3]*36e5;SFX.tap();buzz();save();render()});
- $('chSlots').querySelectorAll('[data-cn]').forEach(b=>b.onclick=()=>{const c=C.sl[b.dataset.cn],cost=chCost(chLeft(c));if(S.gold<cost)return;S.gold-=cost;chOpen(b.dataset.cn)});
+ $('chSlots').innerHTML=['s0','s1','s2','s3'].map(k=>{const c=C.sl[k];if(!c)return '<div class="chsl empty"><span>Пустой слот</span></div>';const T=CHT[c.t];
+  return '<div class="chsl ready">'+chestSVG(c.t,78)+'<b>'+T[0]+'</b><button class="ctb gold" data-co="'+k+'">Открыть!</button></div>'}).join('');
  $('chSlots').querySelectorAll('[data-co]').forEach(b=>b.onclick=()=>chOpen(b.dataset.co));
- const fl=Math.max(0,(C.free||0)+4*36e5-now);$('chFree').innerHTML='<div class="chfree"><span lang="ja">供</span><div><b>Подношение у храма</b><small>'+(fl?'следующее через '+fmtLeft(fl):'готово: золото и карты артефактов')+'</small></div><button class="ctb'+(fl?'" disabled':' gold"')+' id="chFr">Взять</button></div>';
+ const fl=Math.max(0,(C.free||0)+4*36e5-now);$('chFree').innerHTML='<div class="chfree"><span lang="ja">供</span><div><b>Подношение у храма</b><small>'+(fl?'следующее через '+fmtLeft(fl):'готово: золото и карты артефактов')+'</small></div><button class="ctb'+(fl?'" disabled':' gold"')+' id="chFr">Взять</button></div>'
+  +'<div class="oddsT"><div class="lbl">Шансы на редкость артефактов</div>'+CHT.map((T,t)=>'<div><b>'+T[1]+' '+T[0]+'</b><small>'+oddsTxt(t)+'</small></div>').join('')+'</div>';
  $('chFr').onclick=()=>{if(Math.max(0,(C.free||0)+4*36e5-Date.now()))return;C.free=Date.now();const g=12+Math.round(Math.random()*12);S.gold+=g;S.goldTotal+=g;const cards=artRoll(2+Math.round(Math.random()*2),0);addLog('Подношение у храма: +'+g+' золота');save();render();chReveal(0,'Подношение у храма',g,cards,null)};
  $('chCnt').textContent=Object.values(C.sl).filter(Boolean).length+'/4'}
-function navBadge(){const C=chS(),now=Date.now(),ready=Object.values(C.sl).some(c=>c&&c.un&&c.un<=now)||now-(C.free||0)>=4*36e5;const b=document.querySelector('#nav [data-s="shop"]');if(b)b.classList.toggle('bd',ready)}
+function navBadge(){const C=chS(),now=Date.now(),ready=Object.values(C.sl).some(Boolean)||now-(C.free||0)>=4*36e5;const b=document.querySelector('#nav [data-s="shop"]');if(b)b.classList.toggle('bd',ready)}
 setInterval(()=>{if(!document.hidden&&!$('s-shop').classList.contains('hide')&&S.shopTab==='chest')renderChests();navBadge()},15000);
 /* ===== artifacts ===== */
-const ART=[['kaeru','Лягушка удачи','蛙',0,'золота за всё',2,'g'],['daruma','Неваляшка упорства','達',0,'опыта за дела на 40+ XP',3,'x40'],['geta','Сандалии странника','駄',0,'опыта за дела на Тело',4,'body'],['fude','Кисть каллиграфа','筆',0,'опыта за немецкий',4,'de'],
- ['kitsune','Маска лисы','狐',1,'опыта за общение',4,'soc'],['inro','Шкатулка чиновника','印',1,'опыта за карьеру',4,'job'],['chochin','Бумажный фонарь','灯',1,'опыта за ритуалы',4,'rit'],['tessen','Боевой веер','扇',1,'урона по боссу',5,'d'],
- ['oni','Маска демона','鬼',2,'урона в бою с тягой',8,'urge'],['musashi','Свиток мастера меча','書',2,'к наградам контрактов',5,'ct'],['maneki','Кот-зазывала','招',2,'к шансу сундука с квестов',8,'chest'],
- ['yata','Священное зеркало','鏡',3,'опыта за всё',2,'x'],['tama','Жемчужина дракона','玉',3,'опыта за всё',3,'x']];
-const ANEED=[0,2,4,10,20,50,100],AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'];
+const ART=[['kaeru','Презерватив-оберег','護',0,'золота за всё',2,'g'],['daruma','Утренний стояк','勃',0,'опыта за дела на 40+ XP',3,'x40'],['geta','Гантеля Казановы','鉄',0,'опыта за дела на Тело',4,'body'],['fude','Словарь грязного немецкого','語',0,'опыта за немецкий',4,'de'],
+ ['kitsune','Маска соблазнителя','仮',1,'опыта за общение',4,'soc'],['inro','Резюме жиголо','履',1,'опыта за карьеру',4,'job'],['chochin','Красный фонарь','灯',1,'опыта за ритуалы',4,'rit'],['tessen','Веер стыдливой гейши','扇',1,'урона по боссу',5,'d'],
+ ['oni','Ледяной душ','冷',2,'урона в бою с тягой',8,'urge'],['musashi','Камасутра Мусаси','性',2,'к наградам контрактов',5,'ct'],['maneki','Кот-сводник','招',2,'к шансу сундука с квестов',8,'chest'],
+ ['yata','Зеркало «Я секси»','鏡',3,'опыта за всё',2,'x'],['tama','Яйца дракона','玉',3,'опыта за всё',3,'x']];
+const ANEED=[0,2,4,10,20,50,100],AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'],AFUN={kaeru:'Защищает кошелёк так же надёжно, как кое-что другое.',daruma:'Встаёт каждое утро без напоминаний. Учись у него дисциплине.',geta:'Девушки любят руки. Руки любят железо.',fude:'Schatz, Liebling, Mäuschen — и ещё 400 слов, которых нет в учебнике B1.',kitsune:'Надеваешь — и small talk сам льётся. Снимаешь — ты всё тот же, но уже уверенней.',inro:'Опыт работы: обаяние, пунктуальность, выносливость.',chochin:'Светит, когда ты делаешь ритуалы. Квартал красных фонарей тут ни при чём. Почти.',tessen:'Прикрывает лицо гейши, когда ты бьёшь босса особенно жёстко.',oni:'Лучшее оружие против тяги, проверенное поколениями монахов и студентов.',musashi:'Мусаси писал о стратегии. Эту главу он почему-то не опубликовал.',maneki:'Машет лапкой, и сундуки сами идут к тебе в руки.',yata:'Смотришь в него и говоришь: «А я ничего». И это правда.',tama:'Легендарные. Тяжёлые. Полные энергии, которую ты больше не сливаешь на экран.'};
 const artEqL=()=>(S.artEq||[]).filter(id=>(S.art||{})[id]).slice(0,3);
 function artE(type){let v=0;for(const id of artEqL()){const a=ART.find(x=>x[0]===id);if(a&&a[6]===type)v+=a[5]*S.art[id].l/100}return v}
 const artPk=()=>artEqL().includes('tama')?Math.ceil(S.art.tama.l/2):0;
@@ -2402,7 +2451,7 @@ function renderArts(){S.art=S.art||{};S.artEq=artEqL();
  document.querySelectorAll('#artEq [data-a],#artGrid [data-a]').forEach(b=>b.onclick=()=>artSheet(b.dataset.a));$('artCnt').textContent=Object.keys(S.art).length+' / '+ART.length}
 function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().includes(id),need=ANEED[s.l],gc=AGOLD[s.l],can=s.l<AMAX&&s.c>=need&&S.gold>=gc;
  sheet('<div class="loot"><div class="spr"><i class="ak r'+a[3]+'" lang="ja" style="width:84px;height:84px;font-size:40px">'+a[2]+'</i></div><b style="font-size:20px;color:'+ARC[a[3]]+'">'+esc(a[1])+'</b><span>'+ARN[a[3]]+' · уровень '+s.l+(s.l>=AMAX?' (максимум)':'')+'</span></div>'
-  +'<p style="text-align:center">Сейчас: <b>'+artDesc(a,s.l)+'</b>'+(s.l<AMAX?'<br>На ур. '+(s.l+1)+': '+artDesc(a,s.l+1):'')+'</p>'
+  +'<p class="mut" style="text-align:center;font-style:italic">'+esc(AFUN[id]||'')+'</p><p style="text-align:center">Сейчас: <b>'+artDesc(a,s.l)+'</b>'+(s.l<AMAX?'<br>На ур. '+(s.l+1)+': '+artDesc(a,s.l+1):'')+'</p>'
   +(s.l<AMAX?'<p class="mut" style="text-align:center;font-size:13px">Для улучшения: карт '+s.c+' / '+need+' · золота '+gc+'</p>':'')
   +'<div class="row2"><button class="btn'+(eq?'':' gold')+'" id="aEq">'+(eq?'Снять':'Надеть')+'</button>'+(s.l<AMAX?'<button class="btn gold" id="aUp"'+(can?'':' disabled')+'>Улучшить</button>':'<button class="btn" disabled>Максимум</button>')+'</div><button class="linkbtn" id="aX" style="display:block;margin:14px auto 0">Закрыть</button>');
  $('aX').onclick=closeSheet;$('aEq').onclick=()=>{let L=artEqL();if(eq)L=L.filter(x=>x!==id);else{if(L.length>=3)return toast('Все 3 слота заняты: сначала сними артефакт');L.push(id)}S.artEq=L;SFX.tap();save();closeSheet();render()};
@@ -2447,7 +2496,7 @@ const AS=[
  ['combo','Комбо в бою','撃','Бой',()=>S.comboBest||0,[20,50,100,200],['Вихрь','Буря клинков']],
  ['storm','Штормы эмоций','嵐','Бой',()=>S.storms||0,[1,5,20,50],['Укротитель бурь','Око бури']],
  ['lvl','Уровень героя','位','Бой',()=>lvlInfo(S.xp).l,[5,10,20,30],['Ветеран','Живая легенда']],
- ['rank','Ранги','侍','Бой',()=>rankIdx(),[2,4,6,8],['Воин','Владыка']],
+ ['rank','Ранги','侍','Бой',()=>rankIdx(),[2,4,6,8],['Укротитель стояка','Император воздержания']],
  ['gold','Золото за всё время','金','Богатство',()=>S.goldTotal||0,[500,2000,10000,50000],['Богач','Магнат']],
  ['ct','Контракты','契','Богатство',()=>S.ctOk||0,[5,25,100,300],['Наёмник','Мастер гильдии']],
  ['risk','Рискованные контракты','賭','Богатство',()=>S.ctRisk||0,[1,10,30,80],['Игрок','Азартный ронин']],
@@ -2543,7 +2592,7 @@ function buffSheet(){const d=dayNum(),x=!!S.b18;
  $('bfOk').onclick=closeSheet;$('sheetIn').querySelectorAll('.b18t button').forEach(b=>b.onclick=()=>{S.b18=b.dataset.x==='1';SFX.tap();save();buffSheet();$('sheetIn').scrollTop=0})}
 $('buffBox').onclick=buffSheet;
 $('petArt').onclick=()=>{const a=$('petArt');a.classList.remove('hop');void a.offsetWidth;a.classList.add('hop');hearts(catAsleep()?1:3,catAsleep()?'z':'♥');buzz();if(S.pet.petDay!==today()){S.pet.petDay=today();S.pet.pets=0}
- SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=catAsleep()?'…мрр… (сонно мурчит)':rnd(['Мурр!','Мяу! Мы справимся.','Мурр… я с тобой.','Ещё почеши!','Мяу, ты молодец, что зашёл.','*трётся о руку*']);$('pMood').style.width=S.pet.mood+'%'};
+ SFX.pet();if(S.pet.pets<5){S.pet.pets++;cheer(3);save()}$('petSay').textContent=catAsleep()?'…мрр… (сонно мурчит)':Math.random()<.45?rnd(CAT18):rnd(['Мурр!','Мяу! Мы справимся.','Мурр… я с тобой.','Ещё почеши!','Мяу, ты молодец, что зашёл.','*трётся о руку*']);$('pMood').style.width=S.pet.mood+'%'};
 $('petName').onclick=()=>{const n=prompt('Как зовут котика?',S.pet.name||'');if(n===null)return;S.pet.name=n.trim().slice(0,20);save();render()};
 $('voteBtn').onclick=()=>{if(S.votes[today()])return;S.votes[today()]=1;addLog('Голос за себя');award(10,'wil','голос за себя',{dmg:10});save();render()};
 $('hudMoon').onclick=()=>{SFX.tap();eveSheet()};$('howBtn').onclick=()=>{sheet('<h3>Как устроен бой</h3>'+$('howTpl').innerHTML+'<button class="btn gold" id="howOk" style="width:100%;margin-top:14px">Понял</button>');$('howOk').onclick=closeSheet};
