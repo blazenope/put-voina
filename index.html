@@ -1043,7 +1043,7 @@ summary{font:700 16px var(--pix)}
 @keyframes bossTr{50%{translate:1px 0}}@keyframes bossHit{20%{transform:translateX(-10px) rotate(-6deg) scale(.94)}50%{transform:translateX(8px) rotate(4deg)}100%{transform:none}}
 .kgring.open{transform:scale(1.12);border-color:#7fa7c9}.dpr .row2{margin:0 0 12px 36px}.dpr .row2 .btn{margin:0;padding:10px 8px;font-size:12px}
 .b18now{font:14px/1.5 var(--body);color:var(--ink2);margin-top:4px;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
-.mer{display:grid;gap:8px}.mer>div{padding:9px 11px;border-radius:10px;background:var(--panel2);border:1px solid var(--edge)}.mer b{display:block;font:600 12px var(--body);color:var(--ink3)}.mer em{display:block;font:700 16px var(--body);font-style:normal;color:var(--ink)}.mer small{display:block;font:12px/1.4 var(--body);color:var(--ink2);margin-top:2px}
+.mer{display:grid;grid-template-columns:1fr 1fr;gap:6px}.mer>div{padding:7px 10px;border-radius:10px;background:var(--panel2);border:1px solid var(--edge)}.mer b{display:block;font:600 12px var(--body);color:var(--ink3)}.mer em{display:block;font:700 14px var(--body);font-style:normal;color:var(--ink)}.mer small{display:block;font:12px/1.4 var(--body);color:var(--ink2);margin-top:2px}
 .megrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mef span{display:block;font:600 11.5px var(--body);color:var(--ink3);margin-bottom:3px}.mef input{width:100%;box-sizing:border-box;padding:9px 10px;border-radius:9px;border:1px solid var(--edge2);background:var(--panel2);color:var(--ink);font:15px var(--body)}
 .rule{margin:6px 0 12px;padding:10px 12px;border-radius:10px;border:1px solid #a8323e88;background:rgba(168,50,62,.12)}.rule b{display:block;font:700 13.5px var(--body);color:#ff8fa3;margin-bottom:3px}.rule span{font:12.5px/1.45 var(--body);color:var(--ink2)}
 </style>
@@ -1223,12 +1223,12 @@ summary{font:700 16px var(--pix)}
 <!-- ================= SHOP ================= -->
 <main class="screen hide" id="s-drg">
   <div class="pnl"><div class="ttl"><h2>Дракон</h2><span class="c" id="drgLvN"></span></div><div id="drg"></div></div>
-  <div class="pnl"><div class="ttl"><h2>Мои параметры</h2><span class="c">дракон в цифрах</span></div><div id="drgMe"></div></div>
   <div class="pnl"><div class="ttl"><h2>Охота недели</h2><span class="c" id="drgHuntC"></span></div><div id="drgHunt"></div></div>
   <div class="pnl"><div class="ttl"><h2>Тренировки дракона</h2><span class="c" id="drgXc"></span></div><div id="drgX"></div></div>
   <div class="pnl"><div class="ttl"><h2>Сексолог спрашивает</h2><span class="c">вопрос дня</span></div><div id="drgQz"></div></div>
   <div class="pnl" id="enSec" style="display:none"><div class="ttl"><h2>Куда деть энергию</h2><span class="c" id="enCnt"></span></div><p class="mut" style="font-size:13px;margin:0 0 10px">Тянет или просто много энергии — выбери способ и потрать её с пользой. Каждый способ раз в день даёт опыт и бьёт босса.</p><div class="engrid" id="enGrid"></div></div>
   <div class="pnl"><div class="ttl"><h2>Книга дракона 18+</h2><span class="c" id="kinkCnt"></span></div><div id="kinks"></div></div>
+  <div class="pnl"><div class="ttl"><h2>Мои параметры</h2><span class="c">дракон в цифрах</span></div><div id="drgMe"></div></div>
 </main>
 <main class="screen hide" id="s-shop">
   <div class="shophd"><h1 class="dtitle" style="font-size:32px">Лавка</h1><span class="coins" id="shopGold"></span></div>
@@ -3433,12 +3433,12 @@ function renderMe(){const el=$('drgMe');if(!el)return;const b=S.body||{};
  const f=(k,l,ph)=>'<label class="mef"><span>'+l+'</span><input type="text" inputmode="decimal" id="me_'+k+'" value="'+(b[k]||'')+'" placeholder="'+ph+'"></label>';
  let out='';
  if(b.len||b.gir||b.h||b.w){const r=[];
-  if(b.len){const p=Math.round(ncdf((b.len-13.12)/1.66)*100);r.push(['Длина в эрекции',b.len+' см','больше, чем у ~'+Math.min(99,p)+'% мужчин (среднее 13,1 см, метаанализ Veale 2015)'])}
-  if(b.gir){const p=Math.round(ncdf((b.gir-11.66)/1.10)*100);r.push(['Обхват в эрекции',b.gir+' см','больше, чем у ~'+Math.min(99,p)+'% (среднее 11,7 см)']);r.push(['Размер презерватива',condomW(b.gir),'ориентир по обхвату: тесный рвётся и душит эрекцию, примерь 2–3 марки'])}
+  if(b.len){const p=Math.round(ncdf((b.len-13.12)/1.66)*100);r.push(['Длина в эрекции',b.len+' см · топ '+Math.max(1,100-p)+'%','больше, чем у ~'+Math.min(99,p)+'% мужчин (среднее 13,1 см, метаанализ Veale 2015)'])}
+  if(b.gir){const p=Math.round(ncdf((b.gir-11.66)/1.10)*100);r.push(['Обхват в эрекции',b.gir+' см · топ '+Math.max(1,100-p)+'%','больше, чем у ~'+Math.min(99,p)+'% (среднее 11,7 см)']);r.push(['Размер презерватива',condomW(b.gir),'ориентир по обхвату: тесный рвётся и душит эрекцию, примерь 2–3 марки'])}
   if(b.h&&b.w){const bmi=b.w/((b.h/100)**2);r.push(['Рост / вес',b.h+' см · '+b.w+' кг','ИМТ '+bmi.toFixed(1)+(bmi<18.5?' — недобор: ешь больше белка и калорий':bmi<21?' — худощавый: в зале качай массу, +4–6 кг мышц сделают силуэт мощнее':bmi<25?' — норма':' — выше нормы: минус жир = плюс видимая длина')])}
-  out+='<div class="mer">'+r.map(x=>'<div><b>'+x[0]+'</b><em>'+esc(x[1])+'</em><small>'+esc(x[2])+'</small></div>').join('')+'</div>';
-  if(b.len>=15.5||b.gir>=13)out+='<p class="mut" style="font-size:12.5px;line-height:1.5;margin:8px 0 0"><b style="color:var(--gold)">Дракон выше среднего — значит, бережность важнее силы.</b> Много смазки, входить медленно, когда она очень возбуждена. Позы, где она управляет глубиной (наездница, ложечки, на боку), и без резких глубоких ударов в начале: шейка матки чувствительная. Спроси «так нормально?» — и она будет тебя хотеть ещё. Хвастаться размером не надо: пусть она сама скажет.</p>'}
- el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить параметры':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details>';
+  out+='<div class="mer">'+r.map(x=>'<div><b>'+x[0]+'</b><em>'+esc(x[1])+'</em></div>').join('')+'</div><details class="hint"><summary>Что это значит</summary>'+r.map(x=>'<p class="mut" style="font-size:12.5px;margin:4px 0"><b style="color:var(--ink2)">'+x[0]+':</b> '+esc(x[2])+'</p>').join('');
+  if(b.len>=15.5||b.gir>=13)out+='<p class="mut" style="font-size:12.5px;line-height:1.5;margin:6px 0 0"><b style="color:var(--gold)">Дракон выше среднего — значит, бережность важнее силы.</b> Много смазки, входить медленно, когда она очень возбуждена. Позы, где она управляет глубиной (наездница, ложечки, на боку), и без резких глубоких ударов в начале: шейка матки чувствительная. Спроси «так нормально?» — и она будет тебя хотеть ещё. Хвастаться размером не надо: пусть она сама скажет.</p>';out+='</details>'}
+ el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details>';
  $('meOk').onclick=()=>{const g=k=>{const v=parseFloat(String($('me_'+k).value).replace(',','.'));return v>0?Math.round(v*10)/10:0};S.body={len:g('len'),gir:g('gir'),h:g('h'),w:g('w')};save();renderMe();toast('Сохранено на телефоне')}}
 /* ===== Evening ritual: close the day ===== */
 const eveDone=()=>!!(S.eve&&S.eve[today()]);
