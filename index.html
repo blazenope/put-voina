@@ -1043,6 +1043,8 @@ summary{font:700 16px var(--pix)}
 @keyframes bossTr{50%{translate:1px 0}}@keyframes bossHit{20%{transform:translateX(-10px) rotate(-6deg) scale(.94)}50%{transform:translateX(8px) rotate(4deg)}100%{transform:none}}
 .kgring.open{transform:scale(1.12);border-color:#7fa7c9}.dpr .row2{margin:0 0 12px 36px}.dpr .row2 .btn{margin:0;padding:10px 8px;font-size:12px}
 .b18now{font:14px/1.5 var(--body);color:var(--ink2);margin-top:4px;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.mer{display:grid;gap:8px}.mer>div{padding:9px 11px;border-radius:10px;background:var(--panel2);border:1px solid var(--edge)}.mer b{display:block;font:600 12px var(--body);color:var(--ink3)}.mer em{display:block;font:700 16px var(--body);font-style:normal;color:var(--ink)}.mer small{display:block;font:12px/1.4 var(--body);color:var(--ink2);margin-top:2px}
+.megrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mef span{display:block;font:600 11.5px var(--body);color:var(--ink3);margin-bottom:3px}.mef input{width:100%;box-sizing:border-box;padding:9px 10px;border-radius:9px;border:1px solid var(--edge2);background:var(--panel2);color:var(--ink);font:15px var(--body)}
 </style>
 </head>
 <body>
@@ -1220,6 +1222,7 @@ summary{font:700 16px var(--pix)}
 <!-- ================= SHOP ================= -->
 <main class="screen hide" id="s-drg">
   <div class="pnl"><div class="ttl"><h2>Дракон</h2><span class="c" id="drgLvN"></span></div><div id="drg"></div></div>
+  <div class="pnl"><div class="ttl"><h2>Мои параметры</h2><span class="c">только на телефоне</span></div><div id="drgMe"></div></div>
   <div class="pnl"><div class="ttl"><h2>Охота недели</h2><span class="c" id="drgHuntC"></span></div><div id="drgHunt"></div></div>
   <div class="pnl"><div class="ttl"><h2>Тренировки дракона</h2><span class="c" id="drgXc"></span></div><div id="drgX"></div></div>
   <div class="pnl"><div class="ttl"><h2>Сексолог спрашивает</h2><span class="c">вопрос дня</span></div><div id="drgQz"></div></div>
@@ -2248,7 +2251,7 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
  $('catShop').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const it=CAT_ACC.find(x=>x[0]===b.dataset.c);if(S.gold<it[2])return;S.gold-=it[2];A.owned.push(it[0]);A.on.push(it[0]);cheer(25);SFX.coin();addLog('Котику куплено: '+it[1]);save();render();toast('Котик доволен: '+it[1].toLowerCase())});
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
 function hintify(){document.querySelectorAll('#habSec>.mut,#ctList>.mut,#s-shop .pnl>.mut,#loveSec>.why,#s-hero .lore,#s-quest .pnl>.why').forEach(el=>{if(el.parentElement.tagName==='DETAILS'||el.textContent.length<90)return;const d=document.createElement('details');d.className='hint';d.innerHTML='<summary>'+(el.classList.contains('lore')?'Легенда героя':'Как это работает?')+'</summary>';el.replaceWith(d);d.appendChild(el)})}
-const COLD={'Дракон':1,'Куда деть энергию':1,'Охота недели':1,'Тренировки дракона':1,'Сексолог спрашивает':1,'Книга дракона 18+':1,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
+const COLD={'Дракон':1,'Куда деть энергию':1,'Мои параметры':1,'Охота недели':1,'Тренировки дракона':1,'Сексолог спрашивает':1,'Книга дракона 18+':1,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
 document.addEventListener('click',e=>{if(!e.target.closest('#hudSet'))return;go('log');setTimeout(()=>{const p=$('setPnl');if(!p)return;p.classList.remove('shut');S.open['Настройки']=1;p.scrollIntoView({behavior:'smooth',block:'start'})},250)});
 function colify(){S.open=S.open||{};const st=document.getElementById('s-log').lastElementChild;if(st&&!st.querySelector(':scope>.ttl')){st.insertAdjacentHTML('afterbegin','<div class="ttl"><h2>Настройки</h2></div>');st.id='setPnl'}
  document.querySelectorAll('#s-drg>.pnl,#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
@@ -3054,7 +3057,7 @@ function renderDrg(){if(!$('drg'))return;const p=drgPow(),i=drgLv(),cur=DRL[i],n
  $('kgBtn').onclick=kegelSheet;$('drgSos').onclick=()=>{try{openFight()}catch(e){}};
  $('drgK').onclick=()=>{const A=DRSAY.concat(DRSAY2);let t;do{t=A[Math.floor(Math.random()*A.length)]}while(A.length>1&&t===$('drgSay').textContent);$('drgSay').textContent=t;const k=$('drgK');k.classList.remove('roar');void k.offsetWidth;k.classList.add('roar');buzz();S.drgPet=(S.drgPet||0)+1;save()};
  $('mwBtn').onclick=()=>{if((S.mwD||{})[today()])return;S.mwD=S.mwD||{};S.mwD[today()]=1;const ks=Object.keys(S.mwD).sort();while(ks.length>60)delete S.mwD[ks.shift()];S.mw=(S.mw||0)+1;award(5,'wil','',{t:'Утренний стояк отмечен'});save();render()};
- renderEnergy();renderKinks();renderQuiz();renderDrgX();renderHunt();drgEvo(i)}
+ renderEnergy();renderKinks();renderQuiz();renderDrgX();renderHunt();try{renderMe()}catch(e){}drgEvo(i)}
 /* Кегель: 3 подхода в день, когда удобно (лёжа / сидя / стоя), прогрессия по полным дням 3/3 */
 const KGL=[[0,'Новичок',3,3,10,10],[7,'Ученик',5,5,10,10],[14,'Боец',6,6,10,15],[28,'Мастер',8,8,10,15],[42,'Железный хват',10,10,10,20]]; // [дней 3/3, имя, сжатие с, отдых с, медленных, быстрых]
 const KGPOS=['лёжа на спине, колени согнуты','сидя, спина прямая','стоя, ноги на ширине плеч'];
@@ -3422,6 +3425,20 @@ function drgEvo(i){if(S.drgSeen==null){S.drgSeen=i;return}if(i<=S.drgSeen)return
  setTimeout(()=>sheet('<div style="text-align:center"><p class="mut" style="margin:0">Дракон эволюционировал</p><div class="devo">'+drgSvg(i,'рвётся в бой')+'</div><h3 style="margin:4px 0">'+DRL[i][1]+'</h3><p class="mut" style="font-size:13.5px;line-height:1.5">'+esc(DRLD[i]||'')+'</p>'
   +'<p style="font-size:13px;color:var(--gold)">'+['','Сбросил кожу: из червячка — в змея.','Змей окреп и вытянулся.','Отрастил лапы.','Голова настоящего дракона!','Три головы! Змей Горыныч.','Истинный рю: летает в облаках.','Засиял золотой аурой.','Звёздная пыль в чешуе.','Солнце за спиной стало золотым.'][i]+'</p><button class="btn gold" id="evOk2" style="width:100%">Рррр</button></div>'),400);
  setTimeout(()=>{if($('evOk2'))$('evOk2').onclick=closeSheet},450);addLog('Дракон эволюционировал: '+DRL[i][1])}
+/* Мои параметры: хранятся только в localStorage телефона, в репозиторий не попадают */
+function ncdf(z){const t=1/(1+.3275911*Math.abs(z)),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-z*z/2);return .5*(1+(z<0?-y:y))}
+function condomW(g){return g<11?'49–52 мм (узкие)':g<12.5?'52–54 мм (стандарт)':g<13.5?'54–56 мм (чуть шире стандарта)':g<14.5?'56–57 мм (Large)':'58–60 мм (XL)'}
+function renderMe(){const el=$('drgMe');if(!el)return;const b=S.body||{};
+ const f=(k,l,ph)=>'<label class="mef"><span>'+l+'</span><input type="text" inputmode="decimal" id="me_'+k+'" value="'+(b[k]||'')+'" placeholder="'+ph+'"></label>';
+ let out='';
+ if(b.len||b.gir||b.h||b.w){const r=[];
+  if(b.len){const p=Math.round(ncdf((b.len-13.12)/1.66)*100);r.push(['Длина в эрекции',b.len+' см','больше, чем у ~'+Math.min(99,p)+'% мужчин (среднее 13,1 см, метаанализ Veale 2015)'])}
+  if(b.gir){const p=Math.round(ncdf((b.gir-11.66)/1.10)*100);r.push(['Обхват в эрекции',b.gir+' см','больше, чем у ~'+Math.min(99,p)+'% (среднее 11,7 см)']);r.push(['Размер презерватива',condomW(b.gir),'ориентир по обхвату: тесный рвётся и душит эрекцию, примерь 2–3 марки'])}
+  if(b.h&&b.w){const bmi=b.w/((b.h/100)**2);r.push(['Рост / вес',b.h+' см · '+b.w+' кг','ИМТ '+bmi.toFixed(1)+(bmi<18.5?' — недобор: ешь больше белка и калорий':bmi<21?' — худощавый: в зале качай массу, +4–6 кг мышц сделают силуэт мощнее':bmi<25?' — норма':' — выше нормы: минус жир = плюс видимая длина')])}
+  out+='<div class="mer">'+r.map(x=>'<div><b>'+x[0]+'</b><em>'+esc(x[1])+'</em><small>'+esc(x[2])+'</small></div>').join('')+'</div>';
+  if(b.len>=15.5||b.gir>=13)out+='<p class="mut" style="font-size:12.5px;line-height:1.5;margin:8px 0 0"><b style="color:var(--gold)">Дракон выше среднего — значит, бережность важнее силы.</b> Много смазки, входить медленно, когда она очень возбуждена. Позы, где она управляет глубиной (наездница, ложечки, на боку), и без резких глубоких ударов в начале: шейка матки чувствительная. Спроси «так нормально?» — и она будет тебя хотеть ещё. Хвастаться размером не надо: пусть она сама скажет.</p>'}
+ el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить параметры':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Хранится только на этом телефоне, никуда не отправляется.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details>';
+ $('meOk').onclick=()=>{const g=k=>{const v=parseFloat(String($('me_'+k).value).replace(',','.'));return v>0?Math.round(v*10)/10:0};S.body={len:g('len'),gir:g('gir'),h:g('h'),w:g('w')};save();renderMe();toast('Сохранено на телефоне')}}
 /* ===== Evening ritual: close the day ===== */
 const eveDone=()=>!!(S.eve&&S.eve[today()]);
 function eveSheet(){const d=today(),D=ds(),T=allTasks(),dn=T.filter(x=>x.done).length,xp=(S.xpd||{})[d]||0,st=S.days[d],m=S.mood[d]||{},tp=todayPlan();
