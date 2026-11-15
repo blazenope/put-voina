@@ -974,7 +974,16 @@ summary{font:700 16px var(--pix)}
 .encard{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:10px;border:1px solid var(--edge);border-radius:10px;background:var(--panel2);color:var(--ink);cursor:pointer}
 .encard span{font-size:20px}.encard b{font:600 13.5px var(--body)}.encard small{font:11.5px/1.35 var(--body);color:var(--ink3);flex:1}.encard em{font:700 11.5px var(--body);font-style:normal;color:var(--gold);margin-top:4px}
 .encard.used{opacity:.5}.encard.used em{color:#a3bb72}.encard:active{transform:scale(.97)}
-.drgk{cursor:pointer;color:inherit}.drgk.roar{animation:roar .5s ease}@keyframes roar{0%{transform:scale(1)}30%{transform:scale(1.18) rotate(-6deg);color:var(--gold)}60%{transform:scale(.95) rotate(4deg)}100%{transform:none}}
+.drgk{cursor:pointer;color:inherit}
+.dstage{display:block;position:relative;width:100%;height:170px;margin:0 0 12px;padding:0;border:1px solid var(--edge);border-radius:14px;cursor:pointer;background:radial-gradient(ellipse at 50% 85%,rgba(201,164,106,.14),transparent 65%),var(--panel2);overflow:hidden}
+.dstage .dtap{position:absolute;right:10px;bottom:8px;font:600 10.5px var(--body);color:var(--ink3);letter-spacing:.5px}
+.dsvg{width:100%;height:100%}.dsvg .dbody{transform-origin:60px 80px;animation:dbr 3.6s ease-in-out infinite}.dsvg.sl .dbody{animation-duration:7s}.dsvg .dwing{transform-origin:76px 60px;animation:dwg 2.8s ease-in-out infinite}
+.dsvg .dfire{opacity:0;transform-origin:20px 2px;transform:scaleX(.2)}.dsvg.hot .dfire{opacity:.35;transform:scaleX(.45)}
+.dstage.roar .dfire{animation:dfi .9s ease-out}.dstage.roar .dbody{animation:dwr .5s ease}
+@keyframes dbr{50%{transform:scaleY(1.04) translateY(-1px)}}@keyframes dwg{50%{transform:rotate(-7deg) scaleY(1.06)}}
+@keyframes dfi{0%{opacity:0;transform:scaleX(.2)}25%{opacity:1;transform:scaleX(1.1)}100%{opacity:0;transform:scaleX(1)}}@keyframes dwr{30%{transform:rotate(-3deg)}70%{transform:rotate(2deg)}}
+.devo{height:180px;margin:6px 0}.devo .dfire{opacity:1;transform:none}
+.hunt{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--edge)}.hunt:first-child{border-top:0}.hunt>div{flex:1;min-width:0}.hunt b{display:block;font:600 14px var(--body);color:var(--ink)}.hunt small{display:block;font:12px var(--body);color:var(--ink3);margin:2px 0 4px}.hunt em{font:700 13px var(--body);font-style:normal;color:#a3bb72}.hunt em.mut{color:var(--ink3)}.hunt.got b{color:var(--ink3)}.hunt .btn{padding:9px 12px}.drgk.roar{animation:roar .5s ease}@keyframes roar{0%{transform:scale(1)}30%{transform:scale(1.18) rotate(-6deg);color:var(--gold)}60%{transform:scale(.95) rotate(4deg)}100%{transform:none}}
 .wcard{padding:14px;border-radius:12px;background:var(--panel2);border:1px solid var(--gold);margin:8px 0 10px}.wcard b{display:block;font:700 17px var(--body);color:var(--gold);margin-bottom:6px}.wcard p{margin:0;font:14px/1.5 var(--body);color:var(--ink)}.wbtn{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.wbtn .btn{padding:12px 4px;font-size:12.5px}
 .stone{padding:12px;border-radius:12px;background:var(--panel2);border:1px solid var(--edge);margin-bottom:12px}.stoneh{display:flex;gap:12px;align-items:center;margin-bottom:8px}.stoneh>span{font-size:30px}.stoneh b{display:block;font:700 17px var(--body);color:var(--ink)}.stoneh small{font:12px var(--body);color:var(--ink3)}
 .dstats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.dstats>div{padding:9px 10px;border-radius:10px;background:var(--panel2);border:1px solid var(--edge);position:relative}.dstats span{position:absolute;right:9px;top:6px;font:700 18px "Yu Mincho",serif;color:var(--gold);opacity:.7}.dstats b{display:block;font:600 13.5px var(--body);color:var(--ink)}.dstats b em{font-style:normal;color:var(--gold);font-size:12px}.dstats small{display:block;font:11px var(--body);color:var(--ink3);margin:1px 0 4px}
@@ -1169,6 +1178,7 @@ summary{font:700 16px var(--pix)}
 <!-- ================= SHOP ================= -->
 <main class="screen hide" id="s-drg">
   <div class="pnl"><div class="ttl"><h2>Дракон</h2><span class="c" id="drgLvN"></span></div><div id="drg"></div></div>
+  <div class="pnl"><div class="ttl"><h2>Охота недели</h2><span class="c" id="drgHuntC"></span></div><div id="drgHunt"></div></div>
   <div class="pnl"><div class="ttl"><h2>Тренировки дракона</h2><span class="c" id="drgXc"></span></div><div id="drgX"></div></div>
   <div class="pnl"><div class="ttl"><h2>Сексолог спрашивает</h2><span class="c">вопрос дня</span></div><div id="drgQz"></div></div>
   <div class="pnl"><div class="ttl"><h2>Куда деть энергию</h2><span class="c" id="enCnt"></span></div><p class="mut" style="font-size:13px;margin:0 0 10px">Тянет или просто много энергии — выбери способ и потрать её с пользой. Каждый способ раз в день даёт опыт и бьёт босса.</p><div class="engrid" id="enGrid"></div></div>
@@ -2190,7 +2200,7 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
  $('catShop').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const it=CAT_ACC.find(x=>x[0]===b.dataset.c);if(S.gold<it[2])return;S.gold-=it[2];A.owned.push(it[0]);A.on.push(it[0]);cheer(25);SFX.coin();addLog('Котику куплено: '+it[1]);save();render();toast('Котик доволен: '+it[1].toLowerCase())});
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
 function hintify(){document.querySelectorAll('#habSec>.mut,#ctList>.mut,#s-shop .pnl>.mut,#loveSec>.why,#s-hero .lore,#s-quest .pnl>.why').forEach(el=>{if(el.parentElement.tagName==='DETAILS'||el.textContent.length<90)return;const d=document.createElement('details');d.className='hint';d.innerHTML='<summary>'+(el.classList.contains('lore')?'Легенда героя':'Как это работает?')+'</summary>';el.replaceWith(d);d.appendChild(el)})}
-const COLD={'Дракон':1,'Куда деть энергию':1,'Тренировки дракона':1,'Сексолог спрашивает':1,'Книга дракона 18+':1,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
+const COLD={'Дракон':1,'Куда деть энергию':1,'Охота недели':1,'Тренировки дракона':1,'Сексолог спрашивает':1,'Книга дракона 18+':1,'Навыки':0,'Перки':0,'Характеристики':0,'Снаряжение':1,'Сумка':1,'Клятва героя':0,'Достижения':0,'Оружие и броня':1,'Сундуки':1,'Артефакты':0,'Для котика':0,'Облик сцены':0,'Мои награды':0,'Летопись':1,'Карта врага':0,'Настроение и сон':0,'Мои «если — то»':0,'Настройки':0,'Цели недели':0,'Линии жизни':0};
 document.addEventListener('click',e=>{if(!e.target.closest('#hudSet'))return;go('log');setTimeout(()=>{const p=$('setPnl');if(!p)return;p.classList.remove('shut');S.open['Настройки']=1;p.scrollIntoView({behavior:'smooth',block:'start'})},250)});
 function colify(){S.open=S.open||{};const st=document.getElementById('s-log').lastElementChild;if(st&&!st.querySelector(':scope>.ttl')){st.insertAdjacentHTML('afterbegin','<div class="ttl"><h2>Настройки</h2></div>');st.id='setPnl'}
  document.querySelectorAll('#s-drg>.pnl,#s-hero>.pnl,#s-shop>.pnl,#s-log>.pnl,#s-quest>.pnl').forEach(p=>{const t=p.querySelector(':scope>.ttl');if(!t||p.tagName!=='DIV')return;let k=(t.querySelector('h2')||{}).textContent||'';if(/^\S+ \d{4}$/.test(k))k='Календарь';if(/^Итоги/.test(k)||k==='Линия Сердца')return;
@@ -2823,6 +2833,7 @@ const FUN=[
  ['f_stone','Каменный','石','Индекс твёрдости 75%+',()=>{try{return stoneIdx()>=75}catch(e){return false}}],
  ['f_dp100','Дрессировщик','訓','100 тренировок дракона',()=>(S.dpN||0)>=100],
  ['f_naked','Свободный дракон','裸','30 ночей голым сном',()=>(S.nkN||0)>=30],
+ ['f_hunt','Гроза леса','狩','10 охот дракона',()=>(S.huntN||0)>=10],
  ['f_kegel30','Железный хват','鋼','30 дней Кегеля 3/3',()=>(S.kgFull||0)>=30],
  ['f_mw','Доброе утро, дракон','朝','Отметить утренний стояк 7 раз',()=>(S.mw||0)>=7],
  ['f_drg3','Из червячка в удава','蛇','Дракон 3-го уровня',()=>drgLv()>=2],
@@ -2920,7 +2931,7 @@ function drgMood(){const d=today();if(S.days[d]==='f')return ['похмелье'
 function renderDrg(){if(!$('drg'))return;const p=drgPow(),i=drgLv(),cur=DRL[i],nx=DRL[i+1],m=drgMood(),d=today(),kgN=kgToday(),kgT=kgN>=3,kl=kgLv(),mwT=!!(S.mwD||{})[d];
  $('drgLvN').textContent='ур. '+(i+1);
  const wk=Array.from({length:7},(_,k)=>{const x=new Date();x.setDate(x.getDate()-6+k);const kk=dkey(x);return '<u class="'+((S.mwD||{})[kk]?'on':'')+'">'+['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][x.getDay()]+'</u>'}).join('');
- $('drg').innerHTML='<div class="drgc"><button class="drgk" id="drgK" lang="ja" title="Погладить дракона">龍</button><div class="drgb"><b>'+cur[1]+'</b><small>сила '+p+(nx?' · до «'+nx[1]+'» ещё '+(nx[0]-p):' · максимум')+'</small><div class="gauge g-xp"><i style="width:'+(nx?Math.round((p-cur[0])/(nx[0]-cur[0])*100):100)+'%"></i></div><span class="drgm">настроение: '+m[0]+'</span></div></div>'
+ $('drg').innerHTML='<button class="dstage" id="drgK" title="Погладить дракона">'+drgSvg(i,m[0])+'<span class="dtap">погладь</span></button><div class="drgc"><div class="drgb"><b>'+cur[1]+'</b><small>сила '+p+(nx?' · до «'+nx[1]+'» ещё '+(nx[0]-p):' · максимум')+'</small><div class="gauge g-xp"><i style="width:'+(nx?Math.round((p-cur[0])/(nx[0]-cur[0])*100):100)+'%"></i></div><span class="drgm">настроение: '+m[0]+'</span></div></div>'
   +'<p class="drgld">'+esc(DRLD[i]||'')+'</p><p class="drgsay" id="drgSay">'+esc(m[1])+'</p>'
   +'<div class="drgrow"><div><b>Дракон рвётся наружу?</b><small>бой с тягой — 90 секунд, и волна спадёт</small></div><button class="btn red" id="drgSos">Тянет</button></div>'
   +'<div class="drgrow"><div><b>Кегель · '+kgN+' / 3</b><small>'+KGL[kl][1]+' · '+KGL[kl][2]+' с × '+KGL[kl][4]+' + '+KGL[kl][5]+' быстрых · серия '+(S.kgStr&&S.kgLast&&dkey(new Date(Date.now()-864e5))<=S.kgLast?S.kgStr:0)+' дн.</small><div class="drgw">'+kgWeek()+'</div></div><button class="btn'+(kgT?'':' gold')+'" id="kgBtn">'+(kgT?'3/3 ✓':'Подход')+'</button></div>'
@@ -2929,7 +2940,7 @@ function renderDrg(){if(!$('drg'))return;const p=drgPow(),i=drgLv(),cur=DRL[i],n
  $('kgBtn').onclick=kegelSheet;$('drgSos').onclick=()=>{try{openFight()}catch(e){}};
  $('drgK').onclick=()=>{const A=DRSAY.concat(DRSAY2);let t;do{t=A[Math.floor(Math.random()*A.length)]}while(A.length>1&&t===$('drgSay').textContent);$('drgSay').textContent=t;const k=$('drgK');k.classList.remove('roar');void k.offsetWidth;k.classList.add('roar');buzz();S.drgPet=(S.drgPet||0)+1;save()};
  $('mwBtn').onclick=()=>{if((S.mwD||{})[today()])return;S.mwD=S.mwD||{};S.mwD[today()]=1;const ks=Object.keys(S.mwD).sort();while(ks.length>60)delete S.mwD[ks.shift()];S.mw=(S.mw||0)+1;award(5,'wil','',{t:'Утренний стояк отмечен'});save();render()};
- renderEnergy();renderKinks();renderQuiz();renderDrgX()}
+ renderEnergy();renderKinks();renderQuiz();renderDrgX();renderHunt();drgEvo(i)}
 /* Кегель: 3 подхода в день, когда удобно (лёжа / сидя / стоя), прогрессия по полным дням 3/3 */
 const KGL=[[0,'Новичок',3,3,10,10],[7,'Ученик',5,5,10,10],[14,'Боец',6,6,10,15],[28,'Мастер',8,8,10,15],[42,'Железный хват',10,10,10,20]]; // [дней 3/3, имя, сжатие с, отдых с, медленных, быстрых]
 const KGPOS=['лёжа на спине, колени согнуты','сидя, спина прямая','стоя, ноги на ширине плеч'];
@@ -3218,6 +3229,51 @@ MYTH2.push(['«Джелкинг увеличивает член»','Нет до�
  ['«Помпа сделает больше навсегда»','Вакуумная помпа — медицинское средство при проблемах с эрекцией, эффект временный. «Навсегда больше» — маркетинг.'],
  ['«Таблетки для увеличения из интернета»','Не работают, а часто содержат недекларированные лекарства в опасных дозах. Если реально проблема с эрекцией — к урологу, есть безопасные проверенные средства.'],
  ['«От воздержания член растёт»','Нет. Растёт чувствительность к живому контакту и уверенность — это и правда ощущается как «больше силы».']);
+/* ===== 龍 Живой дракон: рисунок растёт с уровнем, охота недели, эволюция ===== */
+const DCOL=['#7d8a5c','#8f9a58','#5f9a6a','#4f8f8a','#4f7fa8','#6f5fa8','#a8483f','#c9a46a','#e0c27a','#f4ead2'];
+function drgSvg(i,mood){const c=DCOL[i]||DCOL[0],w=7+i*1.3,sl=mood==='сонный',hot=mood==='рвётся в бой',heads=i>=5?3:1;
+ const head=(x,y,s,r)=>'<g transform="translate('+x+' '+y+') rotate('+r+') scale('+s+')">'
+  +(i>=2?'<path d="M-4 -6 L-9 -17 L-1 -8 M3 -7 L1 -19 L7 -8" fill="'+c+'" stroke="#0006" stroke-width=".8"/>':'')
+  +'<ellipse cx="0" cy="0" rx="11" ry="8" fill="'+c+'" stroke="#0007" stroke-width="1"/><path d="M6 -3 Q17 -2 18 3 Q12 7 4 6 Z" fill="'+c+'" stroke="#0007" stroke-width="1"/>'
+  +'<circle cx="16" cy="0" r=".9" fill="#0009"/>'
+  +(sl?'<path d="M1 -2 q3 2 6 0" stroke="#111" stroke-width="1.4" fill="none"/>':'<circle cx="4" cy="-2" r="2.6" fill="#fff8e0"/><circle cx="4.6" cy="-2" r="1.4" fill="'+(hot?'#c6301f':'#111')+'"/>')
+  +(i>=6?'<path d="M17 3 q8 4 12 -2 M16 5 q6 8 13 6" stroke="'+c+'" stroke-width=".9" fill="none" opacity=".8"/>':'')
+  +'<g class="dfire"><path d="M19 2 q12 -6 26 0 q-10 2 -14 6 q6 1 10 6 q-14 0 -22 -8 Z" fill="#e2803a"/><path d="M19 2 q8 -2 15 1 q-6 2 -8 4 q-4 -2 -7 -5Z" fill="#f6d36b"/></g></g>';
+ let s='<svg class="dsvg'+(sl?' sl':'')+(hot?' hot':'')+'" viewBox="0 0 160 110" aria-label="Дракон">';
+ if(i>=7)s+='<defs><radialGradient id="dau"><stop offset="0" stop-color="'+c+'" stop-opacity=".35"/><stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient></defs><circle cx="80" cy="58" r="56" fill="url(#dau)"/>';
+ if(i>=4)s+='<g class="dwing" fill="'+c+'" fill-opacity=".55" stroke="#0007" stroke-width="1"><path d="M70 62 L52 18 L66 30 L72 14 L80 32 L90 22 L86 58 Z"/></g>';
+ const body='M14 92 C 34 62, 52 104, 76 80 S 104 52, 112 46';
+ s+='<g class="dbody"><path d="'+body+'" stroke="#0008" stroke-width="'+(w+2)+'" fill="none" stroke-linecap="round"/><path d="'+body+'" stroke="'+c+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>'
+  +'<path d="'+body+'" stroke="#fff" stroke-opacity=".22" stroke-width="'+(w/3)+'" stroke-dasharray="3 4" fill="none" stroke-linecap="round"/>'
+  +(i>=3?'<path d="'+body+'" stroke="#0005" stroke-width="2" stroke-dasharray="1 7" fill="none" transform="translate(0 -'+(w/2)+')"/>':'')+'</g>';
+ if(i>=1)s+='<path d="M14 92 l-8 6 l4 -10 Z" fill="'+c+'" stroke="#0007"/>';
+ if(heads===3){s+='<path d="M104 52 Q90 34 96 14 M108 52 Q130 58 136 76" stroke="#0008" stroke-width="'+(w*.7+2)+'" fill="none" stroke-linecap="round"/><path d="M104 52 Q90 34 96 14 M108 52 Q130 58 136 76" stroke="'+c+'" stroke-width="'+(w*.7)+'" fill="none" stroke-linecap="round"/>'+head(98,13,.72,-18)+head(137,77,.72,20)}
+ s+=head(118,42,1,-6)+'</svg>';return s}
+function wkStart(){const x=new Date();x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+function wkDays(){const a=[],s=wkStart(),t=today();for(let k=0;k<7;k++){const x=new Date(s);x.setDate(s.getDate()+k);const d=dkey(x);a.push(d);if(d===t)break}return a}
+const cntDays=f=>wkDays().filter(f).length;
+const HUNTS=[['kg','Железный таз','Кегель 3/3 в 5 дней недели',5,()=>cntDays(d=>((S.kgH||{})[d]||0)>=3)],
+ ['cardio','Гонка за добычей','Пробежка/зал или 10к шагов в 3 дня',3,()=>cntDays(d=>cardioOn(d))],
+ ['clean','Неделя без вкладок','6 чистых дней',6,()=>cntDays(d=>S.days[d]==='c')],
+ ['wish','Охотник за кинками','Кинк дня в 4 дня',4,()=>cntDays(d=>dpHas('wish',d))],
+ ['sleep','Спящий дракон','Сон 7–9 ч в 5 ночей',5,()=>cntDays(d=>dpHas('sleep',d))],
+ ['naked','Свободная неделя','Голый сон 5 ночей',5,()=>cntDays(d=>dpHas('naked',d))],
+ ['food','Пир для сосудов','Еда для сосудов в 4 дня',4,()=>cntDays(d=>dpHas('food',d))],
+ ['pelvic','Глубокий таз','Обратный Кегель, мост или таз — 4 дня',4,()=>cntDays(d=>['rev','bridge','hips'].some(x=>dpHas(x,d)))],
+ ['calm','Холодная голова','Дыхание 4/6 или скан тела — 4 дня',4,()=>cntDays(d=>['breath','scan'].some(x=>dpHas(x,d)))],
+ ['alc','Трезвый дракон','5 дней без алкоголя',5,()=>cntDays(d=>dpHas('noalc',d))]];
+function huntWeek(){const w=dkey(wkStart());if(!S.hunt||S.hunt.w!==w){const n=Math.floor(wkStart().getTime()/6048e5),pool=HUNTS.map(h=>h[0]),pick=[];let k=n;while(pick.length<3){const id=pool[(k*7+pick.length*3)%pool.length];if(!pick.includes(id))pick.push(id);k++}S.hunt={w,ids:pick,got:[]}}return S.hunt}
+function renderHunt(){const el=$('drgHunt');if(!el)return;const h=huntWeek(),left=7-wkDays().length;
+ $('drgHuntC').textContent=h.got.length+' / 3 · '+(left?'ещё '+left+' дн.':'последний день');
+ el.innerHTML=h.ids.map(id=>{const x=HUNTS.find(q=>q[0]===id),v=Math.min(x[3],x[4]()),got=h.got.includes(id),ok=v>=x[3];
+  return '<div class="hunt'+(got?' got':'')+'"><div><b>'+x[1]+'</b><small>'+x[2]+' · '+v+' / '+x[3]+'</small><div class="gauge g-gold"><i style="width:'+Math.round(v/x[3]*100)+'%"></i></div></div>'+(got?'<em>✓</em>':ok?'<button class="btn gold" data-hunt="'+id+'">Забрать</button>':'<em class="mut">+60</em>')+'</div>'}).join('')
+  +'<p class="mut" style="font-size:12px;margin:8px 0 0">Каждая охота: +60 XP и +30 силы дракона. Все три за неделю — ещё +100 XP. Новые цели — каждый понедельник.</p>';
+ el.querySelectorAll('[data-hunt]').forEach(b=>b.onclick=()=>{const id=b.dataset.hunt,x=HUNTS.find(q=>q[0]===id);if(h.got.includes(id))return;h.got.push(id);S.dp=(S.dp||0)+30;S.huntN=(S.huntN||0)+1;
+  award(60,'str','',{t:'Охота дракона: '+x[1]});if(h.got.length===3)award(100,'wil','',{t:'Дракон: вся охота недели'});addLog('Охота дракона: '+x[1]);SFX.tap&&SFX.tap();buzz();save();render();toast('🐉 '+x[1]+' · +60 XP')})}
+function drgEvo(i){if(S.drgSeen==null){S.drgSeen=i;return}if(i<=S.drgSeen)return;S.drgSeen=i;save();
+ setTimeout(()=>sheet('<div style="text-align:center"><p class="mut" style="margin:0">Дракон эволюционировал</p><div class="devo">'+drgSvg(i,'рвётся в бой')+'</div><h3 style="margin:4px 0">'+DRL[i][1]+'</h3><p class="mut" style="font-size:13.5px;line-height:1.5">'+esc(DRLD[i]||'')+'</p>'
+  +'<p style="font-size:13px;color:var(--gold)">'+['','Появился хвост.','Выросли рога.','Покрылся чешуёй.','Расправил крылья.','Три головы! Змей Горыныч.','Отрастил усы мудреца.','Засиял золотой аурой.','Сияет ярче.','Бессмертное пламя.'][i]+'</p><button class="btn gold" id="evOk2" style="width:100%">Рррр</button></div>'),400);
+ setTimeout(()=>{if($('evOk2'))$('evOk2').onclick=closeSheet},450);addLog('Дракон эволюционировал: '+DRL[i][1])}
 /* ===== Evening ritual: close the day ===== */
 const eveDone=()=>!!(S.eve&&S.eve[today()]);
 function eveSheet(){const d=today(),D=ds(),T=allTasks(),dn=T.filter(x=>x.done).length,xp=(S.xpd||{})[d]||0,st=S.days[d],m=S.mood[d]||{},tp=todayPlan();
