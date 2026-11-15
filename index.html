@@ -1117,6 +1117,7 @@ summary{font:700 16px var(--pix)}
 <main class="screen" id="s-day">
   <div class="banner hide" id="danger"></div>
   <div class="banner blue hide" id="fresh"></div>
+  <div class="banner hide" id="recov" role="button" style="cursor:pointer;background:#1c1410;box-shadow:inset 0 0 0 2px #7a4a1e;color:#f6dcb8"></div>
 
   <button class="pnl" id="nextBox" style="display:flex;gap:12px;align-items:center;width:100%;border:0;text-align:left;color:inherit;cursor:pointer;box-shadow:inset 0 0 0 2px var(--xp)"><span style="font:400 18px var(--pix);color:var(--xp)">▶</span><span style="flex:1;min-width:0"><span style="display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--xp)">Следующий шаг</span><span id="nextTxt" style="font:600 15px/1.35 var(--body)"></span></span></button>
   <h1 class="dtitle" id="dTitle">Сегодня</h1>
@@ -1387,7 +1388,10 @@ summary{font:700 16px var(--pix)}
     <details><summary>Психология игры</summary><div class="prose">
       <p><b>Сёрфинг тяги.</b> Тяга растёт, достигает пика и спадает, как волна. Бой учит её переждать, а оценка «до и после» показывает, что ты сильнее волны.</p>
       <p><b>Планы «если — то».</b> Заранее решённое действие на конкретный триггер срабатывает почти автоматически, без борьбы.</p>
-      <p><b>Срыв без катастрофы.</b> Мысль «всё равно сорвался, теперь можно» опаснее самого срыва. Поэтому уровень, золото и общий счёт чистых дней не сгорают, а срыв превращается в урок.</p>
+      <p><b>Срыв без катастрофы.</b> Мысль «всё равно сорвался, теперь можно» (эффект нарушения воздержания, Марлатт) опаснее самого срыва. Поэтому уровень, золото и общий счёт чистых дней не сгорают, а главная цифра рядом с отсчётом — чистые дни за 30 дней: один срыв её почти не двигает.</p>
+      <p><b>Цепочка срыва.</b> Срыв начинается не с порно, а с «безобидного» первого звена за 30–60 минут (фото, телефон в кровати, «просто посмотреть»). Разбор после срыва ищет это звено, и правило «если — то» ставится именно на него.</p>
+      <p><b>Протокол 72 часа.</b> Сразу после срыва риск второго выше всего. Плашка на «Сегодня» держит правило перед глазами, а сутки и 72 часа без второго раза награждаются.</p>
+      <p><b>Вина, а не стыд.</b> «Я сделал плохо» помогает меняться, «я плохой» толкает обратно. Поэтому разбор начинается со слов, которые сказал бы другу.</p>
       <p><b>Голос за себя.</b> Каждое действие — голос за то, кем ты становишься. Голос дня закрепляет новую идентичность.</p>
       <p><b>Свои причины.</b> Свои слова «зачем» мотивируют сильнее чужих. Они показываются в бою.</p>
       <p><b>HALT.</b> Голод, злость, одиночество и усталость чаще всего маскируются под тягу. Бой подсказывает, что сделать с каждым.</p>
@@ -1624,10 +1628,10 @@ const freshPet=()=>({fuel:70,mood:70,t:Date.now(),pets:0,petDay:''});
 const fresh=()=>({v:3,xp:0,gold:0,goldTotal:0,wins:0,quests:0,perfect:0,phoenix:0,fell:false,cleanSince:Date.now(),bestMs:0,best:0,
  days:{},trig:{},hours:{},urges:0,urgeLog:[],qDay:'',qList:[],qDone:[],hAw:{},hLoot:[],perfectDay:'',log:[],ach:[],pet:freshPet(),
  st:{str:0,int:0,cha:0,wil:0},camp:{ch:0,hp:Math.round(CHAPTERS[0][2]*.85)},inv:[],eq:{weapon:null,armor:null,amulet:null},
- sound:true,soundLoud:true,mood:{},buffXp:0,buffDmg:0,buffGold:0,armTab:'weapon',rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},ts:0});
+ sound:true,soundLoud:true,mood:{},buffXp:0,buffDmg:0,buffGold:0,armTab:'weapon',rewards:[],chestDay:'',loginStreak:0,votes:{},oath:{done:false,why:[],identity:IDENTITY},ifthen:{},lapses:[],recA:{},ts:0});
 function hydrate(o){const s=Object.assign(fresh(),o||{});const f=fresh();
  for(const k of ['pet','st','camp','eq','oath'])s[k]=Object.assign(f[k],(o||{})[k]);
- for(const k of ['inv','rewards','urgeLog','log','ach','qList','qDone','hLoot'])if(!Array.isArray(s[k]))s[k]=f[k];
+ for(const k of ['inv','rewards','urgeLog','log','ach','qList','qDone','hLoot','lapses'])if(!Array.isArray(s[k]))s[k]=f[k];
  for(const k of ['days','trig','hours','hAw','votes','ifthen','mood'])if(!s[k]||typeof s[k]!=='object')s[k]={};
  return s}
 let S=fresh();
@@ -2125,7 +2129,8 @@ const CAT18=['Ноябрь — месяц No Nut November. Ты участвуе
 /* котик-помощник: говорит по делу, по тапу — быстрые действия */
 let CATACT=null;
 function catTips(){const t=[],h=new Date().getHours(),wd=new Date().getDay(),d=today();
- try{if(h>=23||h<5)t.push(['Пора спать. Телефон на зарядку подальше от кровати — ночью тяга сильнее всего.',null]);
+ try{if(recovOn()){const L=lapses()[0]||{};t.push([(L.lesson?'Мяу. Помни своё правило: «'+L.lesson+'». ':'Мяу. После срыва 72 часа — зона риска. ')+'Потянет — тапни меня.',()=>openFight()])}
+  if(h>=23||h<5)t.push(['Пора спать. Телефон на зарядку подальше от кровати — ночью тяга сильнее всего.',null]);
   const need=cmAct().filter(c=>cmDays(c).includes(d)&&!cmMark(c,d));if(need.length&&h>=17)t.push(['Слово «'+need[0].t+'» ждёт отметки. Тапни меня.',()=>{go('quest');setTimeout(()=>{const x=$('cmSec');if(x)x.scrollIntoView({behavior:'smooth'})},250)}]);
   if(!S.mood[d]&&h>=5&&h<13)t.push(['Как спал? Отметь сон — за 7–9 часов дам бонус к опыту.',()=>moodSheet()]);
   const k=kgToday();if(k<3&&h>=7&&h<23)t.push(['Кегель '+k+'/3. Подход за полторы минуты? Тапни меня.',()=>kegelSheet()]);
@@ -2140,7 +2145,7 @@ function catMenu(){const k=kgToday(),need=cmAct().filter(c=>cmDays(c).includes(t
  $('sheetIn').querySelectorAll('.catm button').forEach(b=>b.onclick=()=>{closeSheet();setTimeout(B[+b.dataset.i][2],230)});$('catX').onclick=closeSheet}
 function petLine(){{const T=catTips();if(T.length&&!catAsleep()){const x=T[Math.floor(Date.now()/45000)%T.length];CATACT=x[1];return x[0]}CATACT=null}if(!catAsleep()&&S.days[today()]!=='f'&&S.pet.fuel>=15&&Math.floor(Date.now()/48e4)%2===0)return CAT18[Math.floor(Date.now()/48e4/2)%CAT18.length];const p=S.pet,st=stageIdx(),T=allTasks(),left=T.filter(x=>!x.done).length,h=new Date().getHours(),nx=STAGES[st+1];
  if(catAsleep())return 'Мрр… я сплю. И тебе пора — сон тоже часть пути.';
- if(S.days[today()]==='f')return 'Мяу. Я рядом. Срыв — это урок, а не конец.';
+ if(S.days[today()]==='f')return 'Мяу. Я рядом. Один раз — не два. Пойдём лучше пройдёмся.';
  if(p.fuel<15)return 'Мяу… я голодный. Сделай любой квест — так ты меня кормишь.';
  if(p.mood<30)return 'Мне грустно. Погладь меня, победи волну или отметь чистый день.';
  if(h>=21&&!S.days[today()])return 'Вечер. Отметь чистый день, и я подрасту.';
@@ -2156,6 +2161,7 @@ function renderDay(){
  $('danger').classList.toggle('hide',!(S.urges>=3&&hk[0]&&hk[0][0]===cur&&isT));
  if(S.urges>=3&&hk[0])$('danger').textContent='Сейчас твоё опасное время ('+cur.toLowerCase()+'). Телефон подальше от кровати, план «если — то» наготове.';
  const now=new Date(),fr=now.getDay()===1||now.getDate()===1;$('fresh').classList.toggle('hide',!(fr&&isT));
+ try{recovBanner(isT)}catch(e){}
  $('fresh').textContent=now.getDate()===1?'Новый месяц — новая глава. Отличный момент начать с чистого листа.':'Новая неделя — свежий старт. Что ты сделаешь иначе на этой неделе?';
  renderWeek();
  $('dTitle').textContent=diff===0?'Сегодня':diff===1?'Завтра':diff===-1?'Вчера':sd.toLocaleDateString('ru-RU',{weekday:'long'});
@@ -2171,11 +2177,12 @@ function renderDay(){
  $('pFuel').style.width=S.pet.fuel+'%';$('pMood').style.width=S.pet.mood+'%';
  const ms=cleanMs(),d=Math.floor(ms/DAY),hh=Math.floor(ms%DAY/36e5),mm=Math.floor(ms%36e5/6e4);
  $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
- $('cTot').textContent='Всего чистых дней: '+totalClean();
+ {const m=clean30();$('cTot').textContent='Чистых: '+totalClean()+' · за 30 дн.: '+m.c+'/30'}
  // next step
  {let t='',why='',act=null;const ci=isT?ciPick():null,T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),wk=weakOf(S.camp.ch);
   if(!isT){t='Ты смотришь другой день. Вернуться к сегодня';act=()=>selectDay(today())}
   else if(!S.mood[today()]&&ciGate()){t='Как ты? Отметь настроение и сон — 10 секунд';act=()=>{S.ci=S.ci||{at:0,d:{}};S.ci.at=Date.now();save();moodSheet()}}
+  else if(recovOn()&&Date.now()-S.fellAt<DAY&&h>=17){t='Сегодня главное — один раз, не два. Выйди из комнаты, телефон подальше';why='первые сутки после срыва — пик «уже всё равно»';act=openFight}
   else if(ci){t='Вопрос часа: '+ciText(ci);act=()=>ciSheet(ci)}
   else if(!P.tasks.length){t='Запиши 1–3 квеста на сегодня';act=()=>{$('newTask').focus()}}
   else if(h>=20&&!eveDone()){t='Вечерний ритуал: закрой день — 1 минута';act=eveSheet}
@@ -2333,7 +2340,7 @@ function colify(){S.open=S.open||{};const st=document.getElementById('s-log').la
   const def=k in COLD?COLD[k]:0;p.classList.toggle('shut',!(k in S.open?S.open[k]:def))})}
 const dtKey=d=>d.dataset.k||((d.parentElement&&d.parentElement.closest('[id]'))||{}).id+'|'+((d.querySelector('summary')||{}).textContent||'').slice(0,40);
 function render(){const _op=new Set([...document.querySelectorAll('details[open]')].map(dtKey));try{render0()}finally{document.querySelectorAll('details:not([open])').forEach(d=>{if(_op.has(dtKey(d)))d.open=true})}}
-function render0(){setTimeout(()=>{try{renderSteps()}catch(e){}try{renderKgBar()}catch(e){}try{renderCmBar()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog();try{renderDrg()}catch(e){console.error(e)}try{renderCm()}catch(e){console.error(e)}}
+function render0(){try{recovTick()}catch(e){}setTimeout(()=>{try{renderSteps()}catch(e){}try{renderKgBar()}catch(e){}try{renderCmBar()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog();try{renderDrg()}catch(e){console.error(e)}try{renderCm()}catch(e){console.error(e)}}
 
 /* ================= ROADMAP 道: the whole future ================= */
 const xpAt=L=>{let s=0;for(let k=1;k<L;k++)s+=needOf(k);return s};
@@ -2402,17 +2409,84 @@ function addTask(){const v=$('newTask').value.trim();if(!v)return;SFX.tap();$('n
  P.tasks.push({t:t.slice(0,140),time,xp:25,c:catOf(t),done:false,aw:null,lt:false});savePlan();render()}
 function checkClean(){const d=cleanDays();S.days[today()]='c';if(S.fell){S.phoenix++;S.fell=false}S.best=Math.max(S.best||0,d);cheer(15);feed(10);addLog('Чистый день');
  award(20+Math.min(d,30)*2,'wil','чистый день',{dmg:40});save();render()}
-function relapse(src,lesson,trig){const ms=cleanMs(),dd=Math.floor(ms/DAY),st=stageIdx();S.bestMs=Math.max(S.bestMs||0,ms);S.best=Math.max(S.best||0,dd);
- S.cleanSince=Date.now();S.fellAt=Date.now();S.days[today()]='f';SFX.sad();healBoss(S.camp.ch%NB===2?.1:S.camp.ch%NB===11?.15:0);S.fell=true;cheer(-35);healBoss(.1);
- if(lesson&&trig)S.ifthen[trig]=lesson;
- addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+(src?' · '+src:'')+(lesson?' · урок: '+lesson:''));S.xp+=5;save();render();
- lootSheet('Урок, а не конец',null,'Уровень, золото, вещи и '+totalClean()+' '+plural(totalClean(),'чистый день','чистых дня','чистых дней')+' остаются с тобой. Таймер начат заново'+''+'. Мысль «всё пропало» — главная ловушка, не верь ей. +5 XP за честность.')}
-function relapseFlow(src,presetTrig){sheet('<h3>Был срыв?</h3><p>Без самобичевания. Давай превратим это в урок.</p>'
- +'<div class="lbl">Что спровоцировало</div><div class="chips" id="rTrig">'+TRIGS.map(t=>'<button class="chp'+(t===presetTrig?' on':'')+'" data-t="'+t+'">'+t+'</button>').join('')+'</div>'
- +'<label class="lbl" for="rLesson">В следующий раз, если это повторится, я…</label><textarea id="rLesson" rows="2" placeholder="Например: выйду на улицу на 10 минут"></textarea>'
- +'<div class="row2" style="margin-top:14px"><button class="btn" id="rNo">Отмена</button><button class="btn gold" id="rYes">Записать урок</button></div>');
- let tr=presetTrig||'';$('rTrig').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{tr=tr===c.dataset.t?'':c.dataset.t;$('rTrig').querySelectorAll('.chp').forEach(x=>x.classList.toggle('on',x.dataset.t===tr))});
- $('rNo').onclick=closeSheet;$('rYes').onclick=()=>{const l=$('rLesson').value.trim().slice(0,120);closeSheet();relapse(src||(tr?tr.toLowerCase():''),l,tr)}}
+/* ================= СРЫВ: психология возврата (Марлатт: эффект нарушения воздержания; DBT: анализ цепочки; самосострадание) ================= */
+const VULN=['Устал','Недоспал','Одиноко','Скучно','Стресс','Возбуждён','Голоден','Злюсь'];
+const FIRSTS=['Фото/замеры себя','Трогал себя «просто так»','Телефон в кровати','Рилсы/соцсети','«Просто посмотреть» картинки','Лежал без дела','Один дома вечером','Не спал допоздна','Алкоголь','Другое'];
+const FIRSTFIX={'Фото/замеры себя':'не фоткаю и не меряю, сразу выхожу из комнаты','Трогал себя «просто так»':'руки заняты: встаю, умываюсь холодной водой, иду на кухню','Телефон в кровати':'телефон заряжается в другой комнате, в кровати только сон','Рилсы/соцсети':'закрываю приложение и включаю немецкий подкаст','«Просто посмотреть» картинки':'закрываю вкладку на первой картинке и жму «Тянет!»','Лежал без дела':'встаю и делаю 10 приседаний или выхожу на улицу','Один дома вечером':'вечером выхожу из дома или звоню кому-нибудь','Не спал допоздна':'в 23:30 телефон на зарядку, свет выключен','Алкоголь':'не пью, когда вечер один'};
+const REPAIR=[['Душ и чистая одежда',10],['Прогулка 15 минут',15],['Нормально поесть',10],['Написать или позвонить кому-то',15],['Телефон в другую комнату',10],['Лечь спать до 23:30',15]];
+const KIND=['Я сорвался, но я не сломан. Это был эпизод, а не моя суть.','Так бывает у всех, кто меняет сильную привычку. Я не исключение и не провал.','Я сделал плохо — это вина, она помогает. «Я плохой» — это стыд, он толкает назад. Выбираю вину.','Что я сказал бы другу? «Бывает. Что сделаешь завтра?» Себе говорю так же.'];
+const lapses=()=>Array.isArray(S.lapses)?S.lapses:(S.lapses=[]);
+function clean30(){let c=0,f=0;for(let i=0;i<30;i++){const v=S.days[shift(today(),-i)];if(v==='c')c++;else if(v==='f')f++}return {c,f}}
+const recovOn=()=>S.fellAt&&S.cleanSince===S.fellAt&&Date.now()-S.fellAt<3*DAY;
+function lapseRec(at,x,nw){const L=lapses();let r=nw?L.find(z=>z.at===at):L.find(z=>Math.abs(z.at-at)<6*36e5);if(!r){r={id:at,at,dd:0};L.unshift(r)}Object.assign(r,x);L.sort((a,b)=>b.at-a.at);S.lapses=L.slice(0,60);return r}
+function lapseGaps(){const L=[...lapses()].sort((a,b)=>a.at-b.at);return L.map(x=>x.dd).filter(x=>x!=null)}
+function lapseInsight(){const L=lapses();if(!L.length)return '';const cnt=a=>{const m={};a.filter(Boolean).forEach(k=>m[k]=(m[k]||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1])[0]};
+ const hb=cnt(L.map(x=>{const h=new Date(x.at).getHours();return h<6?'ночью':h<12?'утром':h<17?'днём':'вечером'})),fi=cnt(L.map(x=>x.first)),vu=cnt(L.flatMap(x=>x.halt||[])),g=lapseGaps().slice(-5);
+ const o=[];if(L.length>=2&&hb)o.push('Чаще всего — '+hb[0]+' ('+hb[1]+' из '+L.length+')');if(fi)o.push('первое звено: «'+fi[0]+'»'+(fi[1]>1?' ×'+fi[1]:''));if(vu)o.push('состояние: '+vu[0].toLowerCase());
+ let s=o.length?'<p style="margin:6px 0">'+esc(o.join(' · '))+'</p>':'';
+ if(g.length>=2){const up=g[g.length-1]>=g[g.length-2];s+='<p class="mut" style="margin:4px 0;font-size:13px">Дней между срывами: '+g.join(' → ')+(up?' — промежутки растут, это и есть прогресс.':' — короче прошлого. Не катастрофа: смотри, какое звено повторяется.')+'</p>'}
+ return s}
+function addToday(list){const keep=SEL;if(SEL!==today()){SEL=today();loadPlan(SEL)}let n=0;for(const [t,xp] of list){if(P.tasks.some(x=>x.t===t))continue;P.tasks.push({t,time:'',xp,c:'wil',done:false,aw:null,lt:false});n++}savePlan();if(keep!==SEL){SEL=keep;loadPlan(SEL)}return n}
+function relapse(src,lesson,trig,ch){ch=ch||{};const ms=cleanMs(),dd=Math.floor(ms/DAY),now=Date.now();S.bestMs=Math.max(S.bestMs||0,ms);S.best=Math.max(S.best||0,dd);
+ const again=S.fellAt&&now-S.fellAt<DAY;
+ S.cleanSince=now;S.fellAt=now;S.days[today()]='f';SFX.sad();healBoss(S.camp.ch%NB===2?.1:S.camp.ch%NB===11?.15:0);S.fell=true;cheer(-15);healBoss(.1);
+ if(lesson&&trig)S.ifthen[trig]=lesson;if(lesson&&ch.first&&ch.first!=='Другое')S.ifthen[ch.first]=lesson;
+ lapseRec(now,{dd,trig:trig||'',first:ch.first||'',halt:ch.halt||[],lesson:lesson||'',fix:ch.fix||[],src:'app'},1);
+ const n=ch.fix&&ch.fix.length?addToday(REPAIR.filter(r=>ch.fix.includes(r[0])).map(r=>['Возврат: '+r[0].toLowerCase(),r[1]])):0;
+ addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+(ch.first?' · звено: '+ch.first:src?' · '+src:'')+(lesson?' · урок: '+lesson:''));S.xp+=5+(ch.first?10:0);save();render();
+ const m=clean30();
+ lootSheet(again?'Второй раз — тоже урок':'Урок, а не конец',null,(again?'Это самое важное место: «уже всё равно» сейчас громче всего. Остановиться на втором — тоже победа. ':'')
+  +'За 30 дней: '+m.c+' '+plural(m.c,'чистый день','чистых дня','чистых дней')+(m.f?' и '+m.f+' '+plural(m.f,'срыв','срыва','срывов'):'')+'. Уровень, золото и '+totalClean()+' '+plural(totalClean(),'чистый день','чистых дня','чистых дней')+' остаются. '
+  +(ch.first?'Цепочка разобрана: «'+ch.first+'» → срыв. Правило записано и покажется в бою. ':'')+(n?'В план добавлено '+n+' '+plural(n,'дело','дела','дел')+' возврата. ':'')
+  +'Начался протокол 72 часа. +'+(5+(ch.first?10:0))+' XP за честность'+(ch.first?' и разбор':'')+'.')}
+function relapseFlow(src,presetTrig){const R={halt:[],first:'',trig:presetTrig||'',fix:[],k:Math.floor(Math.random()*KIND.length)};let step=0;
+ const chips=(id,arr,sel,multi)=>'<div class="chips" id="'+id+'">'+arr.map(t=>'<button class="chp'+((multi?sel.includes(t):sel===t)?' on':'')+'" data-t="'+esc(t)+'">'+esc(t)+'</button>').join('')+'</div>';
+ const bind=(id,key,multi)=>$(id).querySelectorAll('.chp').forEach(c=>c.onclick=()=>{const t=c.dataset.t;if(multi){R[key]=R[key].includes(t)?R[key].filter(x=>x!==t):[...R[key],t]}else R[key]=R[key]===t?'':t;
+  $(id).querySelectorAll('.chp').forEach(x=>x.classList.toggle('on',multi?R[key].includes(x.dataset.t):x.dataset.t===R[key]))});
+ const dots=()=>'<div class="mut" style="font-size:12px;letter-spacing:.1em;margin-bottom:6px">'+[0,1,2,3].map(i=>i===step?'●':'○').join(' ')+'</div>';
+ const nav=(back,fwd)=>'<div class="row2" style="margin-top:14px"><button class="btn" id="rBk">'+back+'</button><button class="btn gold" id="rFw">'+fwd+'</button></div>';
+ function draw(){const m=clean30(),again=S.fellAt&&Date.now()-S.fellAt<DAY&&S.cleanSince===S.fellAt;
+  if(step===0){sheet(dots()+'<h3>Стоп. Сначала — без спирали</h3>'
+   +'<p>Срыв — это <b>эпизод</b>, а не новая жизнь. Опаснее самого срыва мысль <b>«всё, уже всё равно, можно ещё»</b>. В психологии это называют эффектом нарушения воздержания: именно он превращает один раз в неделю отката.</p>'
+   +(again?'<p style="color:var(--gold2)">Сегодня это уже не первый раз. Ничего: остановиться сейчас — самое сильное, что ты можешь сделать за весь путь.</p>':'<p>Правило на 24 часа: <b>один раз — не два.</b> Не «завтра начну», а прямо сейчас.</p>')
+   +'<p class="mut" style="font-size:13px">Что остаётся: '+m.c+' из 30 последних дней чистые, рекорд '+bestDays()+' дн., всего '+totalClean()+' чистых. Это никуда не девается.</p>'
+   +'<div class="rule" style="margin-top:8px"><b>Скажи себе</b><span>'+esc(KIND[R.k])+'</span></div>'+nav('Отмена','Разобрать цепочку →'));
+   $('rBk').onclick=closeSheet;$('rFw').onclick=()=>{step=1;draw()}}
+  else if(step===1){sheet(dots()+'<h3>Цепочка: что было до</h3><p class="mut" style="font-size:13px">Срыв не начинается с порно. Он начинается за 30–60 минут — с маленького «безобидного» шага. Найди его, и ты знаешь, где рвать.</p>'
+   +'<div class="lbl">Состояние (можно несколько)</div>'+chips('rHalt',VULN,R.halt,true)
+   +'<div class="lbl" style="margin-top:10px">Первое звено — с чего началось</div>'+chips('rFirst',FIRSTS,R.first,false)
+   +'<div class="lbl" style="margin-top:10px">Триггер</div>'+chips('rTrig',TRIGS,R.trig,false)+nav('← Назад','Дальше →'));
+   bind('rHalt','halt',true);bind('rFirst','first',false);bind('rTrig','trig',false);$('rBk').onclick=()=>{step=0;draw()};$('rFw').onclick=()=>{step=2;draw()}}
+  else if(step===2){const f=R.first&&R.first!=='Другое'?R.first:'',ph=f&&FIRSTFIX[f]?FIRSTFIX[f]:'выйду из комнаты и нажму «Тянет!»',old=f?S.ifthen[f]||'':(R.trig?S.ifthen[R.trig]||'':'');
+   sheet(dots()+'<h3>Где разорвать</h3><p>'+(f?'Когда в следующий раз <b>'+esc(f.toLowerCase())+'</b>':'Когда в следующий раз '+(R.trig?'<b>'+esc(R.trig.toLowerCase())+'</b>':'это начнётся'))+', я сразу…</p>'
+   +'<textarea id="rLesson" rows="2" placeholder="'+esc(ph)+'">'+esc(R.lesson||old)+'</textarea>'
+   +'<p class="mut" style="font-size:12.5px">Правило работает, если оно про <b>первое звено</b> и про действие телом («выхожу», «встаю»), а не про силу воли («не буду»).</p>'
+   +(f?'<button class="linkbtn" id="rSug">вставить: «'+esc(ph)+'»</button>':'')+nav('← Назад','Дальше →'));
+   if($('rSug'))$('rSug').onclick=()=>{$('rLesson').value=ph};const keep=()=>{R.lesson=$('rLesson').value.trim().slice(0,120)};
+   $('rBk').onclick=()=>{keep();step=1;draw()};$('rFw').onclick=()=>{keep();step=3;draw()}}
+  else{sheet(dots()+'<h3>Ближайший час</h3><p>После срыва мозг просит лечь и «добить» день. Сделай одно-два простых дела — они станут квестами возврата.</p>'
+   +chips('rFix',REPAIR.map(r=>r[0]),R.fix,true)
+   +'<p class="mut" style="font-size:12.5px;margin-top:10px">Следующие 72 часа — зона риска. На «Сегодня» будет протокол возврата, а «Тянет!» всегда под рукой.</p>'+nav('← Назад','Записать и вернуться'));
+   bind('rFix','fix',true);$('rBk').onclick=()=>{step=2;draw()};
+   $('rFw').onclick=()=>{closeSheet();relapse(src||(R.trig?R.trig.toLowerCase():''),R.lesson||'',R.trig,{first:R.first,halt:R.halt,fix:R.fix})}}}
+ draw()}
+function recovBanner(isT){const el=$('recov');if(!el)return;const on=isT&&recovOn();el.classList.toggle('hide',!on);if(!on)return;
+ const h=Math.floor((Date.now()-S.fellAt)/36e5),L=lapses().find(x=>x.at===S.fellAt)||lapses().find(x=>Math.abs(x.at-S.fellAt)<6*36e5)||{},rule=L.lesson||(L.first&&S.ifthen[L.first])||'';
+ const ms=[[24,'Сутки без второго раза'],[48,'Двое суток'],[72,'Феникс поднялся']];
+ el.innerHTML='<b>Протокол возврата · '+h+' ч из 72</b><div style="margin:6px 0;font-size:13px">'+ms.map(([n,t])=>(h>=n?'✓ ':'○ ')+t).join(' &nbsp; ')+'</div>'
+  +(rule?'<div style="font-size:13.5px">Твоё правило: <b>'+esc(rule)+'</b></div>':'<div style="font-size:13.5px">Разбери цепочку — правило появится здесь.</div>')
+  +'<div style="font-size:12.5px;opacity:.8;margin-top:4px">'+(h<24?'Главное сегодня — один раз, не два. Потянет — жми, сразу в бой.':'Самое опасное позади. Сон, движение, люди.')+'</div>';
+ el.onclick=()=>L.first||L.lesson?openFight():relapseChain(L)}
+function relapseChain(L){const R={halt:L.halt||[],first:L.first||''};sheet('<h3>Разбор срыва</h3><p class="mut" style="font-size:13px">Срыв уже отмечен, отсчёт не трогаю. Просто найди первое звено.</p>'
+ +'<div class="lbl">Состояние</div><div class="chips" id="cH">'+VULN.map(t=>'<button class="chp'+(R.halt.includes(t)?' on':'')+'" data-t="'+t+'">'+t+'</button>').join('')+'</div>'
+ +'<div class="lbl" style="margin-top:10px">Первое звено</div><div class="chips" id="cF">'+FIRSTS.map(t=>'<button class="chp'+(R.first===t?' on':'')+'" data-t="'+esc(t)+'">'+esc(t)+'</button>').join('')+'</div>'
+ +'<label class="lbl" for="cL" style="margin-top:10px">Когда это начнётся снова, я сразу…</label><textarea id="cL" rows="2">'+esc(L.lesson||'')+'</textarea><div class="row2" style="margin-top:14px"><button class="btn" id="cN">Отмена</button><button class="btn gold" id="cY">Сохранить</button></div>');
+ $('cH').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{const t=c.dataset.t;R.halt=R.halt.includes(t)?R.halt.filter(x=>x!==t):[...R.halt,t];c.classList.toggle('on')});
+ $('cF').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{R.first=R.first===c.dataset.t?'':c.dataset.t;$('cF').querySelectorAll('.chp').forEach(x=>x.classList.toggle('on',x.dataset.t===R.first));if(!$('cL').value&&FIRSTFIX[R.first])$('cL').value=FIRSTFIX[R.first]});
+ $('cN').onclick=closeSheet;$('cY').onclick=()=>{const l=$('cL').value.trim().slice(0,120),nw=!L.first&&R.first;lapseRec(S.fellAt||Date.now(),{halt:R.halt,first:R.first,lesson:l});if(l&&R.first&&R.first!=='Другое')S.ifthen[R.first]=l;if(nw)S.xp+=10;save();closeSheet();render();toast('Цепочка записана'+(nw?' · +10 XP':''))}}
+function recovTick(){if(!recovOn())return;S.recA=S.recA||{};const h=(Date.now()-S.fellAt)/36e5,k=String(S.fellAt);
+ if(h>=24&&S.recA[k]!==24&&S.recA[k]!==72){S.recA[k]=24;award(25,'wil','сутки без второго раза',{t:'Сутки после срыва без второго раза',dmg:25});toast('Сутки без второго раза · +25 XP')}
+ if(h>=72&&S.recA[k]!==72){S.recA[k]=72;award(50,'wil','феникс поднялся',{t:'72 часа после срыва: Феникс поднялся',dmg:50});toast('🔥 Феникс поднялся · +50 XP')}}
 
 /* ================= LOVE LINE ================= */
 const LOVE=[
@@ -3684,6 +3758,7 @@ function renderMe(){const el=$('drgMe');if(!el)return;const b=S.body||{};
   if(b.h&&b.w){const bmi=b.w/((b.h/100)**2);r.push(['Рост / вес',b.h+' см · '+b.w+' кг','ИМТ '+bmi.toFixed(1)+(bmi<18.5?' — недобор: ешь больше белка и калорий':bmi<21?' — худощавый: в зале качай массу, +4–6 кг мышц сделают силуэт мощнее':bmi<25?' — норма':' — выше нормы: минус жир = плюс видимая длина')])}
   out+='<div class="mer">'+r.map(x=>'<div><b>'+x[0]+'</b><em>'+esc(x[1])+'</em></div>').join('')+'</div><details class="hint"><summary>Что это значит</summary>'+r.map(x=>'<p class="mut" style="font-size:12.5px;margin:4px 0"><b style="color:var(--ink2)">'+x[0]+':</b> '+esc(x[2])+'</p>').join('');
   if(b.len>=15.5||b.gir>=13)out+='<p class="mut" style="font-size:12.5px;line-height:1.5;margin:6px 0 0"><b style="color:var(--gold)">Дракон выше среднего — значит, бережность важнее силы.</b> Много смазки, входить медленно, когда она очень возбуждена. Позы, где она управляет глубиной (наездница, ложечки, на боку), и без резких глубоких ударов в начале: шейка матки чувствительная. Спроси «так нормально?» — и она будет тебя хотеть ещё. Хвастаться размером не надо: пусть она сама скажет.</p>';out+='</details>'}
+ if(lapses().some(x=>x.first==='Фото/замеры себя'))out+='<div class="rule" style="margin:10px 0"><b>Осторожно: замеры уже были первым звеном срыва</b><span>Меряй не чаще раза в месяц, днём и не один в ванной. Цифры обновляй через Claude. Возбуждён и один — не меряй и не фоткай, сразу выходи из комнаты.</span></div>';
  el.innerHTML=out+'<details class="hint"'+(b.len?'':' open')+'><summary>'+(b.len?'Изменить':'Ввести параметры')+'</summary><p class="mut" style="font-size:12px">Можно поменять здесь или написать Claude в чат.</p><div class="megrid">'+f('len','Длина, см','например 14')+f('gir','Обхват, см','например 12')+f('h','Рост, см','например 178')+f('w','Вес, кг','например 75')+'</div><button class="btn gold" id="meOk" style="width:100%;margin-top:8px">Сохранить</button></details><button class="btn" id="meChk" style="width:100%;margin-top:10px">🩺 Чек-ап на год · '+CHK.filter(([k])=>(S.chk||{})[k]&&(Date.now()-new Date(S.chk[k]).getTime())<365*864e5).length+'/'+CHK.length+'</button><button class="btn gold" id="meRnd" style="width:100%;margin-top:10px">🎲 Сравнить со случайным мужчиной</button><button class="btn" id="meRndH" style="width:100%;margin-top:8px">⚔️ Сильный соперник (лучший из 2)</button><button class="btn" id="meRndD" style="width:100%;margin-top:8px">🐉 Батл драконов</button>';$('meRnd').onclick=()=>rndSheet();$('meRndH').onclick=()=>rndSheet(true);$('meRndD').onclick=()=>rndSheet(false,true);$('meChk').onclick=chkSheet;
  $('meOk').onclick=()=>{const g=k=>{const v=parseFloat(String($('me_'+k).value).replace(',','.'));return v>0?Math.round(v*10)/10:0};S.body={len:g('len'),gir:g('gir'),h:g('h'),w:g('w')};save();renderMe();toast('Сохранено на телефоне')}}
 /* ===== 誓 Обязательства: залог, «когда — то», минимум, резерв, подпись-печать, цепочка ===== */
@@ -3804,7 +3879,7 @@ document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.s
 
 const RULE='<div class="rule"><b>Правило пути: без порно и без мастурбации.</b><span>Срыв — порно (в т.ч. «просто посмотреть»), мастурбация, оргазм рукой, «почти до конца». <br>Не срыв — поллюция во сне, утренняя эрекция, возбуждение без действий, секс и ласки с девушкой.</span></div>';
 $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
- sheet('<h3>Начало отсчёта</h3>'+RULE+'<p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
+ sheet('<h3>Начало отсчёта</h3>'+RULE+''+(lapses().length?'<details class="hint" open><summary>Мои срывы и что их запускает</summary>'+lapseInsight()+lapses().slice(0,5).map(x=>'<p class="mut" style="font-size:12.5px;margin:4px 0">'+new Date(x.at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+' · после '+x.dd+' дн.'+(x.first?' · '+esc(x.first):'')+(x.lesson?' → <b style="color:var(--gold2)">'+esc(x.lesson)+'</b>':'')+'</p>').join('')+'</details>':'')+'<p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
  $('csNo').onclick=closeSheet;$('csYes').onclick=()=>{const t=new Date($('csIn').value).getTime();if(!t||t>Date.now())return toast('Впиши дату не позже сегодняшней');
   S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];{let k=dkey(new Date(t)),n=0;while(k<today()){if(!S.days[k]){S.days[k]='c';n++}k=shift(k,1)}if(n){award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n})}}addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
 function buffSheet(){const d=dayNum(),x=true;
@@ -3882,7 +3957,8 @@ function gearFix(){let back=0;const seen={};const keep=[];for(const it of [...S.
  S.inv=keep;S.eq={weapon:null,armor:null,amulet:null};gearHeal();if(back){S.gold+=back}return back}
 function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.applied.includes(o.id)){planPart(o,true);return null}S.applied.push(o.id);const msgs=[];
  if(o.cleanSince){const t=new Date(o.cleanSince).getTime();if(t&&t<=Date.now())S.cleanSince=t}
- if(o.relapse){const r=o.relapse,t=r.at?new Date(r.at).getTime():Date.now();if(t&&t<=Date.now()&&t>S.cleanSince){const ms=t-S.cleanSince,dd=Math.floor(ms/DAY);S.bestMs=Math.max(S.bestMs||0,ms);S.best=Math.max(S.best||0,dd);S.cleanSince=t;S.fellAt=t;S.days[dkey(new Date(t))]='f';S.fell=true;healBoss(.1);if(r.lesson&&r.trig)S.ifthen[r.trig]=r.lesson;S.xp+=5;addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+' · отмечен через Claude'+(r.lesson?' · урок: '+r.lesson:''));msgs.push('Срыв отмечен, отсчёт заново. Урок записан. +5 XP за честность')}}
+ if(o.chain&&typeof o.chain==='object'){const c=o.chain,t=c.at?new Date(c.at).getTime():S.fellAt;if(t){const L=lapses().find(x=>Math.abs(x.at-t)<6*36e5),dd=c.dd!=null?+c.dd:L?L.dd:(t===S.fellAt&&S.bestMs?Math.floor(S.bestMs/DAY):0);const r=lapseRec(L?L.at:t,{dd,first:c.first||'',halt:Array.isArray(c.halt)?c.halt:[],trig:c.trig||(L&&L.trig)||'',lesson:c.lesson||(L&&L.lesson)||''});if(r.lesson&&r.first&&r.first!=='Другое')S.ifthen[r.first]=r.lesson;msgs.push('Цепочка срыва разобрана: '+(r.first||'звено')+' → правило в бою')}}
+ if(o.relapse){const r=o.relapse,t=r.at?new Date(r.at).getTime():Date.now();if(t&&t<=Date.now()&&t>S.cleanSince){const ms=t-S.cleanSince,dd=Math.floor(ms/DAY);S.bestMs=Math.max(S.bestMs||0,ms);S.best=Math.max(S.best||0,dd);S.cleanSince=t;S.fellAt=t;S.days[dkey(new Date(t))]='f';S.fell=true;healBoss(.1);if(r.lesson&&r.trig)S.ifthen[r.trig]=r.lesson;if(r.lesson&&r.first&&r.first!=='Другое')S.ifthen[r.first]=r.lesson;lapseRec(t,{dd,trig:r.trig||'',first:r.first||'',halt:Array.isArray(r.halt)?r.halt:[],lesson:r.lesson||'',src:'claude'},1);S.xp+=5;addLog('Срыв после '+dd+' '+plural(dd,'дня','дней','дней')+' · отмечен через Claude'+(r.lesson?' · урок: '+r.lesson:''));msgs.push('Срыв отмечен, отсчёт заново. Урок записан. +5 XP за честность')}}
  let n=0;for(const[k,v]of Object.entries(o.days||{})){if(S.days[k]!==v){if(v==='c')n++;S.days[k]=v}}
  if(n)award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n});
  if(Array.isArray(o.grants)&&o.grants.length){const d=o.date||today(),key=planKey(d);let pl={tasks:[],note:'',best:''};try{const v=JSON.parse(localStorage.getItem(key)||'null');if(v)pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v}catch(e){}
