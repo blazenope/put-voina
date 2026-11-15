@@ -8,8 +8,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Путь Воина">
-<link rel="manifest" href="manifest.webmanifest?v=2">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="manifest.webmanifest?v=3">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 <link rel="preload" href="fonts/pt-sans-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/pt-serif-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <title>Путь Воина</title>
@@ -393,6 +393,82 @@ html{background:radial-gradient(circle at 88% 9%,#b8281e2e 0 70px,transparent 71
 .rm .k{font:700 18px "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;color:var(--seal);text-align:center}
 .rm .r{font:12px var(--body);color:var(--ink2);text-align:right;max-width:120px}
 .rm.done{opacity:.5}.rm.done .k{color:var(--ink3)}.rm.now{background:#b8281e14;box-shadow:inset 2px 0 var(--seal)}.rm.lock .k{opacity:.75}
+
+/* ===== Эстетика свитка: бумага васи, тушь, киноварь ===== */
+:root{--panel:#171411;--panel2:#201c18;--edge:#2e2823;--edge2:#463e35;--washi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .93 0 0 0 0 .88 0 0 0 0 .8 0 0 0 .055 0'/%3E%3C/filter%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .9 0 0 0 0 .82 0 0 0 .028 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3Crect width='180' height='180' filter='url(%23f)'/%3E%3C/svg%3E")}
+html{background:radial-gradient(120% 60% at 50% -10%,#2a1d14 0,transparent 60%),radial-gradient(circle at 88% 9%,#b8281e33 0 64px,transparent 66px),var(--bg)}
+.pnl{position:relative;background:linear-gradient(#c9a46a70,#c9a46a70) top left/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) top left/1px 16px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/1px 16px no-repeat,var(--washi),linear-gradient(180deg,#1b1714,#141210);border:1px solid var(--edge);border-radius:3px;padding:18px 16px;margin-bottom:16px}
+.pnl.gold{border-left:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--seal)}
+.ttl{border-bottom:0;padding-bottom:10px;margin-bottom:12px;background:linear-gradient(90deg,var(--edge2),transparent) bottom/100% 1px no-repeat}
+.ttl h2{font:700 20px/1.2 var(--pix);letter-spacing:.2px}
+.ttl h2::before{width:8px;height:8px;border-radius:1px;transform:rotate(45deg);box-shadow:0 0 0 3px #b8281e22}
+.dtitle{font:700 36px/1.05 var(--pix);letter-spacing:.3px}
+.dtitle::after{content:"";display:block;width:96px;height:7px;margin-top:8px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M1 6 C20 2 60 1 119 3 C90 6 50 9 1 6Z' fill='%23b8281e'/%3E%3C/svg%3E") no-repeat center/100% 100%;opacity:.9}
+.dsub{color:var(--ink3);letter-spacing:.3px}
+/* header */
+.hud{background:#0d0c0bd9!important;backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border-bottom:0!important;box-shadow:0 1px 0 #c9a46a26}
+.hud .face{border-radius:50%;box-shadow:0 0 0 1px #c9a46a55}
+.hk{display:inline-grid;place-content:center;width:22px;height:22px;margin-right:7px;vertical-align:1px;background:var(--seal);color:#f6ead4;border-radius:3px;transform:rotate(-5deg);font:700 13px/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;box-shadow:inset 0 0 0 1.5px #f6ead455}
+.gauge{height:5px;border-radius:3px;background:#0a0908;box-shadow:inset 0 0 0 1px #ffffff08}
+.gauge i{border-radius:3px}
+.g-xp i{background:linear-gradient(90deg,#5a6f3e,#a3bb72)}.g-hp i{background:linear-gradient(90deg,#8e1c14,#d0452f)}
+.g-gold i{background:linear-gradient(90deg,#8d6c3a,#e2c48e)}.g-pink i{background:linear-gradient(90deg,#7e4352,#d494a2)}
+.coins{letter-spacing:.3px}
+/* next step */
+#nextBox{box-shadow:none!important;border:1px solid var(--edge)!important;border-left:0!important;background:linear-gradient(#c9a46a70,#c9a46a70) top left/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) top left/1px 16px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/1px 16px no-repeat,var(--washi),linear-gradient(90deg,#b8281e1f,#141210 60%)!important;padding:14px 16px!important}
+#nextBox>span:first-child{font-size:0!important;display:grid;place-content:center;width:30px;height:30px;flex:none;background:var(--seal);color:#f6ead4!important;border-radius:3px;font-size:13px!important;transform:rotate(-4deg)}
+#buffBox{background:linear-gradient(#c9a46a70,#c9a46a70) top left/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) top left/1px 16px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/1px 16px no-repeat,var(--washi),linear-gradient(180deg,#1c1614,#141210)!important;box-shadow:inset 3px 0 0 #c27a8a!important;border:1px solid var(--edge)!important}
+#buffBox h2{color:#d9a0ac!important}
+/* calendar: ensō around the chosen day */
+.days{gap:4px}
+.db{background:transparent!important;box-shadow:none!important;border-radius:0;padding:6px 0 7px}
+.db small{font-size:11px;letter-spacing:.4px;color:var(--ink3)}
+.db b{font:700 19px/1.25 var(--pix);color:var(--ink2)}
+.db.sel{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M58 9 C82 13 95 36 90 60 C85 84 60 96 38 89 C15 82 4 58 11 36 C16 21 28 12 41 9' fill='none' stroke='%23e8e0cf' stroke-width='6.5' stroke-linecap='round' opacity='.92'/%3E%3Cpath d='M41 9 C47 8 52 8 57 9' fill='none' stroke='%23e8e0cf' stroke-width='2.5' stroke-linecap='round' opacity='.5'/%3E%3C/svg%3E") no-repeat center 72%/42px 42px!important;color:var(--ink)}
+.db.sel b{color:var(--paper)}.db.sel small{color:var(--ink2)}
+.db.today:not(.sel) b{color:#e0563f}
+.db i{width:5px;height:5px}
+.wk{background:transparent;color:var(--ink3)}
+/* quests: ink circle -> vermilion seal 済 */
+.task{border-bottom:1px solid #ffffff0a;padding:13px 0;gap:12px}
+.task input{width:26px;height:26px;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink3)}
+.task input:checked{border-radius:4px;background:var(--seal);box-shadow:inset 0 0 0 1.5px #f6ead450;transform:rotate(-7deg);animation:stamp .34s cubic-bezier(.2,1.4,.4,1)}
+.task input:checked::after{content:"済";font:700 15px/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;color:#f6ead4}
+#nextBox>span:first-child::after{content:"次";font:700 16px/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif}
+@keyframes stamp{0%{transform:scale(1.9) rotate(-18deg);opacity:0}60%{opacity:1}100%{transform:scale(1) rotate(-7deg)}}
+.task .t{font:400 15.5px/1.45 var(--body);letter-spacing:.1px}
+.task.done .t{color:var(--ink3)}
+.task .rw{font-variant-numeric:tabular-nums}
+.chip{background:transparent!important;box-shadow:inset 0 0 0 1px currentColor;border-radius:3px;font:600 11px var(--body);padding:3px 7px;opacity:.9}
+.chip.c-str::before{content:"力 "}.chip.c-int::before{content:"知 "}.chip.c-cha::before{content:"心 "}.chip.c-wil::before{content:"志 "}
+.chip::before{font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;font-weight:700}
+/* buttons */
+.btn{border-radius:3px;letter-spacing:.3px;box-shadow:inset 0 0 0 1px var(--edge2)}
+.btn.gold{background:var(--washi),linear-gradient(180deg,#efe6d4,#ddd2bc);color:#1b1712;box-shadow:inset 0 -2px 0 #0000001f}
+.btn.red{background:linear-gradient(180deg,#c6301f,#a3231a);box-shadow:inset 0 -2px 0 #0000002e}
+.btn.blue{background:linear-gradient(180deg,#36485f,#2a394c)}
+.add input,textarea{background:#0f0d0b;border-radius:3px}
+/* bottom nav: kanji, the active one becomes a seal */
+.nav{background:#0d0c0be0!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:0!important;box-shadow:0 -1px 0 #c9a46a26}
+.nav button{gap:2px;padding:7px 0 6px;font:600 10.5px var(--body);letter-spacing:.3px;color:var(--ink3)}
+.nav button .nk{display:grid;place-content:center;width:32px;height:32px;border-radius:4px;font:700 20px/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;color:var(--ink2);transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s}
+.nav button.on{color:var(--ink)}
+.nav button.on .nk{background:var(--seal);color:#f6ead4;transform:rotate(-5deg);box-shadow:inset 0 0 0 1.5px #f6ead450}
+.nav button:active .nk{transform:scale(.88)}
+/* sheets: an unrolled scroll */
+.sheet-bg{background:#050403b8;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sheet{background:var(--washi),linear-gradient(180deg,#1d1915,#141210);border-top:8px solid #2a1d13;border-radius:4px 4px 0 0;box-shadow:0 -1px 0 #c9a46a80,inset 0 1px 0 #c9a46a4d}
+.sheet h3{font:700 23px var(--pix);letter-spacing:.2px}
+.lootl{list-style:none;margin:6px 0 16px;padding:0;display:grid;gap:8px;text-align:left}
+.lootl li{position:relative;padding:8px 10px 8px 26px;background:#ffffff06;border-radius:3px;font:14px/1.45 var(--body);color:var(--ink2)}
+.lootl li::before{content:"";position:absolute;left:10px;top:15px;width:6px;height:6px;background:var(--seal);transform:rotate(45deg)}
+.toast{background:var(--washi),#231e19;box-shadow:inset 0 0 0 1px #c9a46a55;border-radius:3px}
+summary{font:700 16px var(--pix)}
+.kotoba{background:var(--washi),#1e1a16}
+/* sakura */
+#sakura{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+#sakura i{position:absolute;top:-6vh;width:10px;height:7px;border-radius:70% 0 70% 0;background:linear-gradient(135deg,#f6c9c3,#d98f8a);opacity:.5;animation:petal linear infinite}
+@keyframes petal{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(18px,28vh) rotate(110deg)}50%{transform:translate(-14px,56vh) rotate(220deg)}75%{transform:translate(20px,84vh) rotate(320deg)}100%{transform:translate(-6px,112vh) rotate(420deg)}}
 </style>
 </head>
 <body>
@@ -702,6 +778,7 @@ html{background:radial-gradient(circle at 88% 9%,#b8281e2e 0 70px,transparent 71
 <!-- ================= SHEET ================= -->
 <div class="sheet-bg hide" id="sheet"><div class="sheet" id="sheetIn"></div></div>
 <div class="toast" id="toast" role="status"></div>
+<div id="sakura" aria-hidden="true"><i style="left:8%;animation-duration:26s;animation-delay:-3s"></i><i style="left:22%;animation-duration:34s;animation-delay:-17s;transform:scale(.8)"></i><i style="left:41%;animation-duration:29s;animation-delay:-9s"></i><i style="left:63%;animation-duration:38s;animation-delay:-25s"></i><i style="left:78%;animation-duration:31s;animation-delay:-5s"></i><i style="left:91%;animation-duration:27s;animation-delay:-20s"></i></div>
 
 <script>
 'use strict';
@@ -1140,7 +1217,7 @@ const offersWeek=()=>seedPick(weekStart()+'o',3,OFFERS.length);
 function checkAch(){for(const a of ACHS)if(!S.ach.includes(a[0])&&a[3](S)){S.ach.push(a[0]);S.xp+=30;S.gold+=20;S.goldTotal+=20;addLog('Достижение: '+a[1]);setTimeout(()=>toast('Достижение: '+a[1]+' · +30 XP · +20 золота'),1500)}}
 
 /* ================= RENDER ================= */
-function renderHUD(){const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);$('hudRank').textContent=rankOf(li.l)[1];$('hudLvl').textContent='ур. '+li.l+' · '+li.cur+'/'+li.need;
+function renderHUD(){const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);{const rk=rankOf(li.l);$('hudRank').innerHTML='<i class="hk" lang="ja">'+rk[2][0]+'</i>'+esc(rk[1])}$('hudLvl').textContent='ур. '+li.l+' · '+li.cur+'/'+li.need;
  $('hudXp').style.width=(li.cur/li.need*100)+'%';const bf=[S.buffXp>Date.now()?'<span style="color:var(--xp)">×2XP</span>':'',S.buffDmg>Date.now()?'<span style="color:var(--hp)">×2⚔</span>':'',S.buffGold>Date.now()?'<span style="color:var(--gold2)">×2з</span>':''].join(' ');
  $('hudGold').innerHTML=(bf?'<span style="font:600 11px var(--body);margin-right:4px">'+bf+'</span>':'')+coin(2.5)+'<span>'+S.gold+'</span>'}
 function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
@@ -1510,7 +1587,7 @@ function closeSheet(){const s=$('sheet');if(s.classList.contains('hide'))return;
 $('sheet').onclick=e=>{if(e.target===$('sheet'))closeSheet()};
 const LQ=[];function lootSheet(title,it,txt){LQ.push([title,it,txt]);if($('sheet').classList.contains('hide'))nextLoot()}
 function nextLoot(){const q=LQ.shift();if(q)showLoot(q[0],q[1],q[2])}
-function showLoot(title,it,txt){(it?SFX.chest:SFX.win)();sheet('<div class="loot">'+(it?'<div class="spr">'+icon(it.k,RCOL[it.r],9)+'</div><b class="t'+it.r+'" style="font-size:20px">'+esc(it.n)+'</b><span class="t'+it.r+'">'+RARITY[it.r][0]+' · +'+RARITY[it.r][1]+'% '+SLOTS[it.k][1]+'</span>':'<div class="spr">'+icon('star','#f0b541',8)+'</div>')+'</div><h3 style="text-align:center">'+esc(title)+'</h3>'+(txt?'<p style="text-align:center">'+esc(txt)+'</p>':'')+'<button class="btn gold" id="lOk" style="width:100%">Отлично</button>');$('lOk').onclick=closeSheet}
+function showLoot(title,it,txt){(it?SFX.chest:SFX.win)();sheet('<div class="loot">'+(it?'<div class="spr">'+icon(it.k,RCOL[it.r],9)+'</div><b class="t'+it.r+'" style="font-size:20px">'+esc(it.n)+'</b><span class="t'+it.r+'">'+RARITY[it.r][0]+' · +'+RARITY[it.r][1]+'% '+SLOTS[it.k][1]+'</span>':'<div class="spr">'+icon('star','#f0b541',8)+'</div>')+'</div><h3 style="text-align:center">'+esc(title)+'</h3>'+(txt?(()=>{const p=String(txt).split(/\.\s+(?=[А-ЯЁA-Z0-9+])/).map(s=>s.trim().replace(/\.$/,'')).filter(Boolean);return p.length>2?'<ul class="lootl">'+p.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ul>':'<p style="text-align:center">'+esc(txt)+'</p>'})():'')+'<button class="btn gold" id="lOk" style="width:100%">Отлично</button>');$('lOk').onclick=closeSheet}
 function itemSheet(it){if(!it)return;const eq=S.eq[it.k]===it.id,sell=RARITY[it.r][2];
  sheet('<div class="loot"><div class="spr">'+icon(it.k,RCOL[it.r],8)+'</div><b class="t'+it.r+'" style="font-size:20px">'+esc(it.n)+'</b><span class="t'+it.r+'">'+RARITY[it.r][0]+' · '+SLOTS[it.k][0]+' · +'+RARITY[it.r][1]+'% '+SLOTS[it.k][1]+'</span></div>'
  +'<div class="row2"><button class="btn'+(eq?'':' gold')+'" id="iEq">'+(eq?'Снять':'Надеть')+'</button><button class="btn" id="iSell">Продать · '+sell+'</button></div><button class="linkbtn" id="iClose" style="display:block;margin:14px auto 0">Закрыть</button>');
@@ -1575,7 +1652,7 @@ $('weekBtn').onclick=()=>{const days=[];for(let i=6;i>=0;i--)days.push(shift(tod
 
 /* ================= WIRING ================= */
 const NAV=[['day','День','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Поход','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2'],['log','Летопись','M4 2h7l2 2v10H4z M6 6h5 M6 9h5 M6 12h3']];
-$('nav').innerHTML=NAV.map(([k,n,d])=>'<button data-s="'+k+'"><svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" shape-rendering="crispEdges" stroke-linejoin="miter"><path d="'+d+'"/></svg>'+n+'</button>').join('');
+const NAVK={day:'日',quest:'旅',hero:'侍',shop:'店',log:'記'};$('nav').innerHTML=NAV.map(([k,n])=>'<button data-s="'+k+'"><b class="nk" lang="ja">'+NAVK[k]+'</b>'+n+'</button>').join('');
 function go(s){SFX.tap();document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.s===s));['day','quest','hero','shop','log'].forEach(k=>$('s-'+k).classList.toggle('hide',k!==s));window.scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.s));
 

@@ -1,5 +1,5 @@
-const VER='pv-v10', FONTS='pv-fonts';
-const FILES=['./','./index.html','./manifest.webmanifest?v=2','./icon-192.png?v=2','./icon-512.png?v=2','./apple-touch-icon.png?v=2','./fonts/pt-serif-cyrillic-400-normal.woff2','./fonts/pt-serif-cyrillic-700-normal.woff2','./fonts/pt-serif-latin-400-normal.woff2','./fonts/pt-serif-latin-700-normal.woff2','./fonts/pt-sans-cyrillic-400-normal.woff2','./fonts/pt-sans-cyrillic-700-normal.woff2','./fonts/pt-sans-latin-400-normal.woff2','./fonts/pt-sans-latin-700-normal.woff2',];
+const VER='pv-v11', FONTS='pv-fonts';
+const FILES=['./','./index.html','./manifest.webmanifest?v=3','./icon-192.png?v=3','./icon-512.png?v=3','./apple-touch-icon.png?v=3','./fonts/pt-serif-cyrillic-400-normal.woff2','./fonts/pt-serif-cyrillic-700-normal.woff2','./fonts/pt-serif-latin-400-normal.woff2','./fonts/pt-serif-latin-700-normal.woff2','./fonts/pt-sans-cyrillic-400-normal.woff2','./fonts/pt-sans-cyrillic-700-normal.woff2','./fonts/pt-sans-latin-400-normal.woff2','./fonts/pt-sans-latin-700-normal.woff2',];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VER).then(c=>c.addAll(FILES.map(u=>new Request(u,{cache:'reload'})))));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VER).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
