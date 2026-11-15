@@ -1046,6 +1046,7 @@ summary{font:700 16px var(--pix)}
 .mer{display:grid;grid-template-columns:1fr 1fr;gap:6px}.mer>div{padding:7px 10px;border-radius:10px;background:var(--panel2);border:1px solid var(--edge)}.mer b{display:block;font:600 12px var(--body);color:var(--ink3)}.mer em{display:block;font:700 14px var(--body);font-style:normal;color:var(--ink)}.mer small{display:block;font:12px/1.4 var(--body);color:var(--ink2);margin-top:2px}
 .megrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mef span{display:block;font:600 11.5px var(--body);color:var(--ink3);margin-bottom:3px}.mef input{width:100%;box-sizing:border-box;padding:9px 10px;border-radius:9px;border:1px solid var(--edge2);background:var(--panel2);color:var(--ink);font:15px var(--body)}
 .rule{margin:6px 0 12px;padding:10px 12px;border-radius:10px;border:1px solid #a8323e88;background:rgba(168,50,62,.12)}.rule b{display:block;font:700 13.5px var(--body);color:#ff8fa3;margin-bottom:3px}.rule span{font:12.5px/1.45 var(--body);color:var(--ink2)}
+.snote{margin:10px 0 0;padding:10px 12px;border-left:2px solid #8db8ff;background:rgba(141,184,255,.08);font:italic 14px/1.45 var(--body);color:var(--ink)}.snote small{display:block;font:600 11.5px var(--body);font-style:normal;color:var(--ink3);margin-bottom:2px}
 </style>
 </head>
 <body>
@@ -1396,19 +1397,22 @@ summary{font:700 16px var(--pix)}
     <div class="arena"><div class="spr" id="sSpr0"></div></div>
     <div class="pnl"><div class="lbl">Насколько сильно сейчас?</div><div class="scale" id="sFrom"></div>
       <div class="lbl">Что за буря</div><div class="chips" id="sEmo"></div></div>
+    <div id="sHelp"></div>
     <button class="btn blue" id="sGo" style="width:100%;margin-top:16px" disabled>В бой со штормом</button>
     <p style="text-align:center;margin-top:14px"><button class="linkbtn" id="sX1">Нажал случайно</button></p>
   </div>
   <div id="sB" class="hide">
     <div class="arena"><div class="spr" id="sSpr"></div><div class="gauge g-mp" style="width:70%;margin-top:6px"><i id="sHp"></i></div><div class="mut" id="sHpTxt" style="margin-top:4px;font-size:13px"></div></div>
     <div class="pnl act"><div class="lbl" id="sLbl"></div><b id="sTitle" style="color:#8db8ff"></b><div class="why" id="sText" style="margin:-4px 0 14px"></div>
-      <div class="row2"><button class="btn blue" id="sDo">Сделал</button><button class="btn" id="sSkip">Пропустить</button></div></div>
+      <div class="row2"><button class="btn blue" id="sDo">Сделал</button><button class="btn" id="sSkip">Пропустить</button></div><button class="btn red hide" id="sFight" style="width:100%;margin-top:10px">Бой с тягой — 90 секунд</button></div>
     <div class="banner" style="font:13px/1.45 var(--body)">Если есть мысли причинить себе вред — Telefonseelsorge <b>0800 111 0 111</b> или <b>0800 111 0 222</b> (бесплатно, круглосуточно). В опасности — <b>112</b>.</div>
     <p style="text-align:center;margin-top:14px"><button class="linkbtn" id="sX2">Выйти</button></p>
   </div>
   <div id="sC" class="hide">
     <div class="arena"><div class="spr" id="sSpr2"></div></div>
-    <div class="pnl"><div class="lbl">А сейчас насколько сильно?</div><div class="scale" id="sTo"></div></div>
+    <div class="pnl"><div class="lbl">А сейчас насколько сильно?</div><div class="scale" id="sTo"></div>
+      <div class="lbl">Что помогло больше всего?</div><div class="chips" id="sWhat"></div>
+      <div class="lbl">Записка себе в следующий шторм</div><input type="text" id="sNote" maxlength="200" placeholder="Например: это проходит, ты уже справлялся" style="width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid var(--edge2);background:var(--panel2);color:var(--ink);font:14px var(--body)"></div>
     <button class="btn gold" id="sEnd" style="width:100%;margin-top:16px" disabled>Шторм утих</button>
   </div>
 </div></div>
@@ -2506,7 +2510,33 @@ const STORM=[['Стоп','Замри. Не говори и не пиши нич�
  ['Противоположное действие','Хочется закрыться — напиши кому-то. Хочется наорать — уйди и сделай что-то руками. Хочется всё бросить — сделай одно маленькое дело.',15],
  ['Успокой 5 чувств','Тёплый чай, душ, музыка, приятный запах, плед. Позаботься о себе как о друге.',10],
  ['Принятие','«Сейчас так. Мне это не нравится, но я могу это выдержать». Борьба с реальностью добавляет боли сверху.',5]];
-const EMO=['Злость','Тревога','Пустота','Обида','Стыд','Одиночество','Ревность','Другое'];
+const EMOX={
+ 'Злость':[['Выпусти пар телом','Отжимания или приседания до жжения, подушку в кулаки, быстрая ходьба 10 минут. Тело переработает адреналин. Никаких сообщений, пока злость выше 5.'],['Тише и медленнее','Говори тише и медленнее, чем хочется. Злость на человека? Напиши черновик и не отправляй до утра.']],
+ 'Тревога':[['Земля под ногами','5–4–3–2–1: назови 5 вещей, которые видишь, 4 — которые слышишь, 3 — что чувствует тело, 2 запаха, 1 вкус. Тревога живёт в будущем, это возвращает в «сейчас».'],['Один шаг на завтра','Тревожит переезд, Jobcenter, деньги? Выпиши каждую тревогу и одно действие на завтра для неё. Остальное — не сегодня.']],
+ 'Пустота':[['Подвинь телом','Пустоту не передумать — её двигают телом: умыться холодной водой, выйти на улицу на 10 минут, нормально поесть.'],['Один контакт','Напиши одному человеку что угодно: мем, «как ты?». Пустота сжимается от живого контакта.']],
+ 'Обида':[['Чего я хотел?','Обида — это неудовлетворённая потребность. Чего я на самом деле хотел: уважения, внимания, честности? Можно ли попросить это прямо?'],['Сутки на решение','Не мсти и не закрывайся. Дай себе сутки, потом реши, говорить ли. Решения на пике обиды почти всегда плохие.']],
+ 'Стыд':[['Как с другом','Что бы ты сказал другу, который сделал то же самое? Скажи это себе вслух. Не «я плохой», а «я ошибся и могу исправить».'],['Одно исправление','Есть что исправить — сделай одно маленькое действие. Нечего — отпусти. Ты человек, а не ошибка.']],
+ 'Одиночество':[['Это ситуация, не ты','Переезд в новую страну почти у всех даёт волну одиночества в первые месяцы. Это про ситуацию, а не про тебя, и она меняется.'],['Мост к людям','Напиши другу, найди тандем, Stammtisch, бег-клуб или боулдеринг. Одно действие сегодня — и ты уже строишь свою жизнь здесь.']],
+ 'Ревность':[['Факты против кино','Что я знаю точно, а что дорисовал? Ревность снимает фильм в голове — вернись к фактам.'],['Энергию в себя','Сравнение — ловушка. Вспомни 3 вещи, которые делают тебя тобой, и вложи энергию в себя: зал, видео, немецкий.']],
+ 'Jobcenter и бумаги':[['Разбей на куски','Бюрократия пугает размером. Выпиши: что от меня хотят, какой срок, первое действие на 15 минут. Всё остальное — потом.'],['Решаемо','Письма Jobcenter написаны страшным языком, но почти всё решаемо. Спроси в Beratungsstelle, у Claude или знакомых. Отметь дело в таблице — и выдохни.']],
+ 'Немецкий не идёт':[['Плато — это норма','В языке бывают недели, когда кажется, что стоишь на месте. Мозг в это время укладывает выученное. B1→B2 — это месяцы, не дни.'],['Минимум на сегодня','10 карточек или 5 минут подкаста. Маленький шаг сохраняет серию и уверенность.']],
+ 'Тоска по дому':[['Пусть грусть будет','Скучать по дому, людям, языку — нормально. Это значит, что тебе было что любить.'],['Дом с собой','Позвони близким, приготовь привычную еду, включи музыку из дома. А потом одно маленькое дело для новой жизни здесь.']],
+ 'Тянет к порно':[['Это волна тяги','Тяга часто приходит под видом эмоции: скука, одиночество, стресс. Сильнее всего сейчас — Бой с тягой, 90 секунд.'],['Убери доступ','Телефон в другую комнату, выйди из дома или в душ. Правило пути: без порно и без мастурбации. Просто продержись 15 минут — волна спадёт.']],
+ 'Усталость':[['Сначала бак','Голоден, хочешь спать, весь день за экраном? Многие бури — это пустой бак. Еда, вода, сон, а решения потом.'],['Можно минимум','Сегодня можно сделать минимум. Отдых — не слабость, а заправка.']],
+ 'Другое':[['Что мне нужно?','Безопасность, отдых, контакт, движение или тишина? Выбери одно и дай себе это.'],['Пять минут','Одно действие на 5 минут, которое сделает вечер чуть лучше.']]};
+let sSteps=[],sDoneL=[];
+function stormSteps(){const e=sEmoV||'Другое',x=EMOX[e]||EMOX['Другое'];return [
+ ['Стоп','Замри. Не говори и не пиши ничего важного. Шаг назад и один медленный выдох. Пик эмоции длится минуты.',15],
+ ['Остуди тело','Холодная вода на лицо или холод к запястьям на 30 секунд. Потом медленно: вдох 4, выдох 6. Не дыши часто и глубоко.',20],
+ ['Назови чувство','Скажи себе: «Я сейчас чувствую '+(sEmoV&&sEmoV!=='Другое'?sEmoV.toLowerCase():'___')+', и это пройдёт». Названная эмоция слабеет.',15],
+ [x[0][0],x[0][1],20],[x[1][0],x[1][1],15],
+ ['Позаботься о себе','Тёплый чай, душ, музыка, плед, приятный запах. Позаботься о себе как о лучшем друге.',10],
+ ['Принятие','«Сейчас так. Мне это не нравится, но я могу это выдержать». Борьба с реальностью добавляет боли сверху.',5]]}
+function stormHelpHTML(){const h=S.stormHelp||{},top=Object.entries(h).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);let o='';
+ if(S.stormNote)o+='<div class="snote"><small>Ты написал себе в прошлый раз:</small>«'+esc(S.stormNote)+'»</div>';
+ if(top.length)o+='<p class="mut" style="font-size:12.5px;margin:6px 0 0">Тебе обычно помогает: <b style="color:#8db8ff">'+top.map(esc).join(' · ')+'</b></p>';
+ if(S.storms)o+='<p class="mut" style="font-size:12px;margin:4px 0 0">Ты уже пережил '+S.storms+' '+plural(S.storms,'шторм','шторма','штормов')+'. И этот переживёшь.</p>';return o}
+const EMO=Object.keys(EMOX);
 let sI=0,sHp=100,sFromV=0,sToV=0,sEmoV='',sDone=0;
 function cloudSVG(s,hp){const c=hp>60?'#5f6c92':hp>30?'#8797c0':'#c5d2f2',w=18*s;
  return '<svg class="art" viewBox="0 0 120 90" width="'+w+'" height="'+(w*.75)+'"><path d="M22 52 C10 52 6 40 14 33 C14 20 30 14 40 22 C46 8 70 6 78 22 C92 16 108 26 104 40 C114 44 112 58 100 58 L26 58 C24 58 23 55 22 52Z" fill="'+c+'"/>'
@@ -2515,17 +2545,17 @@ function cloudSVG(s,hp){const c=hp>60?'#5f6c92':hp>30?'#8797c0':'#c5d2f2',w=18*s
   +(hp>0?[30,46,62,78,94].map((x,i)=>'<path d="M'+x+' 64 l-4 '+(8+hp/10)+'" stroke="#86aaff" stroke-width="2" stroke-linecap="round" opacity="'+(.3+hp/150)+'"/>').join(''):'')
   +(hp>30?'<path d="M60 58 L52 72 L60 72 L54 86" stroke="#ffd27a" stroke-width="3" fill="none" stroke-linejoin="round"/>':'')+'</svg>'}
 function stormShow(n){['sA','sB','sC'].forEach((id,i)=>$(id).classList.toggle('hide',i!==n))}
-function stormSheet(){SFX.open();sI=0;sHp=100;sFromV=0;sToV=0;sEmoV='';sDone=0;stormShow(0);$('sStep').textContent='';$('sGo').disabled=true;
+function stormSheet(){SFX.open();sI=0;sHp=100;sFromV=0;sToV=0;sEmoV='';sDone=0;sDoneL=[];stormShow(0);$('sHelp').innerHTML=stormHelpHTML();$('sStep').textContent='';$('sGo').disabled=true;
  $('sSpr0').innerHTML=cloudSVG(7,100);scale($('sFrom'),n=>{sFromV=n;$('sGo').disabled=false});chips($('sEmo'),EMO,v=>sEmoV=v);
  $('storm').classList.remove('hide');document.body.style.overflow='hidden'}
-function stormStep(){const st=STORM[sI];$('sStep').textContent='шаг '+(sI+1)+' из '+STORM.length;$('sLbl').textContent='Навык '+(sI+1);$('sTitle').textContent=st[0];$('sText').textContent=st[1];
+function stormStep(){const st=sSteps[sI];$('sStep').textContent='шаг '+(sI+1)+' из '+sSteps.length;$('sFight').classList.toggle('hide',sEmoV!=='Тянет к порно');$('sLbl').textContent='Навык '+(sI+1);$('sTitle').textContent=st[0];$('sText').textContent=st[1];
  $('sSpr').innerHTML=cloudSVG(7,sHp);$('sHp').style.width=sHp+'%';$('sHpTxt').textContent='Сила шторма: '+sHp+'%'}
-function stormNext(hit){if(hit){sHp=Math.max(0,sHp-STORM[sI][2]);sDone++;SFX.hit();floatTxt('-'+STORM[sI][2],'#8db8ff')}else SFX.tap();
- sI++;if(sI>=STORM.length){stormShow(2);$('sStep').textContent='финал';$('sSpr2').innerHTML=cloudSVG(7,sHp);$('sEnd').disabled=true;scale($('sTo'),n=>{sToV=n;$('sEnd').disabled=false})}else stormStep()}
+function stormNext(hit){if(hit){sHp=Math.max(0,sHp-sSteps[sI][2]);sDone++;sDoneL.push(sSteps[sI][0]);SFX.hit();floatTxt('-'+sSteps[sI][2],'#8db8ff')}else SFX.tap();
+ sI++;if(sI>=sSteps.length){stormShow(2);$('sStep').textContent='финал';$('sSpr2').innerHTML=cloudSVG(7,sHp);$('sEnd').disabled=true;scale($('sTo'),n=>{sToV=n;$('sEnd').disabled=false});S._sw=[];$('sWhat').innerHTML=sDoneL.map(t=>'<button class="chp" data-w="'+esc(t)+'">'+esc(t)+'</button>').join('')||'<span class="mut" style="font-size:12.5px">Ты пропустил все шаги — тоже бывает.</span>';$('sWhat').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{c.classList.toggle('on')});$('sNote').value=''}else stormStep()}
 function closeStorm(){$('storm').classList.add('hide');document.body.style.overflow=''}
-$('sGo').onclick=()=>{stormShow(1);stormStep()};$('sDo').onclick=()=>stormNext(true);$('sSkip').onclick=()=>stormNext(false);
+$('sGo').onclick=()=>{sSteps=stormSteps();stormShow(1);stormStep()};$('sFight').onclick=()=>{closeStorm();setTimeout(()=>{try{openFight()}catch(e){}},200)};$('sDo').onclick=()=>stormNext(true);$('sSkip').onclick=()=>stormNext(false);
 $('sX1').onclick=closeStorm;$('sX2').onclick=closeStorm;
-$('sEnd').onclick=()=>{closeStorm();S.storms=(S.storms||0)+1;S.stormLog=(S.stormLog||[]).concat({ts:Date.now(),from:sFromV,to:sToV,emo:sEmoV,done:sDone}).slice(-100);
+$('sEnd').onclick=()=>{S.stormHelp=S.stormHelp||{};$('sWhat').querySelectorAll('.chp.on').forEach(c=>S.stormHelp[c.dataset.w]=(S.stormHelp[c.dataset.w]||0)+1);{const n=$('sNote').value.trim();if(n)S.stormNote=n.slice(0,200)}closeStorm();S.storms=(S.storms||0)+1;S.stormLog=(S.stormLog||[]).concat({ts:Date.now(),from:sFromV,to:sToV,emo:sEmoV,done:sDone}).slice(-100);
  if(sEmoV){S.emo=S.emo||{};S.emo[sEmoV]=(S.emo[sEmoV]||0)+1}cheer(15);addLog('Шторм утих: '+sFromV+' → '+sToV+(sEmoV?' · '+sEmoV.toLowerCase():''));
  award(20+sDone*5,'wil','шторм пережит',{dmg:20+sDone*5});save();render();
  setTimeout(()=>lootSheet('Шторм утих!',null,(sToV<sFromV?'С '+sFromV+' до '+sToV+'. ':'')+'Ты прожил сильное чувство и не дал ему управлять собой. Это навык, и он растёт с каждым разом.'),400)};
