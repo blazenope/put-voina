@@ -1240,7 +1240,7 @@ summary{font:700 16px var(--pix)}
       <div class="fbar"><span>Тень тяги</span><div class="gauge g-hp"><i id="fHp"></i></div><b id="fHpN"></b></div>
       <div class="foe" id="foe"><div class="spr" id="fSpr"></div></div>
       <div class="fcombo" id="fCombo"></div>
-      <div class="whisper hide" id="fWh"><div class="wl">Тень шепчет:</div><div class="wq" id="fWhQ"></div><div class="wt"><i id="fWhT"></i></div><div class="wa" id="fWhA"></div></div>
+      <div class="whisper hide" id="fWh"><div class="wl">Тень шепчет: <small style="opacity:.6;font-weight:600">· тапни текст — +8 сек</small></div><div class="wq" id="fWhQ"></div><div class="wt"><i id="fWhT"></i></div><div class="wa" id="fWhA"></div></div>
       <div class="fbar me"><span>Твоя воля</span><div class="gauge g-xp"><i id="fWill"></i></div><b id="fTimer">0:00</b></div>
     </div>
     <div class="fhint" id="fHint">Бей по тени — тапай! Реальные действия и дыхание бьют сильнее.</div>
@@ -2451,10 +2451,10 @@ $('foe').onpointerdown=e=>{if(!FB||FB.done)return;e.preventDefault();const n=Dat
  FB.combo=n-FB.last<900?FB.combo+1:1;FB.last=n;FB.maxC=Math.max(FB.maxC,FB.combo);const cr=Math.random()<.08,stun=FB.stun>n;let d=(2+Math.random()*2.5)*(1+Math.min(FB.combo,30)/15)*(cr?3:1)*(stun?.3:1);
  const s=document.createElement('i');s.className='spark';s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),320);
  if(cr){SFX.crit();buzz()}else{wood(900+Math.min(FB.combo,20)*40,0,.05);if(FB.combo%3===0)buzz()}fDmg(d,e.clientX,e.clientY,cr?'cr':'')};
-function fWhisper(){const w=WHISPERS[Math.floor(Math.random()*WHISPERS.length)],ok=Math.random()<.5;FB.wh={w,until:Date.now()+7000};$('fWhQ').textContent='«'+w[0]+'»';
+function fWhisper(){const w=WHISPERS[Math.floor(Math.random()*WHISPERS.length)],ok=Math.random()<.5;const dur=Math.min(22000,8000+(w[0].length+w[1].length+w[2].length)*45);FB.wh={w,until:Date.now()+dur,dur,ext:false};$('fWhQ').textContent='«'+w[0]+'»';$('fWhQ').onclick=()=>{if(!FB||!FB.wh||FB.wh.ext)return;FB.wh.ext=true;FB.wh.until+=8000;FB.wh.dur+=8000;fHint('+8 секунд на подумать');buzz()};
  $('fWhA').innerHTML=(ok?[w[1],w[2]]:[w[2],w[1]]).map(t=>'<button data-t="'+(t===w[1]?1:0)+'">'+esc(t)+'</button>').join('');$('fWh').classList.remove('hide');SFX.whoosh();
  $('fWhA').querySelectorAll('button').forEach(b=>b.onclick=()=>fParry(b.dataset.t==='1'))}
-function fParry(good){if(!FB||!FB.wh)return;const w=FB.wh.w;FB.wh=null;$('fWh').classList.add('hide');FB.nextWh=Date.now()+(FB.p2?7000:10000);const r=$('foe').getBoundingClientRect();
+function fParry(good){if(!FB||!FB.wh)return;const w=FB.wh.w;FB.wh=null;$('fWh').classList.add('hide');FB.nextWh=Date.now()+(FB.p2?11000:15000);const r=$('foe').getBoundingClientRect();
  if(good){FB.par++;S.parTot=(S.parTot||0)+1;FB.will=Math.min(100,FB.will+6);SFX.parry();buzz();fDmg(45+Math.min(FB.combo,20),r.left+r.width/2,r.top+r.height*.35,'cr');fHint('Парировал! Правда сильнее шёпота.')}
  else{FB.miss++;FB.will=Math.max(hasP('stoic')?30:0,FB.will-18);FB.hp=Math.min(FB.mx,FB.hp+Math.round(FB.mx*.04));SFX.err();const f=document.createElement('div');f.className='flash';document.body.appendChild(f);setTimeout(()=>f.remove(),520);fHint('Правда: '+w[1]);
   if(FB.will<=0){FB.stun=Date.now()+4000;FB.will=40;$('arena').classList.add('stun');setTimeout(()=>$('arena').classList.remove('stun'),4000);fHint('Оглушён на 4 сек. Сделай реальное действие или подыши — это снимает оглушение.')}}fTick()}
@@ -2462,7 +2462,7 @@ $('fBreath').onclick=()=>{if(!FB||FB.done||fBr)return;const b=$('fBreath'),t0=Da
  fBr=setInterval(()=>{const e=(Date.now()-t0)/1000;if(!FB||FB.done){clearInterval(fBr);fBr=null;return}b.style.setProperty('--p',Math.min(100,e/10*100)+'%');b.textContent=e<4?'Вдох носом… '+Math.ceil(4-e):e<10?'Медленный выдох… '+Math.ceil(10-e):'';
   if(e>=10){clearInterval(fBr);fBr=null;b.disabled=false;b.style.setProperty('--p','0%');b.textContent='Ещё раз: дыхание 4 · 6';FB.stun=0;$('arena').classList.remove('stun');FB.will=Math.min(100,FB.will+10);const r=$('foe').getBoundingClientRect();fDmg(70,r.left+r.width/2,r.top+r.height/2,'big');SFX.parry()}},100)};
 function fTick(){if(!FB)return;const n=Date.now(),el=Math.floor((n-FB.t0)/1000);
- if(!FB.done){if(n-FB.lastDmg>3000)FB.hp=Math.min(FB.mx,FB.hp+FB.mx*.0012);if(!FB.wh&&n>=FB.nextWh)fWhisper();if(FB.wh){const k=(FB.wh.until-n)/7000;$('fWhT').style.width=Math.max(0,k*100)+'%';if(k<=0)fParry(false)}}
+ if(!FB.done){if(n-FB.lastDmg>3000&&!FB.wh)FB.hp=Math.min(FB.mx,FB.hp+FB.mx*.0012);if(!FB.wh&&n>=FB.nextWh)fWhisper();if(FB.wh){const k=(FB.wh.until-n)/FB.wh.dur;$('fWhT').style.width=Math.max(0,k*100)+'%';if(k<=0)fParry(false)}}
  if(n-FB.last>900)FB.combo=0;const c=$('fCombo');c.classList.toggle('on',FB.combo>=3);if(FB.combo>=3)c.innerHTML='×'+FB.combo+'<small>комбо · урон +'+Math.round(Math.min(FB.combo,30)/15*100)+'%</small>';
  $('fHp').style.width=(FB.hp/FB.mx*100)+'%';$('fHp').parentNode.style.setProperty('--g',(FB.hp/FB.mx*100)+'%');$('fHpN').textContent=Math.ceil(FB.hp);$('fWill').style.width=FB.will+'%';$('fTimer').textContent=Math.floor(el/60)+':'+pad(el%60);$('fEl').textContent=FB.p2?'2-я фаза':''}
 function fWinNow(){FB.done=true;clearInterval(fT);clearInterval(fBr);fBr=null;$('fWh').classList.add('hide');$('foe').classList.add('dead');SFX.win();const r=$('foe').getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,30);fHint('Тень рассеялась. Ты сильнее волны.');
