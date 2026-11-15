@@ -162,7 +162,7 @@
    "date": "2026-11-17",
    "tasks": [
     {
-     "t": "Физиотерапия (Bohrer, Appenzeller Str. 142): Versichertenkarte + рецепт",
+     "t": "Физиотерапия: Versichertenkarte + рецепт",
      "xp": 25,
      "c": "str",
      "time": "15:00"
@@ -250,6 +250,168 @@
      "c": "int"
     }
    ]
+  },
+  {
+   "id": "2026-11-15-reprice-rm",
+   "remove": [
+    {
+     "date": "2026-11-15",
+     "t": "Сделать видео (монтаж)"
+    },
+    {
+     "date": "2026-11-15",
+     "t": "5–10 заявок на EQ/Ausbildung (дедлайн пн 16.11): отправить черновики из Gmail"
+    },
+    {
+     "date": "2026-11-15",
+     "t": "Запланировать отправку 6 заявок на пн 8:00 (Gmail)"
+    },
+    {
+     "date": "2026-11-15",
+     "t": "Записаться к психиатру (webtermin)"
+    },
+    {
+     "date": "2026-11-15",
+     "t": "Отдать Леше 17 € за курсы"
+    },
+    {
+     "date": "2026-11-16",
+     "t": "Термин Jobcenter: показать Bewerbungen, ausbildungsuchend, ZAB, Kooperationsplan"
+    },
+    {
+     "date": "2026-11-16",
+     "t": "Подать Widerspruch против отказа B2 (после заявок на EQ)"
+    },
+    {
+     "date": "2026-11-16",
+     "t": "ZAB Pre-Check + Antrag на оплату 208 € (платить только после согласия)"
+    },
+    {
+     "date": "2026-11-16",
+     "t": "Bestätigung ausbildungsuchend → отправить в Familienkasse (Kindergeld)"
+    },
+    {
+     "date": "2026-11-16",
+     "t": "Позвонить Philipp по WG Bogenhausen"
+    },
+    {
+     "date": "2026-11-16",
+     "t": "Заявление на соцжильё SOWON"
+    },
+    {
+     "date": "2026-11-16",
+     "t": "Подать заявки медиа через порталы (BR, TUM, Brainlab, MediaMarktSaturn)"
+    },
+    {
+     "date": "2026-11-17",
+     "t": "Найти 2 новые EQ в Мюнхене (Jobbörse, IHK) и внести в Bewerbungen"
+    }
+   ]
+  },
+  {
+   "id": "2026-11-15-reprice-2026-11-15",
+   "date": "2026-11-15",
+   "tasks": [
+    {
+     "t": "Сделать видео (монтаж)",
+     "xp": 50,
+     "c": "int"
+    },
+    {
+     "t": "5–10 заявок на EQ/Ausbildung (дедлайн пн 16.11): отправить черновики из Gmail",
+     "xp": 100,
+     "c": "int"
+    },
+    {
+     "t": "Запланировать отправку 6 заявок на пн 8:00 (Gmail)",
+     "xp": 60,
+     "c": "int"
+    },
+    {
+     "t": "Записаться к психиатру (webtermin)",
+     "xp": 40,
+     "c": "wil"
+    },
+    {
+     "t": "Отдать Леше 17 € за курсы",
+     "xp": 10,
+     "c": "wil"
+    },
+    {
+     "t": "Взять контакты 3 резервных фирм (W&P, Gaiser, ADS) из Jobbörse",
+     "xp": 25,
+     "c": "int"
+    }
+   ]
+  },
+  {
+   "id": "2026-11-15-reprice-2026-11-16",
+   "date": "2026-11-16",
+   "tasks": [
+    {
+     "t": "Термин Jobcenter: показать Bewerbungen, ausbildungsuchend, ZAB, Kooperationsplan",
+     "xp": 80,
+     "c": "int"
+    },
+    {
+     "t": "Подать Widerspruch против отказа B2 (после заявок на EQ)",
+     "xp": 100,
+     "c": "int"
+    },
+    {
+     "t": "ZAB Pre-Check + Antrag на оплату 208 € (платить только после согласия)",
+     "xp": 50,
+     "c": "int"
+    },
+    {
+     "t": "Bestätigung ausbildungsuchend → отправить в Familienkasse (Kindergeld)",
+     "xp": 40,
+     "c": "int"
+    },
+    {
+     "t": "Позвонить Philipp по WG Bogenhausen",
+     "xp": 30,
+     "c": "cha"
+    },
+    {
+     "t": "Заявление на соцжильё SOWON",
+     "xp": 60,
+     "c": "int"
+    },
+    {
+     "t": "Подать заявки медиа через порталы (BR, TUM, Brainlab, MediaMarktSaturn)",
+     "xp": 60,
+     "c": "int"
+    }
+   ]
+  },
+  {
+   "id": "2026-11-15-reprice-2026-11-17",
+   "date": "2026-11-17",
+   "tasks": [
+    {
+     "t": "Найти 2 новые EQ в Мюнхене (Jobbörse, IHK) и внести в Bewerbungen",
+     "xp": 30,
+     "c": "int"
+    },
+    {
+     "t": "Напомнить Gabriel: Mietangebot, площадь, Grundriss, Untervermietung",
+     "xp": 30,
+     "c": "cha"
+    }
+   ]
+  },
+  {
+   "id": "2026-11-15-reprice-2026-11-27",
+   "date": "2026-11-27",
+   "tasks": [
+    {
+     "t": "Landratsamt: есть ли письменный ответ про комнату? Нет — напомнить",
+     "xp": 20,
+     "c": "int"
+    }
+   ],
+   "note": "Награды пересчитаны по важности; квесты сверены с таблицей дел"
   }
  ]
 }
