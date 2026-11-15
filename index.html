@@ -3634,22 +3634,25 @@ function wHuman(){const tot=WPOP.reduce((a,c)=>a+c[2],0);let r=Math.random()*tot
  const zh=gRnd(),h=Math.round((m?c[3]:c[4])+zh*7),bmi=Math.max(16,c[5]+gRnd()*4),w=Math.round(bmi*(h/100)**2);
  const watch=Math.random()<(m?.6:.18),never=!watch&&Math.random()<(m?.35:.7);
  return {c,m,age,h,w,name:rnd((m?c[6]:c[7]).split(' ')),steps:Math.max(600,Math.round(c[8]+gRnd()*2200)),sleep:Math.max(4,Math.min(10,Math.round((6.9+gRnd()*1.1)*2)/2)),
-  porn:watch?Math.floor(Math.random()*7):never?-1:7+Math.floor(Math.random()*120),kg:Math.random()<.05,...(()=>{const zl=.25*zh+.968*gRnd(),zg=.55*zl+.835*gRnd(),cl=(v,a,b)=>Math.max(a,Math.min(b,v));return {len:cl(Math.round((13.12+zl*1.66)*2)/2,8,20),gir:cl(Math.round((11.66+zg*1.1)*2)/2,8,16)}})()}}
+  porn:watch?Math.floor(Math.random()*7):never?-1:7+Math.floor(Math.random()*120),kg:Math.random()<.05,job:Math.random()<(age<25?.55:age<65?.8:.15),rel:Math.random()<(age<25?.35:age<35?.6:.72),sport:(r=>r<.35?0:r<.55?1:r<.65?2:r<.8?3:r<.9?4:5+Math.floor(Math.random()*3))(Math.random()),de:['Германия','Австрия','Швейцария'].includes(c[1])?'родной':Math.random()<.08?rnd(['A1','A2','B1']):'нет',...(()=>{const zl=.25*zh+.968*gRnd(),zg=.55*zl+.835*gRnd(),cl=(v,a,b)=>Math.max(a,Math.min(b,v));return {len:cl(Math.round((13.12+zl*1.66)*2)/2,8,20),gir:cl(Math.round((11.66+zg*1.1)*2)/2,8,16)}})()}}
 function rndSheet(){const b=S.body||{},p=wHuman(),st=(S.stp&&S.stp.d===today())?S.stp.n:0,sl=((S.mood||{})[today()]||{}).s||((S.mood||{})[shift(today(),-1)]||{}).s||0,cd=cleanDays(),kgOn=(S.kgFull||0)>0;
  let me=0,they=0;const rows=[];const add=(lab,a,bv,fmt,better)=>{let r='',ic='＝';if(better!=null){if(better>0){me++;r='me';ic='◀'}else if(better<0){they++;r='th';ic='▶'}}rows.push('<div class="cr '+r+'"><span>'+lab+'</span><b>'+fmt(a)+(r==='me'?' 🏆':'')+'</b><i>'+ic+'</i><b>'+fmt(bv)+(r==='th'?' 🏆':'')+'</b></div>')};
+ const myS=Array.from({length:7},(_,i)=>dkey(new Date(Date.now()-i*864e5))).filter(x=>{try{return cardioOn(x)}catch(e){return false}}).length,myJob=!!(S.flags||{}).job,myRel=!!((S.love||{}).d||{}).intim,DEL={'нет':0,A1:1,A2:2,B1:3,B2:4,C1:5,'родной':6},myDe=(S.flags||{}).b2?'B2':'B1';
  if(b.h)add('Рост',b.h,p.h,v=>v+' см',Math.sign(b.h-p.h));
- if(b.w&&b.h)add('Вес (ближе к норме)',b.w,p.w,v=>v+' кг',Math.sign(Math.abs(p.w/(p.h/100)**2-22)-Math.abs(b.w/(b.h/100)**2-22)));
- add('Шаги сегодня',st,p.steps,v=>v?v.toLocaleString('ru-RU'):'—',st?Math.sign(st-p.steps):null);
+ if(b.w&&b.h)add('Форма (вес к росту)',b.w,p.w,v=>v+' кг',Math.sign(Math.abs(p.w/(p.h/100)**2-23)-Math.abs(b.w/(b.h/100)**2-23)));
+ if(st)add('Шаги сегодня',st,p.steps,v=>v.toLocaleString('ru-RU'),Math.sign(st-p.steps));
  if(sl)add('Сон',sl,p.sleep,v=>v+' ч',Math.sign(Math.abs(p.sleep-8)-Math.abs(sl-8)));
+ add('Спорт за неделю',myS,p.sport,v=>v+' дн.',Math.sign(myS-p.sport));
  add('Дней без порно',cd,p.porn,v=>v<0?'не смотрит':v+' дн.',p.porn<0?-1:Math.sign(cd-p.porn));
- add('Кегель',kgOn?'тренирует':'нет',p.kg?'тренирует':'нет',v=>v,kgOn===p.kg?0:kgOn?1:-1);
- if(b.len)add('Длина в эрекции',b.len,p.len,v=>v+' см',Math.sign(b.len-p.len));
- if(b.gir)add('Обхват',b.gir,p.gir,v=>v+' см',Math.sign(b.gir-p.gir));
+ add('Работа',myJob?'есть':'ищу',p.job?'есть':'нет',v=>v,(myJob?1:0)-(p.job?1:0));
+ add('Отношения',myRel?'есть':'один',p.rel?'есть':'один',v=>v,(myRel?1:0)-(p.rel?1:0));
+ add('Немецкий',myDe,p.de,v=>v,Math.sign(DEL[myDe]-DEL[p.de]));
+ if(b.len&&b.gir)add('Дракон',b.len+' × '+b.gir,p.len+' × '+p.gir,v=>v,Math.sign((b.len*b.gir)-(p.len*p.gir)));
  let pct='';if(b.h){let n=0,k=0;for(let i=0;i<3000;i++){const q=wHuman();if(q.h<b.h)k++;n++}pct='<p class="mut" style="font-size:12.5px;margin:10px 0 0">Ты выше ~'+Math.round(k/n*100)+'% взрослых мужчин Европы, СНГ и США.</p>'}
  const verdict='<div class="cv '+(me>they?'w':me<they?'l':'d')+'"><b>'+(me>they?'🏆 ПОБЕДА':me<they?'ПОРАЖЕНИЕ':'НИЧЬЯ')+'</b><span>'+me+' : '+they+'</span><small>'+(me>they?'Ты сильнее, '+esc(p.name)+' уходит пить чай.':me<they?esc(p.name)+' сегодня сильнее. Дракон запомнил его лицо.':'Достойный соперник.')+'</small></div>';
  sheet('<h3>🎲 Ты против случайного мужчины Европы, СНГ и США</h3><div class="rp"><span>'+p.c[0]+'</span><div><b>'+esc(p.name)+', '+p.age+'</b><small>'+p.c[1]+'</small></div></div>'
   +'<div class="crh"><span></span><b>Ты</b><i></i><b>'+esc(p.name)+'</b></div>'+rows.join('')+verdict+pct
-  +'<p class="mut" style="font-size:11.5px;margin-top:8px">Мужчина 18–80 лет из Европы, СНГ или США, страна — с учётом населения. Рост и вес — средние по его стране плюс разброс; размер — по замерам 15 тыс. мужчин (Veale 2015), слегка связан с ростом, округлён до 0,5 см, как при реальном замере.</p>'
+  +'<p class="mut" style="font-size:11.5px;margin-top:8px">Мужчина 18–80 лет из Европы, СНГ или США, страна — с учётом населения. Работа и отношения — по возрасту, спорт и немецкий — по опросам. Рост и вес — средние по его стране плюс разброс; размер — по замерам 15 тыс. мужчин (Veale 2015), слегка связан с ростом, округлён до 0,5 см, как при реальном замере.</p>'
   +'<div class="row2"><button class="btn gold" id="rpN">🎲 Ещё один</button><button class="btn" id="rpX">Закрыть</button></div>');
  $('rpN').onclick=()=>{buzz();rndSheet()};$('rpX').onclick=closeSheet;S.rndN=(S.rndN||0)+1;if(me>they)S.rndW=(S.rndW||0)+1;save()}
 /* Мои параметры: хранятся только в localStorage телефона, в репозиторий не попадают */
