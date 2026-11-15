@@ -1357,7 +1357,8 @@ const bestDays=()=>Math.max(S.best||0,Math.floor((S.bestMs||0)/DAY),cleanDays())
 const totalClean=()=>Object.values(S.days).filter(v=>v==='c').length;
 /* hardcore curve: levels up to lv0 (your level at the update) keep the old cost, every next one is steeper */
 const needOld=l=>Math.round(100+(l-1)*40),needNew=l=>Math.round(60*Math.pow(l,1.36)/10)*10;
-const needOf=l=>l===1||l<=(S.lv0||1)?needOld(l):Math.max(needOld(l),needNew(l));
+/* honest quadratic curve: total XP to reach level L = ~111·(L−1)². ~200 XP/day → L5 in a week, L10 in ~1.5 months, L20 in ~half a year, L30 in ~a year */
+const needOf=l=>Math.round(111*(2*l-1)/10)*10;
 function lvlInfo(xp){let l=1,need=needOf(1),acc=0;while(xp>=acc+need){acc+=need;l++;need=needOf(l)}return{l,cur:xp-acc,need}}
 /* ===== skills, form, rank trials, perks ===== */
 const SKILLS={
@@ -1374,17 +1375,18 @@ const skCap=k=>k==='de'&&!(S.flags||{}).b2?5:k==='job'&&!(S.flags||{}).job?6:10;
 const skLvl=k=>Math.min(skCap(k),Math.floor(Math.sqrt(skE(k).x/60))+1);
 const skProg=k=>{const l=skLvl(k),x=skE(k).x,a=60*(l-1)**2,b=60*l*l;return l>=skCap(k)?1:Math.min(1,(x-a)/(b-a))};
 const dDiff=(a,b)=>Math.round((parseD(b)-parseD(a))/DAY);
-function formOf(k){const e=skE(k);if(!e.last)return 0;let g=SKILLS[k][4],r=SKILLS[k][5];if(k==='body'&&(S.pk||{}).temper)r/=2;if(k==='de'&&(S.pk||{}).master)g+=3;return Math.max(0,Math.min(100,Math.round(100-Math.max(0,dDiff(e.last,today())-g)*r)))}
+function formOf(k){const e=skE(k);if(!e.last)return 0;let g=SKILLS[k][4],r=SKILLS[k][5];if(k==='body'&&hasP('temper'))r/=2;if(k==='de'&&hasP('master'))g+=3;return Math.max(0,Math.min(100,Math.round(100-Math.max(0,dDiff(e.last,today())-g)*r)))}
 function skAdd(k,x){S.sk=S.sk||{};const e=S.sk[k]=S.sk[k]||{x:0,n:0,last:''};const l0=skLvl(k);e.x+=x;e.n++;e.last=today();const l1=skLvl(k);if(l1>l0){addLog('Навык '+SKILLS[k][0]+': '+SKILLS[k][6][l1-1]);setTimeout(()=>toast('Навык «'+SKILLS[k][0]+'» вырос: '+SKILLS[k][6][l1-1]),1600)}}
 const TR=[null,[['clean',3]],[['clean',7],['body',5],['job',5]],[['clean',21],['body',15],['job',15],['de',20]],[['clean',30],['body',25],['job',30],['de',40],['soc',10]],
  [['clean',60],['body',50],['job',60],['de',80],['soc',20]],[['clean',100],['body',90],['de',120],['f:interview',1]],[['clean',180],['f:b2',1],['f:job',1]],[['clean',365],['body',200],['soc',60]],[['clean',540],['all',8]],[['clean',730],['all',10]]];
 const TRL={clean:'Чистых дней всего',body:'Дел на Тело',job:'Дел по карьере',de:'Занятий немецким',soc:'Дел на общение','f:interview':'Пройти собеседование','f:b2':'Сдать экзамен B2','f:job':'Подписать договор (работа/Ausbildung)',all:'Все навыки уровня'};
 const trVal=k=>k==='clean'?totalClean():k==='all'?Math.min(...Object.keys(SKILLS).map(skLvl)):k.startsWith('f:')?((S.flags||{})[k.slice(2)]?1:0):skE(k).n;
 const trialOk=i=>!TR[i]||TR[i].every(([k,n])=>trVal(k)>=n);
-function rankIdxFor(l){let i=0;RANKS.forEach((r,j)=>{if(l>=r[0])i=j});while(i>(S.rk0||0)&&!trialOk(i))i--;return i}
+function rankIdxFor(l){let i=0;RANKS.forEach((r,j)=>{if(l>=r[0])i=j});while(i>0&&!trialOk(i))i--;return i}
 const rankIdx=()=>rankIdxFor(lvlInfo(S.xp).l);
 const rankOf=l=>RANKS[rankIdxFor(l)];
-function checkRank(){const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами.')},500)}}
+function lvRework(){if(S.prog2)return;S.prog2=1;const l=lvlInfo(S.xp).l;S.rkMax=rankIdx();addLog('Система уровней пересчитана честно: уровень '+l+', ранг '+RANKS[S.rkMax][1]);setTimeout(()=>lootSheet('Уровни пересчитаны',null,'Опыт сохранён полностью ('+S.xp.toLocaleString('ru-RU')+' XP), но кривая стала честной: теперь ты на уровне '+l+'. Дальше каждый уровень — это реальные недели дел. Ранги требуют испытаний.'),2600)}
+function checkRank(){lvRework();const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами.')},500)}}
 const PERKS=[
  ['legs','str',1,'Крепкие ноги','+15% опыта за дела на Тело','body'],['blow','str',1,'Удар тренировки','+30% урона по боссу от дел на Тело','body'],
  ['morning','str',2,'Утренний воин','Тело до 10:00 даёт +50% опыта','body'],['temper','str',2,'Закалка','Форма Тела падает вдвое медленнее','body'],
@@ -1400,10 +1402,12 @@ const PERKS=[
  ['monk','wil',3,'Монах','Чистый день даёт +50% опыта','disc'],['unbend','wil',3,'Несгибаемый','В бою с тягой урон +30%','disc'],
  ['trader','gold',1,'Торговец','+10% золота за всё',''],['loot','gold',2,'Кладоискатель','Шанс добычи с квестов ×1.5','']];
 const PKB={str:['力','Тело'],int:['知','Разум'],cha:['心','Сердце'],wil:['志','Воля'],gold:['金','Торговля']};
-const pkSpent=()=>PERKS.filter(p=>(S.pk||{})[p[0]]).reduce((a,p)=>a+p[2],0);
-const pkPts=()=>Math.max(0,lvlInfo(S.xp).l-1+artPk()-pkSpent());
-const hasP=id=>{if(!(S.pk||{})[id])return false;const p=PERKS.find(x=>x[0]===id);return !p[5]||formOf(p[5])>=50};
-function pkAvail(p){if((S.pk||{})[p[0]])return 'own';const sib=PERKS.filter(x=>x[1]===p[1]&&(S.pk||{})[x[0]]);if(p[2]>=2&&!sib.some(x=>x[2]===p[2]-1))return 'lock';if(p[2]===3&&p[5]&&skLvl(p[5])<4)return 'lock';return pkPts()>=p[2]?'av':'lock'}
+/* perks open by themselves: skill level 2/4/6 per tier; trade perks by contracts and chests */
+const PKL=[0,2,4,6],PKG={trader:['ctOk',10,'контрактов выполнено'],loot:['chOpen',10,'сундуков открыто']};
+const pkProg=p=>{const g=PKG[p[0]];return g?[Math.min(S[g[0]]||0,g[1]),g[1],g[2]]:[Math.min(skLvl(p[5]),PKL[p[2]]),PKL[p[2]],'уровень навыка «'+SKILLS[p[5]][0]+'»']};
+const pkOpen=p=>{const[v,n]=pkProg(p);return v>=n};
+const hasP=id=>{const p=PERKS.find(x=>x[0]===id);return !!p&&pkOpen(p)};
+function pkCheck(){S.pkSeen=S.pkSeen||{};const first=S.pkV!==1;for(const p of PERKS)if(!S.pkSeen[p[0]]&&pkOpen(p)){S.pkSeen[p[0]]=today();if(!first){addLog('Перк открыт: '+p[3]);setTimeout(()=>{toast('Новый перк: '+p[3]);SFX.stamp()},1800)}}S.pkV=1}
 function perkMods(sk,cat,xp,why,opt){let x=0,g=0,d=0;const hr=new Date().getHours();
  if(hasP('legs')&&sk==='body')x+=.15;if(hasP('blow')&&sk==='body')d+=.3;if(hasP('morning')&&sk==='body'&&hr<10)x+=.5;if(hasP('samurai')&&skE('body').last===today())x+=.1;
  if(hasP('poly')&&sk==='de')x+=.2;if(hasP('bureau')&&sk==='job')x+=.2;if(hasP('editor')&&sk==='art'){x+=.2;g+=.2}if(hasP('focus')&&xp>=40)x+=.15;
@@ -1425,7 +1429,7 @@ const FORGE_STEP=.04,FORGE_COST=[120,340,620,960,1340];
 function addLog(t){S.log.unshift({d:today(),t});S.log=S.log.slice(0,200)}
 let tt;function toast(t){if(/Впиши|уже есть|не подошёл/.test(t))SFX.err();const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2300)}
 function floatTxt(txt,col,x,y){const e=document.createElement('div');e.className='float';e.textContent=txt;e.style.color=col;e.style.left=(x||window.innerWidth/2-30)+'px';e.style.top=(y||window.innerHeight/2)+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1100)}
-function petTick(){const p=S.pet,now=Date.now(),h=(now-p.t)/36e5;if(h>0){p.fuel=clamp(p.fuel-h*((S.pk||{}).empathy?1.5:3));p.mood=clamp(p.mood-h);p.t=now}}
+function petTick(){const p=S.pet,now=Date.now(),h=(now-p.t)/36e5;if(h>0){p.fuel=clamp(p.fuel-h*(hasP('empathy')?1.5:3));p.mood=clamp(p.mood-h);p.t=now}}
 const feed=n=>{petTick();S.pet.fuel=clamp(S.pet.fuel+n)},cheer=n=>{petTick();S.pet.mood=clamp(S.pet.mood+n)};
 
 /* ================= SOUND ================= */
@@ -2299,19 +2303,17 @@ function renderSkills(id){const el=$(id);if(!el)return;el.innerHTML=Object.entri
  const capN=l>=cap&&cap<10?(k==='de'?' · дальше — после экзамена B2':' · дальше — после договора'):'';
  return '<div class="skr" style="--c:'+s[2]+'"><span class="sk-k" lang="ja">'+s[1]+'</span><div class="sk-m"><div class="sk-t"><b>'+s[0]+'</b><span>'+esc(s[6][l-1])+' · ур. '+l+'</span></div><div class="gauge"><i style="width:'+(skProg(k)*100)+'%;background:'+s[2]+'"></i></div>'
   +'<div class="sk-s">'+e.n+' '+plural(e.n,'дело','дела','дел')+' · форма <b style="color:'+fc+'">'+f+'%</b>'+(nx?' · до ур. '+(l+1)+': '+nx+' XP':'')+capN+'</div></div></div>'}).join('')}
-function renderPerks(){const pts=pkPts();$('pkPts').textContent='очков: '+pts;
- $('perks').innerHTML='<div class="mut" style="font-size:12.5px;line-height:1.4">Очко за каждый уровень. Цена перка — его ступень (1–3). 2-я ступень требует перк 1-й в той же ветке, 3-я — перк 2-й и навык ур. 4.</div>'
+function renderPerks(){pkCheck();const n=PERKS.filter(pkOpen).length;$('pkPts').textContent=n+' / '+PERKS.length;
+ $('perks').innerHTML='<div class="mut" style="font-size:12.5px;line-height:1.4">Перки не покупаются: они открываются сами, когда ты реально прокачал навык делами. Уровень навыка 2, 4 и 6 открывает ступени ветки. Открытый перк работает всегда.</div>'
   +Object.entries(PKB).map(([b,[kj,nm]])=>{const list=PERKS.filter(p=>p[1]===b);const sk=list[0][5];
-   return '<div class="pkb"><h4><i lang="ja">'+kj+'</i>'+nm+(sk?'<small>форма '+SKILLS[sk][0].toLowerCase()+': '+formOf(sk)+'%</small>':'')+'</h4><div class="pkg">'+list.map(p=>{const st=pkAvail(p),sleep=st==='own'&&!hasP(p[0]);
-    return '<button class="pk '+st+(sleep?' zz':'')+'" data-p="'+p[0]+'"><em>'+(st==='own'?(sleep?'спит':'✓'):'◆'.repeat(p[2]))+'</em><b>'+esc(p[3])+'</b><span>'+esc(p[4])+'</span></button>'}).join('')+'</div></div>'}).join('')
-  +(pkSpent()?'<button class="linkbtn" id="pkReset" style="display:block;margin:14px auto 0">Перековка: сбросить перки за 400 золота</button>':'');
- $('perks').querySelectorAll('.pk').forEach(b=>b.onclick=()=>perkSheet(b.dataset.p));
- if($('pkReset'))$('pkReset').onclick=()=>{if(S.gold<400)return toast('Нужно 400 золота');sheet('<h3>Перековка</h3><p>Все перки сбросятся, очки вернутся. Цена — 400 золота.</p><div class="row2"><button class="btn" id="rsN">Отмена</button><button class="btn red" id="rsY">Сбросить</button></div>');$('rsN').onclick=closeSheet;$('rsY').onclick=()=>{S.gold-=400;S.pk={};S.respec=1;addLog('Перковка: перки сброшены');save();closeSheet();render()}}}
-function perkSheet(id){const p=PERKS.find(x=>x[0]===id),st=pkAvail(p),sk=p[5];
- const why=st==='lock'?(p[2]>=2&&!PERKS.some(x=>x[1]===p[1]&&x[2]===p[2]-1&&(S.pk||{})[x[0]])?'Сначала изучи перк '+(p[2]-1)+'-й ступени в этой ветке.':p[2]===3&&sk&&skLvl(sk)<4?'Нужен навык «'+SKILLS[sk][0]+'» уровня 4 (сейчас '+skLvl(sk)+').':'Не хватает очков: нужно '+p[2]+', есть '+pkPts()+'.'):'';
- sheet('<h3>'+esc(p[3])+'</h3><p>'+esc(p[4])+'.</p><p class="mut" style="font-size:13px">Ветка: '+PKB[p[1]][1]+' · ступень '+p[2]+' · цена '+p[2]+' '+plural(p[2],'очко','очка','очков')+(sk?' · работает при форме «'+SKILLS[sk][0]+'» от 50% (сейчас '+formOf(sk)+'%)':'')+'</p>'
-  +(why?'<p style="color:#ff9a8f">'+why+'</p>':'')+(st==='av'?'<button class="btn gold" id="pkGo" style="width:100%">Изучить</button>':st==='own'?'<p style="color:#b9d68a">Изучено.</p>':'')+'<button class="linkbtn" id="pkX" style="display:block;margin:12px auto 0">Закрыть</button>');
- $('pkX').onclick=closeSheet;if($('pkGo'))$('pkGo').onclick=()=>{S.pk=S.pk||{};S.pk[id]=1;addLog('Перк: '+p[3]);SFX.stamp();buzz();save();closeSheet();render();toast('Перк изучен: '+p[3])}}
+   return '<div class="pkb"><h4><i lang="ja">'+kj+'</i>'+nm+(sk?'<small>'+SKILLS[sk][0]+': ур. '+skLvl(sk)+'</small>':'')+'</h4><div class="pkg">'+list.map(p=>{const o=pkOpen(p),[v,nn]=pkProg(p);
+    return '<button class="pk '+(o?'own':'lock')+'" data-p="'+p[0]+'"><em>'+(o?'✓':v+' / '+nn)+'</em><b>'+esc(p[3])+'</b><span>'+esc(p[4])+'</span></button>'}).join('')+'</div></div>'}).join('');
+ $('perks').querySelectorAll('.pk').forEach(b=>b.onclick=()=>perkSheet(b.dataset.p))}
+function perkSheet(id){const p=PERKS.find(x=>x[0]===id),o=pkOpen(p),[v,n,what]=pkProg(p);
+ sheet('<h3>'+esc(p[3])+'</h3><p>'+esc(p[4])+'.</p><p class="mut" style="font-size:13px">Ветка: '+PKB[p[1]][1]+' · открывается: '+what+' '+n+'</p>'
+  +'<div class="gauge" style="margin:10px 0"><i style="width:'+Math.round(v/n*100)+'%"></i></div>'
+  +(o?'<p style="color:#b9d68a">Открыт и работает.</p>':'<p>Сейчас '+v+' из '+n+'. Делай дела этого навыка — перк откроется сам.</p>')+'<button class="linkbtn" id="pkX" style="display:block;margin:12px auto 0">Закрыть</button>');
+ $('pkX').onclick=closeSheet}
 function moodSheet(){const d=today(),m=S.mood[d]||{};const row=(k,vals)=>'<div class="scale" data-k="'+k+'">'+vals.map(v=>'<button data-v="'+v+'"'+(m[k]==v?' class="on"':'')+'>'+v+'</button>').join('')+'</div>';
  sheet('<h3>Как ты?</h3><p class="mut" style="margin:0 0 6px">10 секунд. Через пару недель увидишь свои волны.</p><div class="lbl">Настроение сейчас</div>'+row('m',[1,2,3,4,5,6,7,8,9,10])+'<div class="lbl">Сон прошлой ночью, часов</div>'+row('s',[3,4,5,6,7,8,9,10,11,12])+'<button class="btn gold" id="mdOk" style="width:100%;margin-top:16px">Готово</button>');
  $('sheetIn').querySelectorAll('.scale').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.onclick=()=>{const first=!S.mood[d];S.mood[d]=Object.assign({},S.mood[d],{[sc.dataset.k]:+b.dataset.v});if(first)award(5,'wil','отметка состояния',{dmg:5});SFX.tap();save();sc.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))}));
@@ -2356,7 +2358,7 @@ setInterval(()=>{if(!document.hidden&&!$('s-shop').classList.contains('hide')&&(
 const ART=[['kaeru','Лягушка-омамори','蛙',0,'золота за всё',2,'g'],['daruma','Дарума','達',0,'опыта за дела на 40+ XP',3,'x40'],['geta','Гэта странника','駄',0,'опыта за дела на Тело',4,'body'],['fude','Кисть каллиграфа','筆',0,'опыта за немецкий',4,'de'],
  ['kitsune','Маска кицунэ','狐',1,'опыта за общение',4,'soc'],['inro','Инро чиновника','印',1,'опыта за карьеру',4,'job'],['chochin','Бумажный фонарь','灯',1,'опыта за ритуалы',4,'rit'],['tessen','Боевой веер','扇',1,'урона по боссу',5,'d'],
  ['oni','Маска они','鬼',2,'урона в бою с тягой',8,'urge'],['musashi','Свиток Мусаси','書',2,'к наградам контрактов',5,'ct'],['maneki','Манэки-нэко','招',2,'к шансу сундука с квестов',8,'chest'],
- ['yata','Зеркало Ята','鏡',3,'опыта за всё',2,'x'],['tama','Жемчужина дракона','玉',3,'',0,'pk']];
+ ['yata','Зеркало Ята','鏡',3,'опыта за всё',2,'x'],['tama','Жемчужина дракона','玉',3,'опыта за всё',3,'x']];
 const ANEED=[0,2,4,10,20,50,100],AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'];
 const artEqL=()=>(S.artEq||[]).filter(id=>(S.art||{})[id]).slice(0,3);
 function artE(type){let v=0;for(const id of artEqL()){const a=ART.find(x=>x[0]===id);if(a&&a[6]===type)v+=a[5]*S.art[id].l/100}return v}
@@ -2428,10 +2430,10 @@ const AS=[
  ['chest','Сундуки','箱','Лавка',()=>S.chOpen||0,[1,10,50,200],['Кладоискатель','Повелитель сокровищ']],
  ['artc','Коллекция артефактов','宝','Лавка',()=>cntK(S.art),[1,5,9,13],['Коллекционер','Хранитель реликвий']],
  ['artl','Уровень артефакта','磨','Лавка',()=>Math.max(0,...Object.values(S.art||{}).map(a=>a.l)),[3,5,6,7],['Полировщик','Мастер реликвий']],
- ['pk','Перки','技','Лавка',()=>cntK(S.pk),[1,5,12,26],['Ученик техник','Мастер техник']],
+ ['pk','Перки','技','Лавка',()=>PERKS.filter(pkOpen).length,[1,5,12,26],['Ученик техник','Мастер техник']],
  ['cat','Котик растёт','猫','Лавка',()=>stageIdx(),[1,2,3,4],['Друг кота','Хозяин нэкоматы']]];
 const SECR=[['s_leg','Легендарная вещь','伝','Найти легендарное снаряжение',()=>S.inv.some(i=>i.r===3)],['s_drg','Сундук дракона','龍','Открыть сундук дракона',()=>!!S.chDragon],
- ['s_res','Перековка','炉','Сбросить перки и начать заново',()=>!!S.respec],['s_vote','Голос за себя ×30','票','30 раз проголосовать за себя',()=>cntK(S.votes)>=30],['s_early','Ранний ронин','曙','Выполнить квест до 7 утра',()=>!!S.early7]];
+ ['s_res','Мастер ветки','極','Открыть все перки одной ветки',()=>Object.keys(PKB).some(b=>PERKS.filter(p=>p[1]===b).every(pkOpen))],['s_vote','Голос за себя ×30','票','30 раз проголосовать за себя',()=>cntK(S.votes)>=30],['s_early','Ранний ронин','曙','Выполнить квест до 7 утра',()=>!!S.early7]];
 const ACAT=['Путь','Воля','Разум','Тело','Сердце','Бой','Богатство','Лавка','Тайные'];
 const achTop=s=>{let t=-1;s[5].forEach((n,i)=>{if((S.ach2||{})[s[0]+':'+i])t=i});return t};
 const achAP=()=>Object.keys(S.ach2||{}).reduce((a,id)=>{const t=+id.split(':')[1];return a+(isNaN(t)?30:TIERAP[t])},0);
@@ -2555,7 +2557,7 @@ let lastTap=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-l
 
 /* migrate old saves: old plan done flags carry XP already */
 if(!S.v||S.v<3){S.v=3;save()}
-S.inv.forEach(i=>{if(SLOTS[i.k])i.n=SLOTS[i.k][2][i.r]});
+S.inv.forEach(i=>{if(SLOTS[i.k])i.n=SLOTS[i.k][2][i.r]});gearHeal();
 if(S.ifthen&&S.ifthen['Телефон в кровати']){delete S.ifthen['Телефон в кровати'];save()}
 /* economy v2: 12 bosses with adaptive HP, forge, contracts. Keep progress, rescale current boss */
 if(S.econ!==2){const ch=S.camp.ch,old=ch<6?[300,550,850,1200,1700,2400][ch]:2400+(ch-5)*600,r=Math.max(.05,Math.min(1,S.camp.hp/old));
@@ -2575,6 +2577,11 @@ function planPart(o,seen){let msg='';const ld=d=>{let pl={tasks:[],note:'',best:
  if(Array.isArray(o.remove)){const by={};for(const r of o.remove){if(!r||!r.t)continue;const d=r.date||o.date||today();(by[d]=by[d]||[]).push(r.t)}
   for(const[d,ts]of Object.entries(by)){if(skip(d))continue;const pl=ld(d);if(pl.rids.includes(o.id+'#rm'))continue;pl.rids.push(o.id+'#rm');pl.tasks=pl.tasks.filter(x=>x.done||!ts.includes(x.t));sv(d,pl)}}
  return msg}
+/* gear repair: re-equip best owned item per slot; fixGear also refunds duplicate buys */
+function gearHeal(){S.eq=S.eq||{};for(const k of Object.keys(SLOTS)){const cur=S.inv.find(i=>i.id===S.eq[k]),best=S.inv.filter(i=>i.k===k).sort((a,b)=>b.r-a.r)[0];if(best&&(!cur||cur.r<best.r))S.eq[k]=best.id}}
+function gearFix(){let back=0;const seen={};const keep=[];for(const it of [...S.inv].sort((a,b)=>a.id<b.id?-1:1)){const key=it.k+':'+it.r;if(seen[key]){back+=PRICE[it.r];continue}seen[key]=1;keep.push(it)}
+ const have=new Set(keep.map(i=>i.k+':'+i.r));for(const l of [...S.log].reverse()){const m=/^(?:Куплено|Добыча): (.+?)(?: \(|$)/.exec(l.t);if(!m)continue;for(const[k,v]of Object.entries(SLOTS)){const r=v[2].indexOf(m[1]);if(r>=0&&!have.has(k+':'+r)){have.add(k+':'+r);keep.push({id:Date.now().toString(36)+k+r,k,r,n:v[2][r]})}}}
+ S.inv=keep;S.eq={weapon:null,armor:null,amulet:null};gearHeal();if(back){S.gold+=back}return back}
 function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.applied.includes(o.id)){planPart(o,true);return null}S.applied.push(o.id);const msgs=[];
  if(o.cleanSince){const t=new Date(o.cleanSince).getTime();if(t&&t<=Date.now())S.cleanSince=t}
  let n=0;for(const[k,v]of Object.entries(o.days||{})){if(S.days[k]!==v){if(v==='c')n++;S.days[k]=v}}
@@ -2591,7 +2598,7 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.ap
   if(lx)msgs.push('Линия Сердца: +'+lx+' XP')}
  {const m=planPart(o,false);if(m)msgs.push(m)}
  if(o.flags&&typeof o.flags==='object'){S.flags=Object.assign(S.flags||{},o.flags);const nm={b2:'экзамен B2 сдан',job:'договор подписан',interview:'собеседование пройдено'};msgs.push('Отмечено: '+Object.keys(o.flags).filter(k=>o.flags[k]).map(k=>nm[k]||k).join(', '))}
- if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
+ if(o.fixGear){const b=gearFix();msgs.push('Снаряжение восстановлено'+(b?', возврат за дубли: +'+b+' золота':''))}if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
 (async()=>{await syPull();try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
  const list=Array.isArray(o.updates)?o.updates:[o];const out=[];for(const u of list){const m=applyRemote(u);if(m)out.push(m)}
