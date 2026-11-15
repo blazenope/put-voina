@@ -762,6 +762,27 @@ summary{font:700 16px var(--pix)}
 .bfh span{font:700 10.5px var(--body);padding:2px 8px;border-radius:99px;color:var(--tg);background:color-mix(in srgb,var(--tg) 18%,transparent)}
 .bft{font:14px/1.55 var(--body);color:var(--ink2);margin-top:5px}
 .b18hint{font:600 12px var(--body);color:#d9a0ac;margin-top:8px;opacity:.85}
+
+/* love line v2 */
+.lst{margin-top:10px;border-radius:18px;background:linear-gradient(135deg,rgba(255,107,138,.07),rgba(255,255,255,.02));border:1px solid rgba(255,140,170,.14);overflow:hidden}
+.lst.now{background:linear-gradient(135deg,rgba(255,92,128,.2),rgba(120,40,70,.12) 60%,rgba(255,255,255,.02));border-color:rgba(255,120,150,.45);box-shadow:0 0 30px -12px #ff5c80}
+.lst.done{border-color:rgba(163,187,114,.3);background:linear-gradient(135deg,rgba(163,187,114,.1),rgba(255,255,255,.02))}
+.lst summary{list-style:none;display:flex;align-items:center;gap:12px;padding:13px 14px;cursor:pointer}.lst summary::-webkit-details-marker{display:none}
+.lst summary>i{flex:none;width:42px;height:42px;border-radius:14px;display:grid;place-content:center;font:700 21px/1 "Yu Mincho","Hiragino Mincho ProN",serif;font-style:normal;color:#fff;background:linear-gradient(160deg,#ff7a9a,#c2385e);box-shadow:0 6px 16px -6px #ff5c80}
+.lst.next summary>i{background:rgba(255,255,255,.08);color:#ffb3c4;box-shadow:none}.lst.done summary>i{background:linear-gradient(160deg,#b9d68a,#6f8c45);box-shadow:none}
+.lst summary>div{flex:1;min-width:0}.lst small{font:700 11px var(--body);color:#ff9fb5;text-transform:uppercase;letter-spacing:.6px}.lst.done small{color:#b9d68a}
+.lst summary b{display:block;font:700 16.5px var(--body);color:var(--ink);margin-top:1px}
+.lbar{height:5px;border-radius:99px;background:rgba(255,255,255,.08);margin-top:7px;overflow:hidden}.lbar span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ff7a9a,#ffb36b)}.lst.done .lbar span{background:#a3bb72}
+.lst summary em{font:800 13px var(--num);font-style:normal;color:#ffc2d0}
+.ldesc{margin:0 14px 6px;font:13.5px/1.45 var(--body);color:var(--ink2)}
+.lq{display:flex;align-items:center;gap:12px;margin:8px 10px;padding:12px 12px 12px 14px;border-radius:14px;background:rgba(0,0,0,.22);border-left:3px solid #ff7a9a}
+.lq.ok{border-left-color:#a3bb72;opacity:.7}.lq.ok .lqt{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+.lqt{flex:1;min-width:0;font:600 14.5px/1.4 var(--body);color:var(--ink)}
+.lqm{display:flex;align-items:center;gap:10px;margin-top:6px}.lqm .xp{font:800 12px var(--num);color:#ffd27a}
+.dots{display:flex;gap:4px}.dots u{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.12)}.dots u.on{background:#ff7a9a;box-shadow:0 0 8px #ff7a9a}
+.lbtn{flex:none;min-width:58px;padding:10px 14px;border:0;border-radius:12px;font:800 14px var(--body);color:#fff;background:linear-gradient(160deg,#ff7a9a,#d2416a);box-shadow:0 6px 18px -8px #ff5c80;cursor:pointer;transition:transform .15s}
+.lbtn:active{transform:scale(.92)}.lok{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-content:center;background:#a3bb7233;color:#b9d68a;font-weight:800}
+#s-quest .pnl:has(#map),.vote:has(#loudBtn){display:none!important}
 </style>
 </head>
 <body>
@@ -822,7 +843,7 @@ summary{font:700 16px var(--pix)}
   <div class="pnl" id="habSec">
     <div class="ttl"><h2>Ритуалы</h2><span class="c" id="hCount"></span></div>
     <div class="rits" id="habits"></div>
-    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">Нажми плитку, если сделал полностью. «Минимум» — если сделал малую версию: половина награды, но серия живёт. Пропустить один день можно, два подряд обнуляют серию.</div>
+    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">5 ежедневных опор дня. Сделал — нажми плитку. Сделал чуть-чуть — «½»: половина опыта, но 🔥 серия не сгорает. Полоска под названием — путь к настоящей привычке (66 дней). Пропуск одного дня прощается, двух подряд — серия с нуля.</div>
   </div>
 
   <button class="pnl" id="loveMini" style="display:block;width:100%;border:0;text-align:left;color:inherit;cursor:pointer;background:linear-gradient(90deg,#2a0f14,#141724);box-shadow:inset 0 0 0 2px #a8323e">
@@ -845,6 +866,14 @@ summary{font:700 16px var(--pix)}
 
 <!-- ================= QUEST ================= -->
 <main class="screen hide" id="s-quest">
+  <div class="pnl" id="loveSec" style="box-shadow:inset 0 0 0 2px #a8323e">
+    <div class="ttl"><h2 style="color:#ff6b7a">Линия Сердца</h2><span class="c" id="loveCnt"></span></div>
+    <div class="why" style="margin-bottom:10px">Сюжетная линия к живой близости: от формы героя до свиданий. Делай в любом порядке, всё прокачивает Харизму. Отказы тоже дают опыт.</div>
+    <div class="row2" style="margin-bottom:12px"><button class="btn" id="loveRej">Отказ / игнор</button><button class="btn" id="loveCode">Кодекс</button></div>
+    <button class="btn" id="loveScrolls" style="width:100%;margin:-4px 0 12px">Свитки знаний 伝書</button>
+    <div class="mut" id="loveStats" style="font-size:13px;margin-bottom:6px"></div>
+    <div id="loveList"></div>
+  </div>
   <div class="pnl gold">
     <div class="bossbig" id="bossBig">
       <div class="spr" id="bossSpr"></div>
@@ -856,6 +885,7 @@ summary{font:700 16px var(--pix)}
       <button class="linkbtn" id="howBtn" style="margin-top:10px">Как устроен бой ?</button>
       <template id="howTpl"><div class="prose"><p>Каждое дело бьёт босса. Чем труднее дело, тем сильнее удар: дело на 25 XP наносит ~29 урона, на 60 XP — ~84, на 150 XP — 300. Победа над тягой: 60 урона. Чистый день: 40.</p><p><b>Две фазы:</b> на половине HP босс впадает в ярость и меняет слабость — переключайся на другую характеристику.</p><p><b>Сила босса</b> подстраивается под твой средний урон: каждый бой рассчитан на 3–10 дней, весь поход — примерно на 100 дней.</p><p><b>Золото</b> больше дают привычки и мелкие дела, серия и броня. После 6 дел одной характеристики за день золото за неё вдвое меньше — чередуй.</p><p>У каждого босса есть <b>слабость</b>: квесты нужной характеристики бьют ×2. И <b>способность</b>: большинство восстанавливают HP за дни без квестов, поэтому хотя бы один квест в день не даёт им отрасти.</p><p>Срыв лечит босса на 10%. Это не наказание, а напоминание: поход продолжается.</p><p><b>Серия активности:</b> каждый день подряд хотя бы с одним квестом даёт +5% золота, до +50%.</p><p>За победу: золото, опыт, редкая добыча и новая локация.</p></div></template>
     </div>
+  </div>
   <div class="pnl" id="voteBox">
     <div class="vote"><p id="voteTxt"></p><button class="btn gold" id="voteBtn">Голос</button></div>
   </div>
@@ -863,7 +893,6 @@ summary{font:700 16px var(--pix)}
     <div class="ttl" style="margin-bottom:6px"><h2 style="color:#ff8fc8">Бафф пути</h2><span class="c">все →</span></div>
     <div id="buffNow"></div>
   </button>
-  </div>
   <div class="pnl">
     <div class="ttl"><h2>Цели недели</h2><span class="c" id="wkCnt"></span></div>
     <div id="wkList"></div>
@@ -875,14 +904,6 @@ summary{font:700 16px var(--pix)}
   <div class="pnl">
     <div class="ttl"><h2>Карта похода</h2><span class="c" id="mapCnt"></span></div>
     <div class="map" id="map"></div>
-  </div>
-  <div class="pnl" id="loveSec" style="box-shadow:inset 0 0 0 2px #a8323e">
-    <div class="ttl"><h2 style="color:#ff6b7a">Линия Сердца</h2><span class="c" id="loveCnt"></span></div>
-    <div class="why" style="margin-bottom:10px">Сюжетная линия к живой близости: от формы героя до свиданий. Делай в любом порядке, всё прокачивает Харизму. Отказы тоже дают опыт.</div>
-    <div class="row2" style="margin-bottom:12px"><button class="btn" id="loveRej">Отказ / игнор</button><button class="btn" id="loveCode">Кодекс</button></div>
-    <button class="btn" id="loveScrolls" style="width:100%;margin:-4px 0 12px">Свитки знаний 伝書</button>
-    <div class="mut" id="loveStats" style="font-size:13px;margin-bottom:6px"></div>
-    <div id="loveList"></div>
   </div>
 </main>
 
@@ -1435,7 +1456,8 @@ const feed=n=>{petTick();S.pet.fuel=clamp(S.pet.fuel+n)},cheer=n=>{petTick();S.p
 
 /* ================= SOUND ================= */
 let AC=null;
-function setSession(){try{if(navigator.audioSession)navigator.audioSession.type=S.soundLoud?'playback':'ambient'}catch(e){}}
+function setSession(){try{if(navigator.audioSession)navigator.audioSession.type='ambient'}catch(e){}}
+document.addEventListener('visibilitychange',()=>{try{if(AC&&document.hidden)AC.suspend()}catch(e){}});
 let RV=null,CMP=null;
 function irBuf(a){const len=Math.floor(a.sampleRate*2.4),b=a.createBuffer(2,len,a.sampleRate);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.4)}return b}
 const vol=()=>S.vol==null?.8:S.vol;
@@ -1831,7 +1853,7 @@ function renderDay(){
   hb.innerHTML=[...S.qList].sort((a,b)=>(RITK[HABITS[a][0]]?0:1)-(RITK[HABITS[b][0]]?0:1)).map(i=>{const r=RITK[HABITS[i][0]],on=S.qDone.includes(i),hi=habInfo(i),xp=Math.round(HABITS[i][1]*(1+b.xp));
    if(!r)return '<button class="rit bonus'+(on?' on':'')+'" data-h="'+i+'"><span class="rk" lang="ja">加</span><span style="flex:1;min-width:0"><span class="rn" style="display:block">'+esc(HABITS[i][0])+'</span><span class="rf" style="margin-top:4px">бонус дня · +'+xp+' XP</span></span></button>';
    return '<button class="rit'+(on?' on':'')+(half.includes(i)?' half':'')+'" data-h="'+i+'"><span class="rk"><span lang="ja">'+r[3]+'</span><small>'+(hi.s?'🔥 '+hi.s:'')+'</small></span><span class="rn">'+esc(r[0])+'</span>'
-    +'<span class="ra" title="Автоматизм"><i style="width:'+hi.auto+'%"></i></span><span class="rf"><span>закреплено '+hi.auto+'% · +'+xp+'</span>'+(on?'':'<span class="rmin" data-m="'+i+'" role="button">минимум</span>')+'</span></button>'}).join('');
+    +'<span class="ra" title="До привычки 66 дней"><i style="width:'+hi.auto+'%"></i></span><span class="rf"><span>'+(on?'✓ сделано · ':'')+'+'+xp+' XP</span>'+(on?'':'<span class="rmin" data-m="'+i+'" role="button">½ чуть-чуть</span>')+'</span></button>'}).join('');
   hb.querySelectorAll('.rit').forEach(el=>el.onclick=e=>{buzz();const m=e.target.closest('[data-m]');toggleHabit(+el.dataset.h,!!m)});
   $('hCount').textContent=S.qDone.filter(i=>S.qList.includes(i)).length+' / '+S.qList.length}
  const s=S.days[SEL],cb=$('checkBox');
@@ -2032,7 +2054,7 @@ const LOVE=[
 const LOVE_REJ=['Отказ — это не оценка тебя, а несовпадение. Каждый отказ приближает к «да».','Ты рискнул, а большинство даже не пробуют. Смелость прокачана.','Игнор в приложениях — норма, даже у самых привлекательных. Это статистика, не приговор.','Не её «нет» определяет тебя, а то, что ты пошёл снова.','Отказ неприятен, и это нормально. Почувствуй — и отпусти. Следующая попытка уже легче.'];
 const loveCnt=id=>((S.love&&S.love.d)||{})[id]||0;
 function loveProg(){let a=0,b=0;LOVE.forEach(st=>st[2].forEach(t=>{b+=t[3];a+=Math.min(t[3],loveCnt(t[0]))}));return[a,b]}
-function loveStage(){for(let i=0;i<LOVE.length;i++)if(LOVE[i][2].some(t=>loveCnt(t[0])<t[3]))return i;return LOVE.length-1}
+function loveStage(){let f=LOVE.length-1;for(let i=0;i<LOVE.length;i++)if(LOVE[i][2].some(t=>loveCnt(t[0])<t[3])){f=i;break}let far=0;LOVE.forEach((s,i)=>{if(s[2].some(t=>loveCnt(t[0])>0))far=i});return Math.max(f,Math.min(far,LOVE.length-1))}
 function loveDo(id){const t=LOVE.flatMap(s=>s[2]).find(x=>x[0]===id);if(!t)return;S.love=S.love||{d:{},rej:0};S.love.d[id]=(S.love.d[id]||0)+1;
  const full=S.love.d[id]===t[3];addLog('Линия Сердца: '+t[1]);award(t[2],'cha','',{dmg:t[2]});if(id==='date'){S.love.dates=(S.love.dates||0)+1}
  if(full&&LOVE[loveStage()]&&LOVE.findIndex(s=>s[2].some(x=>x[0]===id))<loveStage())setTimeout(()=>lootSheet('Этап пройден!',null,'Новый этап Линии Сердца: «'+LOVE[loveStage()][0]+'». '+LOVE[loveStage()][1]),600);
@@ -2041,8 +2063,9 @@ function renderLove(){const[a,b]=loveProg(),si=loveStage(),st=LOVE[si];S.love=S.
  $('loveMiniTxt').innerHTML='Этап '+(si+1)+' из '+LOVE.length+': <b style="color:var(--ink)">'+esc(st[0])+'</b>. '+(()=>{const n=st[2].find(t=>loveCnt(t[0])<t[3]);return n?'Дальше: '+esc(n[1]):''})();
  $('loveMiniBar').style.width=(a/b*100)+'%';$('loveCnt').textContent=a+' / '+b;
  $('loveScrolls').textContent='Свитки знаний 伝書 · '+((S.love.read||[]).length)+'/'+SCROLLS.length;$('loveStats').textContent='Смелость (отказы): '+(S.love.rej||0)+' · свиданий: '+(S.love.dates||0);
- $('loveList').innerHTML=LOVE.map((s,i)=>'<div style="margin-top:12px;'+(i>si+1?'opacity:.5':'')+'"><div style="font:400 12px var(--pix);color:'+(i<si?'var(--xp)':i===si?'#ff6b7a':'var(--ink3)')+'">'+(i<si?'✓ ':'')+'Этап '+(i+1)+'. '+esc(s[0])+'</div><div class="mut" style="font:13px/1.4 var(--body);margin:4px 0 2px">'+esc(s[1])+'</div>'
-  +s[2].map(t=>{const c=Math.min(t[3],loveCnt(t[0])),done=c>=t[3];return '<div class="task'+(done?' done':'')+'" style="cursor:default"><span class="t">'+esc(t[1])+(t[3]>1?' <span class="mut" style="font-size:12px">'+c+'/'+t[3]+'</span>':'')+'</span><span class="rw">+'+t[2]+'</span>'+(done?'<span style="color:var(--xp)">✓</span>':'<button class="btn" data-l="'+t[0]+'" style="padding:7px 10px;font-size:12px">'+(t[3]>1?'+1':'Готово')+'</button>')+'</div>'}).join('')+'</div>').join('');
+ {const KJ=['備','顔','出','会','結','愛','縁'];$('loveList').innerHTML=LOVE.map((s,i)=>{const tot=s[2].reduce((x,t)=>x+t[3],0),got=s[2].reduce((x,t)=>x+Math.min(t[3],loveCnt(t[0])),0),st=i<si?'done':i===si?'now':'next';
+  return '<details class="lst '+st+'"'+(i===si?' open':'')+'><summary><i lang="ja">'+(st==='done'?'✓':KJ[i]||'心')+'</i><div><small>Этап '+(i+1)+(st==='now'?' · сейчас':'')+'</small><b>'+esc(s[0])+'</b><div class="lbar"><span style="width:'+Math.round(got/tot*100)+'%"></span></div></div><em>'+got+'/'+tot+'</em></summary>'
+  +'<p class="ldesc">'+esc(s[1])+'</p>'+s[2].map(t=>{const c=Math.min(t[3],loveCnt(t[0])),done=c>=t[3];return '<div class="lq'+(done?' ok':'')+'"><div class="lqt">'+esc(t[1])+'<div class="lqm">'+(t[3]>1?'<span class="dots">'+Array.from({length:t[3]},(_,k)=>'<u class="'+(k<c?'on':'')+'"></u>').join('')+'</span>':'')+'<span class="xp">+'+t[2]+' XP</span></div></div>'+(done?'<span class="lok">✓</span>':'<button class="lbtn" data-l="'+t[0]+'">'+(t[3]>1?'+1':'Готово')+'</button>')+'</div>'}).join('')+'</details>'}).join('')}
  $('loveList').querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{SFX.check();loveDo(b.dataset.l)})}
 $('loveMini').onclick=()=>go('quest');
 $('loveRej').onclick=()=>{S.love=S.love||{d:{},rej:0};S.love.rej=(S.love.rej||0)+1;addLog('Отказ принят с достоинством');award(15,'cha','смелость',{dmg:15});cheer(5);save();render();
@@ -2354,7 +2377,7 @@ function renderChests(){const C=chS(),now=Date.now();
  $('chFr').onclick=()=>{if(Math.max(0,(C.free||0)+4*36e5-Date.now()))return;C.free=Date.now();const g=12+Math.round(Math.random()*12);S.gold+=g;S.goldTotal+=g;const cards=artRoll(2+Math.round(Math.random()*2),0);addLog('Подношение у храма: +'+g+' золота');save();render();chReveal(0,'Подношение у храма',g,cards,null)};
  $('chCnt').textContent=Object.values(C.sl).filter(Boolean).length+'/4'}
 function navBadge(){const C=chS(),now=Date.now(),ready=Object.values(C.sl).some(c=>c&&c.un&&c.un<=now)||now-(C.free||0)>=4*36e5;const b=document.querySelector('#nav [data-s="shop"]');if(b)b.classList.toggle('bd',ready)}
-setInterval(()=>{if(!document.hidden&&!$('s-shop').classList.contains('hide')&&(S.shopTab||'chest')==='chest')renderChests();navBadge()},15000);
+setInterval(()=>{if(!document.hidden&&!$('s-shop').classList.contains('hide')&&S.shopTab==='chest')renderChests();navBadge()},15000);
 /* ===== artifacts ===== */
 const ART=[['kaeru','Лягушка удачи','蛙',0,'золота за всё',2,'g'],['daruma','Неваляшка упорства','達',0,'опыта за дела на 40+ XP',3,'x40'],['geta','Сандалии странника','駄',0,'опыта за дела на Тело',4,'body'],['fude','Кисть каллиграфа','筆',0,'опыта за немецкий',4,'de'],
  ['kitsune','Маска лисы','狐',1,'опыта за общение',4,'soc'],['inro','Шкатулка чиновника','印',1,'опыта за карьеру',4,'job'],['chochin','Бумажный фонарь','灯',1,'опыта за ритуалы',4,'rit'],['tessen','Боевой веер','扇',1,'урона по боссу',5,'d'],
@@ -2385,9 +2408,9 @@ function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().inc
  $('aX').onclick=closeSheet;$('aEq').onclick=()=>{let L=artEqL();if(eq)L=L.filter(x=>x!==id);else{if(L.length>=3)return toast('Все 3 слота заняты: сначала сними артефакт');L.push(id)}S.artEq=L;SFX.tap();save();closeSheet();render()};
  if($('aUp'))$('aUp').onclick=()=>{if(!can)return;s.c-=need;S.gold-=gc;s.l++;addLog('Артефакт улучшен: '+a[1]+' · ур. '+s.l);SFX.level();buzz();save();closeSheet();render();burst(innerWidth/2,innerHeight/2,24);toast(a[1]+' — уровень '+s.l)}}
 /* ===== shop tabs, scenes, reward templates ===== */
-const STABS=[['chest','Сундуки'],['art','Артефакты'],['cons','Расходники'],['gear','Снаряжение'],['cat','Котик'],['rw','Награды']];
-function renderShopTabs(){const cur=S.shopTab||'chest';$('shopTabs').innerHTML=STABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
- $('shopTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.shopTab=b.dataset.k;SFX.tap();buzz();save();renderShopTabs()});document.querySelectorAll('#s-shop [data-st]').forEach(p=>p.classList.toggle('hide',p.dataset.st!==cur))}
+const STABS=[['chest','Сокровища',['chest','art']],['buy','Товары',['cons','gear','cat']],['rw','Награды',['rw']]];
+function renderShopTabs(){if(!STABS.some(t=>t[0]===S.shopTab))S.shopTab='chest';const cur=S.shopTab,grp=STABS.find(t=>t[0]===cur)[2];$('shopTabs').innerHTML=STABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
+ $('shopTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.shopTab=b.dataset.k;SFX.tap();buzz();save();renderShopTabs()});document.querySelectorAll('#s-shop [data-st]').forEach(p=>p.classList.toggle('hide',!grp.includes(p.dataset.st)))}
 const SCN=[['fuji','Фудзи и тории',0],['bamboo','Бамбуковая роща',400],['snow','Зимний храм',600],['munich','Мюнхен: Фрауэнкирхе',900]];
 function renderScenes(){S.scn=S.scn||['fuji'];const on=S.scnOn||'fuji';$('scenes').innerHTML=SCN.map(([k,n,c])=>{const own=S.scn.includes(k)||!c;return '<div class="shopit">'+icon('star',own?'#e2c48e':'#8a8172',4)+'<div class="nm"><b>'+n+'</b><span>'+(on===k?'на сцене':own?'куплено':'фон сцены')+'</span></div>'+(on===k?'':own?'<button class="btn" data-sn="'+k+'">Выбрать</button>':'<button class="btn gold" data-sb="'+k+'"'+(S.gold<c?' disabled':'')+'>'+c+'</button>')+'</div>'}).join('');
  $('scenes').querySelectorAll('[data-sn]').forEach(b=>b.onclick=()=>{S.scnOn=b.dataset.sn;SFX.tap();save();render()});
@@ -2599,7 +2622,7 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.ap
   if(lx)msgs.push('Линия Сердца: +'+lx+' XP')}
  {const m=planPart(o,false);if(m)msgs.push(m)}
  if(o.flags&&typeof o.flags==='object'){S.flags=Object.assign(S.flags||{},o.flags);const nm={b2:'экзамен B2 сдан',job:'договор подписан',interview:'собеседование пройдено'};msgs.push('Отмечено: '+Object.keys(o.flags).filter(k=>o.flags[k]).map(k=>nm[k]||k).join(', '))}
- if(o.fixGear){const b=gearFix();msgs.push('Снаряжение восстановлено'+(b?', возврат за дубли: +'+b+' золота':''))}if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
+ if(o.loveSet&&typeof o.loveSet==='object'){S.love=S.love||{d:{},rej:0};S.love.d=S.love.d||{};for(const[k,n]of Object.entries(o.loveSet)){S.love.d[k]=Math.max(S.love.d[k]||0,+n||0);if(k==='date')S.love.dates=Math.max(S.love.dates||0,+n||0)}msgs.push('Линия Сердца: засчитан прошлый опыт')}if(o.fixGear){const b=gearFix();msgs.push('Снаряжение восстановлено'+(b?', возврат за дубли: +'+b+' золота':''))}if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
 (async()=>{await syPull();try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
  const list=Array.isArray(o.updates)?o.updates:[o];const out=[];for(const u of list){const m=applyRemote(u);if(m)out.push(m)}
