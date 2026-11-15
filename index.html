@@ -385,6 +385,14 @@ summary{text-transform:none;font:700 15px var(--pix)}summary::after{color:var(--
 .bk{color:var(--seal);margin-right:8px;font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif}
 body::after{display:block;content:"";position:fixed;left:0;right:0;bottom:0;height:42vh;z-index:-1;pointer-events:none;opacity:.075;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cg fill='none' stroke='%23ebe4d6' stroke-width='1.1'%3E%3Ccircle cx='20' cy='10' r='19' fill='%230d0c0b'/%3E%3Ccircle cx='20' cy='10' r='14'/%3E%3Ccircle cx='20' cy='10' r='9'/%3E%3Ccircle cx='20' cy='10' r='4'/%3E%3Ccircle cx='0' cy='20' r='19' fill='%230d0c0b'/%3E%3Ccircle cx='0' cy='20' r='14'/%3E%3Ccircle cx='0' cy='20' r='9'/%3E%3Ccircle cx='0' cy='20' r='4'/%3E%3Ccircle cx='40' cy='20' r='19' fill='%230d0c0b'/%3E%3Ccircle cx='40' cy='20' r='14'/%3E%3Ccircle cx='40' cy='20' r='9'/%3E%3Ccircle cx='40' cy='20' r='4'/%3E%3C/g%3E%3C/svg%3E") repeat;-webkit-mask-image:linear-gradient(to top,#000 10%,transparent);mask-image:linear-gradient(to top,#000 10%,transparent)}
 html{background:radial-gradient(circle at 88% 9%,#b8281e2e 0 70px,transparent 71px),var(--bg)}body{background:transparent}
+.rmnav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;position:sticky;top:-1px;background:var(--panel,#141210);z-index:2}
+.rmnav button{flex:none;border:0;background:transparent;box-shadow:inset 0 0 0 1px var(--edge);color:var(--ink2);padding:6px 10px;font:600 13px var(--body);cursor:pointer}
+.rmh{scroll-margin-top:70px;display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 4px;font:700 17px var(--pix);color:var(--ink);border-bottom:1px solid var(--seal);padding-bottom:4px}.rmh span{font:12px var(--body);color:var(--ink3)}
+.rm{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--edge);font:600 14px var(--body)}
+.rm small{display:block;font:400 12px/1.35 var(--body);color:var(--ink3);margin-top:2px}
+.rm .k{font:700 18px "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;color:var(--seal);text-align:center}
+.rm .r{font:12px var(--body);color:var(--ink2);text-align:right;max-width:120px}
+.rm.done{opacity:.5}.rm.done .k{color:var(--ink3)}.rm.now{background:#b8281e14;box-shadow:inset 2px 0 var(--seal)}.rm.lock .k{opacity:.75}
 </style>
 </head>
 <body>
@@ -518,6 +526,7 @@ html{background:radial-gradient(circle at 88% 9%,#b8281e2e 0 70px,transparent 71
     <div class="nobori" id="heroKanji"></div>
     <div class="lore">Ты — ронин без господина, идущий по Пути — 道. Твой меч — дисциплина, а враги — собственные тени. Рядом идёт трёхцветный кот микэ-нэко — он растёт с каждым чистым днём, а на 60-й станет нэкоматой с двумя хвостами. Тени — Лень, Скука, Соблазн, Сомнения — растут во тьме и слабеют от каждого твоего шага.</div>
     <div class="kotoba" id="kotoba"></div>
+    <button class="btn" id="rmBtn" style="width:100%;margin-top:12px">Карта пути 道 — всё, что впереди</button>
   </div>
   <div class="pnl">
     <div class="ttl"><h2>Характеристики</h2></div>
@@ -624,9 +633,10 @@ html{background:radial-gradient(circle at 88% 9%,#b8281e2e 0 70px,transparent 71
       <textarea id="saveBox" rows="3" class="hide" style="margin-top:10px" placeholder="Вставь код сохранения"></textarea>
       <button class="btn gold hide" id="impGo" style="width:100%;margin-top:10px">Загрузить</button>
       <p style="margin-top:14px"><b>Синхронизация телефон ↔ ПК</b></p>
-      <p class="mut" style="font-size:13px">Создай токен с правом gist: <a href="https://github.com/settings/tokens/new?scopes=gist&amp;description=put-voina" target="_blank" rel="noopener" style="color:inherit">github.com/settings/tokens</a>. Сначала подключи телефон, потом ПК — ПК возьмёт прогресс телефона.</p>
+      <p class="mut" style="font-size:13px">Создай токен с правом gist: <a href="https://github.com/settings/tokens/new?scopes=gist&amp;description=put-voina" target="_blank" rel="noopener" style="color:inherit">github.com/settings/tokens</a>. На втором устройстве вставь тот же токен или «Код для второго устройства». Прогресс объединяется сам, даже если играл на обоих без интернета. Код — как пароль, никому не показывай.</p>
       <div class="add" id="syncAdd"><input type="password" id="syncTok" placeholder="Токен GitHub" aria-label="Токен GitHub" autocomplete="off"><button class="btn gold" id="syncGo">OK</button></div>
       <div class="row2 hide" id="syncOn" style="margin-top:10px"><button class="btn" id="syncNow">Синхронизировать</button><button class="btn" id="syncOff">Отключить</button></div>
+      <button class="btn hide" id="syncCode" style="width:100%;margin-top:10px">Код для второго устройства</button>
       <p class="mut" id="syncSt" style="font-size:13px;margin-top:8px"></p>
       <p style="margin-top:14px"><button class="linkbtn" id="resetBtn">Начать игру заново</button></p>
     </div></details>
@@ -714,7 +724,7 @@ const STK={str:'力',int:'知',cha:'心',wil:'志'};
 const KOTOBA=[['七転び八起き','Упади семь раз — встань восемь'],['継続は力なり','Постоянство — это сила'],['石の上にも三年','Даже на холодном камне за три года станет тепло'],['急がば回れ','Спешишь — иди в обход'],['塵も積もれば山となる','Из пылинок вырастает гора'],['初心忘るべからず','Не забывай дух новичка'],['猿も木から落ちる','И обезьяна падает с дерева'],['一期一会','Одна встреча — один шанс'],['雨降って地固まる','После дождя земля твёрже'],['千里の道も一歩から','Путь в тысячу ри начинается с шага'],['案ずるより産むが易し','Сделать легче, чем бояться'],['己に克つ','Победи самого себя']];
 const CAT_RX={str:/спорт|трен|отжим|присед|бег|пробеж|прогул|зал|душ|плаван|растяж|вело|ходьб|фитнес/i,
  int:/немец|deutsch|учеб|учит|курс|чита|книг|слов|ausbild|\beq\b|заявк|урок|b2|экзам|резюме|lebenslauf|bewerb|job|джоб|изуч|код|програм|монтаж|видео|short/i,
- cha:/позвон|напис|друг|мам|пап|встреч|свидан|знаком|гост|девуш|брат|сестр|созвон|чат|общ/i};
+ cha:/позвон|напис|друг|мам|пап|встреч|свидан|знаком|гост|девуш|(^|[^а-яё])брат|сестр|созвон|чат|общ/i};
 const catOf=t=>{for(const k of ['str','int','cha'])if(CAT_RX[k].test(t))return k;return 'wil'};
 const HABITS=[['Телефон ночью вне кровати',15,'wil'],['20 отжиманий или приседаний',10,'str'],['Прогулка 20+ минут',15,'str'],['Немецкий 20 минут',15,'int'],
  ['10 новых немецких слов',10,'int'],['Прохладный душ',10,'str'],['Лечь спать до 00:00',15,'wil'],['Первые 30 минут утра без телефона',15,'wil'],
@@ -835,7 +845,7 @@ let SEL=today(), follow=true, P={tasks:[],note:'',best:''};
 const planKey=d=>KEY+'_plan_'+d;
 function loadPlan(d){let v=null;try{v=JSON.parse(localStorage.getItem(planKey(d))||'null')}catch(e){}
  if(Array.isArray(v))v={tasks:v};v=v||{};
- P={tasks:(v.tasks||[]).filter(x=>x&&x.t).map(x=>({t:String(x.t).slice(0,140),time:x.time||'',xp:Number(x.xp)||25,c:x.c||catOf(x.t),done:!!x.done,aw:x.aw||null,lt:!!x.lt})),note:v.note||'',best:v.best||''}}
+ P={tasks:(v.tasks||[]).filter(x=>x&&x.t).map(x=>({t:String(x.t).slice(0,140),time:x.time||'',xp:Number(x.xp)||25,c:x.c||catOf(x.t),done:!!x.done,aw:x.aw||null,lt:!!x.lt})),note:v.note||'',best:v.best||'',rids:v.rids||[]}}
 function savePlan(){try{localStorage.setItem(planKey(SEL),JSON.stringify(P))}catch(e){}save()}
 
 /* sync phone <-> PC via private GitHub Gist */
@@ -843,20 +853,64 @@ const SK=KEY+'_sync',GF='put-voina.json',GH='https://api.github.com/gists';
 let SY={};try{SY=JSON.parse(localStorage.getItem(SK)||'{}')||{}}catch(e){}
 let syT=0,syBusy=false,syDirty=false;
 function sySave(){try{localStorage.setItem(SK,JSON.stringify(SY))}catch(e){}}
-function syUI(t){const on=!!(SY.tok&&SY.gist);$('syncAdd').classList.toggle('hide',on);$('syncOn').classList.toggle('hide',!on);
+function syUI(t){const on=!!(SY.tok&&SY.gist);$('syncAdd').classList.toggle('hide',on);$('syncOn').classList.toggle('hide',!on);$('syncCode').classList.toggle('hide',!on);
  $('syncSt').textContent=t!=null?t:(on?'Подключено'+(SY.at?' · '+new Date(SY.at).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''):'')}
-function dump(){const all={s:S,plans:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(KEY+'_plan_'))all.plans[k]=localStorage.getItem(k)}return all}
+const BK=KEY+'_base';
+const stab=x=>JSON.stringify(x,(k,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.keys(v).sort().reduce((o,q)=>(o[q]=v[q],o),{}):v);
+const same=(a,b)=>stab(a)===stab(b);
+function dumpO(){const all={s:JSON.parse(JSON.stringify(S)),plans:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(KEY+'_plan_'))try{all.plans[k]=JSON.parse(localStorage.getItem(k))}catch(e){}}return all}
+function normO(o){const p={};for(const[k,v]of Object.entries(o.plans||{}))try{p[k]=typeof v==='string'?JSON.parse(v):v}catch(e){}return{s:JSON.parse(JSON.stringify(hydrate(o.s))),plans:p}}
+function packO(o){const p={};for(const[k,v]of Object.entries(o.plans||{}))p[k]=JSON.stringify(v);return{s:o.s,plans:p}}
+function dump(){return packO(dumpO())}
+const getBase=()=>{try{return JSON.parse(localStorage.getItem(BK)||'null')}catch(e){return null}},setBase=o=>{try{localStorage.setItem(BK,JSON.stringify(o))}catch(e){}};
 async function gh(url,opt){const r=await fetch(url,Object.assign({cache:'no-store'},opt||{},{headers:{Authorization:'Bearer '+SY.tok,Accept:'application/vnd.github+json','Content-Type':'application/json'}}));
  if(r.status===401)throw new Error('токен не подошёл');if(!r.ok)throw new Error('GitHub '+r.status);return r.json()}
 async function syRead(){const g=await gh(GH+'/'+SY.gist),f=g.files&&g.files[GF];if(!f)return null;let c=f.content;
  if(f.truncated)c=await (await fetch(f.raw_url,{cache:'no-store'})).text();return JSON.parse(c)}
-function syApply(o){clearTimeout(syT);S=hydrate(o.s);try{localStorage.setItem(KEY,JSON.stringify(S));for(const[k,v]of Object.entries(o.plans||{}))localStorage.setItem(k,v)}catch(e){}loadPlan(SEL);render()}
-async function syPush(){if(!SY.tok||!SY.gist)return;if(syBusy){syDirty=true;return}syBusy=true;
- try{await gh(GH+'/'+SY.gist,{method:'PATCH',body:JSON.stringify({files:{[GF]:{content:JSON.stringify(dump())}}})});SY.at=Date.now();sySave();syUI()}catch(e){syUI('Не отправлено: '+e.message)}
- syBusy=false;if(syDirty){syDirty=false;syPush()}}
-function syncLater(){if(!SY.tok||!SY.gist)return;clearTimeout(syT);syT=setTimeout(syPush,3000)}
-async function syPull(){if(!SY.tok||!SY.gist)return;
- try{const o=await syRead();if(o&&o.s&&(o.s.ts||0)>(S.ts||0)){syApply(o);toast('Прогресс обновлён')}else if(!o||!o.s||(o.s.ts||0)<(S.ts||0))await syPush();SY.at=Date.now();sySave();syUI()}catch(e){syUI('Нет связи: '+e.message)}}
+const syWrite=o=>gh(GH+'/'+SY.gist,{method:'PATCH',body:JSON.stringify({files:{[GF]:{content:JSON.stringify(packO(o))}}})});
+/* merge: counters add up both devices' gains, lists are united, the rest — newer device wins */
+const MDELTA=/^(xp|gold|goldTotal|wins|quests|perfect|phoenix|urges|storms|st\.\w+|love\.(rej|dates|d\.\w+)|pet\.pets|camp\.hp|xpd\.[\d-]+)$/,MMAX=/^(ts|best|bestMs|loginStreak|forge\.\w+|ci\.at)$/;
+const idOf=x=>x&&typeof x==='object'?(x.id!=null?'i'+x.id:typeof x.t==='string'&&x.d==null?'t'+x.t:'j'+stab(x)):'p'+stab(x);
+function mg(b,m,t,p,mn){if(same(m,t))return m;if(b!==undefined&&same(m,b))return t;if(b!==undefined&&same(t,b))return m;
+ if(typeof m==='number'&&typeof t==='number'){if(MDELTA.test(p))return Math.max(0,typeof b==='number'?Math.round((t+m-b)*100)/100:Math.max(m,t));if(MMAX.test(p))return Math.max(m,t);return mn?m:t}
+ if(Array.isArray(m)&&Array.isArray(t)){const bm=new Map((Array.isArray(b)?b:[]).map(x=>[idOf(x),x])),mm=new Map(m.map(x=>[idOf(x),x])),tm=new Map(t.map(x=>[idOf(x),x])),out=[];
+  for(const k of new Set([...tm.keys(),...mm.keys()])){const bx=bm.get(k),mx=mm.get(k),tx=tm.get(k);
+   if(mx===undefined){if(bx===undefined||!same(tx,bx))out.push(tx);continue}if(tx===undefined){if(bx===undefined||!same(mx,bx))out.push(mx);continue}out.push(mg(bx,mx,tx,p+'[]',mn))}return out}
+ if(m&&t&&typeof m==='object'&&typeof t==='object'&&!Array.isArray(m)&&!Array.isArray(t)){const bo=b&&typeof b==='object'?b:{},o={};
+  for(const k of new Set([...Object.keys(t),...Object.keys(m)])){const q=p?p+'.'+k:k;
+   if(!(k in m)){if(!(k in bo)||!same(t[k],bo[k]))o[k]=t[k];continue}if(!(k in t)){if(!(k in bo)||!same(m[k],bo[k]))o[k]=m[k];continue}o[k]=mg(bo[k],m[k],t[k],q,mn)}return o}
+ return mn?m:t}
+function mergeO(B,L,T){B=B||{s:{},plans:{}};const mn=(L.s.ts||0)>=(T.s.ts||0),s=mg(B.s,L.s,T.s,'',mn);
+ if(L.s.camp&&T.s.camp&&L.s.camp.ch!==T.s.camp.ch)s.camp=L.s.camp.ch>T.s.camp.ch?L.s.camp:T.s.camp;else if(s.camp&&s.camp.mx)s.camp.hp=Math.max(1,Math.min(s.camp.hp,s.camp.mx));
+ if(L.s.qDay!==T.s.qDay){const w=(L.s.qDay||'')>(T.s.qDay||'')?L.s:T.s;for(const k of ['qDay','qList','qDone','hAw','hLoot'])s[k]=w[k]}
+ if(Array.isArray(s.log))s.log=s.log.sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,200);
+ s.ts=Date.now();return{s,plans:mg(B.plans||{},L.plans,T.plans,'plans',mn)}}
+function applyO(o){clearTimeout(syT);syT=0;S=hydrate(o.s);try{localStorage.setItem(KEY,JSON.stringify(S));for(const[k,v]of Object.entries(o.plans||{}))localStorage.setItem(k,JSON.stringify(v))}catch(e){}
+ setBase(dumpO());loadPlan(SEL);render()}
+const ck=o=>stab({s:Object.assign({},o.s,{ts:0}),plans:o.plans});
+async function syRun(){if(!SY.tok||!SY.gist)return;if(syBusy){syDirty=true;return}syBusy=true;clearTimeout(syT);syT=0;
+ try{const raw=await syRead(),L=dumpO(),B=getBase();
+  if(!raw||!raw.s){await syWrite(L);setBase(L)}
+  else{const T=normO(raw),lc=ck(L),tc=ck(T);
+   if(lc===tc)setBase(L);
+   else if(!B){if(!S.xp)applyO(T);else if(T.s.xp!==L.s.xp||T.s.gold!==L.s.gold){syAsk(L,T);return}else if((T.s.ts||0)>(L.s.ts||0))applyO(T);else{await syWrite(L);setBase(L)}}
+   else{const bc=ck(B),mine=lc!==bc,theirs=tc!==bc;
+    if(!mine)applyO(T);else if(!theirs){await syWrite(L);setBase(L)}
+    else{const M=mergeO(B,L,T);applyO(M);await syWrite(M);toast('Прогресс объединён с другим устройством')}}}
+  SY.at=Date.now();sySave();syUI()}catch(e){syUI('Нет связи: '+e.message)}
+ finally{syBusy=false;if(syDirty){syDirty=false;setTimeout(syRun,500)}}}
+function syAsk(L,T){const lv=o=>'ур. '+lvlInfo(o.s.xp).l+' · '+o.s.gold+' золота · '+o.s.quests+' квестов';
+ sheet('<h3>Два разных прогресса</h3><p>На этом устройстве: <b>'+lv(L)+'</b><br>В облаке: <b>'+lv(T)+'</b></p><p class="mut" style="font-size:14px">«Объединить» возьмёт лучшее из обоих: больший опыт и золото, все квесты, дни и записи.</p>'
+  +'<button class="btn gold" id="saM" style="width:100%">Объединить</button><div class="row2" style="margin-top:10px"><button class="btn" id="saT">Взять из облака</button><button class="btn" id="saL">Оставить это</button></div>');
+ const fin=async f=>{closeSheet();try{await f();SY.at=Date.now();sySave();syUI()}catch(e){syUI('Нет связи: '+e.message)}};
+ $('saM').onclick=()=>fin(async()=>{const M=mergeO(null,L,T);applyO(M);await syWrite(M);toast('Прогресс объединён')});
+ $('saT').onclick=()=>fin(async()=>{applyO(T);toast('Прогресс взят из облака')});
+ $('saL').onclick=()=>fin(async()=>{await syWrite(L);setBase(L);toast('Прогресс этого устройства сохранён в облако')})}
+function syPush(){return syRun()}
+function syncLater(){if(!SY.tok||!SY.gist)return;clearTimeout(syT);syT=setTimeout(()=>{syT=0;syRun()},2500)}
+async function syPull(){return syRun()}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(syT){clearTimeout(syT);syT=0;syRun()}}else syRun()});
+setInterval(()=>{if(!document.hidden)syRun()},120000);
 function selectDay(d){SEL=d;follow=d===today();loadPlan(d);render()}
 
 /* ================= MATH ================= */
@@ -1006,7 +1060,7 @@ function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();
  const ax=Math.round(xp*(1+b.xp)),ag=Math.round(goldOf(xp)*(1+b.gold+streakB)*tired),ad=Math.round((opt.dmg||dmgOf(xp))*(1+b.dmg)*(crit?2:1)*armor*paper);
  D[cat]++;D.n++;if(new Date().getHours()<12)D.am++;if(xp>=40)D.big++;if(crit)D.crit++;D.dmg+=ad;
  if(!S.act)S.act={};S.act[today()]=1;
- const before=lvlInfo(S.xp).l;S.xp+=ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;
+ const before=lvlInfo(S.xp).l;S.xp+=ax;S.xpd=S.xpd||{};S.xpd[today()]=(S.xpd[today()]||0)+ax;S.gold+=ag;S.goldTotal+=ag;S.st[cat]=(S.st[cat]||0)+ax;
  const lv=lvlInfo(S.xp).l;SFX.hit();if(lv>before){SFX.level();const r0=rankOf(before)[1],r1=rankOf(lv)[1];addLog('Уровень '+lv+(r0!==r1?' · ранг '+r1:''));setTimeout(()=>lootSheet('Новый уровень!',null,'Уровень '+lv+(r0!==r1?'. Новый ранг: '+r1:'')+'. Ты становишься тем, кем решил стать.'),700)}
  else{toast('+'+ax+' XP · +'+ag+' золота'+(why?' · '+why:''));setTimeout(SFX.coin,120)}
  floatTxt((crit?'КРИТ -':'-')+ad,crit?'#ffd67a':'#ff9a8f');hitBoss(ad);
@@ -1092,7 +1146,7 @@ function renderHUD(){const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);
 function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
 function taskEl(x,onT,onD){const el=document.createElement('label');el.className='task'+(x.done?' done':'');const b=bonus();
  el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'><span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+(x.c===weakOf(S.camp.ch)&&!x.done?' ×2':'')+'</span>'
-  +(onD?'<button class="x" aria-label="Удалить">×</button>':'')+'<span class="rw">+'+Math.round(x.xp*(1+b.xp))+'<em>+'+Math.round(x.xp/2*(1+b.gold))+'з</em></span>';
+  +(onD?'<button class="x" aria-label="Удалить">×</button>':'')+'<span class="rw">+'+Math.round(x.xp*(1+b.xp))+'<em>+'+Math.round(goldOf(x.xp)*(1+b.gold))+'з</em></span>';
  el.querySelector('input').onchange=onT;const d=el.querySelector('.x');if(d)d.onclick=e=>{e.preventDefault();onD()};return el}
 function renderWeek(){const sel=parseD(SEL),mon=new Date(sel);mon.setDate(sel.getDate()-((sel.getDay()+6)%7));let h='';const WD=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
  for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);const k=dkey(d),v=S.days[k];
@@ -1131,9 +1185,10 @@ function renderDay(){
  $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
  $('cTot').textContent='Всего чистых дней: '+totalClean();
  // next step
- {let t='',act=null;const T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),wk=weakOf(S.camp.ch);
+ {let t='',act=null;const ci=isT?ciPick():null,T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),wk=weakOf(S.camp.ch);
   if(!isT){t='Ты смотришь другой день. Вернуться к сегодня';act=()=>selectDay(today())}
-  else if(!S.mood[today()]){t='Отметь настроение и сон — 10 секунд';act=()=>$('moodBox').scrollIntoView({behavior:'smooth',block:'center'})}
+  else if(!S.mood[today()]&&ciGate()){t='Как ты? Отметь настроение и сон — 10 секунд';act=()=>{S.ci=S.ci||{at:0,d:{}};S.ci.at=Date.now();save();$('moodBox').scrollIntoView({behavior:'smooth',block:'center'})}}
+  else if(ci){t='Вопрос часа: '+ciText(ci);act=()=>ciSheet(ci)}
   else if(!P.tasks.length){t='Запиши 1–3 квеста на сегодня';act=()=>{$('newTask').focus()}}
   else if(h>=21&&!S.days[today()]){t='Вечер: отметь итог дня';act=()=>$('checkSec').scrollIntoView({behavior:'smooth',block:'center'})}
   else if(undone.length){const w=undone.find(x=>x.c===wk)||undone[0];t=(w.c===wk?'КРИТ ×2 по боссу: ':'')+w.t;act=()=>$(w.k==='h'?'habSec':'tasks').scrollIntoView({behavior:'smooth',block:'center'})}
@@ -1269,6 +1324,52 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
 function render(){ensureDay();checkGoals();checkAch();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
 
+/* ================= ROADMAP 道: the whole future ================= */
+const xpAt=L=>{let s=0;for(let k=1;k<L;k++)s+=Math.round(100+(k-1)*40);return s};
+function avgXp(){const x=S.xpd||{},ks=Object.keys(x).sort();if(!ks.length)return 0;let sum=0,n=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const k=dkey(d);if(k<ks[0])break;sum+=x[k]||0;n++}return n?sum/n:0}
+function eta(x){const a=avgXp();if(x<=0||a<=0)return '';const d=Math.ceil(x/a);return ' · ≈'+d+' '+plural(d,'день','дня','дней')}
+const rmRow=(st,k,nm,sub,r)=>'<div class="rm '+st+'"><b class="k" lang="ja">'+k+'</b><div>'+nm+(sub?'<small>'+sub+'</small>':'')+'</div><span class="r">'+r+'</span></div>';
+function roadmap(sec){const li=lvlInfo(S.xp),cur=rankOf(li.l),cd=cleanDays(),tc=totalClean(),ch=S.camp.ch,a=avgXp();let o='';
+ const H=(id,t,n)=>'<h4 class="rmh" id="rm-'+id+'">'+t+(n?'<span>'+n+'</span>':'')+'</h4>';
+ o+=H('rank','Ранги 位','ур. '+li.l)+RANKS.map(r=>{const need=xpAt(r[0])-S.xp,st=r===cur?'now':li.l>=r[0]?'done':'lock';return rmRow(st,r[2],esc(r[1]),'с уровня '+r[0]+' · '+xpAt(r[0]).toLocaleString('ru-RU')+' XP',st==='done'?'✓':st==='now'?'ты здесь':'ещё '+need.toLocaleString('ru-RU')+' XP'+eta(need))}).join('');
+ o+=H('lvl','Ближайшие уровни',a?'в среднем '+Math.round(a)+' XP в день':'')+Array.from({length:6},(_,i)=>li.l+1+i).map(L=>{const need=xpAt(L)-S.xp;return rmRow('lock',L,'Уровень '+L,'всего '+xpAt(L).toLocaleString('ru-RU')+' XP','ещё '+need.toLocaleString('ru-RU')+eta(need))}).join('');
+ o+=H('stats','Характеристики')+Object.entries(STATS).map(([k,[n]])=>{const x=S.st[k]||0,l=statLvl(x);return rmRow('now',STK[k],n+' · ур. '+l,[1,2,3].map(i=>'ур. '+(l+i)+' — '+(15*(l+i-1)**2).toLocaleString('ru-RU')).join(' · '),'до ур. '+(l+1)+': '+(15*l*l-x))}).join('');
+ o+=H('cat','Котик 猫','чистых дней: '+tc)+STAGES.map((s,i)=>{const nx=STAGES[i+1],st=tc>=s[0]&&(!nx||tc<nx[0])?'now':tc>=s[0]?'done':'lock';return rmRow(st,['子','猫','猫','守','又'][i],s[1],'с '+s[0]+' '+plural(s[0],'чистого дня','чистых дней','чистых дней')+(i===4?' · два хвоста, кабуто':''),st==='done'?'✓':st==='now'?'сейчас':'ещё '+(s[0]-tc)+' дн.')}).join('')
+  +CAT_ACC.map(c=>{const own=((S.pet.acc||{}).owned||[]).includes(c[0]);return rmRow(own?'done':'lock','鈴',esc(c[1]),'аксессуар',own?'✓ есть':c[2]+' з')}).join('');
+ o+=H('clean','Путь без срыва','сейчас '+cd+' '+plural(cd,'день','дня','дней'))+BUFFS.map((b,i)=>{const nx=BUFFS[i+1],st=cd>=b[0]&&(!nx||cd<nx[0])?'now':cd>=b[0]?'done':'lock';return rmRow(st,b[0],esc(b[1]),st==='lock'&&(i===0||cd>=BUFFS[i-1][0])?esc(b[2]):'',st==='done'?'✓':st==='now'?'сейчас':'через '+(b[0]-cd)+' дн.')}).join('');
+ o+=H('boss','Ёкаи 妖','глава '+(ch+1))+CHAPTERS.map((c,i)=>{const st=i<ch%NB&&circ(ch)===0||circ(ch)>0&&i!==ch%NB?'done':i===ch%NB?'now':'lock';return rmRow(st,BKANJI[i],esc(c[0]),esc(c[1])+' · слабость: '+STATS[WEAK[i]][0]+' · '+baseHp(i)+' HP',st==='done'?'✓':(bossGold(i))+' з · '+bossXp(i)+' XP')}).join('');
+ S.forge=S.forge||{};o+=H('forge','Кузница 鍛')+Object.entries(SLOTS).map(([k,v])=>{const n=S.forge[k]||0;return rmRow(n?'now':'lock','+'+n,v[0]+' · +'+Math.round(n*FORGE_STEP*100)+'% '+v[1],FORGE_COST.map((c,i)=>'+'+(i+1)+': '+c+' з, ур. '+3*(i+1)).join(' · '),n>=FORGE_COST.length?'макс.':'след.: '+FORGE_COST[n]+' з')}).join('');
+ if(typeof LOVE!=='undefined')o+=H('love','Линия Сердца 心')+LOVE.map((s,i)=>{const t=s[2],dn=t.filter(x=>loveCnt(x[0])>=x[3]).length,st=dn===t.length?'done':dn?'now':'lock';return rmRow(st,i+1,esc(s[0]),t.map(x=>esc(x[1])+(x[3]>1?' ('+Math.min(loveCnt(x[0]),x[3])+'/'+x[3]+')':'')).join(' · '),dn+'/'+t.length)}).join('');
+ o+=H('ach','Достижения 印')+ACHS.map(x=>{let d=false;try{d=!!x[3](S)}catch(e){}return rmRow(d?'done':'lock',esc(x[0]),esc(x[1]),esc(x[2]),d?'✓':'')}).join('');
+ const nav=[['rank','Ранги'],['stats','Сила'],['cat','Кот'],['clean','Без срыва'],['boss','Ёкаи'],['forge','Кузница'],['love','Сердце'],['ach','Награды']];
+ sheet('<h3>Карта пути 道</h3><div class="rmnav">'+nav.map(n=>'<button data-j="'+n[0]+'">'+n[1]+'</button>').join('')+'</div>'+o+'<button class="btn" id="rmClose" style="width:100%;margin-top:14px">Закрыть</button>');
+ $('rmClose').onclick=closeSheet;const go=s=>{const e=$('rm-'+s);if(e)e.scrollIntoView({block:'start'})};$('sheetIn').querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>go(b.dataset.j));if(sec)setTimeout(()=>go(sec),30)}
+
+/* ================= HOURLY CHECK-IN: not more than once an hour ================= */
+const DEW=[['der Termin','встреча, приём'],['die Bewerbung','заявка на работу'],['die Wohnung','квартира'],['sich bewerben','подавать заявку'],['der Lebenslauf','резюме'],['die Erfahrung','опыт'],['zuverlässig','надёжный'],['die Ausbildung','профобучение'],['der Antrag','заявление'],['die Frist','срок'],['erledigen','сделать, уладить'],['sich kümmern um','заботиться о'],['die Unterlagen','документы'],['der Vertrag','договор'],['vereinbaren','договориться'],['gelassen','спокойный'],['die Geduld','терпение'],['der Fortschritt','прогресс'],['übernehmen','взять на себя'],['die Gelegenheit','возможность']];
+const CHECKS=[['energy','Сколько сейчас энергии? 1 — пусто, 10 — горы сверну.','s',5,'wil',9,21],['stress','Насколько ты сейчас напряжён? 1 — спокоен, 10 — на пределе.','s',5,'wil',9,23],
+ ['water','Выпей стакан воды.','d',5,'wil',9,21],['breath','Минута медленного дыхания: вдох на 4, выдох на 6. Спокойно, без усилия.','d',10,'wil',9,23],
+ ['move','Встань: 10 приседаний или минуту потянись.','d',10,'str',9,20],['walk','Выйди на улицу хотя бы на 10 минут.','d',15,'str',10,19],
+ ['tidy','5 минут уборки: стол, кровать или пол.','d',10,'wil',10,21],['body','Разожми челюсть, опусти плечи, выпрямись.','d',5,'wil',9,23],
+ ['deword','Немецкое слово: {w}. Напиши с ним одну фразу.','t',10,'int',9,21],['focus','Какое одно дело сейчас самое важное?','t',10,'int',9,15],
+ ['msg','Напиши кому-нибудь пару тёплых слов.','d',10,'cha',11,21],['grat','За что ты сегодня благодарен?','t',10,'wil',15,23],
+ ['win','Одна маленькая победа за сегодня?','t',10,'wil',16,23],['sleep','Во сколько сегодня ляжешь спать?','t',5,'wil',19,23],['tomorrow','Что завтра сделаешь первым делом?','t',10,'wil',19,23]];
+const ciGate=()=>{const h=new Date().getHours();return h>=9&&h<23&&Date.now()-((S.ci&&S.ci.at)||0)>=36e5};
+function ciPick(){if(!ciGate())return null;const h=new Date().getHours(),dd=((S.ci||{}).d||{})[today()]||{},ok=CHECKS.filter(c=>!(c[0]in dd)&&h>=c[5]&&h<c[6]);return ok.length?ok[seedPick(today()+'ci'+h,1,ok.length)[0]]:null}
+function ciText(c){const w=DEW[seedPick(today()+'dw',1,DEW.length)[0]];return c[1].replace('{w}','«'+w[0]+'» — '+w[1])}
+function ciSheet(c){let body='';
+ if(c[2]==='s')body='<div class="scale" id="ciScale">'+[1,2,3,4,5,6,7,8,9,10].map(n=>'<button data-v="'+n+'">'+n+'</button>').join('')+'</div>';
+ else body=(c[2]==='t'?'<textarea id="ciTxt" rows="2" maxlength="200" placeholder="Коротко…"></textarea>':'')+'<button class="btn gold" id="ciOk" style="width:100%;margin-top:10px">'+(c[2]==='t'?'Записать':'Сделал')+' · +'+c[3]+' XP</button>';
+ sheet('<h3>Вопрос часа</h3><p style="font:17px/1.45 var(--pix);margin:6px 0 12px">'+esc(ciText(c))+'</p>'+body+'<button class="btn" id="ciSkip" style="width:100%;margin-top:10px">Не сейчас</button><p class="mut" style="font-size:12px;margin-top:8px">Спрашиваю не чаще раза в час.</p>');
+ const done=v=>{S.ci=S.ci||{at:0,d:{}};S.ci.d=S.ci.d||{};const dd=S.ci.d[today()]=S.ci.d[today()]||{};dd[c[0]]=v;S.ci.at=Date.now();
+  const ks=Object.keys(S.ci.d).sort();while(ks.length>30)delete S.ci.d[ks.shift()];
+  if((c[0]==='grat'||c[0]==='win')&&v)addLog((c[0]==='grat'?'Благодарность: ':'Победа дня: ')+v);
+  closeSheet();award(c[3],c[4],'');save();render();
+  const tip=c[0]==='stress'&&v>=7?'Высокое напряжение. Минута медленного дыхания (вдох 4, выдох 6) или 10 минут на улице.':c[0]==='energy'&&v<=3?'Мало сил. Вода, свет, 5 минут на улице — и одно маленькое дело.':'';if(tip)setTimeout(()=>toast(tip),1200)};
+ $('ciSkip').onclick=()=>{S.ci=S.ci||{at:0,d:{}};S.ci.at=Date.now();save();closeSheet();render()};
+ if(c[2]==='s')$('ciScale').querySelectorAll('button').forEach(b=>b.onclick=()=>done(+b.dataset.v));
+ else $('ciOk').onclick=()=>{const v=c[2]==='t'?$('ciTxt').value.trim().slice(0,200):1;if(c[2]==='t'&&!v)return toast('Напиши хоть пару слов');done(v)}}
+
 /* ================= ACTIONS ================= */
 function checkPerfect(){if(SEL!==today())return;const T=allTasks();
  if(T.length>=4&&T.every(t=>t.done)&&S.perfectDay!==today()){S.perfectDay=today();S.perfect++;cheer(15);addLog('Идеальный день');setTimeout(()=>{S.xp+=50;S.gold+=30;S.goldTotal+=30;save();render();lootSheet('Идеальный день!',null,'Все квесты дня выполнены. +50 XP и +30 золота.')},1200)}}
@@ -1369,6 +1470,8 @@ function scrollRead(i){const s=SCROLLS[i],rd=S.love.read=S.love.read||[],was=rd.
   +'<div class="row2" style="margin-top:14px"><button class="btn" id="scBack">К свиткам</button><button class="btn gold" id="scOk">'+(was?'Готово':'Прочитал · +15 XP')+'</button></div>');
  $('scBack').onclick=scrollList;$('scOk').onclick=()=>{if(!rd.includes(s[0])){rd.push(s[0]);award(15,'cha','свиток');addLog('Прочитан свиток: '+s[1]);save();render()}scrollList()}}
 $('loveScrolls').onclick=scrollList;
+$('rmBtn').onclick=()=>roadmap();
+[['hudRank','rank'],['hudLvl','rank'],['heroRank','rank'],['heroLvl','rank'],['heroNext','rank'],['stats','stats'],['petStage','cat'],['bossName','boss'],['mapCnt','boss'],['cTot','clean'],['forge','forge']].forEach(([id,s])=>{const e=$(id);if(e&&!e.onclick){e.style.cursor='pointer';e.addEventListener('click',ev=>{if(id==='forge'&&ev.target.closest('[data-f]'))return;roadmap(s)})}});
 /* ================= STORM (DBT) ================= */
 const STORM=[['Стоп','Замри. Не говори и не пиши ничего важного. Шаг назад, один медленный вдох. Пик эмоции длится минуты.',15],
  ['Остуди тело','Холодная вода на лицо или лёд к запястьям на 30 секунд. Или 5 минут быстрой ходьбы или приседаний. Потом медленно: вдох 4, выдох 6. Не дыши часто и глубоко.',25],
@@ -1499,13 +1602,15 @@ $('expBtn').onclick=async()=>{const all={s:S,plans:{}};for(let i=0;i<localStorag
 $('impBtn').onclick=()=>{$('saveBox').classList.remove('hide');$('impGo').classList.remove('hide');$('saveBox').value=''};
 $('impGo').onclick=()=>{try{const o=JSON.parse(decodeURIComponent(escape(atob($('saveBox').value.trim()))));
  if(o.s){S=hydrate(o.s);for(const[k,v]of Object.entries(o.plans||{}))localStorage.setItem(k,v)}else S=hydrate(o);save();loadPlan(SEL);render();toast('Прогресс загружен');$('saveBox').classList.add('hide');$('impGo').classList.add('hide')}catch(e){toast('Код не подошёл')}};
-$('syncGo').onclick=async()=>{const t=$('syncTok').value.trim();if(!t)return toast('Вставь токен');SY={tok:t};syUI('Подключаю…');
- try{const list=await gh(GH+'?per_page=100'),g=list.find(x=>x.files&&x.files[GF]);
-  if(g){SY.gist=g.id;sySave();const o=await syRead();if(o&&o.s){syApply(o);toast('Прогресс загружен с другого устройства')}else await syPush()}
-  else{const n=await gh(GH,{method:'POST',body:JSON.stringify({description:'Путь Воина — сохранение',public:false,files:{[GF]:{content:JSON.stringify(dump())}}})});SY.gist=n.id;toast('Синхронизация включена')}
+$('syncGo').onclick=async()=>{let t=$('syncTok').value.trim(),gid='';if(!t)return toast('Вставь токен или код');
+ if(/^PV1\./.test(t)){try{[t,gid]=atob(t.slice(4)).split('|')}catch(e){return toast('Код не подошёл')}}SY={tok:t};syUI('Подключаю…');
+ try{if(!gid){const list=await gh(GH+'?per_page=100'),g=list.find(x=>x.files&&x.files[GF]);gid=g?g.id:''}
+  if(gid){SY.gist=gid;sySave();localStorage.removeItem(BK);await syRun()}
+  else{const n=await gh(GH,{method:'POST',body:JSON.stringify({description:'Путь Воина — сохранение',public:false,files:{[GF]:{content:JSON.stringify(dump())}}})});SY.gist=n.id;setBase(dumpO());toast('Синхронизация включена')}
   SY.at=Date.now();sySave();$('syncTok').value='';syUI()}catch(e){SY={};sySave();syUI('Ошибка: '+e.message)}};
-$('syncNow').onclick=()=>{syUI('Синхронизирую…');syPull()};
-$('syncOff').onclick=()=>{SY={};sySave();syUI();toast('Синхронизация отключена')};
+$('syncNow').onclick=()=>{syUI('Синхронизирую…');syRun()};
+$('syncCode').onclick=async()=>{const c='PV1.'+btoa(SY.tok+'|'+SY.gist);try{await navigator.clipboard.writeText(c);toast('Код скопирован. На ПК вставь его в поле токена')}catch(e){$('saveBox').value=c;$('saveBox').classList.remove('hide');toast('Скопируй код из поля')}};
+$('syncOff').onclick=()=>{SY={};sySave();localStorage.removeItem(BK);syUI();toast('Синхронизация отключена')};
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(syT){clearTimeout(syT);syPush()}}else syPull()});
 syUI();
 $('resetBtn').onclick=()=>sheet('<h3>Начать заново?</h3><p>Весь прогресс будет стёрт.</p><div class="row2"><button class="btn" id="zNo">Отмена</button><button class="btn red" id="zYes">Стереть</button></div>')||($('zNo').onclick=closeSheet,$('zYes').onclick=()=>{S=fresh();save();closeSheet();render();toast('Новая игра')});
@@ -1523,7 +1628,15 @@ if(S.econ!==2){const ch=S.camp.ch,old=ch<6?[300,550,850,1200,1700,2400][ch]:2400
  S.camp.mx=baseHp(ch);S.camp.hp=Math.round(S.camp.mx*r);S.camp.ph=r<=.5?1:0;S.forge=S.forge||{weapon:0,armor:0,amulet:0};S.econ=2;save()}
 go('day');loadPlan(SEL);render();
 /* remote updates from Claude: each update applied once per id */
-function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id||S.applied.includes(o.id))return null;S.applied.push(o.id);const msgs=[];
+function planPart(o,seen){let msg='';const ld=d=>{let pl={tasks:[],note:'',best:''};try{const v=JSON.parse(localStorage.getItem(planKey(d))||'null');if(v)pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v}catch(e){}pl.tasks=pl.tasks||[];pl.rids=pl.rids||[];return pl},
+ sv=(d,pl)=>{try{localStorage.setItem(planKey(d),JSON.stringify(pl))}catch(e){}if(d===SEL)loadPlan(SEL)},skip=d=>seen&&d<today();
+ if(Array.isArray(o.tasks)&&o.tasks.length){const d=o.date||today();if(!skip(d)){const pl=ld(d);if(!pl.rids.includes(o.id)){pl.rids.push(o.id);let n=0;
+  for(const q of o.tasks){if(!q||!q.t||pl.tasks.some(x=>x.t===q.t))continue;pl.tasks.push({t:String(q.t).slice(0,140),time:q.time||'',xp:Math.max(5,Math.min(200,Number(q.xp)||25)),c:STATS[q.c]?q.c:catOf(q.t),done:false,aw:null,lt:false});n++}
+  pl.tasks.sort((a,b)=>(a.time||'99').localeCompare(b.time||'99'));sv(d,pl);if(n)msg='Новые квесты на '+(d===today()?'сегодня':parseD(d).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}))+': '+n}}}
+ if(Array.isArray(o.remove)){const by={};for(const r of o.remove){if(!r||!r.t)continue;const d=r.date||o.date||today();(by[d]=by[d]||[]).push(r.t)}
+  for(const[d,ts]of Object.entries(by)){if(skip(d))continue;const pl=ld(d);if(pl.rids.includes(o.id+'#rm'))continue;pl.rids.push(o.id+'#rm');pl.tasks=pl.tasks.filter(x=>x.done||!ts.includes(x.t));sv(d,pl)}}
+ return msg}
+function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.applied.includes(o.id)){planPart(o,true);return null}S.applied.push(o.id);const msgs=[];
  if(o.cleanSince){const t=new Date(o.cleanSince).getTime();if(t&&t<=Date.now())S.cleanSince=t}
  let n=0;for(const[k,v]of Object.entries(o.days||{})){if(S.days[k]!==v){if(v==='c')n++;S.days[k]=v}}
  if(n)award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n});
@@ -1537,13 +1650,7 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id||S.applied.includes
   for(const[id,n]of Object.entries(o.love)){if(id==='rej'){for(let i=0;i<n;i++){S.love.rej=(S.love.rej||0)+1;lx+=award(15,'cha','',{dmg:15}).xp}continue}const t=all.find(x=>x[0]===id);if(!t)continue;
    for(let i=0;i<n&&(S.love.d[id]||0)<t[3];i++){S.love.d[id]=(S.love.d[id]||0)+1;if(id==='date')S.love.dates=(S.love.dates||0)+1;lx+=award(t[2],'cha','',{dmg:t[2]}).xp;addLog('Линия Сердца: '+t[1])}}
   if(lx)msgs.push('Линия Сердца: +'+lx+' XP')}
- if(Array.isArray(o.tasks)&&o.tasks.length){const d=o.date||today(),key=planKey(d);let pl={tasks:[],note:'',best:''};try{const v=JSON.parse(localStorage.getItem(key)||'null');if(v)pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v}catch(e){}
-  pl.tasks=pl.tasks||[];let n=0;for(const q of o.tasks){if(!q||!q.t||pl.tasks.some(x=>x.t===q.t))continue;pl.tasks.push({t:String(q.t).slice(0,140),time:q.time||'',xp:Math.max(5,Math.min(200,Number(q.xp)||25)),c:STATS[q.c]?q.c:catOf(q.t),done:false,aw:null,lt:false});n++}
-  pl.tasks.sort((a,b)=>(a.time||'99').localeCompare(b.time||'99'));try{localStorage.setItem(key,JSON.stringify(pl))}catch(e){}if(d===SEL)loadPlan(SEL);
-  if(n)msgs.push('Новые квесты на '+(d===today()?'сегодня':parseD(d).toLocaleDateString('ru-RU',{day:'numeric',month:'long'}))+': '+n)}
- if(Array.isArray(o.remove))for(const r of o.remove){if(!r||!r.t)continue;const d=r.date||o.date||today(),key=planKey(d);
-  try{const v=JSON.parse(localStorage.getItem(key)||'null');if(!v)continue;const pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v,n0=pl.tasks.length;
-   pl.tasks=pl.tasks.filter(x=>x.done||x.t!==r.t);if(pl.tasks.length!==n0){localStorage.setItem(key,JSON.stringify(pl));if(d===SEL)loadPlan(SEL)}}catch(e){}}
+ {const m=planPart(o,false);if(m)msgs.push(m)}
  if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
 (async()=>{await syPull();try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
