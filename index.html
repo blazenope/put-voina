@@ -849,6 +849,58 @@ summary{font:700 16px var(--pix)}
 .inp{width:100%;padding:12px;border:0;border-radius:12px;background:rgba(0,0,0,.35);box-shadow:inset 0 0 0 1px var(--hair);outline:none;color:var(--ink)}
 .wfph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;height:100%;background:radial-gradient(circle at 50% 30%,rgba(255,122,154,.35),rgba(27,20,32,1) 70%);text-align:center;padding:8px}.wfph i{font-style:normal;font-size:30px;animation:wfBreath 2s ease-in-out infinite}.wfph b{font:800 13px/1.2 var(--body);color:#fff}.wfph small{font:700 11px var(--body);color:#ff9fb5}
 #loveSec .row2:has(#loveRej),#loveScrolls{display:none!important}
+
+/* gear v2 */
+.slots{display:flex!important;flex-direction:column;gap:10px}
+.gcard{padding:12px;border-radius:18px;background:linear-gradient(135deg,color-mix(in srgb,var(--gc) 16%,transparent),rgba(255,255,255,.02));border:1px solid color-mix(in srgb,var(--gc) 40%,transparent)}
+.gtop{display:flex;align-items:center;gap:12px}
+.gic{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-content:center;background:rgba(0,0,0,.3);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}.gic.sm{width:40px;height:40px;border-radius:11px}
+.gname{flex:1;min-width:0}.gname small{display:block;font:800 10.5px var(--body);text-transform:uppercase;letter-spacing:.8px;color:var(--ink3)}.gname b{display:block;font:700 15.5px/1.25 var(--body);color:var(--ink)}.gname span{font:600 12px var(--body);color:var(--ink2)}.gname em{font-style:normal;color:#b9d68a}
+.gsw{flex:none;border:0;border-radius:11px;padding:8px 10px;font:700 12px var(--body);color:var(--ink);background:rgba(255,255,255,.08);cursor:pointer}
+.gbtns{display:flex;gap:8px;margin-top:10px}
+.gb{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;border:0;border-radius:12px;padding:9px 6px;background:rgba(255,255,255,.07);color:var(--ink);cursor:pointer;font:inherit}
+.gb b{font:800 13px var(--body)}.gb small{font:600 11px var(--body);color:var(--ink3)}
+.gb.gold{background:linear-gradient(180deg,#f0d79e,#c9a46a);color:#1b1712}.gb.gold small{color:#4a3a20}
+.gb:disabled{opacity:.45;cursor:default}.gb:active:not(:disabled){transform:scale(.96)}
+.gb.sm{flex:none;padding:8px 10px;min-width:62px}
+.gmax{flex:1;text-align:center;font:800 12.5px var(--body);color:#ffc36b;padding:8px}
+.inv{display:flex!important;flex-direction:column;gap:8px}
+.brow{display:flex;align-items:center;gap:10px;padding:8px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--hair)}
+
+#s-hero .hidet,#s-hero #bagPnl.hidet{display:none!important}
+.pkb{margin-top:8px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair)}.pkb summary{list-style:none;cursor:pointer;padding:4px 12px}.pkb summary::-webkit-details-marker{display:none}
+.pkb summary h4{display:flex;align-items:center;gap:8px}.pkb .pkn{margin-left:auto;font:800 12px var(--num);font-style:normal;color:var(--gold2)}.pkb summary h4::after{content:'›';font-size:18px;color:var(--ink3);transition:transform .2s}.pkb[open] summary h4::after{transform:rotate(90deg)}
+.pkb .pkg{padding:0 10px 10px}
+
+/* ===== compact pass ===== */
+.pnl{padding:12px 14px!important;margin-bottom:10px!important}
+.pnl .ttl{margin-bottom:8px!important;padding-bottom:7px!important}
+.pnl h2{font-size:18px!important}
+.bento{margin-bottom:10px!important}
+#nextBox{padding:10px 14px!important}#nextTxt{font-size:14.5px!important}.nwhy{display:block;margin-top:2px;font:600 11.5px var(--body);color:var(--ink3)}
+.task{padding:8px 0!important;gap:10px!important}.task .t{font-size:14.5px!important;line-height:1.35!important}.task .tm{font-size:12px!important}
+#s-day #quick{display:none!important}
+.pulse{animation:pulseH 1.2s ease-out}@keyframes pulseH{0%{background:rgba(226,196,142,.35)}100%{background:transparent}}
+.rits{grid-template-columns:1fr!important;gap:6px!important}
+.rit:not(.bonus){display:grid!important;grid-template-columns:30px 1fr auto;grid-template-areas:"k n f" "k a a";column-gap:10px;row-gap:6px;align-items:center;padding:9px 12px!important}
+.rit:not(.bonus) .rk{grid-area:k;font-size:20px!important;flex-direction:column!important;align-items:center!important;gap:2px}.rit .rk small{font-size:10px!important}
+.rit:not(.bonus) .rn{grid-area:n;font-size:13.5px!important}.rit:not(.bonus) .ra{grid-area:a}.rit:not(.bonus) .rf{grid-area:f;gap:8px}
+.rit.on::after{bottom:auto!important;top:50%!important;margin-top:-13px;width:26px!important;height:26px!important;right:12px!important;font-size:14px!important}.rit.on:not(.bonus) .rf{visibility:hidden}
+.rit.bonus{padding:9px 12px!important}
+.rit{min-height:0!important}.rit:not(.bonus) .rf{font-size:11.5px!important;white-space:nowrap}.rit .rmin{padding:5px 10px!important;font-size:13px!important;font-weight:800!important}
+.ctc{padding:10px 12px!important;margin:6px 0!important}
+.hint{margin-top:8px}.hint summary{list-style:none;cursor:pointer;font:700 12px var(--body);color:var(--ink3)}.hint summary::-webkit-details-marker{display:none}.hint summary::before{content:'ⓘ ';}.hint[open] summary{margin-bottom:6px}
+#heroKanji{display:none!important}
+.lq{padding:9px 10px 9px 12px!important;margin:6px 8px!important}.lqt{font-size:14px!important}.lqm{margin-top:4px!important}.lbtn{padding:8px 12px!important;min-width:50px!important}
+.lst summary{padding:10px 12px!important}.lst summary>i{width:36px!important;height:36px!important;font-size:18px!important;border-radius:12px!important}.lst{margin-top:8px!important}
+.wf{padding:10px!important;margin-bottom:10px!important}.wfa{width:96px!important;height:128px!important}
+.chsl{min-height:118px!important;padding:10px 8px!important}
+.arti{padding:8px 4px 6px!important}.arti i{width:34px!important;height:34px!important;font-size:17px!important}
+.aeq{min-height:96px!important;padding:8px 4px!important}.aeq i{width:34px!important;height:34px!important;font-size:17px!important}
+.abdg{padding:9px 6px 8px!important}.abdg i{width:38px!important;height:38px!important;font-size:18px!important}
+.gcard{padding:10px!important}.gic{width:44px!important;height:44px!important}
+#s-log .hidet{display:none!important}
+.oddsT summary{list-style:none;cursor:pointer;margin:0}.oddsT summary::-webkit-details-marker{display:none}.oddsT summary::before{content:'ⓘ '}
 </style>
 </head>
 <body>
@@ -976,6 +1028,7 @@ summary{font:700 16px var(--pix)}
 
 <!-- ================= HERO ================= -->
 <main class="screen hide" id="s-hero">
+  <div class="segm" id="heroTabs"></div>
   <div class="pnl gold">
     <div class="herocard"><div class="spr" id="heroSpr"></div>
       <div style="flex:1;min-width:0"><h3 id="heroRank"></h3><div class="mut" id="heroLvl"></div>
@@ -1005,7 +1058,7 @@ summary{font:700 16px var(--pix)}
     <div class="ttl"><h2>Снаряжение</h2></div><div class="mut" id="bonusTxt" style="margin:-4px 0 10px;font-size:13px"></div>
     <div class="slots" id="slots"></div>
   </div>
-  <div class="pnl">
+  <div class="pnl" id="bagPnl">
     <div class="ttl"><h2>Сумка</h2><span class="c" id="invCnt"></span></div>
     <div class="inv" id="inv"></div>
   </div>
@@ -1078,6 +1131,7 @@ summary{font:700 16px var(--pix)}
 
 <!-- ================= LOG ================= -->
 <main class="screen hide" id="s-log">
+  <div class="segm" id="logTabs"></div>
   <div class="pnl">
     <div class="ttl"><h2 id="monTitle">Итоги месяца</h2></div>
     <div class="msum" id="monSum"></div>
@@ -1825,6 +1879,15 @@ const offersWeek=()=>seedPick(weekStart()+'o',3,OFFERS.length);
 function renderHUD(){{const m=$('hudMoon'),hr=new Date().getHours();m.classList.toggle('lit',hr>=20&&!eveDone());m.classList.toggle('done',eveDone())}const li=lvlInfo(S.xp);$('hudFace').innerHTML=heroSVG(2.2);{const rk=rankOf(li.l);$('hudRank').innerHTML='<i class="hk" lang="ja">'+rk[2][0]+'</i>'+esc(rk[1])}$('hudLvl').textContent='ур. '+li.l+' · '+li.cur+'/'+li.need;
  $('hudXp').style.width=(li.cur/li.need*100)+'%';const bf=[S.buffXp>Date.now()?'<span style="color:var(--xp)">×2XP</span>':'',S.buffDmg>Date.now()?'<span style="color:var(--hp)">×2⚔</span>':'',S.buffGold>Date.now()?'<span style="color:var(--gold2)">×2з</span>':''].join(' ');
  $('hudGold').innerHTML=(bf?'<span style="font:600 11px var(--body);margin-right:4px">'+bf+'</span>':'')+coin(2.5)+'<span class="hgN">'+(HG==null?S.gold:HG)+'</span>';tickGold()}
+/* what to do right now: Claude's focus → overdue → soon → top of day → morning ritual → most important */
+function nextPick(U){const d=new Date(),now=d.getHours()*60+d.getMinutes(),tm=x=>/^\d\d:\d\d/.test(x.time||'')?+x.time.slice(0,2)*60+ +x.time.slice(3,5):null,wk=weakOf(S.camp.ch),crit=x=>x.c===wk?' · крит ×2 по боссу':'';
+ const Fo=(S.focus||{})[today()];if(Fo){const f=U.find(x=>x.t===Fo.t);if(f)return {...f,why:(Fo.why||'главное сейчас')+crit(f)}}
+ const timed=U.filter(x=>tm(x)!=null).sort((a,b)=>tm(a)-tm(b));const od=timed.find(x=>tm(x)<=now);if(od)return {...od,why:(tm(od)<now-30?'просрочено с '+od.time:'сейчас по плану')+crit(od)};
+ const soon=timed.find(x=>tm(x)-now<=90);if(soon)return {...soon,why:'в '+soon.time+' · подготовься'+crit(soon)};
+ const top=U.find(x=>x.top);if(top)return {...top,why:'главное дело дня'+crit(top)};
+ if(d.getHours()<11){const r=U.find(x=>x.k==='h'&&/Утро/.test(x.t));if(r)return {...r,why:'утренний ритуал задаёт весь день'}}
+ const P2=U.filter(x=>x.k==='p'&&tm(x)==null).sort((a,b)=>(b.xp||0)-(a.xp||0)||(b.c===wk)-(a.c===wk));const w=P2[0]||U[0];
+ return {...w,why:((w.xp||0)>=40?'самое важное из открытого':'быстрая победа')+' · +'+(w.xp||0)+' XP'+crit(w)}}
 function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
 function taskEl(x,onT,onD){const el=document.createElement('label');el.className='task'+(x.done?' done':'');const b=bonus();
  el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'><span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+(x.c===weakOf(S.camp.ch)&&!x.done?' ×2':'')+'</span>'
@@ -1870,16 +1933,17 @@ function renderDay(){
  $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
  $('cTot').textContent='Всего чистых дней: '+totalClean();
  // next step
- {let t='',act=null;const ci=isT?ciPick():null,T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),wk=weakOf(S.camp.ch);
+ {let t='',why='',act=null;const ci=isT?ciPick():null,T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),wk=weakOf(S.camp.ch);
   if(!isT){t='Ты смотришь другой день. Вернуться к сегодня';act=()=>selectDay(today())}
   else if(!S.mood[today()]&&ciGate()){t='Как ты? Отметь настроение и сон — 10 секунд';act=()=>{S.ci=S.ci||{at:0,d:{}};S.ci.at=Date.now();save();moodSheet()}}
   else if(ci){t='Вопрос часа: '+ciText(ci);act=()=>ciSheet(ci)}
   else if(!P.tasks.length){t='Запиши 1–3 квеста на сегодня';act=()=>{$('newTask').focus()}}
   else if(h>=20&&!eveDone()){t='Вечерний ритуал: закрой день — 1 минута';act=eveSheet}
-  else if(undone.length){const w=undone.find(x=>x.c===wk)||undone[0];t=(w.c===wk?'КРИТ ×2 по боссу: ':'')+w.t;act=()=>$(w.k==='h'?'habSec':'tasks').scrollIntoView({behavior:'smooth',block:'center'})}
+  else if(h>=1&&h<5){t='Ночь. Самый сильный ход сейчас — лечь спать';why='сон 7–9 ч даёт +10% ко всему завтра';act=null}
+  else if(undone.length){const w=nextPick(undone);t=w.t;why=w.why;act=()=>{const el=w.k==='h'?$('habSec'):[...document.querySelectorAll('#tasks .task')].find(e=>(e.querySelector('.t')||{}).textContent?.startsWith(w.t))||$('tasks');el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')}}
   else if(!eveDone()){t='Все квесты сделаны! Вечером закрой день в ритуале 月';act=eveSheet}
   else{t='День закрыт. Отдыхай, герой';act=null}
-  $('nextTxt').textContent=t;$('nextBox').onclick=act||(()=>{})}
+  $('nextTxt').innerHTML=esc(t)+(why?'<small class="nwhy">'+esc(why)+'</small>':'');$('nextBox').onclick=act||(()=>{})}
  // quick add from history
  {const freq={};for(let i=1;i<=21;i++){const k=planKey(shift(SEL,-i));try{const v=JSON.parse(localStorage.getItem(k)||'null');(v&&(v.tasks||v)||[]).forEach(x=>{if(x&&x.t)freq[x.t]=(freq[x.t]||0)+1})}catch(e){}}
   const have=new Set(P.tasks.map(x=>x.t)),top=Object.entries(freq).filter(([t])=>!have.has(t)).sort((a,b)=>b[1]-a[1]).slice(0,5);
@@ -1921,7 +1985,7 @@ function renderDay(){
   hb.innerHTML=[...S.qList].sort((a,b)=>(RITK[HABITS[a][0]]?0:1)-(RITK[HABITS[b][0]]?0:1)).map(i=>{const r=RITK[HABITS[i][0]],on=S.qDone.includes(i),hi=habInfo(i),xp=Math.round(HABITS[i][1]*(1+b.xp));
    if(!r)return '<button class="rit bonus'+(on?' on':'')+'" data-h="'+i+'"><span class="rk" lang="ja">加</span><span style="flex:1;min-width:0"><span class="rn" style="display:block">'+esc(HABITS[i][0])+'</span><span class="rf" style="margin-top:4px">бонус дня · +'+xp+' XP</span></span></button>';
    return '<button class="rit'+(on?' on':'')+(half.includes(i)?' half':'')+'" data-h="'+i+'"><span class="rk"><span lang="ja">'+r[3]+'</span><small>'+(hi.s?'🔥 '+hi.s:'')+'</small></span><span class="rn">'+esc(r[0])+'</span>'
-    +'<span class="ra" title="До привычки 66 дней"><i style="width:'+hi.auto+'%"></i></span><span class="rf"><span>'+(on?'✓ сделано · ':'')+'+'+xp+' XP</span>'+(on?'':'<span class="rmin" data-m="'+i+'" role="button">½ чуть-чуть</span>')+'</span></button>'}).join('');
+    +'<span class="ra" title="До привычки 66 дней"><i style="width:'+hi.auto+'%"></i></span><span class="rf"><span>'+(on?'✓ сделано · ':'')+'+'+xp+' XP</span>'+(on?'':'<span class="rmin" data-m="'+i+'" role="button" title="Сделал чуть-чуть: половина опыта, серия живёт">½</span>')+'</span></button>'}).join('');
   hb.querySelectorAll('.rit').forEach(el=>el.onclick=e=>{buzz();const m=e.target.closest('[data-m]');toggleHabit(+el.dataset.h,!!m)});
   $('hCount').textContent=S.qDone.filter(i=>S.qList.includes(i)).length+' / '+S.qList.length}
  const s=S.days[SEL],cb=$('checkBox');
@@ -1941,11 +2005,11 @@ function renderHero(){const li=lvlInfo(S.xp),r=rankOf(li.l),nx=RANKS.find(x=>x[0
  {const ri=rankIdx(),nr=RANKS[ri+1];$('heroNext').textContent=nr?'Следующий ранг «'+nr[1]+'»: уровень '+nr[0]+(li.l>=nr[0]?' ✓':'')+' и испытание':'Высший ранг';$('heroRank').textContent=RANKS[ri][1];$('heroKanji').textContent=RANKS[ri][2]||'道'}
  $('stats').innerHTML=Object.entries(STATS).map(([k,[n,col]])=>'<div class="statrow"><b style="color:'+col+'"><i lang="ja" class="kj">'+STK[k]+'</i>'+n+'</b><div class="gauge"><i style="width:'+(statProg(S.st[k]||0)*100)+'%;background:'+col+'"></i></div><span>ур. '+statLvl(S.st[k]||0)+'</span></div>').join('');
  const b=bonus();$('bonusTxt').textContent='+'+Math.round(b.dmg*100)+'% урона · +'+Math.round(b.gold*100)+'% золота · +'+Math.round(b.xp*100)+'% XP';
- $('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]);return '<button class="slot '+(it?'r'+it.r:'')+'" data-k="'+k+'">'+(it?icon(k,RCOL[it.r],4):icon(k,'#2b3150',4))+'<span class="'+(it?'t'+it.r:'')+'">'+(it?esc(it.n):v[0]+': пусто')+'</span></button>'}).join('');
- $('slots').querySelectorAll('.slot').forEach(s=>s.onclick=()=>{const it=S.inv.find(i=>i.id===S.eq[s.dataset.k]);if(it)itemSheet(it)});
+ renderGear();if(0)$('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]);return '<button class="slot '+(it?'r'+it.r:'')+'" data-k="'+k+'">'+(it?icon(k,RCOL[it.r],4):icon(k,'#2b3150',4))+'<span class="'+(it?'t'+it.r:'')+'">'+(it?esc(it.n):v[0]+': пусто')+'</span></button>'}).join('');
+ if(0)$('slots').querySelectorAll('.slot').forEach(s=>s.onclick=()=>{const it=S.inv.find(i=>i.id===S.eq[s.dataset.k]);if(it)itemSheet(it)});
  $('invCnt').textContent=S.inv.length;
- $('inv').innerHTML=S.inv.length?S.inv.map(i=>'<button class="it r'+i.r+'" data-id="'+i.id+'" aria-label="'+esc(i.n)+'">'+icon(i.k,RCOL[i.r],3.5)+'</button>').join(''):'<div class="empty" style="grid-column:1/-1">Пусто. Купи снаряжение в Лавке → Оружейная или победи босса.</div>';
- $('inv').querySelectorAll('.it').forEach(b=>b.onclick=()=>itemSheet(S.inv.find(i=>i.id===b.dataset.id)));
+ if(0)$('inv').innerHTML=S.inv.length?S.inv.map(i=>'<button class="it r'+i.r+'" data-id="'+i.id+'" aria-label="'+esc(i.n)+'">'+icon(i.k,RCOL[i.r],3.5)+'</button>').join(''):'<div class="empty" style="grid-column:1/-1">Пусто. Купи снаряжение в Лавке → Оружейная или победи босса.</div>';
+ if(0)$('inv').querySelectorAll('.it').forEach(b=>b.onclick=()=>itemSheet(S.inv.find(i=>i.id===b.dataset.id)));
  const o=S.oath;$('oathView').innerHTML='<p style="margin:0 0 6px">Я — человек, который <b style="color:var(--gold2)">'+esc(o.identity||IDENTITY)+'</b>.</p>'+(o.why.length?'<ul style="margin:0;padding-left:18px">'+o.why.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul>':'<span class="mut">Причины не записаны.</span>');
  renderTrial();renderSkills('skills');renderSkills('pathSk');renderPerks();
  renderAch();
@@ -1964,7 +2028,7 @@ const SHOP=[
 const PRICE=[80,250,700,1800],REQ=[1,3,6,10];
 function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(lvlInfo(S.xp).l<REQ[r])return toast('Нужен уровень '+REQ[r]);S.gold-=p;
  const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,r,n:SLOTS[k][2][r]};S.inv.push(it);
- const cur=S.inv.find(i=>i.id===S.eq[k]);if(!cur||cur.r<=r)S.eq[k]=it.id;addLog('Куплено: '+it.n);save();render();lootSheet('Куплено!',it,'Надето автоматически. Сменить можно во вкладке «Герой».')}
+ const cur=S.inv.find(i=>i.id===S.eq[k]);if(!cur||cur.r<=r)S.eq[k]=it.id;addLog('Куплено: '+it.n);SFX.coin();buzz();save();render();toast('Улучшено: '+it.n+' · надето')}
 function left(k){const t=(S[k]||0)-Date.now();return t>0?Math.ceil(t/HOUR)+' ч':''}
 function renderShop(){$('shopGold').innerHTML=coin(2.5)+S.gold;
  const act={'Свиток мудрости':left('buffXp'),'Свиток ярости':left('buffDmg'),'Свиток удачи':left('buffGold')};
@@ -2019,7 +2083,8 @@ function renderCatShop(){const A=S.pet.acc=S.pet.acc||{owned:[],on:[]};
    +(own?'<button class="btn" data-w="'+k+'">'+(wear?'Снять':'Надеть')+'</button>':'<button class="btn gold" data-c="'+k+'"'+(S.gold<c?' disabled':'')+'>'+c+'</button>')+'</div>'}).join('');
  $('catShop').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const it=CAT_ACC.find(x=>x[0]===b.dataset.c);if(S.gold<it[2])return;S.gold-=it[2];A.owned.push(it[0]);A.on.push(it[0]);cheer(25);SFX.coin();addLog('Котику куплено: '+it[1]);save();render();toast('Котик доволен: '+it[1].toLowerCase())});
  $('catShop').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const k=b.dataset.w;A.on=A.on.includes(k)?A.on.filter(x=>x!==k):A.on.concat(k);SFX.tap();save();render()})}
-function render(){ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
+function hintify(){document.querySelectorAll('#habSec>.mut,#ctList>.mut,#s-shop .pnl>.mut,#loveSec>.why,#s-hero .lore,#s-quest .pnl>.why').forEach(el=>{if(el.parentElement.tagName==='DETAILS'||el.textContent.length<90)return;const d=document.createElement('details');d.className='hint';d.innerHTML='<summary>'+(el.classList.contains('lore')?'Легенда героя':'Как это работает?')+'</summary>';el.replaceWith(d);d.appendChild(el)})}
+function render(){setTimeout(hintify,0);ensureDay();checkGoals();checkAch();checkRank();renderGoals();renderCatShop();renderHUD();renderDay();renderQuest();renderHero();renderShop();renderLog()}
 
 /* ================= ROADMAP 道: the whole future ================= */
 const xpAt=L=>{let s=0;for(let k=1;k<L;k++)s+=needOf(k);return s};
@@ -2246,6 +2311,23 @@ $('sheet').onclick=e=>{if(e.target===$('sheet'))closeSheet()};
 const LQ=[];function lootSheet(title,it,txt){LQ.push([title,it,txt]);if($('sheet').classList.contains('hide'))nextLoot()}
 function nextLoot(){const q=LQ.shift();if(q)showLoot(q[0],q[1],q[2])}
 function showLoot(title,it,txt){(it?SFX.chest:SFX.win)();sheet('<div class="loot">'+(it?'<div class="spr">'+icon(it.k,RCOL[it.r],9)+'</div><b class="t'+it.r+'" style="font-size:20px">'+esc(it.n)+'</b><span class="t'+it.r+'">'+RARITY[it.r][0]+' · +'+RARITY[it.r][1]+'% '+SLOTS[it.k][1]+'</span>':'<div class="spr">'+icon('star','#f0b541',8)+'</div>')+'</div><h3 style="text-align:center">'+esc(title)+'</h3>'+(txt?(()=>{const p=String(txt).split(/\.\s+(?=[А-ЯЁA-Z0-9+])/).map(s=>s.trim().replace(/\.$/,'')).filter(Boolean);return p.length>2?'<ul class="lootl">'+p.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ul>':'<p style="text-align:center">'+esc(txt)+'</p>'})():'')+'<button class="btn gold" id="lOk" style="width:100%">Отлично</button>');$('lOk').onclick=closeSheet}
+/* ===== gear: one place, cards with upgrade / forge / swap ===== */
+const HTABS=[['me','Обзор'],['gear','Снаряжение'],['sk','Навыки'],['glory','Слава']],HMAP={'Навыки':'sk','Перки':'sk','Характеристики':'me','Клятва героя':'me','Снаряжение':'gear','Сумка':'gear','Достижения':'glory'};
+function renderHeroTabs(){const cur=HTABS.some(t=>t[0]===S.heroTab)?S.heroTab:'me';$('heroTabs').innerHTML=HTABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
+ $('heroTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.heroTab=b.dataset.k;SFX.tap();buzz();save();renderHeroTabs();scrollTo({top:0})});
+ document.querySelectorAll('#s-hero>.pnl').forEach(p=>{if(p.classList.contains('gold'))return p.classList.toggle('hide',cur!=='me');const t=(p.querySelector('h2')||{}).textContent;const g=HMAP[t];if(!g)return;p.dataset.ht=g;if(p.id==='bagPnl'&&cur==='gear')return;p.classList.toggle('hidet',g!==cur)})}
+function renderGear(){renderHeroTabs();const lv=lvlInfo(S.xp).l;S.forge=S.forge||{};
+ $('slots').innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]),r=it?it.r:-1,fn=S.forge[k]||0,tot=(it?RARITY[r][1]:0)+Math.round(fn*FORGE_STEP*100),nr=r+1,others=S.inv.filter(i=>i.k===k&&i.id!==S.eq[k]).length;
+  let up='';if(nr<=3){const lock=lv<REQ[nr];up='<button class="gb gold" data-up="'+k+'" '+(lock||S.gold<PRICE[nr]?'disabled':'')+'><b>'+(lock?'🔒 ур. '+REQ[nr]:'Улучшить')+'</b><small>'+SLOTS[k][2][nr]+' · '+PRICE[nr]+' з</small></button>'}
+  let fg='';if(fn<FORGE_COST.length){const need=3*(fn+1),lock=lv<need;fg='<button class="gb" data-fg="'+k+'" '+(lock||S.gold<FORGE_COST[fn]?'disabled':'')+'><b>'+(lock?'🔒 ур. '+need:'Заточить +'+(fn+1))+'</b><small>+'+Math.round(FORGE_STEP*100)+'% · '+FORGE_COST[fn]+' з</small></button>'}
+  return '<div class="gcard'+(it?' r'+r:'')+'" style="--gc:'+(it?RCOL[r]:'#555')+'"><div class="gtop"><span class="gic">'+icon(k,it?RCOL[r]:'#3a3f55',4.5)+'</span><div class="gname"><small>'+v[0]+(fn?' · заточка +'+fn:'')+'</small><b class="'+(it?'t'+r:'')+'">'+(it?esc(it.n):'Пусто')+'</b><span>+'+tot+'% '+v[1]+(it?' · '+RARITY[r][0].toLowerCase():'')+'</span></div>'+(others?'<button class="gsw" data-sw="'+k+'">Сменить · '+others+'</button>':'')+'</div><div class="gbtns">'+up+fg+(!up&&!fg?'<span class="gmax">Максимум ✦</span>':'')+'</div></div>'}).join('');
+ $('slots').querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const k=b.dataset.up,it=S.inv.find(i=>i.id===S.eq[k]);buyItem(k,(it?it.r:-1)+1)});
+ $('slots').querySelectorAll('[data-fg]').forEach(b=>b.onclick=()=>{const k=b.dataset.fg,n=S.forge[k]||0,c=FORGE_COST[n];if(S.gold<c||lvlInfo(S.xp).l<3*(n+1))return;S.gold-=c;S.forge[k]=n+1;SFX.coin();buzz();addLog('Кузница: '+SLOTS[k][0]+' +'+(n+1));save();render();toast(SLOTS[k][0]+' заточен до +'+(n+1))});
+ $('slots').querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{const k=b.dataset.sw;document.getElementById('bagPnl').scrollIntoView({behavior:'smooth',block:'start'})});
+ const bag=S.inv.filter(i=>S.eq[i.k]!==i.id).sort((a,b)=>b.r-a.r);$('bagPnl').classList.toggle('hide',!bag.length);$('invCnt').textContent=bag.length;
+ $('inv').innerHTML=bag.map(i=>{const cur=S.inv.find(x=>x.id===S.eq[i.k]),better=!cur||cur.r<i.r;return '<div class="brow"><span class="gic sm">'+icon(i.k,RCOL[i.r],3.2)+'</span><div class="gname"><b class="t'+i.r+'">'+esc(i.n)+'</b><span>+'+RARITY[i.r][1]+'% '+SLOTS[i.k][1]+(better?' · <em>лучше надетого</em>':'')+'</span></div><button class="gb sm'+(better?' gold':'')+'" data-eq="'+i.id+'"><b>Надеть</b></button><button class="gb sm" data-sell="'+i.id+'"><b>'+RARITY[i.r][2]+' з</b><small>продать</small></button></div>'}).join('');
+ $('inv').querySelectorAll('[data-eq]').forEach(b=>b.onclick=()=>{const it=S.inv.find(i=>i.id===b.dataset.eq);S.eq[it.k]=it.id;SFX.tap();buzz();save();render();toast('Надето: '+it.n)});
+ $('inv').querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>{const it=S.inv.find(i=>i.id===b.dataset.sell),s=RARITY[it.r][2];S.inv=S.inv.filter(i=>i!==it);S.gold+=s;S.goldTotal+=s;SFX.coin();save();render();toast('Продано: +'+s+' золота')})}
 function itemSheet(it){if(!it)return;const eq=S.eq[it.k]===it.id,sell=RARITY[it.r][2];
  sheet('<div class="loot"><div class="spr">'+icon(it.k,RCOL[it.r],8)+'</div><b class="t'+it.r+'" style="font-size:20px">'+esc(it.n)+'</b><span class="t'+it.r+'">'+RARITY[it.r][0]+' · '+SLOTS[it.k][0]+' · +'+RARITY[it.r][1]+'% '+SLOTS[it.k][1]+'</span></div>'
  +'<div class="row2"><button class="btn'+(eq?'':' gold')+'" id="iEq">'+(eq?'Снять':'Надеть')+'</button><button class="btn" id="iSell">Продать · '+sell+'</button></div><button class="linkbtn" id="iClose" style="display:block;margin:14px auto 0">Закрыть</button>');
@@ -2425,8 +2507,8 @@ function renderSkills(id){const el=$(id);if(!el)return;el.innerHTML=Object.entri
 function renderPerks(){pkCheck();const n=PERKS.filter(pkOpen).length;$('pkPts').textContent=n+' / '+PERKS.length;
  $('perks').innerHTML='<div class="mut" style="font-size:12.5px;line-height:1.4">Перки не покупаются: они открываются сами, когда ты реально прокачал навык делами. Уровень навыка 2, 4 и 6 открывает ступени ветки. Открытый перк работает всегда.</div>'
   +Object.entries(PKB).map(([b,[kj,nm]])=>{const list=PERKS.filter(p=>p[1]===b);const sk=list[0][5];
-   return '<div class="pkb"><h4><i lang="ja">'+kj+'</i>'+nm+(sk?'<small>'+SKILLS[sk][0]+': ур. '+skLvl(sk)+'</small>':'')+'</h4><div class="pkg">'+list.map(p=>{const o=pkOpen(p),[v,nn]=pkProg(p);
-    return '<button class="pk '+(o?'own':'lock')+'" data-p="'+p[0]+'"><em>'+(o?'✓':v+' / '+nn)+'</em><b>'+esc(p[3])+'</b><span>'+esc(p[4])+'</span></button>'}).join('')+'</div></div>'}).join('');
+   return '<details class="pkb"><summary><h4><i lang="ja">'+kj+'</i>'+nm+'<em class="pkn">'+list.filter(pkOpen).length+'/'+list.length+'</em>'+(sk?'<small>'+SKILLS[sk][0]+': ур. '+skLvl(sk)+'</small>':'')+'</h4></summary><div class="pkg">'+list.map(p=>{const o=pkOpen(p),[v,nn]=pkProg(p);
+    return '<button class="pk '+(o?'own':'lock')+'" data-p="'+p[0]+'"><em>'+(o?'✓':v+' / '+nn)+'</em><b>'+esc(p[3])+'</b><span>'+esc(p[4])+'</span></button>'}).join('')+'</div></details>'}).join('');
  $('perks').querySelectorAll('.pk').forEach(b=>b.onclick=()=>perkSheet(b.dataset.p))}
 function perkSheet(id){const p=PERKS.find(x=>x[0]===id),o=pkOpen(p),[v,n,what]=pkProg(p);
  sheet('<h3>'+esc(p[3])+'</h3><p>'+esc(p[4])+'.</p><p class="mut" style="font-size:13px">Ветка: '+PKB[p[1]][1]+' · открывается: '+what+' '+n+'</p>'
@@ -2492,7 +2574,7 @@ function renderChests(){const C=chS(),now=Date.now();
   return '<div class="chsl ready">'+chestSVG(c.t,78)+'<b>'+T[0]+'</b><button class="ctb gold" data-co="'+k+'">Открыть!</button></div>'}).join('');
  $('chSlots').querySelectorAll('[data-co]').forEach(b=>b.onclick=()=>chOpen(b.dataset.co));
  const fl=Math.max(0,(C.free||0)+4*36e5-now);$('chFree').innerHTML='<div class="chfree"><span lang="ja">供</span><div><b>Подношение у храма</b><small>'+(fl?'следующее через '+fmtLeft(fl):'готово: золото и карты артефактов')+'</small></div><button class="ctb'+(fl?'" disabled':' gold"')+' id="chFr">Взять</button></div>'
-  +'<div class="oddsT"><div class="lbl">Шансы на редкость артефактов</div>'+CHT.map((T,t)=>'<div><b>'+T[1]+' '+T[0]+'</b><small>'+oddsTxt(t)+'</small></div>').join('')+'</div>';
+  +'<details class="oddsT"><summary class="lbl">Шансы на редкость артефактов</summary>'+CHT.map((T,t)=>'<div><b>'+T[1]+' '+T[0]+'</b><small>'+oddsTxt(t)+'</small></div>').join('')+'</details>';
  $('chFr').onclick=()=>{if(Math.max(0,(C.free||0)+4*36e5-Date.now()))return;C.free=Date.now();const g=12+Math.round(Math.random()*12);S.gold+=g;S.goldTotal+=g;const cards=artRoll(2+Math.round(Math.random()*2),0);addLog('Подношение у храма: +'+g+' золота');save();render();chReveal(0,'Подношение у храма',g,cards,null)};
  $('chCnt').textContent=Object.values(C.sl).filter(Boolean).length+'/4'}
 function navBadge(){const C=chS(),now=Date.now(),ready=Object.values(C.sl).some(Boolean)||now-(C.free||0)>=4*36e5;const b=document.querySelector('#nav [data-s="shop"]');if(b)b.classList.toggle('bd',ready)}
@@ -2527,7 +2609,7 @@ function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().inc
  $('aX').onclick=closeSheet;$('aEq').onclick=()=>{let L=artEqL();if(eq)L=L.filter(x=>x!==id);else{if(L.length>=3)return toast('Все 3 слота заняты: сначала сними артефакт');L.push(id)}S.artEq=L;SFX.tap();save();closeSheet();render()};
  if($('aUp'))$('aUp').onclick=()=>{if(!can)return;s.c-=need;S.gold-=gc;s.l++;addLog('Артефакт улучшен: '+a[1]+' · ур. '+s.l);SFX.level();buzz();save();closeSheet();render();burst(innerWidth/2,innerHeight/2,24);toast(a[1]+' — уровень '+s.l)}}
 /* ===== shop tabs, scenes, reward templates ===== */
-const STABS=[['chest','Сокровища',['chest','art']],['buy','Товары',['cons','gear','cat']],['rw','Награды',['rw']]];
+const STABS=[['chest','Сокровища',['chest','art']],['buy','Товары',['cons','cat']],['rw','Награды',['rw']]];
 function renderShopTabs(){if(!STABS.some(t=>t[0]===S.shopTab))S.shopTab='chest';const cur=S.shopTab,grp=STABS.find(t=>t[0]===cur)[2];$('shopTabs').innerHTML=STABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
  $('shopTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.shopTab=b.dataset.k;SFX.tap();buzz();save();renderShopTabs()});document.querySelectorAll('#s-shop [data-st]').forEach(p=>p.classList.toggle('hide',!grp.includes(p.dataset.st)))}
 const SCN=[['fuji','Фудзи и тории',0],['bamboo','Бамбуковая роща',400],['snow','Зимний храм',600],['munich','Мюнхен: Фрауэнкирхе',900]];
@@ -2586,14 +2668,15 @@ function checkAch(){S.ach2=S.ach2||{};S.actBest=Math.max(S.actBest||0,actStreak(
  if(retro){S.achV=1;save();if(got.length)setTimeout(()=>lootSheet('Зал славы открыт',null,'Засчитано за прошлые дела: '+got.length+' '+plural(got.length,'достижение','достижения','достижений')+'. Опыт за них не начисляется, но слава и титулы твои. Загляни во вкладку «Герой»'),2200);return}
  for(const[s,t]of got){const nm=t<0?s[1]:s[1]+' · '+TIERN[t],xp=t<0?50:TIERXP[t],g=Math.round(xp*.7);S.xp+=xp;S.gold+=g;S.goldTotal+=g;addLog('Достижение: '+nm);if(t>=2)chGive(t===3?3:2,'достижение');setTimeout(()=>{toast('Достижение: '+nm+' · +'+xp+' XP');SFX.stamp()},1500)}
  if(got.length)save()}
-let ACF='Все';
+let ACF='Ближайшие';
 function renderAch(){S.ach2=S.ach2||{};const got=Object.keys(S.ach2).length,tot=AS.length*4+SECR.length;$('achCnt').textContent=got+' / '+tot;
  const badge=s=>{const top=achTop(s),nx=s[5][top+1];let v=0;try{v=s[4]()}catch(e){}const pct=nx?Math.min(100,v/nx*100):100;
   return '<button class="abdg" data-s="'+s[0]+'" style="--tc:'+(top>=0?TIERC[top]:'#3a342d')+'"><i lang="ja">'+s[2]+'</i><b>'+esc(s[1])+'</b><small>'+(top>=0?TIERN[top]:'не открыто')+'</small><div class="gauge"><i style="width:'+pct+'%;background:'+(TIERC[top+1]||TIERC[3])+'"></i></div><span>'+(nx?Math.min(v,nx).toLocaleString('ru-RU')+' / '+nx.toLocaleString('ru-RU'):'всё взято')+'</span></button>'};
  const sec=s=>S.ach2[s[0]]?'<div class="abdg" style="--tc:#c39bff"><i lang="ja">'+s[2]+'</i><b>'+esc(s[1])+'</b><small>тайное</small><span>'+esc(s[3])+'</span></div>':'<div class="abdg sec" style="--tc:#3a342d"><i>?</i><b>Тайное</b><small>скрыто</small></div>';
- const list=ACF==='Тайные'?SECR.map(sec):(ACF==='Все'?AS:AS.filter(s=>s[3]===ACF)).map(badge).concat(ACF==='Все'?SECR.map(sec):[]);
+ const near=()=>AS.map(s=>{const t=achTop(s),nx=s[5][t+1];let v=0;try{v=s[4]()}catch(e){}return [s,nx?v/nx:-1]}).filter(x=>x[1]>=0).sort((a,b)=>b[1]-a[1]).slice(0,8).map(x=>x[0]);
+ const list=ACF==='Ближайшие'?near().map(badge):ACF==='Тайные'?SECR.map(sec):(ACF==='Все'?AS:AS.filter(s=>s[3]===ACF)).map(badge).concat(ACF==='Все'?SECR.map(sec):[]);
  $('achs').innerHTML='<div class="ahd"><div><b>'+achAP()+'</b><span>славы</span></div><div><b>'+got+'</b><span>из '+tot+'</span></div><div><b>'+(S.title?esc(S.title):'—')+'</b><span>титул</span></div></div>'
-  +'<div class="chips acf">'+['Все'].concat(ACAT).map(c=>'<button class="chp'+(ACF===c?' on':'')+'" data-c="'+c+'">'+c+'</button>').join('')+'</div><div class="agrid">'+list.join('')+'</div>';
+  +'<div class="chips acf">'+['Ближайшие','Все'].concat(ACAT).map(c=>'<button class="chp'+(ACF===c?' on':'')+'" data-c="'+c+'">'+c+'</button>').join('')+'</div><div class="agrid">'+list.join('')+'</div>';
  $('achs').querySelectorAll('.acf .chp').forEach(b=>b.onclick=()=>{ACF=b.dataset.c;SFX.tap();renderAch()});$('achs').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>achSheet(b.dataset.s));
  if(S.title&&!$('heroLvl').textContent.includes('«'))$('heroLvl').textContent+=' · «'+S.title+'»'}
 function achSheet(k){const s=AS.find(x=>x[0]===k);let v=0;try{v=s[4]()}catch(e){}
@@ -2603,18 +2686,22 @@ function achSheet(k){const s=AS.find(x=>x[0]===k);let v=0;try{v=s[4]()}catch(e){
   +'<button class="linkbtn" id="acX" style="display:block;margin:14px auto 0">Закрыть</button>');
  $('acX').onclick=closeSheet;$('sheetIn').querySelectorAll('[data-tt]').forEach(b=>b.onclick=()=>{S.title=S.title===b.dataset.tt?'':b.dataset.tt;SFX.stamp();save();closeSheet();render()})}
 /* ===== chronicle ===== */
-let LOGF='Все';
+let LOGF='Все',LOGN=30;
 const LT=[[/^(Уровень|Новый ранг)/,'位','#e2c48e','Подвиги'],[/^Достижение/,'誉','#e2c48e','Подвиги'],[/^(Перк|Навык|Перковка)/,'技','#c39bff','Подвиги'],[/^Повержен|вторая фаза|восстановил/,'鬼','#e0563f','Подвиги'],
  [/^(Контракт|Взят контракт|Оба контракта|Цель недели|Все цели)/,'契','#a3bb72','Подвиги'],[/^(Чистый день|День закрыт|Лучший момент|Отсчёт|Голос|План на неделю|Идеальный день)/,'日','#b9d68a','Путь'],[/^Срыв/,'落','#ff9a8f','Путь'],
  [/^(Волна|Тень тяги)/,'波','#7fa7c9','Путь'],[/Линия Сердца|Отказ|свидан/i,'心','#ff8fa3','Сердце'],[/^(Куплено|Котику|Награда себе|Сундук|Открыт|Подношение|Артефакт|Кузница|Активирован|Добыча|Котик|Пир|Щит|День отдыха|Кошачья|Ключ)/,'店','#e2b04a','Лавка']];
 const logT=t=>LT.find(x=>x[0].test(t))||[null,'記','#9a8f7a','Прочее'];
-function renderChron(){const F=['Все','Подвиги','Путь','Сердце','Лавка'];$('logF').innerHTML=F.map(f=>'<button class="chp'+(LOGF===f?' on':'')+'" data-f="'+f+'">'+f+'</button>').join('');
- $('logF').querySelectorAll('.chp').forEach(b=>b.onclick=()=>{LOGF=b.dataset.f;SFX.tap();renderChron()});
- const L=S.log.filter(l=>LOGF==='Все'||logT(l.t)[3]===LOGF).slice(0,150);let html='',cur='';
+const LTABS=[['feed','Лента'],['stats','Аналитика'],['set','Настройки']];
+function renderLogTabs(){const cur=LTABS.some(t=>t[0]===S.logTab)?S.logTab:'feed';$('logTabs').innerHTML=LTABS.map(([k,n])=>'<button class="'+(k===cur?'on':'')+'" data-k="'+k+'">'+n+'</button>').join('');
+ $('logTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.logTab=b.dataset.k;SFX.tap();buzz();save();renderLogTabs();scrollTo({top:0})});
+ document.querySelectorAll('#s-log>.pnl').forEach(p=>{const t=(p.querySelector('.ttl h2')||{}).textContent||'';const g=!t?'set':/^(Итоги|Летопись)/.test(t)?'feed':'stats';p.classList.toggle('hidet',g!==cur)})}
+function renderChron(){renderLogTabs();const F=['Все','Подвиги','Путь','Сердце','Лавка'];$('logF').innerHTML=F.map(f=>'<button class="chp'+(LOGF===f?' on':'')+'" data-f="'+f+'">'+f+'</button>').join('');
+ $('logF').querySelectorAll('.chp').forEach(b=>b.onclick=()=>{LOGF=b.dataset.f;LOGN=30;SFX.tap();renderChron()});
+ const L=S.log.filter(l=>LOGF==='Все'||logT(l.t)[3]===LOGF).slice(0,LOGN);let html='',cur='';
  for(const l of L){if(l.d!==cur){cur=l.d;const df=Math.round((parseD(today())-parseD(cur))/DAY),lab=df===0?'Сегодня':df===1?'Вчера':parseD(cur).toLocaleDateString('ru-RU',{weekday:'short',day:'numeric',month:'long'}),v=S.days[cur],xp=(S.xpd||{})[cur];
   html+='<div class="tlh"><b>'+lab+'</b>'+(v?'<span class="'+(v==='c'?'c':'f')+'">'+(v==='c'?'чистый':'срыв')+'</span>':'')+(xp?'<em>+'+xp+' XP</em>':'')+'</div>'}
   const T=logT(l.t);html+='<div class="tle"><i lang="ja" style="--lc:'+T[2]+'">'+T[1]+'</i><span>'+esc(l.t)+'</span></div>'}
- $('logList').innerHTML=html||'<div class="empty">Пока пусто.</div>';
+ $('logList').innerHTML=(html||'<div class="empty">Пока пусто.</div>')+(S.log.filter(l=>LOGF==='Все'||logT(l.t)[3]===LOGF).length>LOGN?'<button class="btn" id="logMore" style="width:100%;margin-top:12px">Показать ещё</button>':'');if($('logMore'))$('logMore').onclick=()=>{LOGN+=60;renderChron()};
  const now=new Date(),mk=now.getFullYear()+'-'+pad(now.getMonth()+1),xpM=Object.entries(S.xpd||{}).filter(([k])=>k.startsWith(mk)).reduce((a,[,v])=>a+v,0),cl=Object.entries(S.days).filter(([k,v])=>k.startsWith(mk)&&v==='c').length,ur=(S.urgeLog||[]).filter(u=>u.win&&dkey(new Date(u.ts)).startsWith(mk)).length,ev=Object.keys(S.eve||{}).filter(k=>k.startsWith(mk)).length;
  $('monTitle').textContent='Итоги: '+now.toLocaleDateString('ru-RU',{month:'long'});$('monSum').innerHTML=[[xpM.toLocaleString('ru-RU'),'опыта'],[cl,'чистых дней'],[ur,'побед над тягой'],[ev,'закрытых дней']].map(x=>'<div><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')}
 /* ===== Evening ritual: close the day ===== */
@@ -2741,7 +2828,7 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.ap
   if(lx)msgs.push('Линия Сердца: +'+lx+' XP')}
  {const m=planPart(o,false);if(m)msgs.push(m)}
  if(o.flags&&typeof o.flags==='object'){S.flags=Object.assign(S.flags||{},o.flags);const nm={b2:'экзамен B2 сдан',job:'договор подписан',interview:'собеседование пройдено'};msgs.push('Отмечено: '+Object.keys(o.flags).filter(k=>o.flags[k]).map(k=>nm[k]||k).join(', '))}
- if(o.loveSet&&typeof o.loveSet==='object'){S.love=S.love||{d:{},rej:0};S.love.d=S.love.d||{};for(const[k,n]of Object.entries(o.loveSet)){S.love.d[k]=Math.max(S.love.d[k]||0,+n||0);if(k==='date')S.love.dates=Math.max(S.love.dates||0,+n||0)}msgs.push('Линия Сердца: засчитан прошлый опыт')}if(o.fixGear){const b=gearFix();msgs.push('Снаряжение восстановлено'+(b?', возврат за дубли: +'+b+' золота':''))}if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
+ if(o.loveSet&&typeof o.loveSet==='object'){S.love=S.love||{d:{},rej:0};S.love.d=S.love.d||{};for(const[k,n]of Object.entries(o.loveSet)){S.love.d[k]=Math.max(S.love.d[k]||0,+n||0);if(k==='date')S.love.dates=Math.max(S.love.dates||0,+n||0)}msgs.push('Линия Сердца: засчитан прошлый опыт')}if(o.focus&&o.focus.t){S.focus=S.focus||{};S.focus[o.date||today()]={t:String(o.focus.t),why:String(o.focus.why||'')}}if(o.fixGear){const b=gearFix();msgs.push('Снаряжение восстановлено'+(b?', возврат за дубли: +'+b+' золота':''))}if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
 (async()=>{await syPull();try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
  const list=Array.isArray(o.updates)?o.updates:[o];const out=[];for(const u of list){const m=applyRemote(u);if(m)out.push(m)}
