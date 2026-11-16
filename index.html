@@ -1101,6 +1101,35 @@ summary{font:700 16px var(--pix)}
 .chki{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--edge);font:14px var(--body);color:var(--ink)}.chki input{width:20px;height:20px;accent-color:#a3bb72}.chki small{color:var(--ink3)}
 .nav-in{grid-template-columns:repeat(5,1fr)!important;max-width:520px;margin:0 auto}
 .loghd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 6px}.loghd .btn{padding:9px 12px;font-size:12px}
+
+.dplan{margin:0 0 12px}
+.dplh{display:flex;flex-direction:column;gap:2px;margin-bottom:6px}.dplh b{font:700 15px var(--body);color:var(--ink)}.dplh span{font:12px var(--body);color:var(--ink3)}
+.dpl{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--edge)}
+.dpl>span{flex:none;width:40px;height:40px;border-radius:10px;display:grid;place-content:center;font-size:20px;background:var(--panel2);border:1px solid var(--edge)}
+.dpl>div{flex:1;min-width:0}.dpl small{display:block;font:600 10.5px var(--body);text-transform:uppercase;letter-spacing:.5px;color:var(--ink3)}
+.dpl b{display:block;font:600 14.5px var(--body);color:var(--ink)}.dpl em{display:block;font:12px/1.35 var(--body);font-style:normal;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dpl .btn{flex:none;padding:9px 14px;font-size:12.5px}.dpl.on b{color:var(--ink3)}.dpl.on>span{border-color:#7f9a5a}
+.dpok{flex:none;width:34px;text-align:center;color:#a3bb72;font-weight:800}
+.dpdone{margin:6px 0 0;font:600 12.5px var(--body);color:#a3bb72}
+.swk{margin-left:auto;display:flex;align-items:flex-end;gap:3px;height:32px;width:70px}.swk i{flex:1;border-radius:2px;background:var(--edge2)}.swk i.td{background:var(--gold)}
+.dpall{border-top:1px solid var(--edge)}.dpall>summary{list-style:none;display:flex;align-items:center;padding:12px 0;cursor:pointer}.dpall>summary::-webkit-details-marker{display:none}
+.dpall>summary b{flex:1;font:700 14.5px var(--body);color:var(--ink)}.dpall>summary em{font:700 12px var(--body);font-style:normal;color:var(--gold)}.dpall>summary::after{content:"+";color:var(--ink3);margin-left:8px}.dpall[open]>summary::after{content:"−"}
+.dpall .dpg{padding-left:8px}
+
+.cmcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:8px 0 4px}
+.cmcal u{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 0 5px;border-radius:8px;background:var(--panel2);border:1px solid var(--edge);text-decoration:none;min-width:0}
+.cmcal small{font:600 9px var(--body);color:var(--ink3);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.cmcal b{font:700 14px var(--num);color:var(--ink2)}
+.cmcal i{font:700 11px var(--body);font-style:normal;height:13px;line-height:13px;color:var(--ink3)}
+.cmcal u.y{background:#a3bb7222;border-color:#7f9a5a}.cmcal u.y i,.cmcal u.y b{color:#b9d68a}
+.cmcal u.m{background:#a3bb7212;border-color:#7f9a5a88}.cmcal u.m i{color:#a3bb72}
+.cmcal u.n{background:#c6301f22;border-color:#c6301f88}.cmcal u.n i,.cmcal u.n b{color:#ff8a7a}
+.cmcal u.t{border:1.5px solid var(--gold);background:#c9a46a14}.cmcal u.t b,.cmcal u.t small{color:var(--gold)}.cmcal u.t i{font-size:8.5px;color:var(--gold)}
+.cmcal u.q{border-style:dashed;border-color:var(--gold)}.cmcal u.q i{color:var(--gold)}
+.cmcal u.f{opacity:.45}
+.cmleg{display:flex;flex-wrap:wrap;gap:4px 12px;margin:0 0 6px;font:11px var(--body);color:var(--ink3)}
+.cmleg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:-1px;background:var(--panel2)}
+.cmleg i.y{background:#7f9a5a}.cmleg i.m{background:#7f9a5a88}.cmleg i.n{background:#c6301f}.cmleg i.t{box-shadow:inset 0 0 0 1.5px var(--gold)}
 </style>
 </head>
 <body>
@@ -1999,12 +2028,13 @@ function makeItem(minR){const roll=Math.random();let r=roll<.70?0:roll<.92?1:rol
 function maybeLoot(){if(Math.random()<.12*(hasP('loot')?1.5:1)){const it=makeItem(0);setTimeout(()=>lootSheet('Добыча!',it,'Выпало во время квеста.'),800)}}
 
 /* ================= DAY ROLLOVER ================= */
-const RIT=[['Утро: 30 минут без телефона и дневной свет',15,'wil','朝','хотя бы 10 минут'],['Немецкий 30 минут',20,'int','語','хотя бы 10 минут'],['Тренировка или прогулка 30 минут',20,'str','体','хотя бы 20 приседаний'],['Главное дело дня по работе или переезду',25,'int','的','хотя бы первый шаг'],['Отбой до 00:00, телефон заряжается не у кровати',20,'wil','眠','хотя бы телефон не в кровати']];
+if(!HABITS.some(x=>x[0]==='Утро: 30 минут без телефона и дневной свет'))HABITS.push(['Утро: 30 минут без телефона и дневной свет',15,'wil']); // индекс сохраняем, но ритуал убран
+const RIT=[['Немецкий 30 минут',20,'int','語','хотя бы 10 минут'],['Тренировка или прогулка 30 минут',20,'str','体','хотя бы 20 приседаний'],['Главное дело дня по работе или переезду',25,'int','的','хотя бы первый шаг'],['Отбой до 00:00, телефон заряжается не у кровати',20,'wil','眠','хотя бы телефон не в кровати']];
 RIT.forEach(r=>{if(!HABITS.some(x=>x[0]===r[0]))HABITS.push([r[0],r[1],r[2]])});
 const RITK=Object.fromEntries(RIT.map(r=>[r[0],r]));
 const OFF=['Телефон ночью вне кровати','Немецкий 20 минут','Лечь спать до 00:00','Первые 30 минут утра без телефона','Тренировка','Силовая тренировка (присед, отжимания, подтягивания)','Прогулка 20+ минут','10 минут дневного света утром','Сделать самое неприятное дело первым','Сделать сразу все дела, которые занимают меньше 2 минут','Отправить заявку на EQ или Ausbildung','Проверить Jobcenter-портал','Выйти из дома'].map(t=>HABITS.findIndex(x=>x[0]===t)).filter(i=>i>=0);
 const FIX=RIT.map(r=>HABITS.findIndex(x=>x[0]===r[0]));
-function seededHabits(day){let h=0;for(const c of day)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...HABITS.keys()].filter(i=>!OFF.includes(i)&&!FIX.includes(i)),out=[...FIX];
+function seededHabits(day){let h=0;for(const c of day)h=(h*31+c.charCodeAt(0))>>>0;const idx=[...HABITS.keys()].filter(i=>!OFF.includes(i)&&!FIX.includes(i)&&!/^Утро: 30 минут без телефона/.test(HABITS[i][0])),out=[...FIX];
  while(out.length<FIX.length+1){h=(h*1103515245+12345)>>>0;out.push(idx.splice(h%idx.length,1)[0])}return out}
 const VIDT='Видео на канал: снять, смонтировать, выложить';
 function vidDone(d){try{const v=JSON.parse(localStorage.getItem(planKey(d))||'null');return ((v&&(v.tasks||v))||[]).some(x=>x&&x.done&&/видео/i.test(x.t))}catch(e){return false}}
@@ -2160,7 +2190,7 @@ function renderDay(){
  const hk=Object.entries(S.hours).sort((a,b)=>b[1]-a[1]),cur=bucket();
  $('danger').classList.toggle('hide',!(S.urges>=3&&hk[0]&&hk[0][0]===cur&&isT));
  if(S.urges>=3&&hk[0])$('danger').textContent='Сейчас твоё опасное время ('+cur.toLowerCase()+'). Телефон подальше от кровати, план «если — то» наготове.';
- const now=new Date(),fr=now.getDay()===1||now.getDate()===1;$('fresh').classList.toggle('hide',!(fr&&isT));
+ const now=new Date(),fr=now.getDay()===1||now.getDate()===1;$('fresh').classList.add('hide');
  try{recovBanner(isT)}catch(e){}
  $('fresh').textContent=now.getDate()===1?'Новый месяц — новая глава. Отличный момент начать с чистого листа.':'Новая неделя — свежий старт. Что ты сделаешь иначе на этой неделе?';
  renderWeek();
@@ -3552,15 +3582,27 @@ function dpDo(id){const e=DP.find(x=>x[0]===id),d=today();S.dpH=S.dpH||{};if(dpD
  S.dpS=S.dpS||{};const st=drgStats(),before={};DST.forEach(([k])=>before[k]=statLv(st[k]));Object.entries(e[7]).forEach(([k,v])=>S.dpS[k]=(S.dpS[k]||0)+v);S.dp=(S.dp||0)+Object.values(e[7]).reduce((a,b)=>a+b,0)*2;S.dpN=(S.dpN||0)+1;
  award(e[5],e[6],'',{t:'Тренировка дракона: '+e[2]});const st2=drgStats();let up='';DST.forEach(([k,n])=>{if(statLv(st2[k])>before[k])up=n+' → ур. '+statLv(st2[k])});
  if(dpDay(d).length===DP.length-1)award(25,'wil','',{t:'Дракон: почти все тренировки за день'});
- addLog('Тренировка дракона: '+e[2]);buzz();save();render();toast(e[1]+' '+e[2]+(up?' · '+up:''))}
+ addLog('Тренировка дракона: '+e[2]);try{dpPlanCheck()}catch(x){}buzz();save();render();toast(e[1]+' '+e[2]+(up?' · '+up:''))}
 const dpRow=e=>{const on=dpHas(e[0]),auto=on&&!dpDay(today()).includes(e[0]);return '<details class="dpr'+(on?' on':'')+'" data-k="dp_'+e[0]+'"><summary><span>'+e[1]+'</span><b>'+e[2]+'</b><em>'+(on?'✓':'+'+e[5])+'</em></summary><p>'+esc(e[3])+'</p><p class="mut">'+esc(e[4])+' <i class="btag" style="color:'+BTAG[e[8]][1]+'">'+BTAG[e[8]][0]+'</i></p>'
    +(e[0]==='wish'?'<button class="btn'+(on?'':' gold')+'" data-wish="1" style="width:100%">'+(on?'Карта желаний · '+wishCnt():'Открыть кинк дня · +'+e[5]+' XP')+'</button>':e[0]==='fant'?'<button class="btn'+(on?'':' gold')+'" data-fant="1" style="width:100%">'+(on?'Открыть фантазию':'Написать · +'+e[5]+' XP')+'</button>':DRILL[e[0]]?'<div class="row2"><button class="btn'+(on?'':' gold')+'" data-drill="'+e[0]+'">⏱ С таймером</button>'+(on?'<button class="btn" disabled>✓ Сегодня</button>':'<button class="btn" data-dp="'+e[0]+'">Сделал сам</button>')+'</div>':on?(auto?'<p class="mut" style="font-size:12px">Засчитано автоматически.</p>':''):'<button class="btn gold" data-dp="'+e[0]+'" style="width:100%">Сделал · +'+e[5]+' XP</button>')+'</details>'};
+const DPLAN=[['Таз и контроль',['kglift','kghold','rev','bridge','hips']],['Тело и тестостерон',['lift','sun','prot','cold','food','sit']],['Голова и желание',['breath','scan','posture','wish','fant','redir','psy']]];
+function dpPlan(){const d=today();if(S.dpPl&&S.dpPl.d===d)return S.dpPl.ids;const st=drgStats(),weak=DST.map(x=>x[0]).sort((a,b)=>st[a]-st[b])[0];
+ const ids=DPLAN.map(([g,L],gi)=>{const ok=L.filter(id=>DP.some(e=>e[0]===id));const w=ok.filter(id=>(DP.find(e=>e[0]===id)[7]||{})[weak]);const pool=w.length?w:ok;return pool[seedPick(d+'dp'+gi,1,pool.length)[0]]}).filter(Boolean);
+ S.dpPl={d,ids};return ids}
+function dpPlanCheck(){const d=today(),ids=dpPlan();if(S.dpPB===d||!ids.every(id=>dpHas(id)))return;S.dpPB=d;S.dpPN=(S.dpPN||0)+1;award(20,'wil','',{t:'Программа дракона на день выполнена'});setTimeout(()=>toast('🐉 Программа дня выполнена · +20 XP'),900)}
+const dpBtn=(e,on)=>e[0]==='wish'?'<button class="btn'+(on?'':' gold')+'" data-wish="1">'+(on?'Карта':'Открыть')+'</button>':e[0]==='fant'?'<button class="btn'+(on?'':' gold')+'" data-fant="1">'+(on?'Открыть':'Написать')+'</button>':on?'<span class="dpok">✓</span>':DRILL[e[0]]?'<button class="btn gold" data-drill="'+e[0]+'">Старт</button>':'<button class="btn gold" data-dp="'+e[0]+'">Сделал</button>';
 function renderDrgX(){const el=$('drgX');if(!el)return;const st=drgStats(),si=stoneIdx(),t=stoneT(si),tips=stoneTip(),d=today();
  $('drgXc').textContent=DP.filter(x=>dpHas(x[0])).length+' / '+DP.length+' сегодня';
- el.innerHTML='<div class="stone"><div class="stoneh"><span>'+t[2]+'</span><div><b>'+t[1]+'</b><small>форма за 7 дней · индекс твёрдости '+si+'%</small></div></div><div class="gauge g-gold"><i style="width:'+si+'%"></i></div>'
+ const plan=dpPlan().map(id=>DP.find(e=>e[0]===id)).filter(Boolean),pd=plan.filter(e=>dpHas(e[0])).length,pmin=plan.reduce((a,e)=>{const D=DRILL[e[0]];return a+(D?Math.ceil(D[1]().reduce((x,p)=>x+p[1],0)/60):3)},0);
+ const wk=Array.from({length:7},(_,i)=>{const dd=dkey(new Date(Date.now()-(6-i)*864e5)),v=stoneDay(dd);return '<i style="height:'+Math.max(8,v*10)+'%" class="'+(i===6?'td':'')+'" title="'+dd+': '+v+'/10"></i>'}).join('');
+ el.innerHTML='<div class="dplan"><div class="dplh"><b>Программа на сегодня</b><span>'+pd+' / '+plan.length+' · ~'+pmin+' мин · бонус +20 XP</span></div>'
+  +plan.map((e,i)=>{const on=dpHas(e[0]);return '<div class="dpl'+(on?' on':'')+'"><span>'+e[1]+'</span><div><small>'+DPLAN[i][0]+'</small><b>'+esc(e[2])+'</b><em>'+esc(e[3].split('. ')[0])+'.</em></div>'+dpBtn(e,on)+'</div>'}).join('')
+  +(pd===plan.length?'<p class="dpdone">Программа выполнена. Дракон доволен.</p>':'')+'</div>'
+  +'<div class="stone"><div class="stoneh"><span>'+t[2]+'</span><div><b>'+t[1]+'</b><small>индекс твёрдости '+si+'% · форма за 7 дней</small></div><div class="swk">'+wk+'</div></div><div class="gauge g-gold"><i style="width:'+si+'%"></i></div>'
   +(tips.length?'<p class="mut" style="font-size:12px;margin:8px 0 0">Сегодня поднимет: '+tips.slice(0,4).map(x=>x[0]+' <b style="color:var(--gold)">'+x[1]+'</b>').join(' · ')+'</p>':'<p class="mut" style="font-size:12px;margin:8px 0 0">Сегодня всё, что поднимает индекс, сделано. Дракон в камне.</p>')+'</div>'
-  +'<p class="tday">Т-день: <b>'+tDay(d)+' / 5</b> · неделя '+tWeek()+'% <span>сон · база · свет · белок · без алкоголя</span></p><div class="dstats">'+DST.map(([k,n,j,w])=>{const v=st[k],l=statLv(v),a=6*l*l,b=statNx(l);return '<div><span lang="ja">'+j+'</span><b>'+n+'</b><small>'+w+'</small><div class="gauge g-xp"><i style="width:'+Math.round((v-a)/(b-a)*100)+'%"></i></div></div>'}).join('')+'</div>'
-  +DPG.map(([g,ids])=>{const L=ids.map(x=>DP.find(e=>e[0]===x)).filter(Boolean),dn=L.filter(e=>dpHas(e[0])).length;return '<details class="dpg" data-k="dpg_'+g+'"><summary><b>'+g+'</b><em>'+dn+' / '+L.length+'</em></summary>'+L.map(dpRow).join('')+'</details>'}).join('')
+  +'<div class="dstats">'+DST.map(([k,n,j,w])=>{const v=st[k],l=statLv(v),a=6*l*l,b=statNx(l);return '<div><span lang="ja">'+j+'</span><b>'+n+' <em>ур. '+l+'</em></b><small>'+w+'</small><div class="gauge g-xp"><i style="width:'+Math.round((v-a)/(b-a)*100)+'%"></i></div></div>'}).join('')+'</div>'
+  +'<p class="tday">Т-день: <b>'+tDay(d)+' / 5</b> · неделя '+tWeek()+'% <span>сон · силовая · свет · белок · без алкоголя — всё, что держит тестостерон</span></p>'
+  +'<details class="dpall" data-k="dpall"><summary><b>Все тренировки</b><em>'+DP.filter(x=>dpHas(x[0])).length+' / '+DP.length+'</em></summary>'+DPG.map(([g,ids])=>{const L=ids.map(x=>DP.find(e=>e[0]===x)).filter(Boolean),dn=L.filter(e=>dpHas(e[0])).length;return '<details class="dpg" data-k="dpg_'+g+'"><summary><b>'+g+'</b><em>'+dn+' / '+L.length+'</em></summary>'+L.map(dpRow).join('')+'</details>'}).join('')+'</details>'
   +'<details class="hint"><summary>Как это работает</summary><p class="mut" style="font-size:12.5px;line-height:1.5">Каждая тренировка раз в день даёт опыт и прокачивает одну-две характеристики дракона. Твёрдость растёт от Кегеля, еды, сна и движения. Любой квест на Силу (зал, бег, тренировка) и 10 000 шагов дают индексу твёрдости +2 — это самое доказанное для эрекции. Контроль — от Кегеля, обратного Кегеля и дыхания. Огонь — от чистых дней, сна и утренних отметок. Голова — от квиза, книги и скана тела. Индекс твёрдости — честная сводка последних 7 дней: что ты реально делал для сосудов и тазового дна.<br><br>Честно про «рост»: ни одно упражнение не удлиняет член. Зато реально: эрекция полнее и твёрже (визуально больше), минус живот (каждые ~15 кг жира прячут около сантиметра), стрижка лобка. И главное — уверенность, которая видна сильнее сантиметров.</p></details>';
  el.querySelectorAll('[data-dp]').forEach(b=>b.onclick=()=>dpDo(b.dataset.dp));el.querySelectorAll('[data-wish]').forEach(b=>b.onclick=()=>wishSheet());el.querySelectorAll('[data-drill]').forEach(b=>b.onclick=()=>drillSheet(b.dataset.drill));el.querySelectorAll('[data-fant]').forEach(b=>b.onclick=fantSheet)}
 /* Карта желаний: кинк дня с отметкой хочу / может / нет */
@@ -3804,7 +3846,9 @@ function renderCm(){const el=$('cmList');if(!el)return;cmCheck();const A=cmAct()
  el.innerHTML=(A.length?'':'<p class="mut" style="font-size:13px;margin:0 0 10px">Обязательство — это обещание себе с залогом. Психологически держится в 2–3 раза лучше, чем просто «хочу».</p>')
  +(fs&&A.length<3?'<div class="cmfs">🌅 '+fs+' — эффект «свежего старта»: новые обещания сейчас держатся лучше.</div>':'')
  +A.map(c=>{const e=cmEval(c),dn=e.days.filter(d=>d<=t).length,pr=Math.round(e.kept/e.days.length*100),mt=cmMark(c,t),my=cmMark(c,y),inT=e.days.includes(t),inY=e.days.includes(y)&&y>=c.start;
-  const chain='<div class="cmch"><u class="sg" lang="ja">誓</u>'+e.days.map(d=>{const m=cmMark(c,d);return '<u class="'+(m==='y'?'y':m==='m'?'m':m==='n'||(d<y&&!m)?'n':d===t?'t':'')+'"></u>'}).join('')+'</div>';
+  const WD=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];const chain='<div class="cmcal">'+e.days.map((d,i)=>{const m=cmMark(c,d),miss=m==='n'||(d<y&&!m),k=m==='y'?'y':m==='m'?'m':miss?'n':d===t?'t':d===y?'q':d>t?'f':'';
+  const ic=m==='y'?'✓':m==='m'?'½':miss?'✗':d===t?'сегодня':d===y?'?':'';return '<u class="'+k+'"><small>'+(d===t?'сег.':d===y?'вчера':WD[parseD(d).getDay()])+'</small><b>'+parseD(d).getDate()+'</b><i>'+ic+'</i></u>'}).join('')+'</div>'
+  +'<div class="cmleg"><span><i class="y"></i>сдержал</span><span><i class="m"></i>минимум</span><span><i class="n"></i>мимо</span><span><i class="t"></i>сегодня</span></div>';
   return '<div class="cmc"><div class="cmh"><b>'+esc(c.t)+'</b><span>'+(c.stake?'залог '+c.stake+' 🪙':'без залога')+'</span></div>'
    +'<small class="cmid">«'+esc(c.idn)+'»</small>'+chain
    +'<div class="cmst">'+e.kept+' из '+e.days.length+(e.days.length-dn>0?' · осталось '+(e.days.length-dn)+' дн.':'')+' · резерв '+Math.max(0,e.res-e.miss)+'/'+e.res+(pr>=75&&dn<e.days.length?' · <b style="color:var(--gold)">финишная прямая</b>':'')+'</div>'
