@@ -704,6 +704,18 @@
     "t": "Термин Jobcenter: показать Bewerbungen, ausbildungsuchend, ZAB, Kooperationsplan",
     "why": "Термин в 11:00 — собери папку: заявки, Nachweis, ZAB, Kooperationsplan"
    }
+  },
+  {
+   "id": "2026-11-16-tandem-setup",
+   "date": "2026-11-16",
+   "tasks": [
+    {
+     "t": "Тандем: профиль в Tandem + HelloTalk, 5 сообщений (Мюнхен, 22–32)",
+     "xp": 25,
+     "c": "cha",
+     "time": "19:30"
+    }
+   ]
   }
  ]
 }
