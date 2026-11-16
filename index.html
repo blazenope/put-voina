@@ -141,7 +141,7 @@ svg.px{display:block;image-rendering:pixelated}
 .rw{flex:none;text-align:right;font-size:12px;line-height:1.2;color:var(--xp)}
 .rw em{display:block;font-style:normal;color:var(--gold2)}
 .x{flex:none;border:0;background:none;color:var(--ink3);font-size:20px;padding:0 2px}
-.task .pn,.task .lt{flex:none;border:0;background:none;color:var(--ink3);font-size:18px;line-height:1;padding:4px 1px;margin:0 -6px;cursor:pointer}
+.task .pn{flex:none;border:0;background:none;color:var(--ink3);font-size:18px;line-height:1;padding:4px 1px;margin:0 -6px;cursor:pointer}
 .task.pin .pn{color:var(--gold)}.task.pin{box-shadow:inset 3px 0 0 var(--gold);padding-left:8px!important;background:linear-gradient(90deg,#e2c48e14,transparent 70%)}
 .add{display:flex;gap:8px;margin-top:10px}
 .add input{flex:1;min-width:0;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:11px 12px;outline:none;font-family:var(--body)}
@@ -787,7 +787,7 @@ summary{font:700 16px var(--pix)}
 #s-quest .pnl:has(#map),.vote:has(#loudBtn){display:none!important}
 
 /* chest show v2 */
-#chfx{overflow:hidden;cursor:pointer;user-select:none;background:radial-gradient(circle at 50% 38%,#2a2018 0,#0b0907 60%)!important}
+#chfx{overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;background:radial-gradient(circle at 50% 38%,#2a2018 0,#0b0907 60%)!important}
 #chfx .rays{position:absolute;left:50%;top:38%;width:180vmax;height:180vmax;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--rc) 35%,transparent) 0 8deg,transparent 8deg 20deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%);animation:raySpin 14s linear infinite;opacity:.3;pointer-events:none}
 #chfx.open .rays{opacity:.6;animation-duration:6s}
 @keyframes raySpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
@@ -1524,7 +1524,7 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 function plural(n,a,b,c){n=Math.abs(n)%100;const m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
 
 /* ================= DATA ================= */
-const RANKS=[[1,'Салага с утренним стояком','足軽'],[3,'Безработная ладонь','門弟'],[5,'Хранитель семени','浪人'],[8,'Укротитель стояка','侍'],[12,'Страж синих яиц','旗本'],[16,'Чёрный пояс по воздержанию','剣豪'],[20,'Морж ледяного душа','剣聖'],[25,'Банк спермы','大名'],[30,'Гигачад воздержания','将軍'],[40,'Ебырь-самурай','伝説'],[50,'Бессмертный дракон','不滅']];
+const RANKS=[[1,'Желторотый салага','足軽'],[3,'Безработная ладонь','門弟'],[5,'Хранитель семени','浪人'],[8,'Укротитель стояка','侍'],[12,'Страж синих яиц','旗本'],[16,'Чёрный пояс по воздержанию','剣豪'],[20,'Морж ледяного душа','剣聖'],[25,'Банк спермы','大名'],[30,'Гигачад воздержания','将軍'],[40,'Ебырь-самурай','伝説'],[50,'Бессмертный дракон','不滅']];
 const STATS={str:['Сила','#c4473b'],int:['Разум','#6d8bb0'],cha:['Харизма','#c27a8a'],wil:['Воля','#c9a46a']};
 const STK={str:'力',int:'知',cha:'心',wil:'志'};
 const KOTOBA=[['七転び八起き','Упади семь раз — встань восемь'],['継続は力なり','Постоянство — это сила'],['石の上にも三年','Даже на холодном камне за три года станет тепло'],['急がば回れ','Спешишь — иди в обход'],['塵も積もれば山となる','Из пылинок вырастает гора'],['初心忘るべからず','Не забывай дух новичка'],['猿も木から落ちる','И обезьяна падает с дерева'],['一期一会','Одна встреча — один шанс'],['雨降って地固まる','После дождя земля твёрже'],['千里の道も一歩から','Путь в тысячу ри начинается с шага'],['案ずるより産むが易し','Сделать легче, чем бояться'],['己に克つ','Победи самого себя']];
@@ -1778,7 +1778,7 @@ const trialOk=i=>!TR[i]||TR[i].every(([k,n])=>trVal(k)>=n);
 function rankIdxFor(l){let i=0;RANKS.forEach((r,j)=>{if(l>=r[0])i=j});while(i>0&&!trialOk(i))i--;return i}
 const rankIdx=()=>rankIdxFor(lvlInfo(S.xp).l);
 const rankOf=l=>RANKS[rankIdxFor(l)];
-function nameMig(){const M={'Самурай':'Укротитель стояка','Сёгун':'Гигачад воздержания','Воин':'Укротитель стояка','Владыка':'Гигачад воздержания','Хозяин нэкоматы':'Хозяин кота-духа','Император воздержания':'Гигачад воздержания'};if(M[S.title])S.title=M[S.title]}
+function nameMig(){const M={'Салага с утренним стояком':'Желторотый салага','Самурай':'Укротитель стояка','Сёгун':'Гигачад воздержания','Воин':'Укротитель стояка','Владыка':'Гигачад воздержания','Хозяин нэкоматы':'Хозяин кота-духа','Император воздержания':'Гигачад воздержания'};if(M[S.title])S.title=M[S.title]}
 function lvRework(){nameMig();if(S.prog2)return;S.prog2=1;const l=lvlInfo(S.xp).l;S.rkMax=rankIdx();addLog('Система уровней пересчитана честно: уровень '+l+', ранг '+RANKS[S.rkMax][1]);setTimeout(()=>lootSheet('Уровни пересчитаны',null,'Опыт сохранён полностью ('+S.xp.toLocaleString('ru-RU')+' XP), но кривая стала честной: теперь ты на уровне '+l+'. Дальше каждый уровень — это реальные недели дел. Ранги требуют испытаний.'),2600)}
 function checkRank(){lvRework();const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами.')},500)}}
 const PERKS=[
@@ -2143,7 +2143,7 @@ function renderHUD(){{const m=$('hudMoon'),hr=new Date().getHours();m.classList.
 function nextPick(U){const d=new Date(),now=d.getHours()*60+d.getMinutes(),tm=x=>/^\d\d:\d\d/.test(x.time||'')?+x.time.slice(0,2)*60+ +x.time.slice(3,5):null,wk=weakOf(S.camp.ch),crit=x=>x.c===wk?' · крит ×2 по боссу':'';
  const Fo=(S.focus||{})[today()];if(Fo){const f=U.find(x=>x.t===Fo.t);if(f)return {...f,why:(Fo.why||'главное сейчас')+crit(f)}}
  const timed=U.filter(x=>tm(x)!=null).sort((a,b)=>tm(a)-tm(b));const od=timed.find(x=>tm(x)<=now);if(od)return {...od,why:(tm(od)<now-30?'просрочено с '+od.time:'сейчас по плану')+crit(od)};
- const pn=U.find(x=>x.pin&&!x.done);if(pn)return {...pn,why:'★ важно сегодня'+crit(pn)};
+ const pn=U.find(x=>x.pin&&!x.done);if(pn)return {...pn,why:'★ избранное'+crit(pn)};
  const soon=timed.find(x=>tm(x)-now<=90);if(soon)return {...soon,why:'в '+soon.time+' · подготовься'+crit(soon)};
  const top=U.find(x=>x.top);if(top)return {...top,why:'главное дело дня'+crit(top)};
  if(d.getHours()<11){const r=U.find(x=>x.k==='h'&&/Утро/.test(x.t));if(r)return {...r,why:'утренний ритуал задаёт весь день'}}
@@ -2151,13 +2151,10 @@ function nextPick(U){const d=new Date(),now=d.getHours()*60+d.getMinutes(),tm=x=
  return {...w,why:((w.xp||0)>=40?'самое важное из открытого':'быстрая победа')+' · +'+(w.xp||0)+' XP'+crit(w)}}
 function allTasks(){const p=P.tasks.map((x,i)=>({k:'p',i,...x}));const h=[]&&SEL===today()?S.qList.map(i=>({k:'h',i,t:HABITS[i][0],xp:HABITS[i][1],c:HABITS[i][2],done:S.qDone.includes(i)})):[];return p.concat(h)}
 function taskEl(x,onT,onD,ex){const el=document.createElement('label');el.className='task'+(x.done?' done':'')+(x.pin&&!x.done?' pin':'');const b=bonus();
- el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'>'+(ex?'<button class="pn" aria-label="'+(x.pin?'Снять важность':'Важно сегодня — наверх')+'">'+(x.pin?'★':'☆')+'</button>':'')+'<span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+(x.c===weakOf(S.camp.ch)&&!x.done?' ×2':'')+'</span>'
-  +(ex?'<button class="lt" aria-label="Потом — перенести на завтра" title="Потом — на завтра">⇢</button>':'')+(onD?'<button class="x" aria-label="Удалить">×</button>':'')+'<span class="rw">+'+Math.round(x.xp*(1+b.xp))+'<em>+'+Math.round(goldOf(x.xp)*(1+b.gold))+'з</em></span>';
+ el.innerHTML='<input type="checkbox"'+(x.done?' checked':'')+'>'+(ex?'<button class="pn" aria-label="'+(x.pin?'Убрать из избранного':'В избранное — наверх')+'">'+(x.pin?'★':'☆')+'</button>':'')+'<span class="t">'+(x.time?'<span class="tm">'+esc(x.time)+'</span>':'')+esc(x.t)+'</span><span class="chip c-'+x.c+'">'+STATS[x.c][0]+(x.c===weakOf(S.camp.ch)&&!x.done?' ×2':'')+'</span>'
+  +(onD?'<button class="x" aria-label="Удалить">×</button>':'')+'<span class="rw">+'+Math.round(x.xp*(1+b.xp))+'<em>+'+Math.round(goldOf(x.xp)*(1+b.gold))+'з</em></span>';
  el.querySelector('input').onchange=e=>{buzz();if(e.target.checked&&!matchMedia('(prefers-reduced-motion: reduce)').matches){el.classList.add('leaving');SFX.check();setTimeout(onT,700)}else onT()};const d=el.querySelector('.x');if(d)d.onclick=e=>{e.preventDefault();onD()};
- if(ex){el.querySelector('.pn').onclick=e=>{e.preventDefault();e.stopPropagation();buzz();ex.pin()};el.querySelector('.lt').onclick=e=>{e.preventDefault();e.stopPropagation();buzz();ex.later()}}return el}
-function laterTask(i){const x=P.tasks[i];if(!x||x.done)return;const d=shift(SEL,1),k=planKey(d);let pl={tasks:[],note:'',best:''};try{const v=JSON.parse(localStorage.getItem(k)||'null');if(v)pl=Array.isArray(v)?{tasks:v,note:'',best:''}:v}catch(e){}pl.tasks=pl.tasks||[];
- if(!pl.tasks.some(y=>y.t===x.t))pl.tasks.push({t:x.t,time:x.time||'',xp:x.xp||25,c:x.c||catOf(x.t),done:false,aw:null,lt:false,pin:x.pin?1:0});
- try{localStorage.setItem(k,JSON.stringify(pl))}catch(e){}P.tasks.splice(i,1);savePlan();SFX.tap();toast('Перенесено на завтра: '+x.t);render()}
+ if(ex)el.querySelector('.pn').onclick=e=>{e.preventDefault();e.stopPropagation();buzz();ex.pin()};return el}
 function renderWeek(){const sel=parseD(SEL),mon=new Date(sel);mon.setDate(sel.getDate()-((sel.getDay()+6)%7));let h='';const WD=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
  for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);const k=dkey(d),v=S.days[k];
   h+='<button class="db'+(k===SEL?' sel':'')+(k===today()?' today':'')+(v==='c'?' c':v==='f'?' f':'')+'" data-d="'+k+'"><small>'+WD[i]+'</small><b>'+d.getDate()+'</b><i></i></button>'}
@@ -2259,7 +2256,7 @@ function renderDay(){
  if(!P.tasks.length)box.innerHTML='<div class="empty">'+(diff<0?'В этот день квестов не было.':'Пусто. Запиши первый квест.')+'</div>';
  {const nowT=pad(new Date().getHours())+':'+pad(new Date().getMinutes());let nl=!isT||!open.some(a=>a[0].time);
   open.forEach(([x,i])=>{if(!nl&&!x.pin&&(!x.time||x.time.slice(0,5).padStart(5,'0')>nowT)){nl=true;const n=document.createElement('div');n.className='nowl';n.textContent='сейчас '+nowT;box.appendChild(n)}
-   box.appendChild(taskEl(x,()=>togglePlan(i),()=>{P.tasks.splice(i,1);savePlan();render()},diff<0?null:{pin:()=>{x.pin=x.pin?0:1;savePlan();SFX.tap();render()},later:()=>laterTask(i)}))});
+   box.appendChild(taskEl(x,()=>togglePlan(i),()=>{P.tasks.splice(i,1);savePlan();render()},diff<0?null:{pin:()=>{x.pin=x.pin?0:1;savePlan();SFX.tap();render()}}))});
   if(!nl){const n=document.createElement('div');n.className='nowl';n.textContent='сейчас '+nowT;box.appendChild(n)}
   if(P.tasks.length&&!open.length){const e=document.createElement('div');e.className='empty';e.textContent='Всё сделано. Сильный день.';box.appendChild(e)}
   if(closed.length){const d=document.createElement('details');d.className='donebox';d.open=DONEOPEN;d.ontoggle=()=>{DONEOPEN=d.open};d.innerHTML='<summary>Выполнено · '+closed.length+'</summary>';closed.forEach(([x,i])=>d.appendChild(taskEl(x,()=>togglePlan(i),null)));box.appendChild(d)}}
@@ -3049,7 +3046,7 @@ function chReveal(t,name,g,cards,it){CHBUSY=true;const d=document.createElement(
   d.querySelector('.tapo').textContent=i<items.length?'нажми — ещё '+(items.length-i+1-1)+' '+plural(items.length-i,'награда','награды','наград'):'нажми, чтобы забрать';
   if(x.r>=2){d.classList.remove('fl2','fl3');void d.offsetWidth;d.classList.add('fl'+x.r);gong(x.r===3?73:98,0,.18)}SFX.coin();buzz();const r=stage.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,10+x.r*12);
   grid.insertAdjacentHTML('beforeend','<div class="rv r'+x.r+'">'+x.h+'<span>'+esc(x.n)+'</span></div>')};
- d.onclick=e=>{if(e.target.closest('.chok'))return;if(!opened){taps++;box.classList.remove('sh');void box.offsetWidth;box.classList.add('sh');SFX.tap();buzz();
+ d.onpointerdown=e=>{if(e.target.closest('.chok')||e.button>0)return;e.preventDefault();if(!opened){taps++;box.classList.remove('sh');void box.offsetWidth;box.classList.add('sh');SFX.tap();buzz();
    if(taps>=(top>=2?3:2)){opened=true;d.classList.add('open');box.classList.add('gone');SFX.chest();const r=box.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,40);setTimeout(showNext,450)}else d.querySelector('.tapo').textContent=top>=2?'что-то сильное внутри… ещё!':'ещё раз!';return}
   showNext()};
  d.querySelector('.chok').onclick=()=>{d.classList.add('out');setTimeout(()=>{d.remove();CHBUSY=false;chNext()},350)}}
