@@ -11,20 +11,18 @@
 <link rel="manifest" href="manifest.webmanifest?v=3">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 <link rel="icon" type="image/png" href="icon-192.png?v=3">
-<link rel="preload" href="fonts/pt-sans-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/pt-serif-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <title>Путь Воина</title>
 <style>
 @font-face{font-family:Pix;font-weight:400;font-display:swap;src:url(fonts/pt-serif-cyrillic-400-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
 @font-face{font-family:Pix;font-weight:400;font-display:swap;src:url(fonts/pt-serif-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
 @font-face{font-family:Pix;font-weight:700;font-display:swap;src:url(fonts/pt-serif-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
 @font-face{font-family:Pix;font-weight:700;font-display:swap;src:url(fonts/pt-serif-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
-@font-face{font-family:Body;font-weight:400;font-display:swap;src:url(fonts/pt-sans-cyrillic-400-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:Body;font-weight:400;font-display:swap;src:url(fonts/pt-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
-@font-face{font-family:Body;font-weight:600;font-display:swap;src:url(fonts/pt-sans-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:Body;font-weight:600;font-display:swap;src:url(fonts/pt-sans-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
-@font-face{font-family:Body;font-weight:800;font-display:swap;src:url(fonts/pt-sans-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
-@font-face{font-family:Body;font-weight:800;font-display:swap;src:url(fonts/pt-sans-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:var(--body);font-weight:400;font-display:swap;src:url(fonts/pt-sans-cyrillic-400-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:var(--body);font-weight:400;font-display:swap;src:url(fonts/pt-sans-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:var(--body);font-weight:600;font-display:swap;src:url(fonts/pt-sans-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:var(--body);font-weight:600;font-display:swap;src:url(fonts/pt-sans-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:var(--body);font-weight:800;font-display:swap;src:url(fonts/pt-sans-cyrillic-700-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:var(--body);font-weight:800;font-display:swap;src:url(fonts/pt-sans-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+FEFF,U+FFFD}
 
 /* Ночная пиксельная RPG: тёмный камень, золото, красное HP, синяя мана, зелёный опыт. Панели с пиксельными углами, нижнее меню из 5 вкладок */
 :root{color-scheme:dark;--bg:#0d0c0b;--ink:#ebe4d6;--ink2:#b0a796;--ink3:#766e62;--gold:#c9a46a;--gold2:#e2c48e;--hp:#c4473b;--mp:#6d8bb0;--xp:#86a05e;--epic:#9a7ab8;--pink:#c27a8a;--seal:#b8281e;--paper:#e8e0cf;--pix:Pix,'PT Serif',Georgia,serif;--body:Body,'PT Sans',-apple-system,'Segoe UI',Roboto,sans-serif;--panel:#171411;--panel2:#201c18;--edge:#2e2823;--edge2:#463e35;--washi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .93 0 0 0 0 .88 0 0 0 0 .8 0 0 0 .055 0'/%3E%3C/filter%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .9 0 0 0 0 .82 0 0 0 .028 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3Crect width='180' height='180' filter='url(%23f)'/%3E%3C/svg%3E");--spring:cubic-bezier(.34,1.56,.64,1);--glass:rgba(24,21,18,.58);--hair:rgba(255,255,255,.07);--num:ui-rounded,"SF Pro Rounded",system-ui,sans-serif;--acc:#e0412c;--acc2:#ff9a7f;--accbg:rgba(224,65,44,.13);--accln:rgba(224,65,44,.42)}
@@ -1139,6 +1137,110 @@ html[data-phase=evening] .sosrow .sos,html[data-phase=night] .sosrow .sos{box-sh
 .archv[open]>summary::after{content:"−"}
 .archin{padding:0 10px 12px}
 .archin>.pnl:first-child{margin-top:0}
+
+/* ===================== Путь 3.0 — новый вид =====================
+   Графит вместо лака, системный шрифт (SF на iPhone) вместо засечек, цвет живёт по фазе суток:
+   утро — янтарь, день — небо, вечер — фиолет, ночь — индиго. Этот слой последний и главный: новые стили — сюда. */
+:root{--bg:#0a0a0d;--panel:#141419;--panel2:#1c1c23;--edge:rgba(255,255,255,.075);--edge2:rgba(255,255,255,.14);--hair:rgba(255,255,255,.07);
+ --ink:#f5f5f8;--ink2:#abacb8;--ink3:#70717e;--gold:#f2c14e;--gold2:#ffd876;--seal:#ff4d5e;--washi:none;
+ --pix:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,system-ui,sans-serif;
+ --body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,system-ui,sans-serif;
+ --a1:#ffc14d;--a2:#ff6a3d;--glow:rgba(255,130,60,.26)}
+html[data-phase=morning]{--a1:#ffc14d;--a2:#ff6a3d;--glow:rgba(255,130,60,.26);--acc:#ffb347;--acc2:#ffd590;--accbg:rgba(255,150,70,.13);--accln:rgba(255,150,70,.42)}
+html[data-phase=day]{--a1:#4fd8ff;--a2:#5468ff;--glow:rgba(70,140,255,.24);--acc:#5cc8ff;--acc2:#a9e4ff;--accbg:rgba(80,160,255,.13);--accln:rgba(80,160,255,.42)}
+html[data-phase=evening]{--a1:#d77bff;--a2:#ff4f8b;--glow:rgba(190,80,255,.24);--acc:#dc8bff;--acc2:#f0c8ff;--accbg:rgba(200,100,255,.13);--accln:rgba(200,100,255,.42)}
+html[data-phase=night]{--a1:#9aa6ff;--a2:#5059d8;--glow:rgba(90,100,255,.16);--acc:#9aa6ff;--acc2:#cdd2ff;--accbg:rgba(110,120,255,.12);--accln:rgba(110,120,255,.38)}
+
+html{background:var(--bg)!important}
+body{background:radial-gradient(120% 46% at 50% -6%,var(--glow),transparent 66%) no-repeat,var(--bg)!important;font-family:var(--body);-webkit-font-smoothing:antialiased}
+body::before,body::after,#sakura{display:none!important}
+html[data-phase=night] body::after{display:block!important;content:""!important;position:fixed!important;inset:0!important;height:auto!important;opacity:1!important;z-index:90!important;pointer-events:none!important;background:rgba(0,0,14,.22)!important}
+
+/* шапка */
+.hud{background:rgba(10,10,13,.72)!important;box-shadow:0 1px 0 var(--edge)!important}
+.hud .face{box-shadow:0 0 0 2px var(--a1)!important}
+.hud .who b{font-family:var(--pix)!important;letter-spacing:-.01em!important}
+.hud .gauge{border-radius:9px!important;background:rgba(255,255,255,.08)!important;overflow:hidden}
+.hud .gauge i{border-radius:9px!important;background:linear-gradient(90deg,var(--a1),var(--a2))!important}
+.moon{border-radius:12px!important;background:rgba(255,255,255,.07)!important;color:var(--ink2)!important}
+.moon.lit{background:linear-gradient(135deg,var(--a1),var(--a2))!important;color:#fff!important;box-shadow:0 0 18px -2px var(--a2)!important}
+.moon.done{color:var(--acc)!important;box-shadow:inset 0 0 0 1px var(--accln)!important}
+
+/* карточки */
+.pnl{background:var(--panel);border:1px solid var(--edge)!important;border-radius:24px!important;box-shadow:0 20px 40px -28px rgba(0,0,0,.8)!important}
+.pnl.gold{border-color:rgba(242,193,78,.3)!important}
+.ttl h2,.pnl h2,.sheet h3{font-family:var(--pix)!important;font-weight:800!important;letter-spacing:-.02em!important}
+.ttl h2::before{display:none!important}
+.lbl{font-family:var(--body)!important;letter-spacing:.08em!important}
+
+/* кнопки */
+.btn{font-family:var(--body);font-weight:650;letter-spacing:0;background-color:rgba(255,255,255,.055)}
+.btn.gold{background:linear-gradient(135deg,var(--a1),var(--a2))!important;color:#fff!important;box-shadow:0 10px 24px -12px var(--a2)!important;text-shadow:0 1px 1px rgba(0,0,0,.18)}
+.btn.red{background:linear-gradient(135deg,#ff6b5e,#e8263f)!important;color:#fff!important;box-shadow:0 10px 24px -12px #e8263f!important}
+.btn.blue{background:rgba(110,160,255,.13)!important;color:#d3e2ff!important;box-shadow:inset 0 0 0 1px rgba(110,160,255,.32)!important}
+
+/* листы */
+.sheet{background:linear-gradient(180deg,#18181e,#101014)!important;box-shadow:0 -1px 0 var(--edge2),0 -24px 60px rgba(0,0,0,.6)!important}
+
+/* неделя */
+.db{border-radius:14px!important}
+.db b{font-family:var(--num)!important;font-weight:700!important}
+.db.sel{background:linear-gradient(160deg,var(--a1),var(--a2))!important;box-shadow:0 8px 20px -10px var(--a2)!important}
+.db.sel b,.db.sel small{color:#fff!important}
+.db.today:not(.sel) b{color:var(--acc)!important}
+
+/* квесты */
+.task input{border-radius:50%!important;transform:none!important}
+.task input:checked{background:linear-gradient(135deg,var(--a1),var(--a2))!important;box-shadow:none!important;transform:none!important}
+
+/* Сегодня: верх с кольцом пути */
+.phd.p3{position:relative;display:grid!important;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px 16px;margin:6px 0 4px!important;padding:16px;border-radius:28px;border:1px solid var(--edge);background:linear-gradient(150deg,rgba(255,255,255,.06),rgba(255,255,255,.01) 60%),var(--panel);overflow:hidden}
+.phd.p3::before{content:"";position:absolute;right:-70px;top:-90px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%);pointer-events:none}
+.p3t{grid-column:1/-1;display:flex;align-items:center;gap:12px;min-width:0}
+.p3 .phk{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 10px 22px -10px var(--a2);color:#fff;font-size:23px}
+.p3 .phl{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+.p3 .dtitle{margin:0!important;font:800 30px/1.02 var(--pix)!important;letter-spacing:-.03em!important}
+.p3 .dsub{margin:0;font:500 14px var(--body);color:var(--ink2);letter-spacing:0}
+.p3r{position:relative;width:126px;height:126px;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.p3r:active{transform:scale(.97)}
+.p3r svg{display:block;width:100%;height:100%;transform:rotate(-90deg)}
+.p3r circle{fill:none;stroke-width:10;stroke-linecap:round}
+.p3r .pr0{stroke:rgba(255,255,255,.08)}
+.p3r .pr1{stroke:url(#prG);transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 6px var(--glow))}
+.p3c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.p3c b{font:800 44px/1 var(--num);letter-spacing:-.03em;color:var(--ink)}
+.p3c em{margin-top:2px;font:600 12px var(--body);font-style:normal;color:var(--ink2)}
+.p3c small{margin-top:3px;font:600 11px var(--num);color:var(--ink3);font-variant-numeric:tabular-nums}
+.p3i{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}
+.p3l{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+.p3i b{font:750 18px/1.2 var(--pix);letter-spacing:-.01em;color:var(--ink)}
+.p3i>span{font:500 13px/1.3 var(--body);color:var(--ink2)}
+.p3 .phm{margin-top:4px;padding:7px 10px;border-radius:12px;background:var(--accbg);color:var(--acc2);font:600 13px/1.35 var(--body)}
+.p3 .phm:empty{display:none}
+#s-day #bMini{display:none!important}
+
+/* миссия и полоса статуса */
+.mission{border-radius:24px;border-color:var(--accln);background:linear-gradient(135deg,var(--accbg),transparent 70%),var(--panel)}
+.mission::before{display:none}
+.mission .mlb{color:var(--acc)}
+#nextTxt{font-family:var(--pix);font-weight:750;letter-spacing:-.01em}
+.mact button{border-radius:14px;font-family:var(--body)}
+.mact button.p{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;box-shadow:0 10px 24px -12px var(--a2)}
+#rail{grid-template-columns:repeat(3,minmax(0,1fr))}
+#clockBox{display:none}
+.rt{border-radius:18px;background:var(--panel)}
+.rbar u{background:linear-gradient(90deg,var(--a1),var(--a2))}
+
+/* навигация: парящая капсула с иконками */
+.nav{left:12px!important;right:12px!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;max-width:496px!important;margin:0 auto!important;border-radius:26px!important;background:rgba(24,24,30,.84)!important;backdrop-filter:blur(24px) saturate(1.8)!important;-webkit-backdrop-filter:blur(24px) saturate(1.8)!important;border:1px solid var(--edge2)!important;box-shadow:0 16px 40px rgba(0,0,0,.55)!important}
+.nav::before{display:none!important}
+.nav-in{padding:4px!important}
+.nav button{padding:7px 0 6px!important;color:var(--ink3)!important;font:600 10.5px/1.2 var(--body)!important;letter-spacing:0!important}
+.nav button .ic{width:24px;height:24px;margin-bottom:2px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav button.on{color:var(--ink)!important}
+.nav button.on .ic{stroke:var(--acc)}
+.nav button.on::before{top:3px!important;left:50%!important;right:auto!important;width:56px!important;height:30px!important;margin-left:-28px!important;border-radius:12px!important;background:var(--accbg)!important;box-shadow:none!important;z-index:-1}
+
 </style>
 </head>
 <body>
@@ -1157,7 +1259,11 @@ html[data-phase=evening] .sosrow .sos,html[data-phase=night] .sosrow .sos{box-sh
   <div class="banner blue hide" id="fresh"></div>
   <div class="banner hide" id="recov" role="button" style="cursor:pointer;background:#1c1410;box-shadow:inset 0 0 0 2px #7a4a1e;color:#f6dcb8"></div>
 
-  <header class="phd" id="phd"><span class="phk" lang="ja" id="phK">今</span><div class="pht"><div class="phl"><h1 class="dtitle" id="dTitle">Сегодня</h1><span class="dsub" id="dSub"></span></div><div class="phm" id="phM"></div></div></header>
+  <header class="phd p3" id="phd">
+    <div class="p3t"><span class="phk" lang="ja" id="phK">今</span><div class="phl"><h1 class="dtitle" id="dTitle">Сегодня</h1><span class="dsub" id="dSub"></span></div></div>
+    <button class="p3r" id="pathRing" aria-label="Путь без срыва"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="prG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--a1)"/><stop offset="1" style="stop-color:var(--a2)"/></linearGradient></defs><circle class="pr0" cx="60" cy="60" r="52"/><circle class="pr1" id="prArc" cx="60" cy="60" r="52"/></svg><span class="p3c"><b id="prD">0</b><em id="prU">дней</em><small id="prH"></small></span></button>
+    <div class="p3i"><span class="p3l">Путь без срыва</span><b id="prGoal"></b><span id="prSub"></span><div class="phm" id="phM"></div></div>
+  </header>
   <div class="dmods" id="dMods"></div>
   <div class="week"><button class="wk" id="wPrev" aria-label="Прошлая неделя">‹</button><div class="days" id="days"></div><button class="wk" id="wNext" aria-label="Следующая неделя">›</button></div>
   <section class="mission" id="mission"><button class="mtxt" id="nextBox"><span class="mlb">Следующий шаг</span><span id="nextTxt"></span></button><div class="mact" id="mAct"></div></section>
@@ -2223,6 +2329,7 @@ function renderDay(){
  const ms=cleanMs(),d=Math.floor(ms/DAY),hh=Math.floor(ms%DAY/36e5),mm=Math.floor(ms%36e5/6e4);
  $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('clockBox').title=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
  {const m=clean30();$('cTot').textContent='30 дн.: '+m.c+'/30';$('cBar').style.width=Math.round(m.c/30*100)+'%'}
+ try{renderRing(ms,d,hh,mm)}catch(e){console.error(e)}
  // next step: одна миссия с настоящими кнопками
  {let t='',why='',act=null,B=[];const ci=isT?ciPick():null,T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),ph=phaseNow(),nt=ntGet(),est=isT?sleepEst():null;
   const find=w=>()=>{const el=w.k==='h'?$('habSec'):[...document.querySelectorAll('#tasks .task')].find(e=>((e.querySelector('.t')||{}).textContent||'').includes(w.t))||$('tasks');el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')};
@@ -4078,11 +4185,20 @@ function seasonApply(){const on=S.season!==0;for(const[k,ids]of Object.entries(A
    box.querySelector('summary span').textContent=P.map(p=>((p.querySelector('.ttl h2')||{}).textContent||'').trim()).join(', ');box.querySelector('summary em').textContent=P.length;box.hidden=false}
   else{P.forEach(p=>{if(p.__ph){p.__ph.replaceWith(p);p.__ph=null}});if(box)box.hidden=true}}
  const b=$('seasonBtn');if(b)b.textContent=on?'Вкл':'Выкл'}
+/* Кольцо пути: дни без срыва, дуга — путь до следующей вехи (1·3·7·14·21·30·45·60·90…) */
+function renderRing(ms,d,hh,mm){const M=[1,3,7,14,21,30,45,60,90,120,180,270,365,500,730,1000],a=$('prArc');if(!a)return;
+ const g=M.find(x=>x*DAY>ms)||(Math.floor(d/365)+1)*365,pv=M.filter(x=>x*DAY<=ms).pop()||0,p=Math.max(.02,Math.min(1,(ms-pv*DAY)/((g-pv)*DAY))),C=2*Math.PI*52;
+ a.style.strokeDasharray=C.toFixed(1);a.style.strokeDashoffset=(C*(1-p)).toFixed(1);
+ $('prD').textContent=d;$('prU').textContent=plural(d,'день','дня','дней');$('prH').textContent=hh+' ч '+String(mm).padStart(2,'0')+' мин';
+ const L=g*DAY-ms,ld=Math.floor(L/DAY),lh=Math.floor(L%DAY/36e5);$('prGoal').textContent='До '+g+' '+plural(g,'дня','дней','дней')+': '+(ld?ld+' д ':'')+lh+' ч';
+ const m=clean30();$('prSub').textContent='рекорд '+bestDays()+' · за 30 дн. '+m.c+'/30'}
+$('pathRing').onclick=()=>$('clockBox').click();
 seasonApply();$('seasonBtn').onclick=()=>{S.season=S.season===0?1:0;save();seasonApply();render();toast(S.season===0?'Сезон выключен: всё на виду':'Сезон: второстепенное в «Архиве»')};
 $('rtQ').onclick=()=>$('tasks').scrollIntoView({behavior:'smooth',block:'start'});$('rtD').onclick=()=>go('drg');$('bedBtn').onclick=bedSheet;
 /* ================= WIRING ================= */
 const NAV=[['day','Сегодня','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Путь','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['drg','Дракон',''],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2']];
-const NAVK={day:'今',quest:'道',hero:'侍',drg:'龍',shop:'店',log:'記'};$('nav').innerHTML=NAV.map(([k,n])=>'<button data-s="'+k+'"><b class="nk" lang="ja">'+NAVK[k]+'</b>'+n+'</button>').join('');
+const NAVK={day:'今',quest:'道',hero:'侍',drg:'龍',shop:'店',log:'記'};const NAVI={day:'<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M2.6 12h2.1M19.3 12h2.1M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M5.4 18.6l1.5-1.5M17.1 6.9l1.5-1.5"/>',quest:'<path d="M3 20l6.5-10 4 6 2.5-3.5L21 20z"/><path d="M9.5 10V3.5l5 2.1-5 2.1"/>',hero:'<path d="M12 3l7 2.8v5.4c0 4.6-3 7.9-7 9.8-4-1.9-7-5.2-7-9.8V5.8z"/><path d="M9 12.2l2.1 2.1 4.1-4.3"/>',drg:'<path d="M12 21.5c3.9 0 6.5-2.7 6.5-6.4 0-4.6-4.3-6.6-4.6-11.6-2.6 1.6-4 4.2-4 6.6-1.1-.7-1.8-1.9-2-3.3-1.7 1.8-2.9 4.4-2.9 7.6 0 4.1 2.8 7.1 7 7.1z"/>',shop:'<path d="M5 8.5h14l-1.2 12H6.2z"/><path d="M9 8.5V7a3 3 0 016 0v1.5"/>'};
+$('nav').innerHTML=NAV.map(([k,n])=>'<button data-s="'+k+'"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+NAVI[k]+'</svg>'+n+'</button>').join('');
 if(!document.querySelector('#nav .pill')){const p=document.createElement('i');p.className='pill';$('nav').prepend(p)}
 let lastY=0;addEventListener('scroll',()=>{const y=scrollY,n=document.querySelector('.nav');if(y>lastY+6&&y>120)n.classList.add('mini');else if(y<lastY-6||y<60)n.classList.remove('mini');lastY=y},{passive:true});
 function go(s){SFX.tap();buzz();document.querySelector('.nav').classList.remove('mini');{const ks=['day','quest','hero','drg','shop','log'],p=document.querySelector('#nav .pill');if(p)p.style.transform='translateX('+(ks.indexOf(s)*100)+'%)'}document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x.dataset.s===s));['day','quest','hero','drg','shop','log'].forEach(k=>$('s-'+k).classList.toggle('hide',k!==s));if(DIRTY.has(s))renderScr(s);window.scrollTo(0,0)}
