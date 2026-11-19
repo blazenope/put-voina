@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Путь Воина">
 <link rel="manifest" href="manifest.webmanifest?v=3">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" href="icon-192.png?v=3">
 <link rel="preload" href="fonts/pt-sans-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/pt-serif-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <title>Путь Воина</title>
@@ -119,12 +120,6 @@ svg.px{display:block;image-rendering:pixelated}
 .pet .st{font-size:12px;color:var(--ink3)}
 .pet .say{font:13px/1.35 var(--body);color:var(--ink2);margin:6px 0 8px;min-height:34px}
 .pet .bars{width:100%;display:grid;gap:5px;text-align:left;font-size:11px;color:var(--ink3);text-transform:uppercase}
-.status{display:flex;flex-direction:column;gap:10px}
-.clock .lb{font-size:12px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px}
-.clock .big{font:400 32px/1.1 var(--pix);color:var(--ink)}
-.clock .big small{font:600 15px var(--body);color:var(--ink2);margin-left:4px}
-.clock .sm{font-size:13px;color:var(--ink2)}
-.clock .tot{font-size:12px;color:var(--xp);margin-top:4px}
 .sos{width:100%;margin-top:auto;padding:14px 8px;font-size:18px}
 
 /* tasks */
@@ -326,8 +321,6 @@ svg.art{display:block;overflow:visible}
 .pet b{font:700 19px var(--pix);text-transform:none;letter-spacing:0}
 .pet .bars{text-transform:none;font-size:12px;color:var(--ink3)}
 .pet .say{font:italic 14px/1.4 var(--pix);color:var(--ink2)}
-.clock .lb{text-transform:none;letter-spacing:.2px;font-size:13px;color:var(--ink3)}
-.clock .big{font:700 44px/1 var(--pix);color:var(--ink)}
 .task{border-bottom:1px solid var(--edge)}
 .task input{border-radius:3px;background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink3)}
 .task input:checked{background:var(--seal);box-shadow:none}
@@ -417,8 +410,6 @@ html{background:radial-gradient(120% 60% at 50% -10%,#2a1d14 0,transparent 60%),
 .g-gold i{background:linear-gradient(90deg,#8d6c3a,#e2c48e)}.g-pink i{background:linear-gradient(90deg,#7e4352,#d494a2)}
 .coins{letter-spacing:.3px}
 /* next step */
-#nextBox{box-shadow:none!important;border:1px solid var(--edge)!important;border-left:0!important;background:linear-gradient(#c9a46a70,#c9a46a70) top left/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) top left/1px 16px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/1px 16px no-repeat,var(--washi),linear-gradient(90deg,#b8281e1f,#141210 60%)!important;padding:14px 16px!important}
-#nextBox>span:first-child{font-size:0!important;display:grid;place-content:center;width:30px;height:30px;flex:none;background:var(--seal);color:#f6ead4!important;border-radius:3px;font-size:13px!important;transform:rotate(-4deg)}
 #buffBox{background:linear-gradient(#c9a46a70,#c9a46a70) top left/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) top left/1px 16px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/16px 1px no-repeat,linear-gradient(#c9a46a70,#c9a46a70) bottom right/1px 16px no-repeat,var(--washi),linear-gradient(180deg,#1c1614,#141210)!important;box-shadow:inset 3px 0 0 #c27a8a!important;border:1px solid var(--edge)!important}
 #buffBox h2{color:#d9a0ac!important}
 /* calendar: ensō around the chosen day */
@@ -436,7 +427,6 @@ html{background:radial-gradient(120% 60% at 50% -10%,#2a1d14 0,transparent 60%),
 .task input{width:26px;height:26px;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink3)}
 .task input:checked{border-radius:4px;background:var(--seal);box-shadow:inset 0 0 0 1.5px #f6ead450;transform:rotate(-7deg);animation:stamp .34s cubic-bezier(.2,1.4,.4,1)}
 .task input:checked::after{content:"済";font:700 15px/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;color:#f6ead4}
-#nextBox>span:first-child::after{content:"次";font:700 16px/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif}
 @keyframes stamp{0%{transform:scale(1.9) rotate(-18deg);opacity:0}60%{opacity:1}100%{transform:scale(1) rotate(-7deg)}}
 .task .t{font:400 15.5px/1.45 var(--body);letter-spacing:.1px}
 .task.done .t{color:var(--ink3)}
@@ -536,11 +526,9 @@ summary{font:700 16px var(--pix)}
 :root{--spring:cubic-bezier(.34,1.56,.64,1);--glass:rgba(24,21,18,.58);--hair:rgba(255,255,255,.07);--num:ui-rounded,"SF Pro Rounded",system-ui,sans-serif}
 @supports (transition-timing-function:linear(0,1)){:root{--spring:linear(0,.009,.035 2.1%,.141,.281 6.7%,.723 12.9%,.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,.991,.977 51%,.974 53.8%,.975 57.1%,.997 69.8%,1.003 76.9%,1)}}
 .screen{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
-.pnl,#nextBox,#buffBox{border-radius:22px!important;background:var(--washi),linear-gradient(180deg,rgba(34,30,26,.82),rgba(20,18,16,.86))!important;border:1px solid var(--hair)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 44px -28px rgba(0,0,0,.9)!important}
+.pnl,#buffBox{border-radius:22px!important;background:var(--washi),linear-gradient(180deg,rgba(34,30,26,.82),rgba(20,18,16,.86))!important;border:1px solid var(--hair)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 44px -28px rgba(0,0,0,.9)!important}
 .pnl.gold{box-shadow:inset 0 1px 0 rgba(255,255,255,.045),inset 0 0 0 1px #c9a46a2e,0 22px 44px -28px rgba(0,0,0,.9)!important}
-#nextBox{background:var(--washi),linear-gradient(100deg,rgba(184,40,30,.2),rgba(20,18,16,.86) 55%)!important}
 #buffBox{background:var(--washi),linear-gradient(100deg,rgba(194,122,138,.16),rgba(20,18,16,.86) 55%)!important}
-#nextBox>span:first-child{border-radius:10px}
 .btn{border-radius:14px!important;transition:transform .3s var(--spring),filter .2s}
 .btn:active{transform:scale(.96)}
 .chp,.scale button{border-radius:10px!important}
@@ -548,7 +536,7 @@ summary{font:700 16px var(--pix)}
 .bmini{border-radius:20px!important;background:var(--washi),linear-gradient(180deg,rgba(34,30,26,.82),rgba(20,18,16,.86))!important;border:1px solid var(--hair)!important}
 .g-hp{position:relative}.g-hp::before{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--g,0%);background:#f6ead4;opacity:.38;border-radius:99px;transition:width 1s .45s cubic-bezier(.4,0,.2,1)}
 .hud{background:rgba(13,12,11,.55)!important;backdrop-filter:blur(22px) saturate(1.8)!important;-webkit-backdrop-filter:blur(22px) saturate(1.8)!important;box-shadow:0 1px 0 var(--hair)!important}
-.coins,#hudLvl,.clock .big,.eve .sum b,.rgl b{font-family:var(--num)!important;font-variant-numeric:tabular-nums}
+.coins,#hudLvl,.eve .sum b{font-family:var(--num)!important;font-variant-numeric:tabular-nums}
 .coins{font-weight:700!important}.coins.bump{animation:bump .5s var(--spring)}@keyframes bump{40%{transform:scale(1.22)}}
 /* floating glass tab bar */
 .nav{left:12px!important;right:12px!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;max-width:496px;margin:0 auto;border-radius:30px;background:rgba(20,18,16,.5)!important;backdrop-filter:blur(24px) saturate(1.9)!important;-webkit-backdrop-filter:blur(24px) saturate(1.9)!important;border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 14px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3)!important;padding:0!important;transition:transform .5s var(--spring),opacity .3s}
@@ -612,12 +600,6 @@ summary{font:700 16px var(--pix)}
 .cat.sleep .ctail{animation-duration:7s}.cat.sleep .cbody{animation:cbr 5.2s ease-in-out infinite}.cat.sleep .chead{transform:translateY(3px) rotate(-3deg);animation:none}
 .cat .czz text{animation:zz 3.2s ease-in-out infinite}.cat .czz text+text{animation-delay:1.1s}@keyframes zz{0%{opacity:0;transform:translate(0,4px)}40%{opacity:.9}100%{opacity:0;transform:translate(5px,-9px)}}
 /* bento + rings */
-.bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}.bento .pnl{margin:0}
-.ringsT{display:flex;flex-direction:column;align-items:center;gap:8px;color:inherit;cursor:pointer;text-align:left;font:inherit;padding:14px 12px!important}
-.rings{width:112px;height:112px}.rings .rg{transition:stroke-dashoffset 1.2s var(--spring)}
-.rgl{display:grid;gap:3px;width:100%;font:600 11.5px var(--body);color:var(--ink3)}
-.rgl div{display:flex;align-items:center;gap:6px}.rgl i{width:7px;height:7px;border-radius:50%;flex:none}.rgl b{margin-left:auto;color:var(--ink);font-size:12px}
-.clock .big{font-size:46px!important;font-weight:800!important;letter-spacing:-1px}
 /* coins, bursts, level */
 .coinf{position:fixed;z-index:60;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#e2b04a 55%,#8d6c3a);box-shadow:0 0 10px #f0c97088;pointer-events:none;transition:transform .75s cubic-bezier(.55,-0.35,.6,1),opacity .2s .65s}
 .petb{position:fixed;z-index:60;width:10px;height:7px;border-radius:70% 0 70% 0;background:linear-gradient(135deg,#f6c9c3,#d98f8a);pointer-events:none;animation:pb 1.4s cubic-bezier(.2,.7,.3,1) forwards}
@@ -878,8 +860,6 @@ summary{font:700 16px var(--pix)}
 .pnl{padding:12px 14px!important;margin-bottom:10px!important}
 .pnl .ttl{margin-bottom:8px!important;padding-bottom:7px!important}
 .pnl h2{font-size:18px!important}
-.bento{margin-bottom:10px!important}
-#nextBox{padding:10px 14px!important}#nextTxt{font-size:14.5px!important}.nwhy{display:block;margin-top:2px;font:600 11.5px var(--body);color:var(--ink3)}
 .task{padding:8px 0!important;gap:10px!important}.task .t{font-size:14.5px!important;line-height:1.35!important}.task .tm{font-size:12px!important}
 #s-day #quick{display:none!important}
 .pulse{animation:pulseH 1.2s ease-out}@keyframes pulseH{0%{background:rgba(226,196,142,.35)}100%{background:transparent}}
@@ -968,7 +948,6 @@ summary{font:700 16px var(--pix)}
 .drgrow>div{flex:1;min-width:0}.drgrow b{display:block;font:600 14.5px var(--body);color:var(--ink)}.drgrow small{display:block;font:12px var(--body);color:var(--ink3);margin-top:2px}
 .drgw{display:flex;gap:4px;margin-top:8px}.drgw u{text-decoration:none;flex:1;max-width:34px;text-align:center;padding:3px 0;border-radius:4px;font:600 10px var(--body);color:var(--ink3);background:var(--panel2)}.drgw u.on{background:#c9a46a33;color:var(--gold)}
 .kgring{width:150px;height:150px;margin:14px auto;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--edge2);transition:transform 3s ease-in-out,border-color .3s}
-.kgbar{background:linear-gradient(135deg,rgba(201,164,106,.16),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(201,164,106,.35)}.kgbar small{color:var(--gold)}.kgbar.done{opacity:.6}
 .kgdots{display:flex;gap:6px;justify-content:center;margin:6px 0 2px}.kgdots i{width:10px;height:10px;border-radius:50%;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--edge2)}.kgdots i.on{background:var(--gold);box-shadow:none}
 .kghold{width:100%;padding:22px 0;font-size:16px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}.kghold.act{background:var(--gold);color:#2a1a02}.kgbar2{height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;margin:8px 0}.kgbar2 i{display:block;height:100%;background:var(--gold);width:0;transition:width .2s linear}
 .kgring.sq{transform:scale(.82);border-color:var(--gold)}.kgring b{font:700 20px var(--body);color:var(--ink)}.kgring small{font:12px var(--body);color:var(--ink3)}
@@ -1020,7 +999,6 @@ summary{font:700 16px var(--pix)}
 .rm.img{grid-template-columns:48px 1fr auto}.rmi{display:grid;place-items:center;width:48px;height:48px;border-radius:10px;background:var(--panel2);overflow:hidden}.rmi svg{max-width:44px;max-height:44px;width:auto;height:auto}
 .rm.done.img .rmi{filter:grayscale(.6)}
 /* компактный главный экран: всё на одном экране */
-#s-day #nextBox{padding:8px 12px!important;margin-top:8px!important}#nextTxt{font-size:14px!important;line-height:1.3!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #s-day .dtitle{display:inline-block;font-size:27px!important;margin:10px 10px 0 0!important;vertical-align:baseline}#s-day .dtitle::after{width:58px!important;height:5px!important;margin-top:3px!important}
 #s-day .dsub{display:inline-block;font-size:13px!important;margin-top:0!important;vertical-align:baseline}
 #s-day .week{margin:4px 0 0!important}#s-day .db{padding:2px 0 3px!important}#s-day .db b{font-size:17px!important;line-height:1.15!important}#s-day .db small{font-size:10px!important}
@@ -1029,7 +1007,6 @@ summary{font:700 16px var(--pix)}
 #s-day .scene .say{top:34px!important;max-width:58%!important;padding:7px 10px!important;font-size:13px!important;line-height:1.35!important}
 #s-day .sc-top{top:9px!important}#s-day .sc-bot{padding:6px 12px 7px!important}#s-day .sc-name b{font-size:14px!important}
 #s-day .db.sel{padding-bottom:6px!important;background-size:34px 34px!important;background-position:center calc(100% - 2px)!important;background-repeat:no-repeat!important}
-#s-day .clock .big{font-size:38px!important}#s-day .clock .sm{font-size:12.5px}#s-day .clock .tot{margin-top:2px}
 #ctSec,#habSec{display:none!important}
 /* живой босс */
 #bossSpr{position:relative;animation:bossFl 4.2s ease-in-out infinite!important;transform-origin:50% 90%}
@@ -1132,6 +1109,113 @@ summary{font:700 16px var(--pix)}
 .cmleg{display:flex;flex-wrap:wrap;gap:4px 12px;margin:0 0 6px;font:11px var(--body);color:var(--ink3)}
 .cmleg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:-1px;background:var(--panel2)}
 .cmleg i.y{background:#7f9a5a}.cmleg i.m{background:#7f9a5a88}.cmleg i.n{background:#c6301f}.cmleg i.t{box-shadow:inset 0 0 0 1.5px var(--gold)}
+
+/* ===== Путь 2.0 · «Ритм дня» =====
+   Фаза суток (html[data-phase]) задаёт акцент и свет всего приложения:
+   утро — рассвет и персик, день — киноварь, вечер — закат, ночь — луна и тёплый янтарь, экран темнее. */
+:root{--acc:#e0412c;--acc2:#ff9a7f;--accbg:rgba(224,65,44,.13);--accln:rgba(224,65,44,.42)}
+html[data-phase=morning]{--acc:#ec9a5f;--acc2:#ffcf9e;--accbg:rgba(236,154,95,.13);--accln:rgba(236,154,95,.42);
+ background:radial-gradient(120% 55% at 50% -12%,#3a2516 0,transparent 62%),radial-gradient(circle at 86% 11%,#ec9a5f30 0 58px,transparent 60px),var(--bg)}
+html[data-phase=evening]{--acc:#e24a35;--acc2:#ff9a7f;--accbg:rgba(226,74,53,.14);--accln:rgba(226,74,53,.45);
+ background:radial-gradient(120% 60% at 50% -10%,#2c1520 0,transparent 60%),radial-gradient(circle at 88% 9%,#c6301f44 0 64px,transparent 66px),var(--bg)}
+html[data-phase=night]{--acc:#cdb07a;--acc2:#e6d3a8;--accbg:rgba(205,176,122,.11);--accln:rgba(205,176,122,.38);
+ background:radial-gradient(120% 60% at 50% -10%,#10131c 0,transparent 60%),radial-gradient(circle at 86% 10%,#e8e2d020 0 38px,transparent 40px),#070707}
+html[data-phase=night] #sakura{display:none}
+html[data-phase=night] body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;background:rgba(24,12,0,.2)}
+.nav button.on .nk{color:var(--acc)!important;text-shadow:0 0 16px var(--accln)!important}
+.nav button.on::before{background:var(--acc)!important;box-shadow:0 0 12px var(--acc)!important}
+
+/* заголовок фазы */
+.phd{display:flex;align-items:center;gap:12px;margin:4px 0 0}
+.phk{flex:none;display:grid;place-content:center;width:46px;height:46px;border-radius:14px;background:var(--accbg);box-shadow:inset 0 0 0 1px var(--accln);color:var(--acc);font:700 25px/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif}
+.pht{flex:1;min-width:0}
+.phl{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+#s-day .phd .dtitle{display:inline;font-size:27px!important;line-height:1.1!important;margin:0!important}
+#s-day .phd .dtitle::after{display:none!important}
+#s-day .phd .dsub{display:inline;margin:0!important;font-size:13px!important;color:var(--ink3)}
+.phm{font:600 13px/1.35 var(--body);color:var(--acc2);margin-top:3px}
+.phm:empty{display:none}
+
+/* миссия: следующий шаг с настоящими кнопками */
+.mission{position:relative;margin-top:12px;padding:14px 14px 12px 16px;border-radius:20px;border:1px solid var(--edge);background:linear-gradient(135deg,var(--accbg),rgba(255,255,255,.015) 70%),var(--panel);overflow:hidden}
+.mission::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:0 3px 3px 0;background:var(--acc)}
+#s-day #nextBox{display:block;width:100%;margin:0;padding:0;border:0;background:none;box-shadow:none;text-align:left;color:inherit;cursor:pointer}
+.mlb{display:block;font:700 10.5px var(--body);letter-spacing:1.3px;text-transform:uppercase;color:var(--acc)}
+#s-day #nextTxt{display:block;margin-top:5px;font:600 17px/1.32 var(--body);color:var(--ink)}
+.nwhy{display:block;margin-top:5px;font:600 12px/1.35 var(--body);color:var(--ink3)}
+.mact{display:flex;gap:8px;margin-top:12px}.mact:empty{display:none}
+.mact button{flex:1;min-height:44px;padding:0 12px;border-radius:13px;border:1px solid var(--edge2);background:rgba(255,255,255,.03);color:var(--ink);font:700 14px var(--body);cursor:pointer;transition:transform .15s}
+.mact button:active{transform:scale(.97)}
+.mact button.p{flex:1.4;border-color:transparent;background:var(--acc);color:#170b05}
+.mact button.r{border-color:transparent;background:#c6301f;color:#fff}
+
+/* полоса статуса: одна строка вместо часов, колец и трёх плашек */
+.rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.rt{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:10px 10px 14px;border-radius:16px;border:1px solid var(--edge);background:var(--panel2);color:var(--ink);text-align:left;font:inherit;cursor:pointer;overflow:hidden;transition:transform .15s}
+.rt:active{transform:scale(.96)}
+.rt .rk{font:700 13px/1 "Yu Mincho","Hiragino Mincho ProN",serif;color:var(--ink3);margin-bottom:6px}
+.rt b{font:800 19px/1.05 var(--num);color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+.rt b small{font:700 11px var(--body);color:var(--ink2);margin-left:3px}
+.rt em{margin-top:2px;max-width:100%;font:600 11px/1.2 var(--body);font-style:normal;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rt>small{margin-top:1px;font:600 10px/1.2 var(--body);color:var(--ink3);white-space:nowrap}
+.rbar{position:absolute;left:10px;right:10px;bottom:7px;height:3px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden}
+.rbar u{display:block;height:100%;width:0;border-radius:3px;background:var(--acc);transition:width .7s var(--spring,ease)}
+.rt-c{border-color:var(--accln)}.rt-c .rk{color:var(--acc)}
+.rt.done{border-color:#7f9a5a99}.rt.done .rk,.rt.done b{color:#b9d68a}.rt.done .rbar u{background:#a3bb72}
+
+/* тревожная кнопка: вечером и ночью светится */
+.sosrow{display:grid;grid-template-columns:1.35fr 1fr;gap:8px;margin:8px 0 10px}
+.sosrow .btn{width:100%;margin:0!important;min-height:46px;padding:10px 8px!important;font-size:15px!important}
+.sosrow #stormBtn{font-size:13px!important}
+html[data-phase=evening] .sosrow .sos,html[data-phase=night] .sosrow .sos{box-shadow:0 0 0 1px #ff6a55,0 0 24px rgba(224,65,44,.35)!important}
+
+/* вечерний дозор */
+.phcard{border:1px solid var(--accln)!important}
+.phcard .ttl h2 span{color:var(--acc)}
+.evl{margin:0 0 12px}
+.evi{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--edge);font:14px/1.35 var(--body);color:var(--ink2)}
+.evi:first-child{border-top:0}
+.evi>i{flex:none;display:grid;place-content:center;width:24px;height:24px;border-radius:50%;border:1px solid var(--edge2);font:700 12px var(--num);font-style:normal;color:var(--ink3)}
+.evi>span{flex:1;min-width:0}
+.evi>b{flex:none;font:600 12px var(--body);color:var(--ink3)}
+.evi.on>i{background:#a3bb72;border-color:transparent;color:#14200a}.evi.on>span{color:var(--ink3);text-decoration:line-through}
+.evi .linkbtn{flex:none}
+
+/* ночной дозор */
+#night{position:fixed;inset:0;z-index:25;overflow-y:auto;display:flex;align-items:center;justify-content:center;padding:calc(28px + env(safe-area-inset-top)) 22px calc(28px + env(safe-area-inset-bottom));background:radial-gradient(90% 55% at 50% 0%,#151a28 0,#08080b 72%);color:#d9d2c3;animation:ntIn .45s ease}
+#night.hide{display:none!important}
+.nt-in{width:100%;max-width:420px;margin:auto;text-align:center}
+.nt-k{display:inline-grid;place-content:center;width:66px;height:66px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#f6f1e4,#d3cab4 55%,#9e9682);color:#2a2620;font:700 30px/1 "Yu Mincho","Hiragino Mincho ProN",serif;box-shadow:0 0 46px rgba(235,225,195,.16)}
+.nt-t{margin:16px 0 8px;font:800 58px/1 var(--num);letter-spacing:1px;color:#ebe4d4;font-variant-numeric:tabular-nums}
+.nt-p{margin:0 0 14px;font:16px/1.5 var(--body);color:#b8b0a1}
+.nt-gn{margin-top:10px;color:#e2d6b8}
+.nt-s{display:inline-block;margin:0 0 22px;padding:7px 13px;border-radius:999px;background:rgba(205,176,122,.1);border:1px solid rgba(205,176,122,.28);font:600 13px var(--body);color:#e6d3a8}
+#night .nt-go{width:100%;min-height:54px;margin:0 0 10px;border:0!important;border-radius:16px!important;background:#dccca5!important;color:#1c160c!important;font:700 17px var(--body)!important;box-shadow:none!important}
+#night .row2 .btn{min-height:48px;border-radius:14px!important}
+#night .nt-l{display:inline-block;margin-top:20px;color:#8f8778!important;font-size:14px}
+.nt-h{margin:6px 0 10px;font:700 20px/1.3 var(--pix);color:#ebe4d4}
+.nt-ul{margin:0 0 18px;padding:0;list-style:none;text-align:left}
+.nt-ul li{padding:10px 0;border-top:1px solid rgba(255,255,255,.07);font:14.5px/1.45 var(--body);color:#b8b0a1}
+.nt-ul li b{color:#e6dccb}
+.nt-br{position:relative;display:grid;place-content:center;width:190px;height:190px;margin:4px auto 22px}
+.nt-br i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(205,176,122,.32),rgba(205,176,122,.05) 70%);box-shadow:0 0 0 1px rgba(205,176,122,.3);animation:ntBr 10s ease-in-out infinite}
+.nt-br b{position:relative;font:700 18px var(--body);color:#ecdfbd}
+@keyframes ntBr{0%{transform:scale(.55)}40%{transform:scale(1)}100%{transform:scale(.55)}}
+@keyframes ntBrO{0%{opacity:.3}40%{opacity:1}100%{opacity:.3}}
+@keyframes ntIn{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.nt-br i{animation:ntBrO 10s ease-in-out infinite}#night{animation:none}}
+@media (max-width:360px){.rt b{font-size:17px}.rt{padding:9px 8px 13px}.nt-t{font-size:48px}}
+/* тело и экран */
+.hp{margin:0 0 10px;padding:12px 14px;border-radius:18px;border:1px solid var(--edge);background:var(--panel2)}
+.hph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}.hph b{font:700 12px var(--body);letter-spacing:.8px;text-transform:uppercase;color:var(--ink2)}.hph .linkbtn{font-size:12px}
+.hpm{display:flex;flex-wrap:wrap;gap:6px}
+.hpc{display:inline-flex;align-items:baseline;gap:5px;padding:6px 10px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid var(--edge)}
+.hpc i{font-style:normal;font-size:13px}.hpc b{font:800 14px var(--num);color:var(--ink);font-variant-numeric:tabular-nums}.hpc small{font:600 10.5px var(--body);color:var(--ink3)}
+.hpc.g{border-color:#7f9a5a99}.hpc.g b{color:#b9d68a}.hpc.b{border-color:#c6301f88}.hpc.b b{color:#ff8a7a}
+.hpb{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.hpb .btn{width:100%;min-height:40px;margin:0!important;padding:8px 6px!important;font-size:13px!important}
+.hpg{margin:6px 0 10px;padding-left:20px;font:14px/1.5 var(--body);color:var(--ink2)}.hpg li{margin:0 0 6px}.hpg code{font-size:11.5px;word-break:break-word}
+.scin{display:flex;align-items:center;gap:8px;margin:12px 0 4px}.scin input{width:84px;padding:12px;border:0;border-radius:12px;background:#05060a;box-shadow:inset 0 0 0 1px var(--edge2);color:var(--ink);font:700 18px var(--num);text-align:center}.scin span{font:600 14px var(--body);color:var(--ink3)}
+.scch{position:relative;display:flex;align-items:flex-end;gap:3px;height:72px;border-bottom:1px solid var(--edge)}.scch i{flex:1;border-radius:3px 3px 0 0;background:var(--edge2)}.scch i.g{background:#a3bb72}.scch i.b{background:#e0563f}.scch i.n{background:rgba(255,255,255,.06)}.scch u{position:absolute;left:0;right:0;border-top:1px dashed var(--gold);opacity:.7}
 </style>
 </head>
 <body>
@@ -1150,14 +1234,31 @@ summary{font:700 16px var(--pix)}
   <div class="banner blue hide" id="fresh"></div>
   <div class="banner hide" id="recov" role="button" style="cursor:pointer;background:#1c1410;box-shadow:inset 0 0 0 2px #7a4a1e;color:#f6dcb8"></div>
 
-  <button class="pnl" id="nextBox" style="display:flex;gap:12px;align-items:center;width:100%;border:0;text-align:left;color:inherit;cursor:pointer;box-shadow:inset 0 0 0 2px var(--xp)"><span style="font:400 18px var(--pix);color:var(--xp)">▶</span><span style="flex:1;min-width:0"><span style="display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--xp)">Следующий шаг</span><span id="nextTxt" style="font:600 15px/1.35 var(--body)"></span></span></button>
-  <h1 class="dtitle" id="dTitle">Сегодня</h1>
-  <div class="dsub" id="dSub"></div>
+  <header class="phd" id="phd"><span class="phk" lang="ja" id="phK">今</span><div class="pht"><div class="phl"><h1 class="dtitle" id="dTitle">Сегодня</h1><span class="dsub" id="dSub"></span></div><div class="phm" id="phM"></div></div></header>
   <div class="dmods" id="dMods"></div>
   <div class="week"><button class="wk" id="wPrev" aria-label="Прошлая неделя">‹</button><div class="days" id="days"></div><button class="wk" id="wNext" aria-label="Следующая неделя">›</button></div>
-
+  <section class="mission" id="mission"><button class="mtxt" id="nextBox"><span class="mlb">Следующий шаг</span><span id="nextTxt"></span></button><div class="mact" id="mAct"></div></section>
+  <div class="rail" id="rail">
+    <button class="rt rt-c" id="clockBox" aria-label="Без срыва: начало отсчёта"><span class="rk" lang="ja">守</span><b id="cBig">0</b><em id="cSm">без срыва</em><small id="cTot"></small><span class="rbar"><u id="cBar"></u></span></button>
+    <button class="rt" id="rtQ" aria-label="Квесты дня"><span class="rk" lang="ja">済</span><b id="rtQn">0/0</b><em>квесты</em><span class="rbar"><u id="rtQb"></u></span></button>
+    <button class="rt" id="kgBar" aria-label="Кегель"><span class="rk" lang="ja">締</span><b id="kgBarN">0/3</b><em id="kgBarT">кегель</em><span class="rbar"><u id="rtKb"></u></span></button>
+    <button class="rt" id="rtD" aria-label="Тренировки дракона"><span class="rk" lang="ja">龍</span><b id="rtDn">0/5</b><em>дракон</em><span class="rbar"><u id="rtDb"></u></span></button>
+  </div>
+  <div class="sosrow" id="sosRow"><button class="btn red sos" id="sosBtn">Тянет!</button><button class="btn blue" id="stormBtn">Шторм эмоций</button></div>
+  <button class="stepsbar cmbar hide" id="cmBar"><span lang="ja">誓</span><b id="cmBarN">0/0</b><em id="cmBarT"></em><small>отметить</small></button>
   <button class="bmini" id="bMini"><span id="bMiniSpr"></span><span style="flex:1;min-width:0"><span class="nm" id="bMiniName"></span><div class="gauge g-hp"><i id="bMiniHp"></i></div><span class="hpn" id="bMiniTxt"></span></span></button>
 
+
+  <div class="pnl">
+    <div class="ttl"><h2>Квесты</h2><span class="c" id="tCount"></span></div>
+    <div id="tasks"></div>
+    <div class="chips" id="quick" style="margin-top:10px"></div>
+    <button class="linkbtn hide" id="carryBtn" style="margin-top:10px;display:block"></button>
+    <div class="add"><input type="text" id="newTask" placeholder="Новый квест, напр. 12:00 врач" aria-label="Новый квест" enterkeyhint="done"><button class="btn gold" id="addBtn">+</button></div>
+  </div>
+
+  <section class="pnl phcard hide" id="eveCard"></section>
+  <section class="hp" id="hpCard"><div class="hph"><b>Тело и экран</b><button class="linkbtn" id="hpAt"></button></div><div class="hpm" id="hpM"></div><div class="hpb"><button class="btn" id="hpSync">⟳ Синхронизировать</button><button class="btn" id="hpScr">📱 Экранное время</button></div></section>
   <div class="scene" id="scene">
     <div class="sky" id="sky"></div>
     <div class="sc-top"><span class="sc-k" lang="ja" id="scK"></span><span id="scTime"></span></div>
@@ -1169,26 +1270,6 @@ summary{font:700 16px var(--pix)}
       <div class="sc-bars"><span>сытость</span><div class="gauge g-gold"><i id="pFuel"></i></div><span>настроение</span><div class="gauge g-pink"><i id="pMood"></i></div></div>
     </div>
   </div>
-  <div class="bento">
-    <div class="pnl status">
-      <div class="clock" id="clockBox" role="button" style="cursor:pointer"><div class="lb">Без срыва ✎</div><div class="big" id="cBig">0<small>д</small></div><div class="sm" id="cSm"></div><div class="tot" id="cTot"></div></div>
-      <button class="btn red sos" id="sosBtn">Тянет!</button>
-      <button class="btn blue" id="stormBtn" style="width:100%;padding:10px 6px;font-size:12px">Шторм эмоций</button>
-    </div>
-    <button class="pnl ringsT" id="ringsT" aria-label="Кольца дня"></button>
-  </div>
-  <button class="stepsbar" id="stepsBar"><span>👟</span><b id="stepsN">—</b><em id="stepsT">шаги из «Здоровья»</em><small id="stepsH">подключить</small></button>
-  <button class="stepsbar kgbar" id="kgBar"><span lang="ja">締</span><b id="kgBarN">0/3</b><em id="kgBarT">Кегель: подход, когда удобно</em><small>подход</small></button>
-  <button class="stepsbar cmbar hide" id="cmBar"><span lang="ja">誓</span><b id="cmBarN">0/0</b><em id="cmBarT"></em><small>отметить</small></button>
-
-  <div class="pnl">
-    <div class="ttl"><h2>Квесты</h2><span class="c" id="tCount"></span></div>
-    <div id="tasks"></div>
-    <div class="chips" id="quick" style="margin-top:10px"></div>
-    <button class="linkbtn hide" id="carryBtn" style="margin-top:10px;display:block"></button>
-    <div class="add"><input type="text" id="newTask" placeholder="Новый квест, напр. 12:00 врач" aria-label="Новый квест" enterkeyhint="done"><button class="btn gold" id="addBtn">+</button></div>
-  </div>
-
   <div class="pnl" id="ctSec">
     <div class="ttl"><h2>Доска контрактов</h2><span class="c" id="ctCnt"></span></div>
     <div id="ctList"></div>
@@ -1416,6 +1497,7 @@ summary{font:700 16px var(--pix)}
     <div class="vote" style="padding:0 0 12px"><p style="font:14px/1.4 var(--body);color:var(--ink2)">Играть даже в беззвучном режиме iPhone</p><button class="btn" id="loudBtn"></button></div>
     <div class="vote" style="padding:0 0 12px"><p style="font:14px/1.4 var(--body);color:var(--ink2)">Громкость</p><input type="range" id="volR" min="0" max="100" step="5" style="width:46%;accent-color:#b8281e"></div>
     <div class="vote" style="padding:0 0 12px"><p style="font:14px/1.4 var(--body);color:var(--ink2)">Атмосфера: ветер и сверчки ночью</p><button class="btn" id="ambBtn"></button></div>
+    <div class="vote" style="padding:0 0 12px"><p style="font:14px/1.4 var(--body);color:var(--ink2)">Отбой и «Ночной дозор»</p><button class="btn" id="bedBtn">23:30</button></div>
     <details><summary>Психология игры</summary><div class="prose">
       <p><b>Сёрфинг тяги.</b> Тяга растёт, достигает пика и спадает, как волна. Бой учит её переждать, а оценка «до и после» показывает, что ты сильнее волны.</p>
       <p><b>Планы «если — то».</b> Заранее решённое действие на конкретный триггер срабатывает почти автоматически, без борьбы.</p>
@@ -1433,7 +1515,9 @@ summary{font:700 16px var(--pix)}
       <li><b>ПК:</b> расширение LeechBlock NG и DNS <code>1.1.1.3</code></li>
     </ul></div></details>
     <details><summary>Резервная копия</summary><div class="prose">
-      <p>Всё хранится только на этом телефоне. Иногда копируй код в Заметки.</p>
+      <p>Всё хранится только на этом телефоне. Раз в неделю сохраняй копию файлом — в «Файлы», Telegram или на почту.</p>
+      <div class="row2" style="margin-bottom:10px"><button class="btn gold" id="bakFile">Сохранить файл</button><button class="btn" id="bakLoad">Из файла</button></div><input type="file" id="bakIn" accept="application/json,.json" hidden>
+      <p class="mut" id="bakSt" style="font-size:13px;margin:0 0 10px"></p>
       <div class="row2"><button class="btn" id="expBtn">Копировать</button><button class="btn" id="impBtn">Загрузить</button></div>
       <textarea id="saveBox" rows="3" class="hide" style="margin-top:10px" placeholder="Вставь код сохранения"></textarea>
       <button class="btn gold hide" id="impGo" style="width:100%;margin-top:10px">Загрузить</button>
@@ -1505,6 +1589,7 @@ summary{font:700 16px var(--pix)}
 </div></div>
 
 <!-- ================= SHEET ================= -->
+<div id="night" class="hide" role="dialog" aria-modal="true" aria-label="Ночной дозор"></div>
 <div class="sheet-bg hide" id="sheet"><div class="sheet" id="sheetIn"></div></div>
 <div class="toast" id="toast" role="status"></div>
 <div id="sakura" aria-hidden="true"><i style="left:8%;animation-duration:26s;animation-delay:-3s"></i><i style="left:22%;animation-duration:34s;animation-delay:-17s;transform:scale(.8)"></i><i style="left:41%;animation-duration:29s;animation-delay:-9s"></i><i style="left:63%;animation-duration:38s;animation-delay:-25s"></i><i style="left:78%;animation-duration:31s;animation-delay:-5s"></i><i style="left:91%;animation-duration:27s;animation-delay:-20s"></i></div>
@@ -2167,6 +2252,7 @@ function catTips(){const t=[],h=new Date().getHours(),wd=new Date().getDay(),d=t
   if(h>=23||h<5)t.push(['Пора спать. Телефон на зарядку подальше от кровати — ночью тяга сильнее всего.',null]);
   const need=cmAct().filter(c=>cmDays(c).includes(d)&&!cmMark(c,d));if(need.length&&h>=17)t.push(['Слово «'+need[0].t+'» ждёт отметки. Тапни меня.',()=>{go('quest');setTimeout(()=>{const x=$('cmSec');if(x)x.scrollIntoView({behavior:'smooth'})},250)}]);
   if(!S.mood[d]&&h>=5&&h<13)t.push(['Как спал? Отметь сон — за 7–9 часов дам бонус к опыту.',()=>moodSheet()]);
+  if(h>=7&&h<13&&Object.values(S.hd||{}).some(v=>v.scr!=null)&&hdGet(shift(d,-1)).scr==null)t.push(['Как вчера с экраном? Впиши экранное время — до цели дам опыт.',()=>scrSheet()]);
   const k=kgToday();if(k<3&&h>=7&&h<23)t.push(['Кегель '+k+'/3. Подход за полторы минуты? Тапни меня.',()=>kegelSheet()]);
   if(wd>0&&wd<6&&h>=13&&!vidDone(d))t.push(['Видео на канал ещё не вышло. 25 минут монтажа — и я мурчу.',null]);
   if((wd===5||wd===6)&&h>=20)t.push(['Вечер выходных — опасное время. Потянет — тапни меня, сразу пойдём в бой.',()=>openFight()]);
@@ -2198,9 +2284,10 @@ function renderDay(){
  try{recovBanner(isT)}catch(e){}
  $('fresh').textContent=now.getDate()===1?'Новый месяц — новая глава. Отличный момент начать с чистого листа.':'Новая неделя — свежий старт. Что ты сделаешь иначе на этой неделе?';
  renderWeek();
- $('dTitle').textContent=diff===0?'Сегодня':diff===1?'Завтра':diff===-1?'Вчера':sd.toLocaleDateString('ru-RU',{weekday:'long'});
+ $('dTitle').textContent=diff===0?PH[phaseNow()][1]:diff===1?'Завтра':diff===-1?'Вчера':sd.toLocaleDateString('ru-RU',{weekday:'long'});
  $('dSub').textContent=sd.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})+(diff!==0?' · ':'');
  if(diff!==0){const a=document.createElement('button');a.className='linkbtn';a.textContent='к сегодня';a.onclick=()=>selectDay(today());$('dSub').appendChild(a)}
+ $('phK').textContent=diff===0?PH[phaseNow()][0]:'日';$('phM').textContent=diff===0?PH[phaseNow()][2]:'';
  {const md=dayMods();$('dMods').innerHTML=diff===0?md.L.map(x=>'<span class="'+x[0]+'">'+esc(x[1])+'</span>').join(''):''}
  // boss mini
  const b=bossOf(S.camp.ch);$('bMiniSpr').innerHTML=bossSVG(S.camp.ch,2);$('bMiniName').textContent=b[0];
@@ -2210,21 +2297,25 @@ function renderDay(){
  $('petName').textContent=S.pet.name||'Котик';$('petStage').textContent=STAGES[st][1]+' · '+(st+1)+'/5';$('petSay').textContent=petLine();
  $('pFuel').style.width=S.pet.fuel+'%';$('pMood').style.width=S.pet.mood+'%';
  const ms=cleanMs(),d=Math.floor(ms/DAY),hh=Math.floor(ms%DAY/36e5),mm=Math.floor(ms%36e5/6e4);
- $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('cSm').textContent=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
- {const m=clean30();$('cTot').textContent='Чистых: '+totalClean()+' · за 30 дн.: '+m.c+'/30'}
- // next step
- {let t='',why='',act=null;const ci=isT?ciPick():null,T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),wk=weakOf(S.camp.ch);
-  if(!isT){t='Ты смотришь другой день. Вернуться к сегодня';act=()=>selectDay(today())}
-  else if(!S.mood[today()]&&ciGate()){t='Как ты? Отметь настроение и сон — 10 секунд';act=()=>{S.ci=S.ci||{at:0,d:{}};S.ci.at=Date.now();save();moodSheet()}}
-  else if(recovOn()&&Date.now()-S.fellAt<DAY&&h>=17){t='Сегодня главное — один раз, не два. Выйди из комнаты, телефон подальше';why='первые сутки после срыва — пик «уже всё равно»';act=openFight}
-  else if(ci){t='Вопрос часа: '+ciText(ci);act=()=>ciSheet(ci)}
-  else if(!P.tasks.length){t='Запиши 1–3 квеста на сегодня';act=()=>{$('newTask').focus()}}
-  else if(h>=20&&!eveDone()){t='Вечерний ритуал: закрой день — 1 минута';act=eveSheet}
-  else if(h>=1&&h<5){t='Ночь. Самый сильный ход сейчас — лечь спать';why='сон 7–9 ч даёт +10% ко всему завтра';act=null}
-  else if(undone.length){const w=nextPick(undone);t=w.t;why=w.why;act=()=>{const el=w.k==='h'?$('habSec'):[...document.querySelectorAll('#tasks .task')].find(e=>(e.querySelector('.t')||{}).textContent?.startsWith(w.t))||$('tasks');el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')}}
-  else if(!eveDone()){t='Все квесты сделаны! Вечером закрой день в ритуале 月';act=eveSheet}
+ $('cBig').innerHTML=d+'<small>'+plural(d,'день','дня','дней')+'</small>';$('clockBox').title=hh+' ч '+mm+' мин · идёт '+dayNum()+'-й день';
+ {const m=clean30();$('cTot').textContent='30 дн.: '+m.c+'/30';$('cBar').style.width=Math.round(m.c/30*100)+'%'}
+ // next step: одна миссия с настоящими кнопками
+ {let t='',why='',act=null,B=[];const ci=isT?ciPick():null,T=allTasks(),undone=T.filter(x=>!x.done),h=new Date().getHours(),ph=phaseNow(),nt=ntGet(),est=isT?sleepEst():null;
+  const find=w=>()=>{const el=w.k==='h'?$('habSec'):[...document.querySelectorAll('#tasks .task')].find(e=>((e.querySelector('.t')||{}).textContent||'').includes(w.t))||$('tasks');el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')};
+  if(!isT){t='Ты смотришь другой день';act=()=>selectDay(today());B=[['К сегодня',act,'p']]}
+  else if(ph==='night'){t=nt.bed?'Ты уже лёг в '+hm(nt.bed)+'. Телефон — подальше от кровати':'Ночь. Самый сильный ход сейчас — лечь спать';why='сон 7–9 ч = +10% ко всему завтра';act=()=>nightShow(nt.bed?'after':'ask');B=nt.bed?[['Не спится',()=>nightShow('nosleep')],['Тянет',openFight,'r']]:[['Ложусь спать',nightBed,'p'],['Тянет',openFight,'r']]}
+  else if(recovOn()&&Date.now()-S.fellAt<DAY&&h>=17){t='Сегодня главное — один раз, не два. Выйди из комнаты, телефон подальше';why='первые сутки после срыва — пик «уже всё равно»';act=openFight;B=[['Бой с тягой',openFight,'r']]}
+  else if(est&&!(S.mood[today()]||{}).s){t='Доброе утро. Сон ≈ '+est.txt;why='отбой '+hm(est.bed)+' → подъём '+hm(est.wake);act=moodSheet;B=[['Верно ✓',()=>sleepOk(est),'p'],['Поправить',moodSheet]]}
+  else if(!(S.mood[today()]||{}).m&&ciGate()){t='Как ты? Отметь настроение и сон — 10 секунд';act=()=>{S.ci=S.ci||{at:0,d:{}};S.ci.at=Date.now();save();moodSheet()};B=[['Отметить',act,'p']]}
+  else if(ci){t='Вопрос часа: '+ciText(ci);act=()=>ciSheet(ci);B=[['Ответить',act,'p']]}
+  else if(!P.tasks.length){t='Запиши 1–3 квеста на сегодня';act=()=>{$('newTask').focus()};B=[['Добавить квест',act,'p']]}
+  else if(h>=20&&!eveDone()){t='Вечерний ритуал: закрой день — 1 минута';why='ночь безопаснее, когда день закрыт';act=eveSheet;B=[['Начать ритуал',eveSheet,'p']]}
+  else if(undone.length){const w=nextPick(undone);t=w.t;why=w.why;act=find(w);B=[['✓ Сделано',()=>{SFX.check();w.k==='h'?toggleHabit(w.i,false):togglePlan(w.i)},'p'],['В списке',act]]}
+  else if(!eveDone()){t='Все квесты сделаны! Вечером закрой день в ритуале 月';act=eveSheet;B=h>=18?[['Вечерний ритуал',eveSheet,'p']]:[]}
   else{t='День закрыт. Отдыхай, герой';act=null}
-  $('nextTxt').innerHTML=esc(t)+(why?'<small class="nwhy">'+esc(why)+'</small>':'');$('nextBox').onclick=act||(()=>{})}
+  $('nextTxt').innerHTML=esc(t)+(why?'<small class="nwhy">'+esc(why)+'</small>':'');$('nextBox').onclick=act||(()=>{});
+  const ma=$('mAct');ma.innerHTML=B.map((b,i)=>'<button class="'+(b[2]||'')+'" data-i="'+i+'">'+esc(b[0])+'</button>').join('');ma.querySelectorAll('button').forEach(x=>x.onclick=e=>{e.stopPropagation();buzz();B[+x.dataset.i][1]()})}
+ try{renderEveCard(isT);rhythmTick()}catch(e){console.error(e)}
  // quick add from history
  {const freq={};for(let i=1;i<=21;i++){const k=planKey(shift(SEL,-i));try{const v=JSON.parse(localStorage.getItem(k)||'null');(v&&(v.tasks||v)||[]).forEach(x=>{if(x&&x.t)freq[x.t]=(freq[x.t]||0)+1})}catch(e){}}
   const have=new Set(P.tasks.map(x=>x.t)),top=Object.entries(freq).filter(([t])=>!have.has(t)).sort((a,b)=>b[1]-a[1]).slice(0,5);
@@ -2945,12 +3036,10 @@ function sceneExtra(sc,night,P){let s='';
   if(night)[[230,150],[266,160],[156,200],[310,190],[340,204],[120,208],[252,190]].forEach(([x,y])=>s+='<rect x="'+x+'" y="'+y+'" width="4" height="5" fill="'+w+'" opacity=".9"/>')}
  if(((S.pet.acc||{}).on||[]).includes('furin'))s+='<g class="fu"><line x1="360" y1="0" x2="360" y2="18" stroke="#2a1d14" stroke-width="1.2"/><path d="M352 30 Q352 18 360 18 Q368 18 368 30Z" fill="#cfe3ee" opacity=".9"/><path d="M354 26 h12" stroke="#b8281e" stroke-width="1.4"/><line x1="360" y1="30" x2="360" y2="40" stroke="#2a1d14" stroke-width=".8"/><rect x="356" y="40" width="8" height="16" rx="1" fill="#f3ecdf"/><path d="M357 44 h6 M357 48 h6" stroke="#b8281e" stroke-width=".8"/></g>';
  return s}
-function renderRings(){const el=$('ringsT');if(!el.querySelector('svg')){const R=[[50,'#e0563f'],[38,'#e2c48e'],[26,'#a3bb72']];el.innerHTML='<svg viewBox="0 0 120 120" class="rings">'+R.map(([r,c])=>'<circle cx="60" cy="60" r="'+r+'" stroke="'+c+'" stroke-opacity=".16" stroke-width="10" fill="none"/>').join('')+R.map(([r,c])=>{const L=(2*Math.PI*r).toFixed(1);return '<circle class="rg" cx="60" cy="60" r="'+r+'" stroke="'+c+'" stroke-width="10" fill="none" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="'+L+'" stroke-dashoffset="'+L+'"/>'}).join('')+'</svg><div class="rgl" id="rgl"></div>';el.onclick=()=>$('tasks').scrollIntoView({behavior:'smooth',block:'start'})}
- const tp=todayPlan(),T=(tp.tasks||[]),qd=T.filter(x=>x.done).length,half=(S.qHalf&&S.qHalf.d===today())?S.qHalf.l:[],kg=Math.min(3,kgToday()),dpn=DP.filter(x=>dpHas(x[0])).length;
- const v=[T.length?qd/T.length:0,kg/3,Math.min(1,dpn/5)];
- requestAnimationFrame(()=>el.querySelectorAll('.rg').forEach((c,i)=>{const L=2*Math.PI*(+c.getAttribute('r'));c.style.strokeDashoffset=(L*(1-Math.min(1,v[i]))).toFixed(1)}));
- $('rgl').innerHTML=[['#e0563f','Квесты',qd+'/'+T.length],['#e2c48e','Кегель',kg+'/3'],['#a3bb72','Дракон',Math.min(dpn,5)+'/5']].map(r=>'<div><i style="background:'+r[0]+'"></i>'+r[1]+'<b>'+r[2]+'</b></div>').join('');
- if(v.every(x=>x>=1)&&S.ringDay!==today()){S.ringDay=today();S.ringN=(S.ringN||0)+1;chGive(2,'все кольца дня');save();setTimeout(()=>{const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+70,28);SFX.win();toast('Все кольца дня закрыты!')},600)}}
+function renderRings(){const tp=todayPlan(),T=(tp.tasks||[]),qd=T.filter(x=>x.done).length,kg=Math.min(3,kgToday()),dpn=DP.filter(x=>dpHas(x[0])).length;
+ const v=[T.length?qd/T.length:0,kg/3,Math.min(1,dpn/5)];$('rtQn').textContent=qd+'/'+T.length;$('rtDn').textContent=Math.min(dpn,5)+'/5';
+ [['rtQ','rtQb',v[0]],['kgBar','rtKb',v[1]],['rtD','rtDb',v[2]]].forEach(([b,u,x])=>{$(u).style.width=Math.round(Math.min(1,x)*100)+'%';$(b).classList.toggle('done',x>=1)});
+ if(v.every(x=>x>=1)&&S.ringDay!==today()){S.ringDay=today();S.ringN=(S.ringN||0)+1;chGive(2,'все кольца дня');save();setTimeout(()=>{const r=$('rail').getBoundingClientRect();burst(r.left+r.width/2,r.top+30,28);SFX.win();toast('Все кольца дня закрыты!')},600)}}
 /* cat behaviour */
 function catAnim(c,ms){const sv=document.querySelector('#petArt svg.cat');if(!sv||sv.classList.contains(c))return;sv.classList.add(c);setTimeout(()=>sv.classList.remove(c),ms)}
 setInterval(()=>{if(document.hidden||$('s-day').classList.contains('hide'))return;const sl=catAsleep(),r=Math.random();
@@ -3255,16 +3344,70 @@ function stepsSet(n,src){n=Math.round(+n||0);if(n<=0)return false;const d=today(
  while(S.stp.m<STEPG.length&&S.stp.n>=STEPG[S.stp.m][0]){const[t,x]=STEPG[S.stp.m];const a=award(x,'str','',{t:'Прогулка: '+t.toLocaleString('ru-RU')+' шагов'});got+=a&&a.xp||x;S.stp.m++}
  if(S.stp.n>=7000){const i=S.qList.find(i=>/прогулка/i.test(HABITS[i][0]));if(i!=null&&!S.qDone.includes(i))try{toggleHabit(i,false)}catch(e){}}
  S.xpd=S.xpd||{};addLog('Шаги за день: '+S.stp.n.toLocaleString('ru-RU')+(src?' ('+src+')':''));save();render();toast('👟 '+S.stp.n.toLocaleString('ru-RU')+' шагов'+(got?' · +'+got+' XP':''));return true}
-function renderSteps(){const s=S.stp&&S.stp.d===today()?S.stp.n:0,nx=STEPG.find(g=>s<g[0]);$('stepsN').textContent=s?s.toLocaleString('ru-RU'):'—';$('stepsT').textContent=s?(nx?'до '+nx[0].toLocaleString('ru-RU')+': +'+nx[1]+' XP':'все награды за шаги взяты'):'шаги из «Здоровья»';$('stepsH').textContent=S.stpOn?'обновить':'подключить'}
-$('stepsBar').onclick=async()=>{let t='';try{t=await navigator.clipboard.readText()}catch(e){}const m=/(\d[\d\s.,]{2,})/.exec(t||'');if(m&&stepsSet(parseInt(m[1].replace(/[\s.,]/g,'')),'буфер')){S.stpOn=1;save();return}stepsGuide()};
-function stepsGuide(){sheet('<h3>👟 Шаги из «Здоровья»</h3><p class="mut" style="font-size:13px">Сайт не может сам читать «Здоровье», поэтому шаги передаёт команда iPhone. Один раз настроить — дальше само.</p>'
- +'<div class="lbl">1. Создай команду</div><p style="font-size:14px;line-height:1.5">Команды → <b>+</b> → добавь действия по порядку:<br>• <b>Найти образцы здоровья</b>: Тип — <b>Шаги</b>, Дата начала — <b>Сегодня</b><br>• <b>Вычислить статистику</b>: <b>Сумма</b><br>• <b>Скопировать в буфер</b><br>• <b>Открыть URL</b>: <code style="font-size:12px">blazenope.github.io/put-voina/?steps=</code> и после «=» вставь переменную «Статистика»</p>'
- +'<div class="lbl">2. Автоматизация</div><p style="font-size:14px;line-height:1.5">Команды → Автоматизация → <b>Время суток</b> 21:00, ежедневно → <b>Запускать сразу</b> → запустить свою команду.</p>'
- +'<div class="lbl">3. Если приложение на экране «Домой»</div><p style="font-size:14px;line-height:1.5">Ссылка откроется в Safari, а у приложения свои данные. Тогда просто открой приложение и нажми плашку 👟 — шаги подтянутся из буфера.</p>'
- +'<p class="mut" style="font-size:12.5px">Награды: 4 000 шагов +10 XP, 7 000 +20 и ритуал «прогулка» засчитан сам, 10 000 +35, 14 000 +50. GoClub и другие трекеры пишут шаги и тренировки в «Здоровье» — команда их подхватит.</p>'
- +'<div class="row2"><button class="btn" id="stHand">Ввести вручную</button><button class="btn gold" id="stOk">Понятно</button></div>');
- $('stOk').onclick=()=>{S.stpOn=1;save();closeSheet();render()};$('stHand').onclick=()=>{const v=prompt('Сколько шагов сегодня?');closeSheet();if(v)stepsSet(parseInt(String(v).replace(/\D/g,'')),'вручную')}}
-{const sp=new URLSearchParams(location.search).get('steps');if(sp){setTimeout(()=>{S.stpOn=1;stepsSet(parseInt(sp.replace(/\D/g,'')),'Здоровье')},800);history.replaceState(null,'',location.pathname)}}
+/* ===== Тело и экран: синхронизация с iPhone =====
+   Сайт не может сам читать «Здоровье» и Экранное время. Команда iPhone собирает данные в буфер строкой
+   «PV steps=8432 sleep=7,4 kcal=420 ex=35 rhr=58 screen=185», в приложении — одно нажатие «⟳».
+   Экранное время Apple не отдаёт даже Командам: его вписывают вручную или через «Запросить ввод» в команде.
+   S.hd[дата] = {steps, sleep (ч), kcal, ex (мин), rhr, hrv, mind (мин), scr (мин), pk, scrAw, at}. */
+const hdGet=d=>(S.hd||{})[d]||{};
+function hdSet(d){S.hd=S.hd||{};S.hd[d]=S.hd[d]||{};const ks=Object.keys(S.hd).sort();while(ks.length>120)delete S.hd[ks.shift()];return S.hd[d]}
+const fmtM=m=>{m=Math.round(m);return Math.floor(m/60)+' ч '+pad(m%60)};
+const fmtH=h=>{let H=Math.floor(h),M=Math.round((h-H)*60);if(M===60){H++;M=0}return H+' ч'+(M?' '+pad(M):'')};
+const HPK={steps:'steps',step:'steps','шаги':'steps',sleep:'sleep','сон':'sleep',kcal:'kcal',energy:'kcal','ккал':'kcal',ex:'ex',exercise:'ex',rhr:'rhr',hr:'rhr','пульс':'rhr',hrv:'hrv',mind:'mind',screen:'scr',scr:'scr','экран':'scr',pickups:'pk',pk:'pk'};
+function hpNum(k,s){s=String(s).replace(/[\s ]/g,'').replace(/[.,]$/,'');if(k!=='sleep'&&k!=='rhr'&&k!=='hrv'&&/^\d{1,3}([.,]\d{3})+$/.test(s))return +s.replace(/[.,]/g,'');return parseFloat(s.replace(',','.'))}
+function hpParse(t){t=String(t||'').trim();if(!t||t.length>2000)return null;const o={},re=/([a-zа-яё]+)\s*[=:]\s*(-?\d[\d\s .,]*)/gi;let m;
+ while((m=re.exec(t))){const k=HPK[m[1].toLowerCase()];if(!k)continue;const v=hpNum(k,m[2]);if(isFinite(v)&&v>=0)o[k]=v}
+ if(!Object.keys(o).length&&/^\s*\d[\d\s .,]{2,}\s*$/.test(t)){const v=parseInt(t.replace(/\D/g,''),10);if(v>0)o.steps=v}
+ return Object.keys(o).length?o:null}
+function scrSet(v,dk,src){v=v<=16?v*60:v;v=Math.round(v);if(!(v>0&&v<1440))return 0;dk=dk||(new Date().getHours()<12?shift(today(),-1):today());const h=hdSet(dk);h.scr=v;
+ const T=S.scrT||180;let xp=0;if(dk<today()&&!h.scrAw&&v<=T){xp=v<=T/2?25:15;h.scrAw=xp;award(xp,'wil','',{t:'Экранное время под контролем: '+fmtM(v),dmg:xp})}
+ addLog('Экранное время '+(dk===today()?'сегодня':'за '+parseD(dk).toLocaleDateString('ru-RU',{day:'numeric',month:'short'}))+': '+fmtM(v)+(src?' ('+src+')':''));return xp}
+function hpApply(o,src){const d=today(),h=hdSet(d),got=[];
+ if(o.sleep>0){let v=o.sleep;v=v>24?(v<=1440?v/60:v/3600):v;if(v>=1&&v<=16){h.sleep=Math.round(v*10)/10;const m=S.mood[d]=Object.assign({},S.mood[d]);if(!m.s)m.s=Math.max(3,Math.min(12,Math.round(v)));got.push('сон '+fmtH(v))}}
+ if(o.kcal>0){h.kcal=Math.round(o.kcal);got.push(h.kcal+' ккал')}if(o.ex>0){h.ex=Math.round(o.ex);got.push(h.ex+' мин упражнений')}
+ if(o.rhr>0){h.rhr=Math.round(o.rhr);got.push('пульс '+h.rhr)}if(o.hrv>0)h.hrv=Math.round(o.hrv);if(o.mind>0)h.mind=Math.round(o.mind);if(o.pk>0)h.pk=Math.round(o.pk);
+ let sx=0;if(o.scr>0){sx=scrSet(o.scr,null,src);got.push('экран '+fmtM(o.scr<=16?o.scr*60:o.scr))}
+ h.at=Date.now();S.hpOn=S.stpOn=1;save();
+ if(o.steps>0){h.steps=Math.round(o.steps);stepsSet(h.steps,src);if(got.length)setTimeout(()=>toast('⟳ Также: '+got.join(' · ')),2500)}
+ else{render();toast('⟳ '+(got.join(' · ')||'синхронизировано')+(sx?' · +'+sx+' XP':''))}}
+async function hpSync(){let t='';try{t=await navigator.clipboard.readText()}catch(e){}const o=hpParse(t);if(o){hpApply(o,'Здоровье');return}stepsGuide()}
+function renderSteps(){const c=$('hpM');if(!c)return;const d=today(),h=hdGet(d),y=hdGet(shift(d,-1)),st=S.stp&&S.stp.d===d?S.stp.n:0,nx=STEPG.find(g=>st<g[0]),T=S.scrT||180;
+ const sl=h.sleep||((S.mood[d]||{}).s)||null,sc=h.scr!=null?[h.scr,'экран сегодня']:y.scr!=null?[y.scr,'экран вчера']:null;
+ const chip=(ic,v,l,cl)=>'<span class="hpc'+(cl?' '+cl:'')+'"><i>'+ic+'</i><b>'+v+'</b><small>'+l+'</small></span>';
+ let H=chip('👟',st?st.toLocaleString('ru-RU'):'—',st?(nx?'до '+nx[0]/1000+'к: +'+nx[1]+' XP':'все награды'):'шаги',st>=10000?'g':'')
+  +chip('😴',sl?fmtH(sl):'—','сон',sl?(sl>=7&&sl<=9?'g':sl<6?'b':''):'')
+  +chip('📱',sc?fmtM(sc[0]):'—',sc?sc[1]:'экран',sc?(sc[0]<=T?'g':'b'):'');
+ if(h.kcal)H+=chip('🔥',h.kcal,'ккал');if(h.ex)H+=chip('⏱',h.ex,'мин');if(h.rhr)H+=chip('❤️',h.rhr,'пульс');
+ c.innerHTML=H;$('hpAt').textContent=h.at?'синхр. '+hm(h.at):(S.hpOn||S.stpOn)?'нажми ⟳':'как настроить →'}
+function scrChart(){const T=S.scrT||180,ds=[];let mx=T*1.5;for(let i=13;i>=0;i--){const k=shift(today(),-i),v=hdGet(k).scr;ds.push([k,v]);if(v>mx)mx=v}
+ if(!ds.some(x=>x[1]!=null))return '';
+ return '<div class="lbl">14 дней · пунктир — цель</div><div class="scch">'+ds.map(([k,v])=>'<i class="'+(v==null?'n':v<=T?'g':'b')+'" style="height:'+(v==null?4:Math.max(6,Math.round(v/mx*100)))+'%" title="'+k+(v!=null?': '+fmtM(v):'')+'"></i>').join('')+'<u style="bottom:'+Math.round(T/mx*100)+'%"></u></div>'}
+function scrInsight(){const L=[],C=[];for(const[k,v]of Object.entries(S.hd||{})){if(v.scr==null)continue;if(S.days[k]==='f')L.push(v.scr);else if(S.days[k]==='c')C.push(v.scr)}
+ if(!L.length||C.length<3)return '';const a=x=>Math.round(x.reduce((s,y)=>s+y,0)/x.length);return '<p class="cmfs" style="margin-top:12px">В дни срыва экран в среднем <b>'+fmtM(a(L))+'</b>, в чистые — <b>'+fmtM(a(C))+'</b>.</p>'}
+function scrSheet(){let dk=new Date().getHours()<12?'y':'t';const T=S.scrT||180;
+ sheet('<h3>📱 Экранное время</h3><p class="mut" style="font-size:13.5px;line-height:1.45;margin-top:0">Apple не отдаёт Экранное время ни сайтам, ни Командам. Смотри: <b>Настройки → Экранное время → Вся активность</b>. Утром впиши вчерашнее: до '+fmtM(T)+' — +15 XP, вдвое меньше — +25.</p>'
+  +'<div class="seg2" id="scD"><button data-d="y">Вчера</button><button data-d="t">Сегодня, пока</button></div>'
+  +'<div class="scin"><input type="number" id="scH" inputmode="numeric" min="0" max="23" placeholder="0"><span>ч</span><input type="number" id="scMn" inputmode="numeric" min="0" max="59" placeholder="00"><span>мин</span></div>'
+  +'<div class="lbl">Цель в день</div><div class="seg2" id="scT">'+[90,120,180,240].map(v=>'<button data-v="'+v+'">'+(v%60?fmtM(v):v/60+' ч')+'</button>').join('')+'</div>'
+  +scrChart()+scrInsight()+'<div class="row2" style="margin-top:16px"><button class="btn" id="scNo">Закрыть</button><button class="btn gold" id="scOk">Сохранить</button></div>');
+ const seg=()=>{$('scD').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.d===dk));$('scT').querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.v===(S.scrT||180)));
+  const v=hdGet(dk==='y'?shift(today(),-1):today()).scr;$('scH').value=v!=null?Math.floor(v/60):'';$('scMn').value=v!=null?v%60:''};seg();
+ $('scD').querySelectorAll('button').forEach(b=>b.onclick=()=>{dk=b.dataset.d;seg()});$('scT').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.scrT=+b.dataset.v;save();seg()});
+ $('scNo').onclick=closeSheet;$('scOk').onclick=()=>{const m=(+$('scH').value||0)*60+(+$('scMn').value||0);if(!(m>0&&m<1440))return toast('Впиши часы и минуты');const x=scrSet(m,dk==='y'?shift(today(),-1):today(),'вручную');save();closeSheet();render();toast('📱 '+fmtM(m)+(x?' · +'+x+' XP':''))}}
+$('hpSync').onclick=()=>{buzz();hpSync()};$('hpScr').onclick=()=>{buzz();scrSheet()};$('hpAt').onclick=()=>stepsGuide();
+function stepsGuide(){sheet('<h3>⟳ Синхронизация с iPhone</h3><p class="mut" style="font-size:13.5px;line-height:1.45;margin-top:0">Сайт не может сам читать «Здоровье». Данные приносит команда iPhone: собирает их в буфер, а ты в приложении жмёшь «⟳». Настроить один раз — минут 5.</p>'
+ +'<div class="lbl">1. Команда «Путь Воина»</div><ol class="hpg">'
+ +'<li><b>Найти образцы здоровья</b>: Тип — <b>Шаги</b>, Дата начала — <b>Сегодня</b> → <b>Вычислить статистику: Сумма</b>.</li>'
+ +'<li>По желанию так же: <b>Активная энергия</b> (Сумма), <b>Время упражнений</b> (Сумма), <b>Пульс в покое</b> (Среднее), <b>Анализ сна</b> за последние 1 день (Сумма: часы, минуты или секунды — приложение поймёт само).</li>'
+ +'<li><b>Запросить ввод</b> → Число: «Экранное время за вчера, минут?». Apple не даёт взять его автоматически, так что это по желанию.</li>'
+ +'<li><b>Текст</b>: <code>PV steps=[Шаги] kcal=[Энергия] ex=[Упражнения] rhr=[Пульс] sleep=[Сон] screen=[Экран]</code> — вместо скобок вставь переменные, лишнее убери.</li>'
+ +'<li><b>Скопировать в буфер обмена</b>.</li></ol>'
+ +'<div class="lbl">2. Автоматизация</div><p style="font-size:14px;line-height:1.5;margin:4px 0">Команды → Автоматизация → <b>Зарядное устройство: подключено</b> (или Время суток 21:00) → <b>Запускать сразу</b> → твоя команда. Поставил телефон на зарядку вне кровати — данные уже ждут.</p>'
+ +'<div class="lbl">3. В приложении</div><p style="font-size:14px;line-height:1.5;margin:4px 0">Открой «Путь Воина» и нажми <b>⟳ Синхронизировать</b>. Подойдёт и просто число шагов в буфере.</p>'
+ +'<p class="mut" style="font-size:12.5px">Награды: 4 000 / 7 000 / 10 000 / 14 000 шагов — +10 / +20 / +35 / +50 XP. Сон 7–9 ч — +10% ко всему за день. Экран до цели — +15 XP, вдвое меньше — +25.</p>'
+ +'<div class="row2"><button class="btn" id="stHand">Шаги вручную</button><button class="btn gold" id="stOk">Понятно</button></div>');
+ $('stOk').onclick=()=>{S.hpOn=S.stpOn=1;save();closeSheet();render()};$('stHand').onclick=()=>{const v=prompt('Сколько шагов сегодня?');closeSheet();if(v)stepsSet(parseInt(String(v).replace(/\D/g,'')),'вручную')}}
+{const q=new URLSearchParams(location.search),parts=[];q.forEach((v,k)=>{if(HPK[k.toLowerCase()])parts.push(k+'='+v)});if(parts.length){setTimeout(()=>{const o=hpParse(parts.join(' '));if(o)hpApply(o,'Здоровье')},800);history.replaceState(null,'',location.pathname)}}
 
 /* ===== 龍 Dragon tab ===== */
 const DRL=[[0,'Червячок'],[60,'Шланг'],[160,'Удав'],[320,'Питон'],[550,'Анаконда'],[850,'Змей Горыныч'],[1300,'Древний дракон'],[1900,'Дракон-император'],[2700,'Небесный змей'],[3800,'Бессмертный дракон']];
@@ -3301,8 +3444,7 @@ function kgLv(){kgMig();let i=0;KGL.forEach((x,j)=>{if(S.kgFull>=x[0])i=j});retu
 function kgToday(){kgMig();return S.kgH[today()]||0}
 function kgWeek(){kgMig();return Array.from({length:7},(_,k)=>{const x=new Date();x.setDate(x.getDate()-6+k);const n=S.kgH[dkey(x)]||0;return '<u class="'+(n>=3?'on':'')+'"'+(n&&n<3?' style="color:var(--gold)"':'')+'>'+(n>=3?'✓':n?n+'/3':['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][x.getDay()])+'</u>'}).join('')}
 function kgSlot(){const h=new Date().getHours();return h<12?'утро':h<18?'день':'вечер'}
-function renderKgBar(){const b=$('kgBar');if(!b)return;const n=kgToday(),l=KGL[kgLv()];$('kgBarN').textContent=n>3?'3/3+'+(n-3):n+'/3';b.classList.toggle('done',n>=3);
- $('kgBarT').textContent=n>=3?'Кегель на сегодня закрыт ✓':'Кегель · '+KGPOS[n]+' · ~'+Math.round((l[4]*(l[2]+l[3])+l[5]*2)/60*2)/2+' мин';b.querySelector('small').textContent=n>=3?'ещё?':'подход'}
+function renderKgBar(){const b=$('kgBar');if(!b)return;const n=kgToday();$('kgBarN').textContent=n>3?'3+'+(n-3):n+'/3';b.classList.toggle('done',n>=3);$('kgBarT').textContent=n>=3?'кегель ✓':'кегель';const u=$('rtKb');if(u)u.style.width=Math.min(100,Math.round(n/3*100))+'%'}
 function kgDone(){kgMig();const d=today(),n=(S.kgH[d]||0)+1;S.kgH[d]=n;S.kg=(S.kg||0)+1;const ks=Object.keys(S.kgH).sort();while(ks.length>90)delete S.kgH[ks.shift()];
  let msg=n>3?'Бонусный подход '+n+(n<=6?' · +4 XP':''):'Подход '+n+'/3';
  if(n<=3)award(8,'str','',{t:'Кегель: подход '+n+'/3'});else if(n<=6)award(4,'str','',{t:'Кегель: бонусный подход '+n});
@@ -3927,7 +4069,75 @@ function eveSheet(){const d=today(),D=ds(),T=allTasks(),dn=T.filter(x=>x.done).l
   S.eve=S.eve||{};const first=!S.eve[d];S.eve[d]=1;if(best)addLog('Лучший момент: '+best.slice(0,80));
   if(first){award(15,'wil','вечерний ритуал',{dmg:15});addLog('День закрыт')}save();closeSheet();render();
   if(first)setTimeout(()=>toast('День закрыт. Котик уже сворачивается клубком'),400)}}
-function evePrompt(){const hr=new Date().getHours();if(hr<21||eveDone()||S.evePop===today())return;if(!$('sheet').classList.contains('hide'))return;S.evePop=today();save();eveSheet()}
+function evePrompt(){const hr=new Date().getHours();if(!$('night').classList.contains('hide'))return;if(hr<21||eveDone()||S.evePop===today())return;if(!$('sheet').classList.contains('hide'))return;S.evePop=today();save();eveSheet()}
+/* ================= РИТМ ДНЯ: утро · день · вечер · ночь =================
+   Приложение живёт по времени суток. У каждой фазы своя задача и свой свет.
+   Ночь (от отбоя S.bedT до 5:00) — «Ночной дозор»: вместо игры спокойный экран, одна задача — лечь спать.
+   S.nt[ключ ночи] = {bed: отбой, wake: первый вход утром, snz: отложено до, sn: сколько раз откладывал}. */
+const PH={morning:['朝','Утро','Задай тон дню: сон, настроение, главное дело'],day:['昼','День','Одно дело за раз — следующий шаг ниже'],evening:['夕','Вечер','Закрой день и защити ночь'],night:['夜','Ночь','Самый сильный ход сейчас — лечь спать']};
+const bedMin=()=>{const m=/^(\d\d):(\d\d)$/.exec(S.bedT||'');return m?+m[1]*60+ +m[2]:23*60+30};
+const bedStr=()=>{const b=bedMin();return pad(Math.floor(b/60))+':'+pad(b%60)};
+const hm=t=>{const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())};
+function phaseNow(){const d=new Date(),m=d.getHours()*60+d.getMinutes(),b=bedMin();
+ if(b<300?(m>=b&&m<300):(m>=b||m<300))return 'night';
+ if(m<300)return 'evening';return m<660?'morning':m<1080?'day':'evening'}
+const nightKey=()=>new Date().getHours()<12?shift(today(),-1):today();
+const ntGet=()=>(S.nt||{})[nightKey()]||{};
+function ntSet(){S.nt=S.nt||{};const k=nightKey();S.nt[k]=S.nt[k]||{};const ks=Object.keys(S.nt).sort();while(ks.length>60)delete S.nt[ks.shift()];return S.nt[k]}
+/* утро: сколько спал = от «Ложусь спать» до первого входа после 5:00 */
+function sleepEst(){const h=new Date().getHours();if(h<5||h>=14)return null;const n=(S.nt||{})[shift(today(),-1)];if(!n||!n.bed)return null;
+ if(!n.wake){n.wake=Date.now();save()}const hrs=(n.wake-n.bed)/36e5;if(hrs<2||hrs>14)return null;let H=Math.floor(hrs),M=Math.round((hrs-H)*60);if(M===60){H++;M=0}
+ return {hrs,bed:n.bed,wake:n.wake,txt:H+' ч'+(M?' '+M+' мин':'')}}
+function sleepOk(e){const d=today(),first=!S.mood[d];S.mood[d]=Object.assign({},S.mood[d],{s:Math.max(3,Math.min(12,Math.round(e.hrs)))});if(first)award(5,'wil','отметка сна',{dmg:5});SFX.tap();save();render()}
+function nightBed(){const n=ntSet(),first=!n.bed;n.bed=Date.now();delete n.wake;n.snz=0;
+ const d=new Date(),late=(d.getHours()*60+d.getMinutes()-bedMin()+1440)%1440,onTime=late<=30||late>720;let xp=0;
+ if(first){xp=onTime?20:10;award(xp,'wil','',{t:onTime?'Отбой вовремя':'Отбой',dmg:xp});addLog((onTime?'Отбой вовремя: ':'Отбой: ')+hm(n.bed))}
+ save();nightShow('sleep',xp);render()}
+function nightSnooze(min){const n=ntSet();n.snz=Date.now()+min*6e4;n.sn=(n.sn||0)+1;save();nightHide()}
+let NTI=0;
+function nightShow(mode,xp){const el=$('night'),n=ntGet(),d=Math.floor(cleanMs()/DAY);clearInterval(NTI);
+ const clk='<div class="nt-k" lang="ja">夜</div><div class="nt-t" id="ntT">'+hm(Date.now())+'</div>';let h='';
+ if(mode==='sleep')h='<div class="nt-br"><i></i><b id="ntBr">Вдох</b></div><p class="nt-p">Вдох на 4 — выдох на 6. Медленно, без задержек.<br>Телефон — экраном вниз и подальше от кровати.</p>'
+  +(xp?'<div class="nt-s">+'+xp+' XP · '+(xp>=20?'отбой вовремя':'отбой')+'</div>':'')+'<p class="nt-p nt-gn">Спокойной ночи, воин.</p><button class="linkbtn nt-l" id="ntSnz">Открыть приложение</button>';
+ else if(mode==='nosleep')h=clk+'<h3 class="nt-h">Не спится — это нормально</h3><ul class="nt-ul">'
+  +'<li><b>Не воюй с бессонницей.</b> Не спишь минут 20 — встань, тусклый свет, скучное дело без экрана: бумажная книга, растяжка. Вернись, когда начнёт клонить в сон.</li>'
+  +'<li><b>Мысли крутятся?</b> Выпиши их на бумагу и назначь время: «разберусь завтра в 10:00».</li>'
+  +'<li><b>Медленное дыхание:</b> вдох 4, выдох 6. Без задержек и без частого глубокого дыхания.</li>'
+  +'<li><b>Не смотри на часы и не бери телефон в кровать</b> — чаще всего цепочка срыва начинается именно там.</li>'
+  +'<li><b>Утром встань в обычное время,</b> даже если спал мало: так сон наладится быстрее.</li></ul>'
+  +'<button class="btn nt-go" id="ntBr4">Дыхание 4/6</button><div class="row2"><button class="btn red" id="ntSos">Тянет</button><button class="btn" id="ntBack">Назад</button></div>';
+ else if(mode==='after')h=clk+'<p class="nt-p">Ты лёг в '+hm(n.bed)+'. Что случилось?</p><div class="row2"><button class="btn red" id="ntSos">Тянет</button><button class="btn" id="ntNo">Не спится</button></div>'
+  +'<button class="btn nt-go" id="ntBed" style="margin-top:10px">Снова лечь · дыхание 4/6</button><button class="linkbtn nt-l" id="ntSnz">Открыть приложение на 15 минут</button>';
+ else h=clk+'<p class="nt-p">Ночь — время, когда тяга сильнее всего. А завтрашний день решается сном.</p><div class="nt-s">守 '+d+' '+plural(d,'день','дня','дней')+' без срыва · отбой '+bedStr()+'</div>'
+  +'<button class="btn nt-go" id="ntBed">Ложусь спать</button><div class="row2"><button class="btn red" id="ntSos">Тянет</button><button class="btn" id="ntNo">Не спится</button></div><button class="linkbtn nt-l" id="ntSnz">Мне нужно ещё 15 минут</button>';
+ el.innerHTML='<div class="nt-in nt-'+mode+'">'+h+'</div>';el.classList.remove('hide');document.body.style.overflow='hidden';el.scrollTop=0;
+ const on=(id,f)=>{const b=$(id);if(b)b.onclick=()=>{buzz();f()}};
+ on('ntBed',()=>mode==='after'?nightShow('sleep'):nightBed());on('ntSos',()=>{nightHide();openFight()});on('ntNo',()=>nightShow('nosleep'));
+ on('ntBr4',()=>nightShow('sleep'));on('ntBack',()=>nightShow(n.bed?'after':'ask'));on('ntSnz',()=>nightSnooze(15));
+ if(mode==='sleep'){const t0=Date.now(),st=()=>{const b=$('ntBr');if(!b){clearInterval(NTI);return}const s=Math.floor((Date.now()-t0)/1000)%10;b.textContent=s<4?'Вдох · '+(4-s):'Выдох · '+(10-s)};st();NTI=setInterval(st,1000)}
+ else NTI=setInterval(()=>{const t=$('ntT');if(!t){clearInterval(NTI);return}t.textContent=hm(Date.now())},15000)}
+function nightHide(){clearInterval(NTI);const el=$('night');if(el.classList.contains('hide'))return;el.classList.add('hide');el.innerHTML='';document.body.style.overflow=''}
+function nightCheck(){const el=$('night');if(!el)return;const night=phaseNow()==='night',n=ntGet(),open=!el.classList.contains('hide');
+ const busy=!$('fight').classList.contains('hide')||!$('storm').classList.contains('hide')||!(S.oath&&S.oath.done);
+ if(!night){if(open&&!el.querySelector('.nt-sleep'))nightHide();return}
+ if(!open&&!busy&&!(n.snz>Date.now()))nightShow(n.bed?'after':'ask')}
+function bedSheet(){sheet('<h3>Отбой и «Ночной дозор»</h3><p class="mut" style="font-size:14px;line-height:1.45">С этого времени до 5:00 вместо игры — спокойный экран и одна задача: лечь спать. Ночью тяга сильнее всего, а 7–9 часов сна дают +10% ко всему на следующий день. Утром приложение само посчитает, сколько ты спал.</p>'
+ +'<input type="time" id="btIn" value="'+bedStr()+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 1px var(--edge2);border-radius:12px;padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="btNo">Отмена</button><button class="btn gold" id="btOk">Сохранить</button></div>');
+ $('btNo').onclick=closeSheet;$('btOk').onclick=()=>{const v=$('btIn').value;if(!/^\d\d:\d\d$/.test(v))return toast('Впиши время отбоя');const m=+v.slice(0,2)*60+ +v.slice(3);if(m>=300&&m<1260)return toast('Впиши время отбоя с 21:00 до 04:59');S.bedT=v;save();closeSheet();render();toast('Отбой: '+v)}}
+function renderEveCard(isT){const c=$('eveCard');const show=isT&&phaseNow()==='evening';c.classList.toggle('hide',!show);if(!show)return;
+ const ed=eveDone(),n=ntGet(),b=(bedMin()-30+1440)%1440,ph2=pad(Math.floor(b/60))+':'+pad(b%60),ago=bakAgo(),bak=!SY.tok&&(ago==null||ago>=7);
+ c.innerHTML='<div class="ttl"><h2>Вечерний дозор <span lang="ja">夕</span></h2><button class="linkbtn" id="evBedT">отбой '+bedStr()+' ✎</button></div><div class="evl">'
+  +'<div class="evi'+(ed?' on':'')+'"><i>1</i><span>Закрыть день в ритуале 月</span><b>1 мин</b></div>'
+  +'<div class="evi"><i>2</i><span>Телефон на зарядку вне кровати к '+ph2+'</span></div>'
+  +'<div class="evi'+(n.bed?' on':'')+'"><i>3</i><span>В '+bedStr()+' — «Ложусь спать»</span><b>+20 XP</b></div>'
+  +(bak?'<div class="evi"><i>⤓</i><span>Копия прогресса: '+(ago==null?'ещё ни разу':ago+' '+plural(ago,'день','дня','дней')+' назад')+'</span><button class="linkbtn" id="evBak">сохранить</button></div>':'')
+  +'</div><div class="row2"'+(ed?' style="grid-template-columns:1fr"':'')+'>'+(ed?'':'<button class="btn gold" id="evGo">Вечерний ритуал</button>')+'<button class="btn'+(ed?' gold':'')+'" id="evBed">Ложусь спать</button></div>';
+ $('evBedT').onclick=bedSheet;const g=$('evGo');if(g)g.onclick=eveSheet;$('evBed').onclick=nightBed;const k=$('evBak');if(k)k.onclick=backupFile}
+function rhythmTick(){const p=phaseNow();if(document.documentElement.dataset.phase!==p)document.documentElement.dataset.phase=p;
+ const bs=$('bakSt');if(bs){const a=bakAgo();bs.textContent=a==null?'Копию файлом ещё не сохранял.':'Последняя копия файлом: '+(a?a+' '+plural(a,'день','дня','дней')+' назад':'сегодня')+'.'}
+ const bb=$('bedBtn');if(bb)bb.textContent=bedStr();nightCheck()}
+document.documentElement.dataset.phase=phaseNow();
+$('rtQ').onclick=()=>$('tasks').scrollIntoView({behavior:'smooth',block:'start'});$('rtD').onclick=()=>go('drg');$('bedBtn').onclick=bedSheet;
 /* ================= WIRING ================= */
 const NAV=[['day','Сегодня','M3 3h10v10H3z M5 1v3 M11 1v3 M3 6h10'],['quest','Путь','M2 13l4-9 3 5 2-3 3 7z'],['hero','Герой','M8 2l4 2v4c0 3-2 5-4 6-2-1-4-3-4-6V4z'],['drg','Дракон',''],['shop','Лавка','M3 6h10l-1 7H4z M5 6V4a3 3 0 016 0v2']];
 const NAVK={day:'今',quest:'道',hero:'侍',drg:'龍',shop:'店',log:'記'};$('nav').innerHTML=NAV.map(([k,n])=>'<button data-s="'+k+'"><b class="nk" lang="ja">'+NAVK[k]+'</b>'+n+'</button>').join('');
@@ -3938,7 +4148,7 @@ document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.s
 
 const RULE='<div class="rule"><b>Правило пути: без порно и без мастурбации.</b><span>Срыв — порно (в т.ч. «просто посмотреть»), мастурбация, оргазм рукой, «почти до конца». <br>Не срыв — поллюция во сне, утренняя эрекция, возбуждение без действий, секс и ласки с девушкой.</span></div>';
 $('clockBox').onclick=()=>{const d=new Date(S.cleanSince),v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
- sheet('<h3>Начало отсчёта</h3>'+RULE+''+(lapses().length?'<details class="hint" open><summary>Мои срывы и что их запускает</summary>'+lapseInsight()+lapses().slice(0,5).map(x=>'<p class="mut" style="font-size:12.5px;margin:4px 0">'+new Date(x.at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+' · после '+x.dd+' дн.'+(x.first?' · '+esc(x.first):'')+(x.lesson?' → <b style="color:var(--gold2)">'+esc(x.lesson)+'</b>':'')+'</p>').join('')+'</details>':'')+'<p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
+ sheet('<h3>Начало отсчёта</h3><p class="mut" style="font-size:14px;margin:0 0 10px">Сейчас: '+(()=>{const ms=cleanMs();return Math.floor(ms/DAY)+' дн. '+Math.floor(ms%DAY/36e5)+' ч '+Math.floor(ms%36e5/6e4)+' мин · идёт '+dayNum()+'-й день · всего чистых: '+totalClean()})()+'</p>'+RULE+''+(lapses().length?'<details class="hint" open><summary>Мои срывы и что их запускает</summary>'+lapseInsight()+lapses().slice(0,5).map(x=>'<p class="mut" style="font-size:12.5px;margin:4px 0">'+new Date(x.at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+' · после '+x.dd+' дн.'+(x.first?' · '+esc(x.first):'')+(x.lesson?' → <b style="color:var(--gold2)">'+esc(x.lesson)+'</b>':'')+'</p>').join('')+'</details>':'')+'<p>С какого момента ты без срыва? Укажи честно.</p><input type="datetime-local" id="csIn" value="'+v+'" max="'+new Date().toISOString().slice(0,16)+'" style="width:100%;background:#05060a;border:0;box-shadow:inset 0 0 0 2px var(--edge);padding:12px;color:var(--ink);font-family:var(--body)"><div class="row2" style="margin-top:14px"><button class="btn" id="csNo">Отмена</button><button class="btn gold" id="csYes">Сохранить</button></div>');
  $('csNo').onclick=closeSheet;$('csYes').onclick=()=>{const t=new Date($('csIn').value).getTime();if(!t||t>Date.now())return toast('Впиши дату не позже сегодняшней');
   S.cleanSince=t;if(S.days[today()]==='f'&&t<new Date().setHours(0,0,0,0))delete S.days[today()];{let k=dkey(new Date(t)),n=0;while(k<today()){if(!S.days[k]){S.days[k]='c';n++}k=shift(k,1)}if(n){award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней'),{dmg:40*n})}}addLog('Отсчёт без срыва с '+new Date(t).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}));save();closeSheet();render();toast('Отсчёт обновлён')}};$('bMini').onclick=()=>go('quest');
 function buffSheet(){const d=dayNum(),x=true;
@@ -3981,6 +4191,17 @@ $('syncCode').onclick=async()=>{const c='PV1.'+btoa(SY.tok+'|'+SY.gist);try{awai
 $('syncOff').onclick=()=>{SY={};sySave();localStorage.removeItem(BK);syUI();toast('Синхронизация отключена')};
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(syT){clearTimeout(syT);syPush()}}else syPull()});
 syUI();
+/* резервная копия файлом: share-лист iPhone (Файлы, Telegram, почта) или скачивание */
+function backupObj(){const all={s:S,plans:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(KEY+'_plan_'))all.plans[k]=localStorage.getItem(k)}return all}
+function bakAgo(){return S.bakAt?Math.floor((Date.now()-S.bakAt)/DAY):null}
+async function backupFile(){const name='put-voina-'+today()+'.json',blob=new Blob([JSON.stringify(backupObj())],{type:'application/json'});
+ const ok=()=>{S.bakAt=Date.now();save();render()};
+ try{const f=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Путь Воина — копия'});ok();toast('Копия сохранена');return}}catch(e){if(e&&e.name==='AbortError')return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);ok();toast('Файл копии скачан')}
+$('bakFile').onclick=backupFile;$('bakLoad').onclick=()=>$('bakIn').click();
+$('bakIn').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{const o=JSON.parse(await f.text());const s0=o.s||o;if(!s0||typeof s0!=='object'||s0.xp==null)throw 0;
+ const when=s0.ts?new Date(s0.ts).toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'неизвестно';
+ if(!confirm('Заменить текущий прогресс копией от '+when+'?'))return;S=hydrate(s0);for(const[k,v]of Object.entries(o.plans||{}))localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));save();loadPlan(SEL);render();toast('Прогресс загружен из файла')}catch(err){toast('Файл не подошёл')}};
 $('resetBtn').onclick=()=>sheet('<h3>Начать заново?</h3><p>Весь прогресс будет стёрт.</p><div class="row2"><button class="btn" id="zNo">Отмена</button><button class="btn red" id="zYes">Стереть</button></div>')||($('zNo').onclick=closeSheet,$('zYes').onclick=()=>{S=fresh();save();closeSheet();render();toast('Новая игра')});
 
 ['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
@@ -4037,10 +4258,15 @@ function applyRemote(o){S.applied=S.applied||[];if(!o||!o.id)return null;if(S.ap
  if(o.bodyClear){S.body={};msgs.push('Параметры удалены')}
  if(o.body&&typeof o.body==='object'){S.body=S.body||{};['len','gir','fl','fg','h','w'].forEach(k=>{const v=+o.body[k];if(v>0)S.body[k]=Math.round(v*10)/10});msgs.push('Параметры обновлены')}
  if(o.loveSet&&typeof o.loveSet==='object'){S.love=S.love||{d:{},rej:0};S.love.d=S.love.d||{};for(const[k,n]of Object.entries(o.loveSet)){S.love.d[k]=Math.max(S.love.d[k]||0,+n||0);if(k==='date')S.love.dates=Math.max(S.love.dates||0,+n||0)}msgs.push('Линия Сердца: засчитан прошлый опыт')}if(o.focus&&o.focus.t){S.focus=S.focus||{};S.focus[o.date||today()]={t:String(o.focus.t),why:String(o.focus.why||'')}}if(o.fixGear){const b=gearFix();msgs.push('Снаряжение восстановлено'+(b?', возврат за дубли: +'+b+' золота':''))}if(o.oath==='show')setTimeout(()=>oathSheet(true),900);
+ if(o.screen>0){const x=scrSet(+o.screen,o.date||null,'чат');msgs.push('Экранное время: '+fmtM(o.screen<=16?o.screen*60:o.screen)+(x?' · +'+x+' XP':''))}
+ if(typeof o.bedT==='string'&&/^\d\d:\d\d$/.test(o.bedT)){S.bedT=o.bedT;msgs.push('Отбой: '+o.bedT)}
  if(o.note){addLog(o.note);msgs.unshift(o.note)}return msgs.join('. ')}
-(async()=>{await syPull();try{const r=await fetch('./remote.json',{cache:'no-store'});if(!r.ok)return;const o=await r.json();
+/* remote.json: при запуске и при каждом возврате в приложение (iPhone держит PWA в памяти часами) */
+let RMT=0;async function pullRemote(){if(Date.now()-RMT<60000)return;RMT=Date.now();try{const r=await fetch('./remote.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const o=await r.json();
  const list=Array.isArray(o.updates)?o.updates:[o];const out=[];for(const u of list){const m=applyRemote(u);if(m)out.push(m)}
- if(out.length){save();render();lootSheet('Награда от Claude',null,out.join('. '))}}catch(e){}})();
+ if(out.length){save();render();lootSheet('Награда от Claude',null,out.join('. '))}}catch(e){}}
+(async()=>{await syPull();await pullRemote()})();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)pullRemote()});
 if(!S.oath.done)setTimeout(()=>oathSheet(true),400);else setTimeout(evePrompt,2500);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(evePrompt,1500)});
 setInterval(()=>{const a=document.activeElement;if(!a||!/INPUT|TEXTAREA/.test(a.tagName))render()},30000);
