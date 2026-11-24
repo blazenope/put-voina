@@ -1244,6 +1244,25 @@ html[data-phase=night] body::after{display:block!important;content:""!important;
 .sxc{border-color:#a8323e55}
 .sxc.on{border-color:#ff6b7a;background:linear-gradient(135deg,#ff6b7a22,transparent 70%),var(--panel2)}
 .sxc em{color:#ff8fa3}
+.sxh{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin:4px 0 8px}
+.sxtop{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.sxring{flex:none;width:118px;height:118px;border-radius:50%;border:0;cursor:pointer;color:var(--ink);background:radial-gradient(circle at 50% 40%,#ff6b7a33,transparent 70%),var(--panel2);box-shadow:inset 0 0 0 6px #ff6b7a55,0 0 24px -6px #ff6b7a88;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sxring b{font:800 36px/1 var(--num,var(--body))}.sxring small{font:600 11px var(--body);color:var(--ink2);margin-top:3px}.sxring span{margin-top:6px;font:700 11.5px var(--body);color:#ff8fa3}
+.sxring:active{transform:scale(.97)}
+.sxsum{flex:1;display:grid;gap:6px}.sxsum div{display:flex;align-items:baseline;gap:8px}.sxsum b{font:800 20px var(--body);color:var(--ink);min-width:28px}.sxsum small{font:12.5px var(--body);color:var(--ink2)}
+.sxmh{display:flex;align-items:center;justify-content:space-between;margin:4px 0 6px}.sxmh b{font:700 14px var(--body);text-transform:capitalize}.sxmh .linkbtn{font-size:22px;padding:0 12px}.sxmh .linkbtn:disabled{opacity:.25}
+.sxcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.sxcal u{text-decoration:none;font:600 10.5px var(--body);color:var(--ink3);padding-bottom:2px}
+.sxd{position:relative;aspect-ratio:1;border:0;border-radius:50%;background:transparent;color:var(--ink2);font:600 13px var(--body);cursor:pointer;padding:0}
+.sxd.any{background:#ff6b7a22;color:var(--ink)}.sxd.bed{background:linear-gradient(135deg,#ff6b7a,#c2185b);color:#fff;box-shadow:0 4px 12px -4px #ff6b7a}
+.sxd.now{box-shadow:inset 0 0 0 2px var(--ink)}.sxd.fut{opacity:.35;cursor:default}
+.sxd em{position:absolute;left:0;right:0;bottom:-3px;font-size:9px;font-style:normal;line-height:1}
+.sxleg{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;margin:10px 0 12px;font:12px var(--body);color:var(--ink3)}.sxleg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:-1px}.sxleg i.bed{background:#ff6b7a}.sxleg i.any{background:#ff6b7a44}.sxleg .linkbtn{margin-left:auto;font-size:13px}
+.sxchs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.sxch{padding:7px 11px;border-radius:999px;border:1px solid var(--edge);background:var(--panel2);color:var(--ink2);font:600 13px var(--body);cursor:pointer}
+.sxch.on{border-color:#ff6b7a;background:#ff6b7a2e;color:var(--ink)}
+.sxent{padding:10px 0;border-bottom:1px dashed var(--edge)}.sxeh{display:flex;justify-content:space-between;gap:8px}.sxeh span{color:var(--gold)}.sxea{font:13.5px/1.45 var(--body);color:var(--ink);margin:4px 0}.sxent small{color:var(--ink2);font-size:12.5px}.sxent p{font:13px/1.45 var(--body);color:var(--ink2);margin:6px 0 0}.sxent .linkbtn{font-size:12px;margin-top:4px}
+.sxsr{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--edge);font:14px var(--body);color:var(--ink2)}.sxsr b{color:var(--ink);text-align:right}
+.sxwd{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:90px;align-items:end;margin-bottom:8px}.sxwd div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}.sxwd i{width:70%;min-height:3px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#ff6b7a,#c2185b)}.sxwd small{font:11px var(--body);color:var(--ink3)}
 </style>
 </head>
 <body>
@@ -1425,7 +1444,7 @@ html[data-phase=night] body::after{display:block!important;content:""!important;
 <!-- ================= SHOP ================= -->
 <main class="screen hide" id="s-drg">
   <div class="pnl"><div class="ttl"><h2>Дракон</h2><span class="c" id="drgLvN"></span></div><div id="drg"></div></div>
-  <div class="pnl" id="sxSec"><div class="ttl"><h2>Было с ней 艶</h2><span class="c" id="sxCnt"></span></div><p class="mut" id="sxStat" style="font-size:13px;line-height:1.45;margin:0 0 10px"></p><div class="engrid" id="sxGrid"></div><div id="sxUndo" style="text-align:center"></div>
+  <div class="pnl" id="sxSec"><div class="ttl"><h2>Было с ней 艶</h2><span class="c" id="sxCnt"></span></div><div id="sxCal"></div><p class="mut" id="sxStat" style="font-size:13px;line-height:1.45;margin:0 0 10px"></p><div class="sxh">Быстро отметить</div><div class="engrid" id="sxGrid"></div><div id="sxUndo" style="text-align:center"></div>
     <details class="hint"><summary>Правила постели</summary><p class="mut" style="font-size:12.5px;line-height:1.55">Это не срыв: правило пути — без порно и мастурбации, а секс и ласки с живой девушкой разрешены и прокачивают героя. Каждая кнопка — отдельная отметка, жми всё, что было за ночь. Первый раз даёт бонус.<br><br>Только по взаимному желанию: ясное и трезвое «да», которое она может забрать в любой момент — тогда стоп, без обид. Резинка по умолчанию, пока вы оба не сдали тесты. Её удовольствие — твоя репутация: кто думает о ней, того зовут снова.</p></details></div>
   <div class="pnl" id="huntSec" style="display:none"><div class="ttl"><h2>Охота недели</h2><span class="c" id="drgHuntC"></span></div><div id="drgHunt"></div></div>
   <div class="pnl"><div class="ttl"><h2>Тренировки дракона</h2><span class="c" id="drgXc"></span></div><div id="drgX"></div></div>
@@ -2741,14 +2760,87 @@ function sxDo(k,d){const e=SX.find(x=>x[0]===k);if(!e)return 0;const s=sxS(),fir
  addLog('Было с ней: '+e[2]+(first?' — первый раз!':''));cheer(8);
  if(first)setTimeout(()=>lootSheet('Первый раз: '+e[2]+' '+e[1],null,(SXF[k]||'Новый опыт — новый уровень.')+' +'+aws.reduce((a,x)=>a+x.xp,0)+' XP'),700);
  return aws.reduce((a,x)=>a+x.xp,0)}
-function sxUndo(){const s=sxS(),h=s.h[0];if(!h||Date.now()-h.at>36e5)return;(h.aws||[]).forEach(unaward);s.n[h.k]=Math.max(0,(s.n[h.k]||0)-1);s.h.shift();
+function sxUndo(){const s=sxS(),h=s.h[0];if(!h||Date.now()-h.at>36e5)return;(h.aws||[]).forEach(unaward);s.n[h.k]=Math.max(0,(s.n[h.k]||0)-1);s.h.shift();(s.e||[]).forEach(e=>{if((e.hid||[]).includes(h.id)){e.hid=e.hid.filter(x=>x!==h.id);e.acts=e.acts.filter(x=>x!==h.k)}});if(s.e)s.e=s.e.filter(e=>e.acts.length);
  if(SXBED.includes(h.k)&&!s.h.some(x=>x.d===h.d&&SXBED.includes(x.k)))delete s.dd[h.d];const e=SX.find(x=>x[0]===h.k);addLog('Отменено: '+(e?e[2]:h.k));save();render()}
-function renderSx(){const g=$('sxGrid');if(!g)return;const s=sxS(),ks=Object.keys(s.dd).sort(),lt=ks[ks.length-1],nn=sxNights(),ago=lt?Math.max(0,Math.round((parseD(today())-parseD(lt))/864e5)):0;
+function renderSx(){const g=$('sxGrid');if(!g)return;try{renderSxCal()}catch(x){}const s=sxS(),ks=Object.keys(s.dd).sort(),lt=ks[ks.length-1],nn=sxNights(),ago=lt?Math.max(0,Math.round((parseD(today())-parseD(lt))/864e5)):0;
  $('sxCnt').textContent=nn?nn+' '+plural(nn,'ночь','ночи','ночей'):'жду первую ночь';
- $('sxStat').innerHTML=lt?'Последний раз: <b style="color:var(--ink)">'+(ago===0?'сегодня':ago===1?'вчера':ago+' '+plural(ago,'день','дня','дней')+' назад')+'</b> · секс '+sxN('sex')+' · минет '+sxN('bj')+' · она кончила '+sxN('her'):'Живая девушка — не срыв. Было что-то — жми: Харизма, удар по боссу и сила дракона. Первый раз — бонус.';
+ $('sxStat').innerHTML=lt?'секс '+sxN('sex')+' · минет '+sxN('bj')+' · она кончила '+sxN('her'):'Живая девушка — не срыв. Было что-то — жми: Харизма, удар по боссу и сила дракона. Первый раз — бонус.';
  g.innerHTML=SX.map(e=>{const n=sxN(e[0]),td=s.h.some(x=>x.k===e[0]&&x.d===today());return '<button class="encard sxc'+(td?' on':'')+'" data-sx="'+e[0]+'"><span>'+e[1]+'</span><b>'+e[2]+'</b><small>'+e[3]+'</small><em>'+(n?'×'+n+' · +'+e[4]+' XP':'+'+(e[4]+e[5])+' XP впервые')+'</em></button>'}).join('');
  g.querySelectorAll('[data-sx]').forEach(b=>b.onclick=()=>{try{SFX.check()}catch(x){}const r=b.getBoundingClientRect();try{burst(r.left+r.width/2,r.top+r.height/2,10)}catch(x){}sxDo(b.dataset.sx);save();render()});
  const h=s.h[0],u=$('sxUndo');if(h&&Date.now()-h.at<36e5){const e=SX.find(x=>x[0]===h.k);u.innerHTML='<button class="linkbtn" id="sxUn" style="margin-top:10px">↶ Отменить «'+esc(e?e[2]:h.k)+'»</button>';$('sxUn').onclick=sxUndo}else u.innerHTML=''}
+
+/* ===== трекер постели (как приложения цикла): календарь, подробные записи, статистика ===== */
+let sxMo=0;
+const SXDUR=[['15','до 15 мин'],['30','15–30'],['60','30–60'],['90','час+']],SXMOOD=['😍','🙂','😐','😕'];
+const sxE=()=>sxS().e=sxS().e||[];
+function sxDayActs(d){const s=sxS();return s.h.filter(x=>x.d===d).map(x=>x.k)}
+function renderSxCal(){const el=$('sxCal');if(!el)return;const s=sxS(),t=today(),ks=Object.keys(s.dd).sort(),lt=ks[ks.length-1],ago=lt?Math.max(0,Math.round((parseD(t)-parseD(lt))/864e5)):null;
+ const base=new Date();base.setDate(1);base.setMonth(base.getMonth()+sxMo);const y=base.getFullYear(),m=base.getMonth(),dim=new Date(y,m+1,0).getDate(),off=(new Date(y,m,1).getDay()+6)%7;
+ const mk=y+'-'+pad(m+1),mn=ks.filter(k=>k.startsWith(mk)).length,l30=ks.filter(k=>(parseD(t)-parseD(k))/864e5<30).length;
+ let cells='';for(let i=0;i<off;i++)cells+='<i></i>';
+ for(let d=1;d<=dim;d++){const k=mk+'-'+pad(d),bed=!!s.dd[k],any=bed||s.h.some(x=>x.d===k)||sxE().some(x=>x.d===k),en=sxE().filter(x=>x.d===k),her=en.some(x=>x.her)||s.h.some(x=>x.d===k&&x.k==='her');
+  cells+='<button class="sxd'+(bed?' bed':any?' any':'')+(k===t?' now':'')+(k>t?' fut':'')+'" data-d="'+k+'">'+d+(her?'<em>💦</em>':en.length?'<em>•</em>':'')+'</button>'}
+ el.innerHTML='<div class="sxtop"><button class="sxring" id="sxNew"><b>'+(ago===null?'—':ago===0?'0':ago)+'</b><small>'+(ago===null?'ещё не было':ago===0?'сегодня было':plural(ago,'день','дня','дней')+' без')+'</small><span>+ записать</span></button>'
+  +'<div class="sxsum"><div><b>'+mn+'</b><small>'+plural(mn,'ночь','ночи','ночей')+' в '+base.toLocaleDateString('ru-RU',{month:'long'}).replace(/ь$/,'е').replace(/й$/,'е').replace(/т$/,'те')+'</small></div><div><b>'+l30+'</b><small>за 30 дней</small></div><div><b>'+sxNights()+'</b><small>всего</small></div></div></div>'
+  +'<div class="sxmh"><button class="linkbtn" id="sxPrev">‹</button><b>'+base.toLocaleDateString('ru-RU',{month:'long',year:'numeric'})+'</b><button class="linkbtn" id="sxNext"'+(sxMo>=0?' disabled':'')+'>›</button></div>'
+  +'<div class="sxcal"><u>Пн</u><u>Вт</u><u>Ср</u><u>Чт</u><u>Пт</u><u>Сб</u><u>Вс</u>'+cells+'</div>'
+  +'<div class="sxleg"><span><i class="bed"></i>ночь</span><span><i class="any"></i>поцелуи, ласки</span><span>💦 она кончила</span><button class="linkbtn" id="sxSt">Статистика →</button></div>';
+ $('sxPrev').onclick=()=>{sxMo--;renderSxCal()};$('sxNext').onclick=()=>{if(sxMo<0){sxMo++;renderSxCal()}};$('sxNew').onclick=()=>sxForm(t);$('sxSt').onclick=sxStats;
+ el.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const k=b.dataset.d;if(k>t)return;sxDaySheet(k)})}
+function sxDaySheet(d){const en=sxE().filter(x=>x.d===d),qa=sxDayActs(d).filter(k=>!en.some(e=>(e.hid||[]).length&&e.acts.includes(k))),nm=k=>{const e=SX.find(x=>x[0]===k);return e?e[1]+' '+e[2]:k};
+ sheet('<h3>'+parseD(d).toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})+'</h3>'
+  +(en.length?en.map(e=>'<div class="sxent"><div class="sxeh"><b>'+(e.who?esc(e.who):'Она')+(e.tm?' · '+e.tm:'')+'</b><span>'+(e.rate?'★'.repeat(e.rate):'')+' '+(e.mood||'')+'</span></div><div class="sxea">'+e.acts.map(nm).join(' · ')+'</div><small>'+[e.safe?'🛡 с резинкой':'',e.her?'💦 она кончила':'',e.me?'ты кончил':'',e.dur?'⏱ '+(SXDUR.find(x=>x[0]===e.dur)||['',''])[1]+(e.dur==='90'?'':' мин'):''].filter(Boolean).join(' · ')+'</small>'+(e.note?'<p>'+esc(e.note)+'</p>':'')+'<button class="linkbtn" data-del="'+e.id+'">удалить запись</button></div>').join(''):'')
+  +(qa.length?'<p class="mut" style="font-size:13px">Быстрые отметки: '+qa.map(nm).join(' · ')+'</p>':'')
+  +(!en.length&&!qa.length?'<p class="mut">В этот день ничего не записано.</p>':'')
+  +'<button class="btn gold" id="sxAdd" style="width:100%;margin-top:12px">+ Запись на этот день</button><button class="linkbtn" id="sxX" style="display:block;margin:10px auto 0">Закрыть</button>');
+ $('sxAdd').onclick=()=>sxForm(d);$('sxX').onclick=closeSheet;
+ document.querySelectorAll('#sheetIn [data-del]').forEach(b=>b.onclick=()=>{if(!confirm('Удалить запись? Опыт за неё вернётся.'))return;sxDel(b.dataset.del);sxDaySheet(d)})}
+function sxForm(d){const names=[...new Set(sxE().map(x=>x.who).filter(Boolean))].slice(-8),sel=new Set(),o={d,her:0,me:0,safe:0,dur:'',rate:0,mood:''};
+ const chip=(a,v,l,on)=>'<button class="sxch'+(on?' on':'')+'" data-'+a+'="'+v+'">'+l+'</button>';
+ sheet('<h3>Запись 艶</h3><div class="row2"><div><div class="lbl">День</div><input type="date" id="sxD" class="inp" value="'+d+'" max="'+today()+'"></div><div><div class="lbl">Время</div><input type="time" id="sxT" class="inp"></div></div>'
+  +'<div class="lbl">С кем <span class="mut">(только на телефоне)</span></div><input id="sxW" class="inp" maxlength="24" placeholder="имя или прозвище" list="sxWl"><datalist id="sxWl">'+names.map(n=>'<option value="'+esc(n)+'">').join('')+'</datalist>'
+  +(names.length?'<div class="sxchs">'+names.map(n=>chip('w',esc(n),esc(n))).join('')+'</div>':'')
+  +'<div class="lbl">Что было</div><div class="sxchs">'+SX.filter(e=>!['safe','her','back'].includes(e[0])).map(e=>chip('a',e[0],e[1]+' '+e[2])).join('')+'</div>'
+  +'<div class="lbl">Детали</div><div class="sxchs">'+chip('f','safe','🛡 С резинкой')+chip('f','her','💦 Она кончила')+chip('f','me','Ты кончил')+'</div>'
+  +'<div class="lbl">Сколько длилось</div><div class="sxchs">'+SXDUR.map(x=>chip('u',x[0],x[1])).join('')+'</div>'
+  +'<div class="lbl">Как было</div><div class="sxchs">'+[1,2,3,4,5].map(n=>chip('r',n,'★'.repeat(n))).join('')+'</div><div class="sxchs">'+SXMOOD.map(x=>chip('m',x,x)).join('')+'</div>'
+  +'<div class="lbl">Заметка</div><textarea id="sxN" class="inp" rows="2" maxlength="300" placeholder="что понравилось, что попробовать в следующий раз"></textarea>'
+  +'<button class="btn gold" id="sxOk" style="width:100%;margin-top:14px">Сохранить</button><button class="linkbtn" id="sxX" style="display:block;margin:10px auto 0">Отмена</button>');
+ const R=$('sheetIn'),one=(a,v)=>R.querySelectorAll('[data-'+a+']').forEach(b=>b.classList.toggle('on',b.dataset[a]===String(v)));
+ R.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const k=b.dataset.a;sel.has(k)?sel.delete(k):sel.add(k);b.classList.toggle('on')});
+ R.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const k=b.dataset.f;o[k]=o[k]?0:1;b.classList.toggle('on')});
+ R.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{$('sxW').value=b.dataset.w;one('w',b.dataset.w)});
+ R.querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>{o.dur=o.dur===b.dataset.u?'':b.dataset.u;one('u',o.dur)});
+ R.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{o.rate=+b.dataset.r;one('r',o.rate)});
+ R.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{o.mood=o.mood===b.dataset.m?'':b.dataset.m;one('m',o.mood)});
+ $('sxX').onclick=closeSheet;
+ $('sxOk').onclick=()=>{if(!sel.size&&!o.her)return toast('Отметь, что было');const dd=($('sxD').value||today())>today()?today():($('sxD').value||today()),acts=[...sel];if(o.her)acts.push('her');if(o.safe)acts.push('safe');
+  const s=sxS(),hid=[];for(const k of acts){sxDo(k,dd);hid.push(s.h[0].id)}
+  sxE().push({id:Date.now().toString(36),d:dd,tm:$('sxT').value||'',who:($('sxW').value||'').trim().slice(0,24),acts,hid,safe:o.safe,her:o.her,me:o.me,dur:o.dur,rate:o.rate,mood:o.mood,note:($('sxN').value||'').trim().slice(0,300)});
+  if(s.e.length>400)s.e.shift();save();closeSheet();render()}}
+function sxDel(id){const s=sxS(),i=s.e.findIndex(x=>x.id===id);if(i<0)return;const e=s.e[i];
+ for(const h of s.h.filter(x=>(e.hid||[]).includes(x.id))){(h.aws||[]).forEach(unaward);s.n[h.k]=Math.max(0,(s.n[h.k]||0)-1)}
+ s.h=s.h.filter(x=>!(e.hid||[]).includes(x.id));s.e.splice(i,1);
+ if(!s.h.some(x=>x.d===e.d&&SXBED.includes(x.k)))delete s.dd[e.d];save();render()}
+function sxStats(){const s=sxS(),ks=Object.keys(s.dd).sort(),E=sxE(),t=today();
+ const gaps=ks.slice(1).map((k,i)=>Math.round((parseD(k)-parseD(ks[i]))/864e5)),avg=gaps.length?Math.round(gaps.reduce((a,b)=>a+b,0)/gaps.length*10)/10:null,mx=gaps.length?Math.max(...gaps):null;
+ const sexE=E.filter(x=>x.acts.some(k=>['sex','anal'].includes(k))),pct=(a,b)=>b?Math.round(a/b*100)+'%':'—';
+ const wd=[0,0,0,0,0,0,0];ks.forEach(k=>wd[(parseD(k).getDay()+6)%7]++);const wmax=Math.max(1,...wd);
+ const mo={};ks.forEach(k=>{const m=k.slice(0,7);mo[m]=(mo[m]||0)+1});const bestM=Object.entries(mo).sort((a,b)=>b[1]-a[1])[0];
+ const who={};E.forEach(x=>{if(x.who)who[x.who]=(who[x.who]||0)+1});const rated=E.filter(x=>x.rate);
+ const cyc=avg&&ks.length>=3?(()=>{const n=new Date(parseD(ks[ks.length-1]).getTime()+Math.round(avg)*864e5);return dkey(n)<t?'уже пора 😏':n.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})})():null;
+ const row=(a,b)=>'<div class="sxsr"><span>'+a+'</span><b>'+b+'</b></div>';
+ sheet('<h3>Статистика постели</h3>'
+  +row('Ночей всего',ks.length)+row('За 30 дней',ks.filter(k=>(parseD(t)-parseD(k))/864e5<30).length)
+  +row('Средний перерыв',avg!=null?avg+' дн.':'—')+row('Самый долгий перерыв',mx!=null?mx+' дн.':'—')
+  +(cyc?row('Твой ритм: следующая ночь',cyc):'')
+  +row('Лучший месяц',bestM?parseD(bestM[0]+'-01').toLocaleDateString('ru-RU',{month:'long',year:'numeric'})+' · '+bestM[1]:'—')
+  +row('С резинкой',pct(sexE.filter(x=>x.safe).length,sexE.length))+row('Она кончила',pct(E.filter(x=>x.her).length,E.length))+row('Ты кончил',pct(E.filter(x=>x.me).length,E.length))
+  +row('Средняя оценка',rated.length?(rated.reduce((a,x)=>a+x.rate,0)/rated.length).toFixed(1)+' ★':'—')
+  +'<div class="lbl" style="margin-top:14px">По дням недели</div><div class="sxwd">'+['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map((n,i)=>'<div><i style="height:'+Math.round(wd[i]/wmax*100)+'%"></i><small>'+n+'</small></div>').join('')+'</div>'
+  +(Object.keys(who).length?'<div class="lbl">С кем</div>'+Object.entries(who).sort((a,b)=>b[1]-a[1]).map(([n,c])=>row(esc(n),c)).join(''):'')
+  +'<div class="lbl">Всё время</div>'+SX.filter(e=>sxN(e[0])).map(e=>row(e[1]+' '+e[2],sxN(e[0]))).join('')
+  +'<p class="mut" style="font-size:12px;margin-top:12px">Всё хранится только на телефоне. Имена и заметки никуда не отправляются.</p><button class="btn gold" id="sxX" style="width:100%;margin-top:10px">Закрыть</button>');$('sxX').onclick=closeSheet}
 
 /* ===== waifu: virtual girlfriend who leads the love line (original character; own photo stays on device) ===== */
 const WFL=[[0,'Незнакомка'],[60,'Знакомая'],[180,'Подруга'],[400,'Девушка'],[800,'Жинка']];
