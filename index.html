@@ -1263,6 +1263,15 @@ html[data-phase=night] body::after{display:block!important;content:""!important;
 .sxent{padding:10px 0;border-bottom:1px dashed var(--edge)}.sxeh{display:flex;justify-content:space-between;gap:8px}.sxeh span{color:var(--gold)}.sxea{font:13.5px/1.45 var(--body);color:var(--ink);margin:4px 0}.sxent small{color:var(--ink2);font-size:12.5px}.sxent p{font:13px/1.45 var(--body);color:var(--ink2);margin:6px 0 0}.sxent .linkbtn{font-size:12.5px;margin-top:4px}.sxeb{display:flex;gap:18px}
 .sxsr{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--edge);font:14px var(--body);color:var(--ink2)}.sxsr b{color:var(--ink);text-align:right}
 .sxwd{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:90px;align-items:end;margin-bottom:8px}.sxwd div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}.sxwd i{width:70%;min-height:3px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#ff6b7a,#c2185b)}.sxwd small{font:11px var(--body);color:var(--ink3)}
+/* Экономика 2.0: алтарь карт, копилка, что откроет ранг */
+.altar{display:grid;gap:8px;margin-top:12px}
+.alt1{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--edge)}
+.alt1 b{display:block;font:600 13.5px/1.3 var(--body);color:var(--ink)}.alt1 small{display:block;font:12.5px/1.4 var(--body);color:var(--ink3);margin-top:2px}
+#artFate{width:100%;display:flex;flex-direction:column;align-items:center;gap:2px}#artFate small{font:500 11.5px var(--body);opacity:.8}
+.rwg{margin-top:5px;height:5px}
+.rwrate{font:13px/1.45 var(--body);color:var(--ink2);margin:2px 0 8px;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--edge)}.rwrate b{color:var(--gold2)}
+.trun{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}.trun b{width:100%;font:700 11px var(--body);letter-spacing:.8px;text-transform:uppercase;color:var(--ink3)}
+.trun span{font:600 12px/1.2 var(--body);padding:5px 9px;border-radius:99px;background:var(--accbg,rgba(255,255,255,.05));border:1px solid var(--edge2);color:var(--ink2)}
 </style>
 </head>
 <body>
@@ -1457,6 +1466,14 @@ html[data-phase=night] body::after{display:block!important;content:""!important;
 <main class="screen hide" id="s-shop">
   <div class="shophd"><h1 class="dtitle" style="font-size:32px">Лавка</h1><span class="coins" id="shopGold"></span></div>
   <div class="segm" id="shopTabs"></div>
+  <div class="pnl" data-st="rw">
+    <div class="ttl"><h2>Мои награды</h2></div>
+    <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:6px">Главное, на что тратить золото: награды из реальной жизни. Купил — значит заслужил, и можно без вины. Дорогая награда — это копилка: полоска показывает, сколько уже накоплено.</div>
+    <div class="rwrate" id="rwRate"></div>
+    <div class="chips" id="rwTpl" style="margin:4px 0 8px"></div>
+    <div id="rewards"></div>
+    <div class="add"><input type="text" id="rwName" placeholder="Например: серия сериала" aria-label="Название награды"><input type="text" id="rwCost" inputmode="numeric" placeholder="Цена" style="flex:none;width:76px" aria-label="Цена"><button class="btn gold" id="rwAdd">+</button></div>
+  </div>
   <div class="pnl" data-st="chest">
     <div class="ttl"><h2>Оружие и броня</h2><span class="c" id="shopGearLv"></span></div>
     <div class="slots" id="shopGear"></div>
@@ -1469,11 +1486,12 @@ html[data-phase=night] body::after{display:block!important;content:""!important;
   </div>
   <div class="pnl" data-st="art">
     <div class="ttl"><h2>Артефакты</h2><span class="c" id="artCnt"></span></div>
-    <div class="lbl" style="margin-top:0">Надето (до 3)</div>
+    <div class="lbl" style="margin-top:0" id="artEqL">Надето</div>
     <div class="arteq" id="artEq"></div>
     <div class="lbl">Коллекция</div>
     <div class="artg" id="artGrid"></div>
-    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">Карты артефактов выпадают из сундуков. Набери карт и золота, чтобы поднять уровень: эффект растёт с каждым. Чем реже артефакт, тем сильнее он за уровень и тем меньше карт нужно на улучшение. Легендарные дают сразу несколько бонусов.</div>
+    <div id="artInfo"></div>
+    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">Карты выпадают из сундуков и продаются на алтаре. Чем реже артефакт, тем сильнее он за уровень и тем меньше карт нужно; легендарные дают три бонуса и особое свойство. Потолок уровня растёт с рангом: ранг — это уровень героя плюс испытание чистыми днями.</div>
   </div>
   <div class="pnl" data-st="cons">
     <div class="ttl"><h2>Расходники</h2></div>
@@ -1504,13 +1522,6 @@ html[data-phase=night] body::after{display:block!important;content:""!important;
   <div class="pnl" data-st="cons">
     <div class="ttl"><h2>Товары недели</h2><span class="c">обновятся в понедельник</span></div>
     <div id="offers"></div>
-  </div>
-  <div class="pnl" data-st="rw">
-    <div class="ttl"><h2>Мои награды</h2></div>
-    <div class="mut" style="font:13px/1.4 var(--body);margin-bottom:6px">Награды из реальной жизни за золото. Купил, значит заслужил, и можно без вины.</div>
-    <div class="chips" id="rwTpl" style="margin:4px 0 8px"></div>
-    <div id="rewards"></div>
-    <div class="add"><input type="text" id="rwName" placeholder="Например: серия сериала" aria-label="Название награды"><input type="text" id="rwCost" inputmode="numeric" placeholder="Цена" style="flex:none;width:76px" aria-label="Цена"><button class="btn gold" id="rwAdd">+</button></div>
   </div>
 </main>
 
@@ -1920,7 +1931,7 @@ const rankIdx=()=>rankIdxFor(lvlInfo(S.xp).l);
 const rankOf=l=>RANKS[rankIdxFor(l)];
 function nameMig(){const M={'Салага с утренним стояком':'Желторотый салага','Самурай':'Укротитель стояка','Сёгун':'Гигачад воздержания','Воин':'Укротитель стояка','Владыка':'Гигачад воздержания','Хозяин нэкоматы':'Хозяин кота-духа','Император воздержания':'Гигачад воздержания'};if(M[S.title])S.title=M[S.title]}
 function lvRework(){nameMig();if(S.prog2)return;S.prog2=1;const l=lvlInfo(S.xp).l;S.rkMax=rankIdx();addLog('Система уровней пересчитана честно: уровень '+l+', ранг '+RANKS[S.rkMax][1]);setTimeout(()=>lootSheet('Уровни пересчитаны',null,'Опыт сохранён полностью ('+S.xp.toLocaleString('ru-RU')+' XP), но кривая стала честной: теперь ты на уровне '+l+'. Дальше каждый уровень — это реальные недели дел. Ранги требуют испытаний.'),2600)}
-function checkRank(){lvRework();const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами.')},500)}}
+function checkRank(){lvRework();const i=rankIdx();if(S.rkMax==null){S.rkMax=i;return}if(i>S.rkMax){S.rkMax=i;const r=RANKS[i];addLog('Новый ранг: '+r[1]);chGive(4,'новый ранг');save();setTimeout(()=>{lvlFx(r[1],r[2][0]);SFX.level();lootSheet('Новый ранг: '+r[1],null,'Испытание пройдено. Это звание не купить опытом — ты заработал его реальными делами. Открыто: '+rankUnlocks(i).join(', ')+'.')},500)}}
 const PERKS=[
  ['legs','str',1,'Крепкие ноги','+15% опыта за дела на Тело','body'],['blow','str',1,'Удар тренировки','+30% урона по боссу от дел на Тело','body'],
  ['morning','str',2,'Утренний воин','Тело до 10:00 даёт +50% опыта','body'],['temper','str',2,'Закалка','Форма Тела падает вдвое медленнее','body'],
@@ -1959,7 +1970,7 @@ const stageIdx=()=>{const d=totalClean();let i=0;STAGES.forEach((s,k)=>{if(d>=s[
 const SLOTB={weapon:'dmg',armor:'gold',amulet:'xp'};
 function bonus(){const b={dmg:0,gold:0,xp:0};for(const sl of ['weapon','armor','amulet']){const it=S.inv.find(i=>i.id===S.eq[sl]);if(it)b[SLOTB[sl]]+=RARITY[it.r][1]/100;b[SLOTB[sl]]+=((S.forge||{})[sl]||0)*FORGE_STEP}return b}
 /* forge: per-slot upgrades +1..+5, each +4% to the slot's bonus */
-const FORGE_STEP=.04,FORGE_COST=[120,340,620,960,1340];
+const FORGE_STEP=.04,FORGE_COST=[200,500,1000,1800,3000];
 function addLog(t){S.log.unshift({d:today(),t});S.log=S.log.slice(0,200)}
 let tt;function toast(t){if(/Впиши|уже есть|не подошёл/.test(t))SFX.err();const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2300)}
 function floatTxt(txt,col,x,y){const e=document.createElement('div');e.className='float';e.textContent=txt;e.style.color=col;e.style.left=(x||window.innerWidth/2-30)+'px';e.style.top=(y||window.innerHeight/2)+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1100)}
@@ -2130,7 +2141,7 @@ const coin=s=>'<svg class="art" viewBox="0 0 24 24" width="'+(8*(s||2.5))+'" hei
 /* per-day counters: contracts, weekly goals, boss pacing */
 function ds(d){S.ds=S.ds||{};d=d||today();return S.ds[d]||(S.ds[d]={str:0,int:0,cha:0,wil:0,n:0,am:0,big:0,crit:0,dmg:0})}
 const dmgOf=xp=>Math.round(xp*(1+Math.min(xp,150)/150));   // hard deeds hit harder
-const goldOf=xp=>Math.round(8+xp*.25);                       // routine pays relatively more gold
+const goldOf=xp=>Math.max(1,Math.round(xp*.5));               // золото = половина XP (мелкие отметки больше не дают золота больше, чем опыта)
 function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();if(S.buffXp>now)b.xp+=1;if(S.buffDmg>now)b.dmg+=1;if(S.buffGold>now)b.gold+=1;
  const D=ds(),bc=S.camp.ch%NB,streakB=Math.min(.5,actStreak()*.05),crit=cat===weakOf(S.camp.ch);
  const armor=(bc===4||bc===9)&&!crit?.8:1,paper=bc===6&&xp<20?.5:1,tired=D[cat]>=6?.5:1;
@@ -2265,13 +2276,13 @@ function renderCT(){const B=ctBoard(),hr=new Date(),taken=B.offers.filter(x=>x.s
  $('ctList').querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>ctTake(b.dataset.ct));
  $('ctCnt').textContent=B.offers.filter(x=>x.st==='ok').length+'/'+Math.max(1,taken)}
 const OFFERS=[
- ['Сундук наёмника','Вещь: редкая или лучше','star','#8db8ff',450,()=>{const it=makeItem(1);lootSheet('Сундук наёмника',it,'')}],
- ['Печать ярости','×2 урон по боссу на 6 часов','scroll','#ff8a80',200,()=>buff('buffDmg',6,'печать ярости')],
- ['Цепи для босса','Босс не восстанавливается 7 дней','bomb','#c2a37a',300,()=>{S.noRegen=Date.now()+7*864e5;addLog('Цепи для босса')}],
+ ['Сундук наёмника','Вещь: редкая или лучше','star','#8db8ff',700,()=>{const it=makeItem(1);lootSheet('Сундук наёмника',it,'')}],
+ ['Печать ярости','×2 урон по боссу на 6 часов','scroll','#ff8a80',250,()=>buff('buffDmg',6,'печать ярости')],
+ ['Цепи для босса','Босс не восстанавливается 7 дней','bomb','#c2a37a',400,()=>{S.noRegen=Date.now()+7*864e5;addLog('Цепи для босса')}],
  ['Лаковая шкатулка','Сундук в свободный слот','chest','#b8281e',300,()=>chGive(1,'лавка'),()=>chFree()?'':'Нет свободного слота для сундука'],
- ['Золотой сундук','Сундук в свободный слот','chest','#e2c48e',900,()=>chGive(3,'лавка'),()=>chFree()?'':'Нет свободного слота для сундука'],
- ['Ларец легенды','25% — легендарная вещь, иначе эпическая','star','#ffd67a',1200,()=>{const it=makeItem(Math.random()<.25?3:2);lootSheet('Ларец легенды',it,'')}],
- ['Малый свиток удачи','×2 золото на 12 часов','scroll','#f0b541',160,()=>buff('buffGold',12,'малый свиток удачи')]];
+ ['Золотой сундук','Сундук в свободный слот','chest','#e2c48e',1200,()=>chGive(3,'лавка'),()=>chFree()?'':'Нет свободного слота для сундука'],
+ ['Ларец легенды','25% — легендарная вещь, иначе эпическая','star','#ffd67a',2500,()=>{const it=makeItem(Math.random()<.25?3:2);lootSheet('Ларец легенды',it,'')}],
+ ['Малый свиток удачи','×2 золото на 12 часов','scroll','#f0b541',300,()=>buff('buffGold',12,'малый свиток удачи')]];
 const offersWeek=()=>seedPick(weekStart()+'o',3,OFFERS.length);
 /* old achievements replaced by the hall of glory (checkAch below) */
 
@@ -2448,13 +2459,14 @@ const SHOP=[
  ['Корм','+50 сытости котику','potion','#e8964a',30,()=>{feed(50);addLog('Котик поел')}],
  ['Мышка-игрушка','+40 настроения котику','potion','#e66fb0',30,()=>{cheer(40);addLog('Котик наигрался')}],
  ['Пир для кота','Сытость и настроение на максимум','potion','#ffd67a',90,()=>{feed(100);cheer(100);addLog('Пир для кота')}],
- ['Свиток ярости','×2 урон по боссу на 24 часа','scroll','#e0483e',260,()=>buff('buffDmg',24,'свиток ярости')],
- ['Свиток удачи','×2 золото на 24 часа','scroll','#f0b541',320,()=>buff('buffGold',24,'свиток удачи')],
+ ['Свиток ярости','×2 урон по боссу на 24 часа','scroll','#e0483e',350,()=>buff('buffDmg',24,'свиток ярости')],
+ ['Свиток удачи','×2 золото на 24 часа','scroll','#f0b541',600,()=>buff('buffGold',24,'свиток удачи')],
  ['Кошачья мята','Котик в восторге: настроение 100 и два часа игр','potion','#7fb069',60,()=>{cheer(100);S.pet.nip=Date.now()+2*36e5;addLog('Кошачья мята для котика')}],
- ['День отдыха','Серия активности не прервётся, босс сегодня не восстановится','scroll','#7fa7c9',120,()=>{S.rest=S.rest||{};S.rest[today()]=1;addLog('День отдыха')},()=>(S.rest||{})[today()]?'Сегодня уже день отдыха':''],
- ['Щит серии','Сам спасёт серию активности, если пропустишь один день','armor','#c9a46a',200,()=>{S.shield=(S.shield||0)+1;addLog('Куплен щит серии')}]];
-const PRICE=[80,250,700,1800],REQ=[1,3,6,10];
-function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(S.inv.some(i=>i.k===k&&i.r>=r))return toast('Уже есть не хуже — купи следующую редкость');if(lvlInfo(S.xp).l<REQ[r])return toast('Нужен уровень '+REQ[r]);S.gold-=p;
+ ['День отдыха','Серия активности не прервётся, босс сегодня не восстановится','scroll','#7fa7c9',200,()=>{S.rest=S.rest||{};S.rest[today()]=1;addLog('День отдыха')},()=>(S.rest||{})[today()]?'Сегодня уже день отдыха':''],
+ ['Щит серии','Сам спасёт серию активности, если пропустишь один день','armor','#c9a46a',350,()=>{S.shield=(S.shield||0)+1;addLog('Куплен щит серии')}]];
+/* снаряжение: цена под реальный доход (~500 з/день), редкость открывается рангом (= уровень + испытание чистыми днями) */
+const PRICE=[150,600,1800,4500],REQ=[1,3,6,10],RREQ=[0,1,3,4],GRN=['обычное','редкое','эпическое','легендарное'],rkName=i=>RANKS[i][1];
+function buyItem(k,r){const p=PRICE[r];if(S.gold<p)return;if(S.inv.some(i=>i.k===k&&i.r>=r))return toast('Уже есть не хуже — купи следующую редкость');if(rankIdx()<RREQ[r])return toast('Нужен ранг «'+rkName(RREQ[r])+'»');S.gold-=p;
  const it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,r,n:SLOTS[k][2][r]};S.inv.push(it);
  const cur=S.inv.find(i=>i.id===S.eq[k]);if(!cur||cur.r<=r)S.eq[k]=it.id;addLog('Куплено: '+it.n);SFX.coin();buzz();save();render();toast('Улучшено: '+it.n+' · надето')}
 function left(k){const t=(S[k]||0)-Date.now();return t>0?Math.ceil(t/HOUR)+' ч':''}
@@ -2466,9 +2478,10 @@ function renderShop(){$('shopGold').innerHTML=coin(2.5)+S.gold;
  $('armTabs').innerHTML=Object.entries(SLOTS).map(([k,v])=>'<button class="chp'+(S.armTab===k?' on':'')+'" data-k="'+k+'">'+v[0]+'</button>').join('');
  $('armTabs').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{S.armTab=c.dataset.k;renderShop()});
  const k=S.armTab||'weapon',cur=S.inv.find(i=>i.id===S.eq[k]);
- $('armory').innerHTML=[0,1,2,3].map(r=>{const lock=lv<REQ[r],own=cur&&cur.r>=r;return '<div class="shopit"'+(lock?' style="opacity:.5"':'')+'>'+icon(k,RCOL[r],4)+'<div class="nm"><b class="t'+r+'">'+SLOTS[k][2][r]+'</b><span>'+RARITY[r][0]+' · +'+RARITY[r][1]+'% '+SLOTS[k][1]+(lock?' · с уровня '+REQ[r]:own?' · уже есть не хуже':'')+'</span></div><button class="btn gold" data-a="'+r+'"'+(lock||own||S.gold<PRICE[r]?' disabled':'')+'>'+(own?'✓':PRICE[r])+'</button></div>'}).join('');
+ $('armory').innerHTML=[0,1,2,3].map(r=>{const lock=rankIdx()<RREQ[r],own=cur&&cur.r>=r;return '<div class="shopit"'+(lock?' style="opacity:.5"':'')+'>'+icon(k,RCOL[r],4)+'<div class="nm"><b class="t'+r+'">'+SLOTS[k][2][r]+'</b><span>'+RARITY[r][0]+' · +'+RARITY[r][1]+'% '+SLOTS[k][1]+(lock?' · с ранга «'+rkName(RREQ[r])+'»':own?' · уже есть не хуже':'')+'</span></div><button class="btn gold" data-a="'+r+'"'+(lock||own||S.gold<PRICE[r]?' disabled':'')+'>'+(own?'✓':PRICE[r])+'</button></div>'}).join('');
  $('armory').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>buyItem(k,+b.dataset.a));
- $('rewards').innerHTML=S.rewards.length?S.rewards.map((r,i)=>'<div class="shopit">'+icon('star','#f0b541',4)+'<div class="nm"><b class="body" style="font-weight:600">'+esc(r.t)+'</b><span>куплено: '+(r.n||0)+'</span></div><button class="x" data-del="'+i+'" aria-label="Удалить">×</button><button class="btn gold" data-r="'+i+'"'+(S.gold<r.cost?' disabled':'')+'>'+r.cost+'</button></div>').join(''):'<div class="empty">Добавь свою награду, например: «кино» за 150.</div>';
+ {const gr=goldRate();$('rwRate').innerHTML=(gr?'Твой доход: <b>≈ '+gr+' золота в день</b> (среднее за 14 дней).':'Доход ещё считается: пока оценка ≈ '+DAYG+' золота в день.')+' Цена каждой награды — в днях твоих дел.'}
+ $('rewards').innerHTML=S.rewards.length?S.rewards.map((r,i)=>'<div class="shopit">'+icon('star','#f0b541',4)+'<div class="nm"><b class="body" style="font-weight:600">'+esc(r.t)+'</b><span>'+daysTxt(r.cost)+(r.n?' · куплено: '+r.n:'')+'</span>'+(S.gold<r.cost?'<div class="gauge g-gold rwg"><i style="width:'+Math.round(S.gold/r.cost*100)+'%"></i></div>':'')+'</div><button class="x" data-del="'+i+'" aria-label="Удалить">×</button><button class="btn gold" data-r="'+i+'"'+(S.gold<r.cost?' disabled':'')+'>'+r.cost+'</button></div>').join(''):'<div class="empty">Добавь свою награду, например: «кино» за 150.</div>';
  $('rewards').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const r=S.rewards[b.dataset.r];if(S.gold<r.cost)return;S.gold-=r.cost;r.n=(r.n||0)+1;addLog('Награда себе: '+r.t);save();render();lootSheet('Заслужено!',null,'«'+r.t+'» — наслаждайся без вины. Ты это заработал.')});
  renderShopTabs();renderChests();renderArts();renderScenes();renderRwTpl();navBadge();$('sndBtn').textContent=S.sound?'Вкл':'Выкл';$('ambBtn').textContent=S.amb?'Вкл':'Выкл';if(document.activeElement!==$('volR'))$('volR').value=Math.round(vol()*100);$('loudBtn').textContent=S.soundLoud?'Да':'Нет';
  $('rewards').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{S.rewards.splice(b.dataset.del,1);save();render()})}
@@ -2526,7 +2539,7 @@ const SCRR={quest:()=>{renderQuest();renderGoals();renderSkills('pathSk');render
 const curScr=()=>{const m=document.querySelector('main.screen:not(.hide)');return m?m.id.slice(2):'day'};
 function renderScr(k){const f=SCRR[k];if(!f)return;DIRTY.delete(k);try{f()}catch(e){console.error(e)}}
 function setUI(){$('sndBtn').textContent=S.sound?'Вкл':'Выкл';$('ambBtn').textContent=S.amb?'Вкл':'Выкл';if(document.activeElement!==$('volR'))$('volR').value=Math.round(vol()*100);$('loudBtn').textContent=S.soundLoud?'Да':'Нет'}
-function render0(){try{recovTick()}catch(e){}try{autoClean()}catch(e){}setTimeout(()=>{try{renderSteps()}catch(e){}try{renderKgBar()}catch(e){}try{renderCmBar()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();try{pkCheck()}catch(e){}try{cmCheck()}catch(e){}renderHUD();renderDay();try{navBadge()}catch(e){}
+function render0(){try{goldStamp();ecoMig()}catch(e){}try{recovTick()}catch(e){}try{autoClean()}catch(e){}setTimeout(()=>{try{renderSteps()}catch(e){}try{renderKgBar()}catch(e){}try{renderCmBar()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();try{pkCheck()}catch(e){}try{cmCheck()}catch(e){}renderHUD();renderDay();try{navBadge()}catch(e){}
  DIRTY=new Set(Object.keys(SCRR));renderScr(curScr())}
 
 /* ================= ROADMAP 道: the whole future ================= */
@@ -3034,7 +3047,7 @@ function renderHeroTabs(){$('heroTabs').classList.add('hide');document.querySele
 function renderGear(){renderHeroTabs();renderGearInto('shopGear',true);renderGearInto('slots',false);if($('shopGearLv'))$('shopGearLv').textContent='твой ур. '+lvlInfo(S.xp).l;renderBag()}
 function renderGearInto(id,shop){if(!$(id))return;if($("gearLink"))$("gearLink").onclick=()=>{S.heroTab="gear";go("hero");render();scrollTo({top:0})};const lv=lvlInfo(S.xp).l;S.forge=S.forge||{};
  $(id).innerHTML=Object.entries(SLOTS).map(([k,v])=>{const it=S.inv.find(i=>i.id===S.eq[k]),r=it?it.r:-1,fn=S.forge[k]||0,tot=(it?RARITY[r][1]:0)+Math.round(fn*FORGE_STEP*100),nr=r+1,others=S.inv.filter(i=>i.k===k&&i.id!==S.eq[k]).length;
-  let up='';if(nr<=3){const lock=lv<REQ[nr];up='<button class="gb gold" data-up="'+k+'" '+(lock||S.gold<PRICE[nr]?'disabled':'')+'><b>'+(lock?'🔒 Купить с ур. '+REQ[nr]:'Купить · '+PRICE[nr]+' з')+'</b><small>'+SLOTS[k][2][nr]+' · +'+RARITY[nr][1]+'% '+SLOTS[k][1]+'</small></button>'}
+  let up='';if(nr<=3){const lock=rankIdx()<RREQ[nr];up='<button class="gb gold" data-up="'+k+'" '+(lock||S.gold<PRICE[nr]?'disabled':'')+'><b>'+(lock?'🔒 Ранг «'+rkName(RREQ[nr])+'»':'Купить · '+PRICE[nr]+' з')+'</b><small>'+SLOTS[k][2][nr]+' · +'+RARITY[nr][1]+'% '+SLOTS[k][1]+'</small></button>'}
   let fg='';if(fn<FORGE_COST.length){const need=3*(fn+1),lock=lv<need;fg='<button class="gb" data-fg="'+k+'" '+(lock||S.gold<FORGE_COST[fn]?'disabled':'')+'><b>'+(lock?'🔒 ур. '+need:'Заточить +'+(fn+1))+'</b><small>+'+Math.round(FORGE_STEP*100)+'% · '+FORGE_COST[fn]+' з</small></button>'}
   return '<div class="gcard'+(it?' r'+r:'')+'" style="--gc:'+(it?RCOL[r]:'#555')+'"><div class="gtop"><span class="gic">'+icon(k,it?RCOL[r]:'#3a3f55',4.5)+'</span><div class="gname"><small>'+v[0]+(fn?' · заточка +'+fn:'')+'</small><b class="'+(it?'t'+r:'')+'">'+(it?esc(it.n):'Пусто')+'</b><span>+'+tot+'% '+v[1]+(it?' · '+RARITY[r][0].toLowerCase():'')+'</span></div>'+(!shop&&others?'<button class="gsw" data-sw="'+k+'">Сменить · '+others+'</button>':'')+'</div>'+(shop?'<div class="gbtns">'+up+fg+(!up&&!fg?'<span class="gmax">Максимум ✦</span>':'')+'</div>':'')+'</div>'}).join('')+(shop?'':'<button class="linkbtn" id="toShopGear" style="display:block;margin:10px auto 0">Купить или заточить → Лавка</button>');
  if($('toShopGear'))$('toShopGear').onclick=()=>{go('shop');setTimeout(()=>$('shopGear').scrollIntoView({behavior:'smooth',block:'start'}),250)};
@@ -3051,7 +3064,7 @@ function itemSheet(it){if(!it)return;const eq=S.eq[it.k]===it.id,sell=RARITY[it.
  $('iEq').onclick=()=>{S.eq[it.k]=eq?null:it.id;save();closeSheet();render()};
  $('iSell').onclick=()=>{S.inv=S.inv.filter(i=>i.id!==it.id);if(S.eq[it.k]===it.id)S.eq[it.k]=null;S.gold+=sell;S.goldTotal+=sell;save();closeSheet();render();toast('+'+sell+' золота')};$('iClose').onclick=closeSheet}
 function openChest(){if(S.chestDay===today())return;const y=shift(today(),-1);S.loginStreak=S.chestDay===y?(S.loginStreak||0)+1:1;S.chestDay=today();
- const g=10+5*Math.min(S.loginStreak,10);S.gold+=g;S.goldTotal+=g;let it=null;if(Math.random()<.2)it=makeItem(0);feed(5);save();render();
+ const g=5+3*Math.min(S.loginStreak,10);S.gold+=g;S.goldTotal+=g;let it=null;if(Math.random()<.2)it=makeItem(0);feed(5);save();render();
  lootSheet('Сундук дня',it,'+'+g+' золота. Серия входов: '+S.loginStreak+' '+plural(S.loginStreak,'день','дня','дней')+'. Заходи завтра — будет больше.')}
 function oathSheet(first){const o=S.oath;
  sheet('<h3>'+(first?'Клятва героя':'Клятва')+'</h3><p>'+(first?'Перед походом ответь на три вопроса. Свои слова держат сильнее чужих. Всё хранится только на телефоне.':'Обнови свои причины и планы.')+'</p>'
@@ -3173,7 +3186,7 @@ function logUrge(win){S.urges=(S.urges||0)+1;const b=bucket();S.hours[b]=(S.hour
 $('fStart').onclick=startFight;
 $('fFinish').onclick=()=>{logUrge(true);closeFight();S.wins++;cheer(25);feed(10);const dropped=fFrom-fTo;
  const bon=FB?Math.min(40,FB.steps*4+FB.par*4):0,stats=FB?'Шагов пройдено: '+FB.steps+' из '+SURF.length+'. Шёпотов распознано: '+FB.par+' из 3.':'';if(FB&&FB.steps>=SURF.length&&FB.par===3)S.surfFull=(S.surfFull||0)+1;
- addLog('Волна тяги пройдена: '+fFrom+' → '+fTo+(fTrig?' · '+fTrig.toLowerCase():''));award(60+bon,'wil','тень побеждена',{dmg:60+bon});chGive(fFrom>=8?2:1,'победа над тягой');save();render();
+ addLog('Волна тяги пройдена: '+fFrom+' → '+fTo+(fTrig?' · '+fTrig.toLowerCase():''));award(60+bon,'wil','тень побеждена',{dmg:60+bon});chGive(Math.min(4,(fFrom>=8?2:1)+(artEqL().includes('tama')?1:0)),'победа над тягой');save();render();
  setTimeout(()=>lootSheet('Волна пройдена!',null,(dropped>0?'Тяга упала с '+fFrom+' до '+fTo+'. Ты сильнее волны. ':'Ты выстоял, даже когда было тяжело. ')+stats+(bon?' Бонус за мастерство: +'+bon+' XP.':'')),400)};
 $('fLose').onclick=()=>{logUrge(false);const t=fTrig;closeFight();relapseFlow('',t)};
 $('fCancel1').onclick=closeFight;$('fCancel2').onclick=closeFight;$('sosBtn').onclick=openFight;$('stormBtn').onclick=stormSheet;
@@ -3257,7 +3270,8 @@ function renderTrial(){const ri=rankIdx(),nr=RANKS[ri+1],el=$('trial');if(!nr){e
  el.innerHTML='<div class="trial"><h4><i lang="ja">'+nr[2][0]+'</i>Испытание ранга «'+esc(nr[1])+'»</h4>'
   +[['lvl',nr[0]]].concat(T).map(([k,n])=>{const v=k==='lvl'?l:trVal(k),ok=v>=n,lb=k==='lvl'?'Уровень героя':TRL[k]+(k==='all'?' '+n:'');const shown=k.startsWith('f:')?(ok?'✓':'—'):Math.min(v,n)+' / '+n;
    return '<div class="trq'+(ok?' ok':'')+'"><span>'+(ok?'✓ ':'')+esc(lb)+'</span><b>'+shown+'</b><div class="gauge g-gold"><i style="width:'+Math.min(100,v/n*100)+'%"></i></div></div>'}).join('')
-  +'<div class="mut" style="font-size:12px;margin-top:6px">Ранг не купить опытом: нужны и уровень, и реальные дела.</div></div>'}
+  +'<div class="trun"><b>Ранг откроет</b>'+rankUnlocks(ri+1).map(x=>'<span>'+esc(x)+'</span>').join('')+'</div>'
+  +'<div class="mut" style="font-size:12px;margin-top:6px">Ранг не купить опытом: нужны и уровень, и реальные дела. Ранг открывает силу в Лавке.</div></div>'}
 function renderSkills(id){const el=$(id);if(!el)return;el.innerHTML=Object.entries(SKILLS).map(([k,s])=>{const e=skE(k),l=skLvl(k),f=formOf(k),cap=skCap(k),fc=f>=70?'#b9d68a':f>=50?'#e2c48e':'#ff9a8f',nx=l<cap?Math.max(0,60*l*l-e.x):0;
  const capN=l>=cap&&cap<10?(k==='de'?' · дальше — после экзамена B2':' · дальше — после договора'):'';
  return '<div class="skr" style="--c:'+s[2]+'"><span class="sk-k" lang="ja">'+s[1]+'</span><div class="sk-m"><div class="sk-t"><b>'+s[0]+'</b><span>'+esc(s[6][l-1])+' · ур. '+l+'</span></div><div class="gauge"><i style="width:'+(skProg(k)*100)+'%;background:'+s[2]+'"></i></div>'
@@ -3279,7 +3293,7 @@ function moodSheet(){const d=today(),m=S.mood[d]||{};const row=(k,vals)=>'<div c
  $('mdOk').onclick=()=>{closeSheet();render();const v=(S.mood[d]||{}).m;if(v&&v<=3)setTimeout(()=>stormSheet(),400)}}
 
 /* ===== chests: 4 slots, unlock timers ===== */
-const CHT=[['Деревянный ящик','木','#8a6a44',3,[30,60],3,0],['Лаковая шкатулка','漆','#b8281e',8,[80,140],7,1],['Бронзовый сундук','銅','#b07a3e',12,[150,250],14,2],['Золотой сундук','金','#d9b56a',24,[300,500],26,3],['Сундук дракона','龍','#4f86c6',24,[600,900],45,4]];
+const CHT=[['Деревянный ящик','木','#8a6a44',3,[20,40],3,0],['Лаковая шкатулка','漆','#b8281e',8,[50,90],7,1],['Бронзовый сундук','銅','#b07a3e',12,[100,160],14,2],['Золотой сундук','金','#d9b56a',24,[200,320],26,3],['Сундук дракона','龍','#4f86c6',24,[400,600],45,4]];
 function chS(){S.chs=S.chs||{};const C=S.chs;if(!C.sl||Array.isArray(C.sl))C.sl={s0:null,s1:null,s2:null,s3:null};return C}
 const chFree=()=>{const C=chS();return ['s0','s1','s2','s3'].find(k=>!C.sl[k])};
 function chGive(t,src){const C=chS(),k=chFree();if(!k){const g=Math.round(CHT[t][4][0]/2);S.gold+=g;S.goldTotal+=g;setTimeout(()=>toast('Слоты полны: '+CHT[t][0].toLowerCase()+' → +'+g+' золота'),1400);return false}
@@ -3337,37 +3351,63 @@ function renderChests(){const C=chS(),now=Date.now();
  $('chCnt').textContent=Object.values(C.sl).filter(Boolean).length+'/4'}
 function navBadge(){const C=chS(),now=Date.now(),ready=Object.values(C.sl).some(Boolean)||now-(C.free||0)>=4*36e5;const b=document.querySelector('#nav [data-s="shop"]');if(b)b.classList.toggle('bd',ready)}
 setInterval(()=>{if(!document.hidden&&!$('s-shop').classList.contains('hide')&&S.shopTab==='chest')renderChests();navBadge()},15000);
-/* ===== artifacts ===== */
-/* Баланс: эффект за уровень растёт с редкостью (обычные 3–5%, редкие 6–8%, эпики 8–12%, легенды — 2–3 эффекта, один из них «за всё»).
-   a[7] — дополнительные эффекты [[%,тип,подпись]]. Типы: x всё · x40 дела 40+ · g золото · d урон · body/de/soc/job навык · drg Кегель и дракон · path путь без срыва · cha Харизма · chest шанс сундука */
-const ART=[['kaeru','Презерватив-оберег','護',0,'золота за всё',3,'g'],['daruma','Утренний стояк','勃',0,'опыта за дела на 40+ XP',4,'x40'],['geta','Гантеля Казановы','鉄',0,'опыта за дела на Тело',5,'body'],['fude','Словарь грязного немецкого','語',0,'опыта за немецкий',5,'de'],
- ['kitsune','Маска соблазнителя','仮',1,'опыта за общение',6,'soc'],['inro','Резюме жиголо','履',1,'опыта за карьеру',6,'job'],['chochin','Красный фонарь','灯',1,'опыта за Кегель и тренировки дракона',8,'drg'],['tessen','Веер стыдливой гейши','扇',1,'урона по боссу',7,'d'],
- ['oni','Ледяной душ','冷',2,'опыта за путь без срыва (чистые дни, победы над тягой, шторм)',10,'path'],['musashi','Камасутра Мусаси','性',2,'опыта за Харизму (Линия Сердца, близость)',8,'cha'],['maneki','Кот-сводник','招',2,'к шансу сундука с квестов',12,'chest',[[2,'g','золота за всё']]],
- ['yata','Зеркало «Я секси»','鏡',3,'опыта за всё',5,'x',[[3,'g','золота за всё'],[4,'d','урона по боссу']]],['tama','Яйца дракона','玉',3,'опыта за всё',4,'x',[[8,'path','опыта за путь без срыва'],[6,'drg','опыта за Кегель и дракона']]]];
-const ANEEDR=[[0,2,4,10,20,50,100],[0,2,4,8,16,35,70],[0,2,3,6,12,24,45],[0,1,2,4,7,12,20]],ANEED=ANEEDR[0],aNeed=(id,l)=>{const a=ART.find(x=>x[0]===id);return ANEEDR[a?a[3]:0][l]},AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'],AFUN={kaeru:'Защищает кошелёк так же надёжно, как кое-что другое.',daruma:'Встаёт каждое утро без напоминаний. Учись у него дисциплине.',geta:'Девушки любят руки. Руки любят железо.',fude:'«Schatz», «Mäuschen» и ещё 400 слов, которых нет в учебнике B1. Пригодится на свидании в Мюнхене.',kitsune:'Надеваешь — и small talk сам льётся. Снимаешь — ты всё тот же, но уже уверенней.',inro:'Опыт работы: обаяние, пунктуальность, выносливость.',chochin:'Загорается, когда ты качаешь дракона. Квартал красных фонарей тут ни при чём. Почти.',tessen:'Прикрывает лицо гейши, когда ты бьёшь босса особенно жёстко.',oni:'Лучшее оружие против тяги, проверенное поколениями монахов и студентов.',musashi:'Мусаси писал о стратегии. Эту главу — про девушек — он почему-то не опубликовал.',maneki:'Машет лапкой, и сундуки сами идут к тебе в руки.',yata:'Смотришь в него и говоришь: «А я ничего». И это правда.',tama:'Легендарные. Тяжёлые. Полные энергии, которую ты больше не сливаешь на экран.'};
-const artEqL=()=>(S.artEq||[]).filter(id=>(S.art||{})[id]).slice(0,3);
+/* ===== artifacts =====
+   Экономика 2.0 (25.11.2026). Сила артефакта привязана к рангу: потолок уровня = индекс ранга + 2 (ур. 7 — с ранга «Чёрный пояс»),
+   4-й слот — тоже с «Чёрного пояса». Золото уходит на алтарь карт (лимит в день растёт с рангом) и улучшения (дороже у редких).
+   Эффект за уровень: обычные 2–4%, редкие 5–6%, эпики 6–10%, легенды — три эффекта (один «за всё») и уникальное свойство.
+   a[7] — доп. эффекты [[%,тип,подпись]]. Типы: x всё · x40 дела 40+ · g золото · d урон · body/de/soc/job навык · drg Кегель и дракон · path путь без срыва · cha Харизма · chest шанс сундука */
+const ART=[['kaeru','Презерватив-оберег','護',0,'золота за всё',2,'g'],['daruma','Утренний стояк','勃',0,'опыта за дела на 40+ XP',3,'x40'],['geta','Гантеля Казановы','鉄',0,'опыта за дела на Тело',4,'body'],['fude','Словарь грязного немецкого','語',0,'опыта за немецкий',4,'de'],
+ ['kitsune','Маска соблазнителя','仮',1,'опыта за общение',5,'soc'],['inro','Резюме жиголо','履',1,'опыта за карьеру',5,'job'],['chochin','Красный фонарь','灯',1,'опыта за Кегель и тренировки дракона',6,'drg'],['tessen','Веер стыдливой гейши','扇',1,'урона по боссу',6,'d'],
+ ['oni','Ледяной душ','冷',2,'опыта за путь без срыва (чистые дни, победы над тягой, шторм)',7,'path'],['musashi','Камасутра Мусаси','性',2,'опыта за Харизму (Линия Сердца, близость)',6,'cha'],['maneki','Кот-сводник','招',2,'к шансу сундука с квестов',10,'chest',[[1,'g','золота за всё']]],
+ ['yata','Зеркало «Я секси»','鏡',3,'опыта за всё',3,'x',[[2,'g','золота за всё'],[3,'d','урона по боссу']]],['tama','Яйца дракона','玉',3,'опыта за всё',2,'x',[[5,'path','опыта за путь без срыва'],[4,'drg','опыта за Кегель и дракона']]]];
+const AUNI={tama:'Победа над тягой приносит сундук на ступень лучше'};
+const ANEEDR=[[0,2,4,10,20,50,100],[0,2,4,8,16,35,70],[0,2,3,6,12,24,45],[0,1,2,4,7,12,20]],aR=id=>{const a=ART.find(x=>x[0]===id);return a?a[3]:0},aNeed=(id,l)=>ANEEDR[aR(id)][l],
+ AGOLDB=[0,50,120,300,700,1500,3000],AGM=[1,1.3,1.6,2],aGold=(id,l)=>Math.round((AGOLDB[l]||0)*AGM[aR(id)]/10)*10,AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'],AFUN={kaeru:'Защищает кошелёк так же надёжно, как кое-что другое.',daruma:'Встаёт каждое утро без напоминаний. Учись у него дисциплине.',geta:'Девушки любят руки. Руки любят железо.',fude:'«Schatz», «Mäuschen» и ещё 400 слов, которых нет в учебнике B1. Пригодится на свидании в Мюнхене.',kitsune:'Надеваешь — и small talk сам льётся. Снимаешь — ты всё тот же, но уже уверенней.',inro:'Опыт работы: обаяние, пунктуальность, выносливость.',chochin:'Загорается, когда ты качаешь дракона. Квартал красных фонарей тут ни при чём. Почти.',tessen:'Прикрывает лицо гейши, когда ты бьёшь босса особенно жёстко.',oni:'Лучшее оружие против тяги, проверенное поколениями монахов и студентов.',musashi:'Мусаси писал о стратегии. Эту главу — про девушек — он почему-то не опубликовал.',maneki:'Машет лапкой, и сундуки сами идут к тебе в руки.',yata:'Смотришь в него и говоришь: «А я ничего». И это правда.',tama:'Легендарные. Тяжёлые. Полные энергии, которую ты больше не сливаешь на экран.'};
+/* ранг → потолок артефактов, слоты, алтарь */
+const artCapFor=i=>Math.min(AMAX,i+2),artCap=()=>artCapFor(rankIdx()),artSlotsFor=i=>i>=5?4:3,artSlots=()=>artSlotsFor(rankIdx());
+const rkFirst=f=>RANKS.findIndex((r,i)=>f(i));
+const ACARD=[30,60,150,400],AFATE=200,ALEG_RK=3,altarLim=i=>6+2*i;
+function altarDay(){const t=today();if(!S.altar||S.altar.d!==t)S.altar={d:t,n:0};return S.altar}
+const altarLeft=()=>Math.max(0,altarLim(rankIdx())-altarDay().n);
+function rankUnlocks(i){const L=[];if(artCapFor(i)>artCapFor(i-1))L.push('артефакты до уровня '+artCapFor(i));const g=RREQ.indexOf(i);if(g>0)L.push(GRN[g]+' снаряжение');
+ if(artSlotsFor(i)>artSlotsFor(i-1))L.push('4-й слот артефакта');if(i===ALEG_RK)L.push('легендарные карты на алтаре');L.push('алтарь: '+altarLim(i)+' карт в день');return L}
+const artEqL=()=>(S.artEq||[]).filter(id=>(S.art||{})[id]).slice(0,artSlots());
 const artFx=a=>[[a[5],a[6],a[4]]].concat(a[7]||[]);
 function artE(type){let v=0;for(const id of artEqL()){const a=ART.find(x=>x[0]===id);if(a)for(const[p,t]of artFx(a))if(t===type)v+=p*S.art[id].l/100}return v}
 const ART_PATH=/чист|тень побежд|шторм|феникс|без второго|клятва/i,ART_DRG=/^(Кегель|Тренировка дракона|Дракон)/;
 function artMods(sk,xp,opt,why,cat){return{x:artE('x')+(xp>=40?artE('x40'):0)+(['body','de','soc','job'].includes(sk)?artE(sk):0)+(ART_PATH.test(why||'')?artE('path'):0)+(ART_DRG.test(opt.t||'')?artE('drg'):0)+(cat==='cha'?artE('cha'):0),g:artE('g'),d:artE('d')}}
-const artDesc=(a,l)=>artFx(a).map(([p,,t])=>'+'+p*l+'% '+t).join(' · ');
+const artDesc=(a,l)=>artFx(a).map(([p,,t])=>'+'+p*l+'% '+t).join(' · ')+(AUNI[a[0]]?' · '+AUNI[a[0]].toLowerCase():'');
 function artRoll(n,tier){const W=ODDS[tier],out={};
  const pickR=()=>{let r=Math.random()*100,i=0;while(i<3&&r>=W[i]){r-=W[i];i++}return i};
  const add=(r,k)=>{const pool=ART.filter(a=>a[3]===r),a=pool[Math.floor(Math.random()*pool.length)];out[a[0]]=(out[a[0]]||0)+k};
  let left=n;if(tier>=3){add(2,3);left-=3}if(tier===4){add(3,1);left-=1}
  const stacks=tier===0?1:tier<3?2:3;for(let s=0;s<stacks&&left>0;s++){const r=pickR(),k=s===stacks-1?left:Math.max(1,Math.round(left*(.45+Math.random()*.25)/[1,2,4,8][r]));add(r,Math.min(left,k));left-=Math.min(left,k)}
- S.art=S.art||{};S.artEq=artEqL();const res=[];for(const[id,k]of Object.entries(out)){const s=S.art[id];if(!s){S.art[id]={l:1,c:k-1};if(S.artEq.length<3)S.artEq.push(id);res.push([id,k,true])}else{s.c+=k;res.push([id,k,false])}}return res}
-function renderArts(){S.art=S.art||{};S.artEq=artEqL();
- $('artEq').innerHTML=[0,1,2].map(i=>{const id=S.artEq[i],a=id&&ART.find(x=>x[0]===id);return a?'<button class="aeq" data-a="'+id+'" style="--rc:'+ARC[a[3]]+'"><i lang="ja">'+a[2]+'</i><b>'+esc(a[1])+'</b><span>ур. '+S.art[id].l+' · '+artDesc([0,0,0,0,a[4],a[5],a[6]],S.art[id].l)+(a[7]?' +'+a[7].length+' бонуса':'')+'</span></button>':'<div class="aeq empty"><i>＋</i><span>Пустой слот</span></div>'}).join('');
- $('artGrid').innerHTML=ART.map(a=>{const s=S.art[a[0]];if(!s)return '<div class="arti lock" style="--rc:'+ARC[a[3]]+'"><i>?</i><b>'+ARN[a[3]]+'</b><span>не найден</span></div>';const need=aNeed(a[0],s.l),up=s.l<AMAX&&s.c>=need&&S.gold>=AGOLD[s.l];
-  return '<button class="arti r'+a[3]+(up?' up':'')+(S.artEq.includes(a[0])?' on':'')+'" data-a="'+a[0]+'" style="--rc:'+ARC[a[3]]+'"><i lang="ja">'+a[2]+'</i><b>'+esc(a[1])+'</b><span>ур. '+s.l+'</span><div class="gauge"><i style="width:'+(s.l>=AMAX?100:Math.min(100,s.c/need*100))+'%"></i></div><small>'+(s.l>=AMAX?'максимум':s.c+' / '+need)+'</small></button>'}).join('');
+ S.art=S.art||{};S.artEq=artEqL();const res=[];for(const[id,k]of Object.entries(out)){const s=S.art[id];if(!s){S.art[id]={l:1,c:k-1};if(S.artEq.length<artSlots())S.artEq.push(id);res.push([id,k,true])}else{s.c+=k;res.push([id,k,false])}}return res}
+function renderArts(){S.art=S.art||{};S.artEq=artEqL();const ri=rankIdx(),cap=artCap(),sl=artSlots();
+ $('artEqL').textContent='Надето · '+S.artEq.length+' из '+sl;
+ $('artEq').innerHTML=[0,1,2,3].map(i=>{if(i>=sl)return '<div class="aeq empty"><i>🔒</i><span>4-й слот · ранг «'+esc(rkName(rkFirst(r=>artSlotsFor(r)>=4)))+'»</span></div>';const id=S.artEq[i],a=id&&ART.find(x=>x[0]===id);return a?'<button class="aeq" data-a="'+id+'" style="--rc:'+ARC[a[3]]+'"><i lang="ja">'+a[2]+'</i><b>'+esc(a[1])+'</b><span>ур. '+S.art[id].l+' · '+artDesc([id,0,0,0,a[4],a[5],a[6]],S.art[id].l)+(a[7]?' +'+a[7].length+' бонуса':'')+'</span></button>':'<div class="aeq empty"><i>＋</i><span>Пустой слот</span></div>'}).join('');
+ $('artGrid').innerHTML=ART.map(a=>{const s=S.art[a[0]];if(!s)return '<div class="arti lock" style="--rc:'+ARC[a[3]]+'"><i>?</i><b>'+ARN[a[3]]+'</b><span>не найден</span></div>';const need=aNeed(a[0],s.l),capd=s.l>=cap&&s.l<AMAX,up=s.l<cap&&s.c>=need&&S.gold>=aGold(a[0],s.l);
+  return '<button class="arti r'+a[3]+(up?' up':'')+(S.artEq.includes(a[0])?' on':'')+'" data-a="'+a[0]+'" style="--rc:'+ARC[a[3]]+'"><i lang="ja">'+a[2]+'</i><b>'+esc(a[1])+'</b><span>ур. '+s.l+'</span><div class="gauge"><i style="width:'+(s.l>=AMAX?100:Math.min(100,s.c/need*100))+'%"></i></div><small>'+(s.l>=AMAX?'максимум':capd?'🔒 '+s.c+' / '+need:s.c+' / '+need)+'</small></button>'}).join('');
+ const nc=rkFirst(r=>artCapFor(r)>cap),left=altarLeft();
+ $('artInfo').innerHTML='<div class="altar"><div class="alt1"><b>Потолок уровня: '+cap+(cap>=AMAX?' (максимум)':'')+'</b><small>'+(cap<AMAX&&nc>0?'Ур. '+(cap+1)+' откроет ранг «'+esc(rkName(nc))+'» — испытание на «Пути».':'Все уровни открыты.')+'</small></div>'
+  +'<div class="alt1"><b>Алтарь карт · '+left+' из '+altarLim(ri)+' сегодня</b><small>Купить карту найденного артефакта: обычная '+ACARD[0]+' · редкая '+ACARD[1]+' · эпическая '+ACARD[2]+' · легендарная '+ACARD[3]+(ri<ALEG_RK?' (с ранга «'+esc(rkName(ALEG_RK))+'»)':'')+'. Нажми на артефакт.</small></div>'
+  +'<button class="btn gold" id="artFate"'+(left&&S.gold>=AFATE?'':' disabled')+'>🎴 Карта судьбы · '+AFATE+' з<small>случайная карта, может выпасть новый артефакт</small></button></div>';
+ $('artFate').onclick=altarFate;
  document.querySelectorAll('#artEq [data-a],#artGrid [data-a]').forEach(b=>b.onclick=()=>artSheet(b.dataset.a));$('artCnt').textContent=Object.keys(S.art).length+' / '+ART.length}
-function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().includes(id),need=aNeed(id,s.l),gc=AGOLD[s.l],can=s.l<AMAX&&s.c>=need&&S.gold>=gc;
+function altarFate(){if(!altarLeft())return toast('Алтарь отдыхает до завтра');if(S.gold<AFATE)return;S.gold-=AFATE;altarDay().n++;const r=artRoll(1,2)[0],a=ART.find(x=>x[0]===r[0]);
+ addLog('Карта судьбы: '+a[1]+(r[2]?' (новый артефакт!)':''));SFX.coin();buzz();save();render();if(r[2]){burst(innerWidth/2,innerHeight/2,30);SFX.level()}toast((r[2]?'Новый артефакт: ':'Карта: ')+a[1]+' · '+ARN[a[3]].toLowerCase())}
+function altarBuy(id){const a=ART.find(x=>x[0]===id),p=ACARD[a[3]];if(a[3]===3&&rankIdx()<ALEG_RK)return toast('Легендарные карты — с ранга «'+rkName(ALEG_RK)+'»');if(!altarLeft())return toast('Алтарь отдыхает до завтра');if(S.gold<p)return;
+ S.gold-=p;S.art[id].c++;altarDay().n++;addLog('Алтарь: карта «'+a[1]+'» за '+p+' золота');SFX.coin();buzz();save();render();artSheet(id)}
+function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().includes(id),need=aNeed(id,s.l),gc=aGold(id,s.l),cap=artCap(),capd=s.l>=cap&&s.l<AMAX,can=s.l<cap&&s.c>=need&&S.gold>=gc;
+ const cp=ACARD[a[3]],legLock=a[3]===3&&rankIdx()<ALEG_RK,left=altarLeft(),nc=rkFirst(r=>artCapFor(r)>s.l);
  sheet('<div class="loot"><div class="spr"><i class="ak r'+a[3]+'" lang="ja" style="width:84px;height:84px;font-size:40px">'+a[2]+'</i></div><b style="font-size:20px;color:'+ARC[a[3]]+'">'+esc(a[1])+'</b><span>'+ARN[a[3]]+' · уровень '+s.l+(s.l>=AMAX?' (максимум)':'')+'</span></div>'
   +'<p class="mut" style="text-align:center;font-style:italic">'+esc(AFUN[id]||'')+'</p><p style="text-align:center">Сейчас: <b>'+artDesc(a,s.l)+'</b>'+(s.l<AMAX?'<br>На ур. '+(s.l+1)+': '+artDesc(a,s.l+1):'')+'</p>'
-  +(s.l<AMAX?'<p class="mut" style="text-align:center;font-size:13px">Для улучшения: карт '+s.c+' / '+need+' · золота '+gc+'</p>':'')
-  +'<div class="row2"><button class="btn'+(eq?'':' gold')+'" id="aEq">'+(eq?'Снять':'Надеть')+'</button>'+(s.l<AMAX?'<button class="btn gold" id="aUp"'+(can?'':' disabled')+'>Улучшить</button>':'<button class="btn" disabled>Максимум</button>')+'</div><button class="linkbtn" id="aX" style="display:block;margin:14px auto 0">Закрыть</button>');
- $('aX').onclick=closeSheet;$('aEq').onclick=()=>{let L=artEqL();if(eq)L=L.filter(x=>x!==id);else{if(L.length>=3)return toast('Все 3 слота заняты: сначала сними артефакт');L.push(id)}S.artEq=L;SFX.tap();save();closeSheet();render()};
+  +(s.l<AMAX?'<p class="mut" style="text-align:center;font-size:13px">'+(capd?'🔒 Ур. '+(s.l+1)+' откроется с ранга «'+esc(rkName(nc))+'». Карты можно копить заранее: '+s.c+' / '+need:'Для улучшения: карт '+s.c+' / '+need+' · золота '+gc)+'</p>':'')
+  +'<div class="row2"><button class="btn'+(eq?'':' gold')+'" id="aEq">'+(eq?'Снять':'Надеть')+'</button>'+(s.l<AMAX?'<button class="btn gold" id="aUp"'+(can?'':' disabled')+'>Улучшить</button>':'<button class="btn" disabled>Максимум</button>')+'</div>'
+  +(s.l<AMAX?'<button class="btn" id="aBuy" style="width:100%;margin-top:10px"'+(legLock||!left||S.gold<cp?' disabled':'')+'>'+(legLock?'🔒 Карты на алтаре — с ранга «'+esc(rkName(ALEG_RK))+'»':'Купить карту на алтаре · '+cp+' з · осталось '+left+' сегодня')+'</button>':'')
+  +'<button class="linkbtn" id="aX" style="display:block;margin:14px auto 0">Закрыть</button>');
+ $('aX').onclick=closeSheet;$('aEq').onclick=()=>{let L=artEqL();if(eq)L=L.filter(x=>x!==id);else{if(L.length>=artSlots())return toast('Все '+artSlots()+' слота заняты: сначала сними артефакт');L.push(id)}S.artEq=L;SFX.tap();save();closeSheet();render()};
+ if($('aBuy'))$('aBuy').onclick=()=>altarBuy(id);
  if($('aUp'))$('aUp').onclick=()=>{if(!can)return;s.c-=need;S.gold-=gc;s.l++;addLog('Артефакт улучшен: '+a[1]+' · ур. '+s.l);SFX.level();buzz();save();closeSheet();render();burst(innerWidth/2,innerHeight/2,24);toast(a[1]+' — уровень '+s.l)}}
 /* ===== shop tabs, scenes, reward templates ===== */
 const STABS=[['chest','Сокровища',['chest','art']],['buy','Котик',['cat']],['rw','Награды',['rw']]];
@@ -3377,7 +3417,14 @@ const SCN=[['fuji','Фудзи и тории',0],['bamboo','Бамбуковая
 function renderScenes(){S.scn=S.scn||['fuji'];const on=S.scnOn||'fuji';$('scenes').innerHTML=SCN.map(([k,n,c])=>{const own=S.scn.includes(k)||!c;return '<div class="shopit">'+icon('star',own?'#e2c48e':'#8a8172',4)+'<div class="nm"><b>'+n+'</b><span>'+(on===k?'на сцене':own?'куплено':'фон сцены')+'</span></div>'+(on===k?'':own?'<button class="btn" data-sn="'+k+'">Выбрать</button>':'<button class="btn gold" data-sb="'+k+'"'+(S.gold<c?' disabled':'')+'>'+c+'</button>')+'</div>'}).join('');
  $('scenes').querySelectorAll('[data-sn]').forEach(b=>b.onclick=()=>{S.scnOn=b.dataset.sn;SFX.tap();save();render()});
  $('scenes').querySelectorAll('[data-sb]').forEach(b=>b.onclick=()=>{const s=SCN.find(x=>x[0]===b.dataset.sb);if(S.gold<s[2])return;S.gold-=s[2];S.scn.push(s[0]);S.scnOn=s[0];addLog('Куплен облик сцены: '+s[1]);SFX.coin();save();render();toast('Новая сцена: '+s[1])})}
-const RWT=[['Кофе вне дома',120],['Вечер игры',150],['Вкусный ужин',250],['Кино',300],['Барбер',400],['Новая вещь',800]];
+const RWT0=[['Кофе вне дома',120],['Вечер игры',150],['Вкусный ужин',250],['Кино',300],['Барбер',400],['Новая вещь',800]];
+const RWT=[['Кофе вне дома',300],['Вечер игры',400],['Доставка еды',600],['Вкусный ужин',700],['Кино',800],['Барбер',1000],['Новая вещь',2500],['Поездка на день',4000],['Большая покупка',8000]];
+/* доход: снимок goldTotal на начало каждого дня → среднее за 14 дней; цены показываются в «днях дел» */
+const DAYG=500;
+function goldStamp(){S.gT=S.gT||{};const t=today();if(S.gT[t]==null)S.gT[t]=S.goldTotal||0;const ks=Object.keys(S.gT).sort();while(ks.length>20)delete S.gT[ks.shift()]}
+function goldRate(){const G=S.gT||{},t=today();if(G[t]==null)return 0;const ks=Object.keys(G).filter(k=>k<t&&k>=shift(t,-14)).sort();if(!ks.length)return 0;const n=dDiff(ks[0],t);return n>=2?Math.max(1,Math.round((G[t]-G[ks[0]])/n)):0}
+function daysTxt(c){const d=c/(goldRate()||DAYG);if(d<.75)return 'меньше дня дел';const h=Math.round(d*2)/2;return '≈ '+String(h).replace('.',',')+' '+(h%1?'дня':plural(h,'день','дня','дней'))+' дел'}
+function ecoMig(){if(S.eco2)return;S.eco2=1;(S.rewards||[]).forEach(r=>{const o=RWT0.find(x=>x[0]===r.t),n=RWT.find(x=>x[0]===r.t);if(o&&n&&r.cost===o[1])r.cost=n[1]})}
 function renderRwTpl(){$('rwTpl').innerHTML=RWT.filter(([t])=>!S.rewards.some(r=>r.t===t)).map(([t,c])=>'<button class="chp" data-t="'+t+'" data-c="'+c+'">+ '+t+' · '+c+'</button>').join('');
  $('rwTpl').querySelectorAll('.chp').forEach(b=>b.onclick=()=>{S.rewards.push({t:b.dataset.t,cost:+b.dataset.c,n:0});SFX.tap();save();render()})}
 /* ===== hall of glory: tiered achievements, titles ===== */
@@ -4347,7 +4394,7 @@ document.documentElement.dataset.phase=phaseNow();
 /* ===== Сезон: ядро на виду, второстепенное — в свёрнутом «Архиве» внизу вкладки =====
    Ядро: квесты, путь без срыва, сон, дракон, котик, Линия Сердца, обязательства. Механики в архиве работают как раньше.
    S.season===0 — показать всё на своих местах (кнопка в настройках Летописи). */
-const ARCH={quest:['#map','#pathSk'],hero:['#perks','#stats','#slots','#inv'],shop:['#shopGear','#artGrid','#armory','#forge','#offers']};
+const ARCH={quest:['#map','#pathSk'],hero:['#perks','#stats','#slots','#inv'],shop:['#armory','#forge']};
 function seasonApply(){const on=S.season!==0;for(const[k,ids]of Object.entries(ARCH)){const scr=$('s-'+k);let box=$('arch-'+k);
   const P=[...new Set(ids.map(id=>{const e=document.querySelector(id);return e&&e.closest('.pnl')}).filter(Boolean))];
   if(on){if(!box){scr.insertAdjacentHTML('beforeend','<details class="archv" id="arch-'+k+'" data-k="arch-'+k+'"><summary><b>Архив</b><span></span><em></em></summary><div class="archin"></div></details>');box=$('arch-'+k)}
