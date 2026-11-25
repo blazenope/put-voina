@@ -3555,7 +3555,7 @@ const HPK={steps:'steps',step:'steps','шаги':'steps',sleep:'sleep','сон':
 function hpNum(k,s){s=String(s).replace(/[\s ]/g,'').replace(/[.,]$/,'');if(k!=='sleep'&&k!=='rhr'&&k!=='hrv'&&/^\d{1,3}([.,]\d{3})+$/.test(s))return +s.replace(/[.,]/g,'');return parseFloat(s.replace(',','.'))}
 function hpParse(t){t=String(t||'').trim();if(!t||t.length>2000)return null;const o={},re=/([a-zа-яё]+)\s*[=:]\s*(-?\d[\d\s .,]*)/gi;let m;
  while((m=re.exec(t))){const k=HPK[m[1].toLowerCase()];if(!k)continue;const v=hpNum(k,m[2]);if(isFinite(v)&&v>=0)o[k]=v}
- if(!Object.keys(o).length&&/^\s*\d[\d\s .,]{2,}\s*$/.test(t)){const v=parseInt(t.replace(/\D/g,''),10);if(v>0)o.steps=v}
+ if(!Object.keys(o).length&&/^\s*\d[\d\s .,]{2,}\s*$/.test(t)){const v=Math.round(hpNum('steps',t));if(v>0)o.steps=v}
  return Object.keys(o).length?o:null}
 function scrSet(v,dk,src){v=v<=16?v*60:v;v=Math.round(v);if(!(v>0&&v<1440))return 0;dk=dk||(new Date().getHours()<12?shift(today(),-1):today());const h=hdSet(dk);h.scr=v;
  const T=S.scrT||180;let xp=0;if(dk<today()&&!h.scrAw&&v<=T){xp=v<=T/2?25:15;h.scrAw=xp;award(xp,'wil','',{t:'Экранное время под контролем: '+fmtM(v),dmg:xp})}
@@ -3593,15 +3593,19 @@ function scrSheet(){let dk=new Date().getHours()<12?'y':'t';const T=S.scrT||180;
  $('scD').querySelectorAll('button').forEach(b=>b.onclick=()=>{dk=b.dataset.d;seg()});$('scT').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.scrT=+b.dataset.v;save();seg()});
  $('scNo').onclick=closeSheet;$('scOk').onclick=()=>{const m=(+$('scH').value||0)*60+(+$('scMn').value||0);if(!(m>0&&m<1440))return toast('Впиши часы и минуты');const x=scrSet(m,dk==='y'?shift(today(),-1):today(),'вручную');save();closeSheet();render();toast('📱 '+fmtM(m)+(x?' · +'+x+' XP':''))}}
 $('hpSync').onclick=()=>{buzz();hpSync()};$('hpScr').onclick=()=>{buzz();scrSheet()};$('hpAt').onclick=()=>stepsGuide();
-function stepsGuide(){sheet('<h3>⟳ Синхронизация с iPhone</h3><p class="mut" style="font-size:13.5px;line-height:1.45;margin-top:0">Сайт не может сам читать «Здоровье». Данные приносит команда iPhone: собирает их в буфер, а ты в приложении жмёшь «⟳». Настроить один раз — минут 5.</p>'
- +'<div class="lbl">1. Команда «Путь Воина»</div><ol class="hpg">'
- +'<li><b>Найти образцы здоровья</b>: Тип — <b>Шаги</b>, Дата начала — <b>Сегодня</b> → <b>Вычислить статистику: Сумма</b>.</li>'
- +'<li>По желанию так же: <b>Активная энергия</b> (Сумма), <b>Время упражнений</b> (Сумма), <b>Пульс в покое</b> (Среднее), <b>Анализ сна</b> за последние 1 день (Сумма: часы, минуты или секунды — приложение поймёт само).</li>'
- +'<li><b>Запросить ввод</b> → Число: «Экранное время за вчера, минут?». Apple не даёт взять его автоматически, так что это по желанию.</li>'
- +'<li><b>Текст</b>: <code>PV steps=[Шаги] kcal=[Энергия] ex=[Упражнения] rhr=[Пульс] sleep=[Сон] screen=[Экран]</code> — вместо скобок вставь переменные, лишнее убери.</li>'
- +'<li><b>Скопировать в буфер обмена</b>.</li></ol>'
- +'<div class="lbl">2. Автоматизация</div><p style="font-size:14px;line-height:1.5;margin:4px 0">Команды → Автоматизация → <b>Зарядное устройство: подключено</b> (или Время суток 21:00) → <b>Запускать сразу</b> → твоя команда. Поставил телефон на зарядку вне кровати — данные уже ждут.</p>'
- +'<div class="lbl">3. В приложении</div><p style="font-size:14px;line-height:1.5;margin:4px 0">Открой «Путь Воина» и нажми <b>⟳ Синхронизировать</b>. Подойдёт и просто число шагов в буфере.</p>'
+function stepsGuide(){const P='<p style="font-size:14px;line-height:1.5;margin:4px 0 10px">';
+ sheet('<h3>⟳ Шаги с iPhone</h3><p class="mut" style="font-size:13.5px;line-height:1.45;margin-top:0">Сайт не видит «Здоровье». Мостик — маленькая команда в приложении <b>Команды</b> (Shortcuts): она копирует число шагов, а ты здесь жмёшь ⟳. Настраивается один раз, всего 3 действия. Сон приложение считает само по «Ложусь спать», экран — кнопкой 📱.</p>'
+ +'<div class="lbl">1. Собери команду</div><ol class="hpg">'
+ +'<li>Открой приложение <b>Команды</b> → вкладка «Команды» → <b>＋</b> вверху справа.</li>'
+ +'<li>В поиске действий напиши <b>образцы</b> → <b>Найти образцы здоровья</b>. Нажми на синие слова: <b>Тип</b> → <b>Шаги</b>, <b>Дата начала</b> → <b>сегодня</b> (нет такой строки — «Добавить фильтр»).</li>'
+ +'<li>Поиск → <b>статистику</b> → <b>Вычислить статистику</b>. Нажми синее «Среднее» → <b>Сумма</b>.</li>'
+ +'<li>Поиск → <b>буфер</b> → <b>Скопировать в буфер обмена</b>.</li>'
+ +'<li>Нажми на название вверху → <b>Переименовать</b> → «Путь Воина» → Готово.</li></ol>'
+ +'<div class="lbl">2. Проверь</div>'+P+'Нажми <b>▶</b> внизу. Первый раз iPhone спросит доступ к «Здоровью» — включи <b>Шаги</b> → «Разрешить». Открой Заметки и вставь: должно появиться число, например <b>8432</b>. Есть число — всё работает.</p>'
+ +'<div class="lbl">3. Каждый день</div>'+P+'Запусти команду (▶, «Привет, Siri, Путь Воина» или иконкой: в команде «Поделиться» → «На экран Домой») → открой это приложение → <b>⟳ Синхронизировать</b> → iPhone покажет «Вставить» — нажми.</p>'
+ +'<details class="hint"><summary>Без ручного запуска</summary><p class="mut" style="font-size:13px;line-height:1.5">Команды → вкладка <b>Автоматизация</b> → ＋ → <b>Зарядное устройство</b> → Подключено → <b>Запускать сразу</b> → Далее → «Путь Воина». Поставил телефон на зарядку вне кровати — шаги уже в буфере, утром просто ⟳.</p></details>'
+ +'<details class="hint"><summary>Шагов вдвое больше, чем в «Здоровье»?</summary><p class="mut" style="font-size:13px;line-height:1.5">Так бывает с Apple Watch — шаги часов и телефона складываются. В действии «Найти образцы здоровья» нажми <b>Показать больше</b> → <b>Группировать по: День</b>.</p></details>'
+ +'<details class="hint"><summary>Больше данных: калории, пульс (по желанию)</summary><p class="mut" style="font-size:13px;line-height:1.5">Для каждого — ещё пара «Найти образцы здоровья» + «Вычислить статистику»: <b>Активная энергия</b> (Сумма), <b>Время упражнений</b> (Сумма), <b>Пульс в покое</b> (Среднее). Перед «Скопировать» добавь действие <b>Текст</b> и напиши <code>PV steps= kcal= rhr=</code>; после каждого «=» поставь курсор и тапни над клавиатурой нужную «Статистику» (тап по вставленной покажет, из какого она действия). «Скопировать в буфер» должен брать <b>Текст</b>. Можно дописать <code>screen=</code> с действием «Запросить ввод» (минуты экрана за вчера).</p></details>'
  +'<p class="mut" style="font-size:12.5px">Награды: 4 000 / 7 000 / 10 000 / 14 000 шагов — +10 / +20 / +35 / +50 XP. Сон 7–9 ч — +10% ко всему за день. Экран до цели — +15 XP, вдвое меньше — +25.</p>'
  +'<div class="row2"><button class="btn" id="stHand">Шаги вручную</button><button class="btn gold" id="stOk">Понятно</button></div>');
  $('stOk').onclick=()=>{S.hpOn=S.stpOn=1;save();closeSheet();render()};$('stHand').onclick=()=>{const v=prompt('Сколько шагов сегодня?');closeSheet();if(v)stepsSet(parseInt(String(v).replace(/\D/g,'')),'вручную')}}
