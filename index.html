@@ -3557,7 +3557,7 @@ const HPK={steps:'steps',step:'steps','шаги':'steps',sleep:'sleep','сон':
 function hpNum(k,s){s=String(s).replace(/[\s ]/g,'').replace(/[.,]$/,'');if(k!=='sleep'&&k!=='rhr'&&k!=='hrv'&&/^\d{1,3}([.,]\d{3})+$/.test(s))return +s.replace(/[.,]/g,'');return parseFloat(s.replace(',','.'))}
 function hpParse(t){t=String(t||'').trim();if(!t||t.length>2000)return null;const o={},re=/([a-zа-яё]+)\s*[=:]\s*(-?\d[\d\s .,]*)/gi;let m;
  while((m=re.exec(t))){const k=HPK[m[1].toLowerCase()];if(!k)continue;const v=hpNum(k,m[2]);if(isFinite(v)&&v>=0)o[k]=v}
- if(!Object.keys(o).length&&/^\s*\d[\d\s .,]{2,}\s*$/.test(t)){const v=Math.round(hpNum('steps',t));if(v>0)o.steps=v}
+ if(!Object.keys(o).length&&t.length<80&&(/^\s*\d[\d\s .,]{2,}\s*$/.test(t)||/шаг|step/i.test(t))){t=(t.match(/\d[\d\s.,]*\d|\d/)||[''])[0];const v=Math.round(hpNum('steps',t));if(v>0)o.steps=v}
  return Object.keys(o).length?o:null}
 function scrSet(v,dk,src){v=v<=16?v*60:v;v=Math.round(v);if(!(v>0&&v<1440))return 0;dk=dk||(new Date().getHours()<12?shift(today(),-1):today());const h=hdSet(dk);h.scr=v;
  const T=S.scrT||180;let xp=0;if(dk<today()&&!h.scrAw&&v<=T){xp=v<=T/2?25:15;h.scrAw=xp;award(xp,'wil','',{t:'Экранное время под контролем: '+fmtM(v),dmg:xp})}
