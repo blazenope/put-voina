@@ -1473,7 +1473,7 @@ html[data-phase=night] body::after{display:block!important;content:""!important;
     <div class="arteq" id="artEq"></div>
     <div class="lbl">Коллекция</div>
     <div class="artg" id="artGrid"></div>
-    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">Карты артефактов выпадают из сундуков. Набери карт и золота, чтобы поднять уровень: эффект растёт с каждым.</div>
+    <div class="mut" style="font:12.5px/1.4 var(--body);margin-top:10px">Карты артефактов выпадают из сундуков. Набери карт и золота, чтобы поднять уровень: эффект растёт с каждым. Чем реже артефакт, тем сильнее он за уровень и тем меньше карт нужно на улучшение. Легендарные дают сразу несколько бонусов.</div>
   </div>
   <div class="pnl" data-st="cons">
     <div class="ttl"><h2>Расходники</h2></div>
@@ -2134,7 +2134,7 @@ const goldOf=xp=>Math.round(8+xp*.25);                       // routine pays rel
 function award(xp,cat,why,opt){opt=opt||{};const b=bonus();const now=Date.now();if(S.buffXp>now)b.xp+=1;if(S.buffDmg>now)b.dmg+=1;if(S.buffGold>now)b.gold+=1;
  const D=ds(),bc=S.camp.ch%NB,streakB=Math.min(.5,actStreak()*.05),crit=cat===weakOf(S.camp.ch);
  const armor=(bc===4||bc===9)&&!crit?.8:1,paper=bc===6&&xp<20?.5:1,tired=D[cat]>=6?.5:1;
- const skk=skOf(opt.t||why,cat),pm=perkMods(skk,cat,xp,why,opt),am=artMods(skk,xp,opt),md=opt.manual?dayMods():{m:1,L:[]};
+ const skk=skOf(opt.t||why,cat),pm=perkMods(skk,cat,xp,why,opt),am=artMods(skk,xp,opt,why,cat),md=opt.manual?dayMods():{m:1,L:[]};
  const ax=Math.round(xp*(1+b.xp+pm.x+am.x)*md.m),ag=Math.round(goldOf(xp)*(1+b.gold+streakB+pm.g+am.g)*tired),ad=Math.round((opt.dmg||dmgOf(xp))*(1+b.dmg+pm.d+am.d)*(crit?2:1)*armor*paper);
  if(md.m!==1)why=(why?why+' · ':'')+md.L.filter(x=>x[1].startsWith('Ночь')||x[1].startsWith('Истощ')||x[1].startsWith('Высп')).map(x=>x[1].split(':')[0].toLowerCase()+(md.m<1?' ':' ')+x[1].split(':')[1].trim()).join(', ');
  D[cat]++;D.n++;if(new Date().getHours()<12)D.am++;if(xp>=40)D.big++;if(crit)D.crit++;D.dmg+=ad;
@@ -3286,7 +3286,7 @@ function chGive(t,src){const C=chS(),k=chFree();if(!k){const g=Math.round(CHT[t]
  C.sl[k]={t,id:Date.now().toString(36)+k,un:1,src:src||''};addLog('Сундук: '+CHT[t][0]+(src?' · '+src:''));CHQ.push(k);setTimeout(chNext,1500);return true}
 const CHQ=[];let CHBUSY=false;
 function chNext(){if(CHBUSY||document.getElementById('chfx'))return setTimeout(chNext,1500);const k=CHQ.shift();if(!k)return;const c=chS().sl[k];if(!c)return chNext();chDrop(k)}
-const ODDS=[[80,18,2,0],[70,24,5,1],[60,28,10,2],[50,30,15,5],[40,30,20,10]];
+const ODDS=[[78,18,3,1],[66,25,7,2],[55,28,13,4],[45,30,17,8],[35,30,22,13]];
 const oddsTxt=t=>ODDS[t].map((p,i)=>p?'<span style="color:'+ARC[i]+'">'+['обычн.','редк.','эпик','легенда'][i]+' '+p+'%</span>':'').filter(Boolean).join(' · ');
 function chDrop(k){const c=chS().sl[k];if(!c)return;CHBUSY=true;const T=CHT[c.t],d=document.createElement('div');d.id='chfx';d.className='drop';
  d.innerHTML='<div class="rays" style="--rc:'+T[2]+'"></div><div class="chtop">Выпал сундук!</div><div class="chbox falling">'+chestSVG(c.t,180)+'</div><div class="chname">'+esc(T[0])+'</div><div class="chsrc">'+esc(c.src?'награда: '+c.src:'')+'</div><div class="odds">'+oddsTxt(c.t)+'</div><div class="chbtns"><button class="btn" id="chLater">Потом</button><button class="btn gold" id="chNow">Открыть</button></div>';
@@ -3338,28 +3338,31 @@ function renderChests(){const C=chS(),now=Date.now();
 function navBadge(){const C=chS(),now=Date.now(),ready=Object.values(C.sl).some(Boolean)||now-(C.free||0)>=4*36e5;const b=document.querySelector('#nav [data-s="shop"]');if(b)b.classList.toggle('bd',ready)}
 setInterval(()=>{if(!document.hidden&&!$('s-shop').classList.contains('hide')&&S.shopTab==='chest')renderChests();navBadge()},15000);
 /* ===== artifacts ===== */
-const ART=[['kaeru','Презерватив-оберег','護',0,'золота за всё',2,'g'],['daruma','Утренний стояк','勃',0,'опыта за дела на 40+ XP',3,'x40'],['geta','Гантеля Казановы','鉄',0,'опыта за дела на Тело',4,'body'],['fude','Словарь грязного немецкого','語',0,'опыта за немецкий',4,'de'],
- ['kitsune','Маска соблазнителя','仮',1,'опыта за общение',4,'soc'],['inro','Резюме жиголо','履',1,'опыта за карьеру',4,'job'],['chochin','Красный фонарь','灯',1,'опыта за ритуалы',4,'rit'],['tessen','Веер стыдливой гейши','扇',1,'урона по боссу',5,'d'],
- ['oni','Ледяной душ','冷',2,'урона в бою с тягой',8,'urge'],['musashi','Камасутра Мусаси','性',2,'к наградам контрактов',5,'ct'],['maneki','Кот-сводник','招',2,'к шансу сундука с квестов',8,'chest'],
- ['yata','Зеркало «Я секси»','鏡',3,'опыта за всё',2,'x'],['tama','Яйца дракона','玉',3,'опыта за всё',3,'x']];
-const ANEED=[0,2,4,10,20,50,100],AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'],AFUN={kaeru:'Защищает кошелёк так же надёжно, как кое-что другое.',daruma:'Встаёт каждое утро без напоминаний. Учись у него дисциплине.',geta:'Девушки любят руки. Руки любят железо.',fude:'«Schatz», «Mäuschen» и ещё 400 слов, которых нет в учебнике B1. Пригодится на свидании в Мюнхене.',kitsune:'Надеваешь — и small talk сам льётся. Снимаешь — ты всё тот же, но уже уверенней.',inro:'Опыт работы: обаяние, пунктуальность, выносливость.',chochin:'Светит, когда ты делаешь ритуалы. Квартал красных фонарей тут ни при чём. Почти.',tessen:'Прикрывает лицо гейши, когда ты бьёшь босса особенно жёстко.',oni:'Лучшее оружие против тяги, проверенное поколениями монахов и студентов.',musashi:'Мусаси писал о стратегии. Эту главу он почему-то не опубликовал.',maneki:'Машет лапкой, и сундуки сами идут к тебе в руки.',yata:'Смотришь в него и говоришь: «А я ничего». И это правда.',tama:'Легендарные. Тяжёлые. Полные энергии, которую ты больше не сливаешь на экран.'};
+/* Баланс: эффект за уровень растёт с редкостью (обычные 3–5%, редкие 6–8%, эпики 8–12%, легенды — 2–3 эффекта, один из них «за всё»).
+   a[7] — дополнительные эффекты [[%,тип,подпись]]. Типы: x всё · x40 дела 40+ · g золото · d урон · body/de/soc/job навык · drg Кегель и дракон · path путь без срыва · cha Харизма · chest шанс сундука */
+const ART=[['kaeru','Презерватив-оберег','護',0,'золота за всё',3,'g'],['daruma','Утренний стояк','勃',0,'опыта за дела на 40+ XP',4,'x40'],['geta','Гантеля Казановы','鉄',0,'опыта за дела на Тело',5,'body'],['fude','Словарь грязного немецкого','語',0,'опыта за немецкий',5,'de'],
+ ['kitsune','Маска соблазнителя','仮',1,'опыта за общение',6,'soc'],['inro','Резюме жиголо','履',1,'опыта за карьеру',6,'job'],['chochin','Красный фонарь','灯',1,'опыта за Кегель и тренировки дракона',8,'drg'],['tessen','Веер стыдливой гейши','扇',1,'урона по боссу',7,'d'],
+ ['oni','Ледяной душ','冷',2,'опыта за путь без срыва (чистые дни, победы над тягой, шторм)',10,'path'],['musashi','Камасутра Мусаси','性',2,'опыта за Харизму (Линия Сердца, близость)',8,'cha'],['maneki','Кот-сводник','招',2,'к шансу сундука с квестов',12,'chest',[[2,'g','золота за всё']]],
+ ['yata','Зеркало «Я секси»','鏡',3,'опыта за всё',5,'x',[[3,'g','золота за всё'],[4,'d','урона по боссу']]],['tama','Яйца дракона','玉',3,'опыта за всё',4,'x',[[8,'path','опыта за путь без срыва'],[6,'drg','опыта за Кегель и дракона']]]];
+const ANEEDR=[[0,2,4,10,20,50,100],[0,2,4,8,16,35,70],[0,2,3,6,12,24,45],[0,1,2,4,7,12,20]],ANEED=ANEEDR[0],aNeed=(id,l)=>{const a=ART.find(x=>x[0]===id);return ANEEDR[a?a[3]:0][l]},AGOLD=[0,25,60,150,400,1000,2500],AMAX=7,ARC=['#a8b0bf','#86aaff','#c39bff','#ffc36b'],ARN=['Обычный','Редкий','Эпический','Легендарный'],AFUN={kaeru:'Защищает кошелёк так же надёжно, как кое-что другое.',daruma:'Встаёт каждое утро без напоминаний. Учись у него дисциплине.',geta:'Девушки любят руки. Руки любят железо.',fude:'«Schatz», «Mäuschen» и ещё 400 слов, которых нет в учебнике B1. Пригодится на свидании в Мюнхене.',kitsune:'Надеваешь — и small talk сам льётся. Снимаешь — ты всё тот же, но уже уверенней.',inro:'Опыт работы: обаяние, пунктуальность, выносливость.',chochin:'Загорается, когда ты качаешь дракона. Квартал красных фонарей тут ни при чём. Почти.',tessen:'Прикрывает лицо гейши, когда ты бьёшь босса особенно жёстко.',oni:'Лучшее оружие против тяги, проверенное поколениями монахов и студентов.',musashi:'Мусаси писал о стратегии. Эту главу — про девушек — он почему-то не опубликовал.',maneki:'Машет лапкой, и сундуки сами идут к тебе в руки.',yata:'Смотришь в него и говоришь: «А я ничего». И это правда.',tama:'Легендарные. Тяжёлые. Полные энергии, которую ты больше не сливаешь на экран.'};
 const artEqL=()=>(S.artEq||[]).filter(id=>(S.art||{})[id]).slice(0,3);
-function artE(type){let v=0;for(const id of artEqL()){const a=ART.find(x=>x[0]===id);if(a&&a[6]===type)v+=a[5]*S.art[id].l/100}return v}
-const artPk=()=>artEqL().includes('tama')?Math.ceil(S.art.tama.l/2):0;
-function artMods(sk,xp,opt){return{x:artE('x')+(xp>=40?artE('x40'):0)+(['body','de','soc','job'].includes(sk)?artE(sk):0)+(opt.rit?artE('rit'):0),g:artE('g'),d:artE('d')}}
-const artDesc=(a,l)=>a[6]==='pk'?'+'+Math.ceil(l/2)+' '+plural(Math.ceil(l/2),'очко','очка','очков')+' перков':'+'+a[5]*l+'% '+a[4];
-function artRoll(n,tier){const W=[[80,18,2,0],[70,24,5,1],[60,28,10,2],[50,30,15,5],[40,30,20,10]][tier],out={};
+const artFx=a=>[[a[5],a[6],a[4]]].concat(a[7]||[]);
+function artE(type){let v=0;for(const id of artEqL()){const a=ART.find(x=>x[0]===id);if(a)for(const[p,t]of artFx(a))if(t===type)v+=p*S.art[id].l/100}return v}
+const ART_PATH=/чист|тень побежд|шторм|феникс|без второго|клятва/i,ART_DRG=/^(Кегель|Тренировка дракона|Дракон)/;
+function artMods(sk,xp,opt,why,cat){return{x:artE('x')+(xp>=40?artE('x40'):0)+(['body','de','soc','job'].includes(sk)?artE(sk):0)+(ART_PATH.test(why||'')?artE('path'):0)+(ART_DRG.test(opt.t||'')?artE('drg'):0)+(cat==='cha'?artE('cha'):0),g:artE('g'),d:artE('d')}}
+const artDesc=(a,l)=>artFx(a).map(([p,,t])=>'+'+p*l+'% '+t).join(' · ');
+function artRoll(n,tier){const W=ODDS[tier],out={};
  const pickR=()=>{let r=Math.random()*100,i=0;while(i<3&&r>=W[i]){r-=W[i];i++}return i};
  const add=(r,k)=>{const pool=ART.filter(a=>a[3]===r),a=pool[Math.floor(Math.random()*pool.length)];out[a[0]]=(out[a[0]]||0)+k};
  let left=n;if(tier>=3){add(2,3);left-=3}if(tier===4){add(3,1);left-=1}
  const stacks=tier===0?1:tier<3?2:3;for(let s=0;s<stacks&&left>0;s++){const r=pickR(),k=s===stacks-1?left:Math.max(1,Math.round(left*(.45+Math.random()*.25)/[1,2,4,8][r]));add(r,Math.min(left,k));left-=Math.min(left,k)}
  S.art=S.art||{};S.artEq=artEqL();const res=[];for(const[id,k]of Object.entries(out)){const s=S.art[id];if(!s){S.art[id]={l:1,c:k-1};if(S.artEq.length<3)S.artEq.push(id);res.push([id,k,true])}else{s.c+=k;res.push([id,k,false])}}return res}
 function renderArts(){S.art=S.art||{};S.artEq=artEqL();
- $('artEq').innerHTML=[0,1,2].map(i=>{const id=S.artEq[i],a=id&&ART.find(x=>x[0]===id);return a?'<button class="aeq" data-a="'+id+'" style="--rc:'+ARC[a[3]]+'"><i lang="ja">'+a[2]+'</i><b>'+esc(a[1])+'</b><span>ур. '+S.art[id].l+' · '+artDesc(a,S.art[id].l)+'</span></button>':'<div class="aeq empty"><i>＋</i><span>Пустой слот</span></div>'}).join('');
- $('artGrid').innerHTML=ART.map(a=>{const s=S.art[a[0]];if(!s)return '<div class="arti lock" style="--rc:'+ARC[a[3]]+'"><i>?</i><b>'+ARN[a[3]]+'</b><span>не найден</span></div>';const need=ANEED[s.l],up=s.l<AMAX&&s.c>=need&&S.gold>=AGOLD[s.l];
+ $('artEq').innerHTML=[0,1,2].map(i=>{const id=S.artEq[i],a=id&&ART.find(x=>x[0]===id);return a?'<button class="aeq" data-a="'+id+'" style="--rc:'+ARC[a[3]]+'"><i lang="ja">'+a[2]+'</i><b>'+esc(a[1])+'</b><span>ур. '+S.art[id].l+' · '+artDesc([0,0,0,0,a[4],a[5],a[6]],S.art[id].l)+(a[7]?' +'+a[7].length+' бонуса':'')+'</span></button>':'<div class="aeq empty"><i>＋</i><span>Пустой слот</span></div>'}).join('');
+ $('artGrid').innerHTML=ART.map(a=>{const s=S.art[a[0]];if(!s)return '<div class="arti lock" style="--rc:'+ARC[a[3]]+'"><i>?</i><b>'+ARN[a[3]]+'</b><span>не найден</span></div>';const need=aNeed(a[0],s.l),up=s.l<AMAX&&s.c>=need&&S.gold>=AGOLD[s.l];
   return '<button class="arti r'+a[3]+(up?' up':'')+(S.artEq.includes(a[0])?' on':'')+'" data-a="'+a[0]+'" style="--rc:'+ARC[a[3]]+'"><i lang="ja">'+a[2]+'</i><b>'+esc(a[1])+'</b><span>ур. '+s.l+'</span><div class="gauge"><i style="width:'+(s.l>=AMAX?100:Math.min(100,s.c/need*100))+'%"></i></div><small>'+(s.l>=AMAX?'максимум':s.c+' / '+need)+'</small></button>'}).join('');
  document.querySelectorAll('#artEq [data-a],#artGrid [data-a]').forEach(b=>b.onclick=()=>artSheet(b.dataset.a));$('artCnt').textContent=Object.keys(S.art).length+' / '+ART.length}
-function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().includes(id),need=ANEED[s.l],gc=AGOLD[s.l],can=s.l<AMAX&&s.c>=need&&S.gold>=gc;
+function artSheet(id){const a=ART.find(x=>x[0]===id),s=S.art[id],eq=artEqL().includes(id),need=aNeed(id,s.l),gc=AGOLD[s.l],can=s.l<AMAX&&s.c>=need&&S.gold>=gc;
  sheet('<div class="loot"><div class="spr"><i class="ak r'+a[3]+'" lang="ja" style="width:84px;height:84px;font-size:40px">'+a[2]+'</i></div><b style="font-size:20px;color:'+ARC[a[3]]+'">'+esc(a[1])+'</b><span>'+ARN[a[3]]+' · уровень '+s.l+(s.l>=AMAX?' (максимум)':'')+'</span></div>'
   +'<p class="mut" style="text-align:center;font-style:italic">'+esc(AFUN[id]||'')+'</p><p style="text-align:center">Сейчас: <b>'+artDesc(a,s.l)+'</b>'+(s.l<AMAX?'<br>На ур. '+(s.l+1)+': '+artDesc(a,s.l+1):'')+'</p>'
   +(s.l<AMAX?'<p class="mut" style="text-align:center;font-size:13px">Для улучшения: карт '+s.c+' / '+need+' · золота '+gc+'</p>':'')
