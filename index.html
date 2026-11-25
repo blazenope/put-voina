@@ -2526,7 +2526,7 @@ const SCRR={quest:()=>{renderQuest();renderGoals();renderSkills('pathSk');render
 const curScr=()=>{const m=document.querySelector('main.screen:not(.hide)');return m?m.id.slice(2):'day'};
 function renderScr(k){const f=SCRR[k];if(!f)return;DIRTY.delete(k);try{f()}catch(e){console.error(e)}}
 function setUI(){$('sndBtn').textContent=S.sound?'Вкл':'Выкл';$('ambBtn').textContent=S.amb?'Вкл':'Выкл';if(document.activeElement!==$('volR'))$('volR').value=Math.round(vol()*100);$('loudBtn').textContent=S.soundLoud?'Да':'Нет'}
-function render0(){try{recovTick()}catch(e){}setTimeout(()=>{try{renderSteps()}catch(e){}try{renderKgBar()}catch(e){}try{renderCmBar()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();try{pkCheck()}catch(e){}try{cmCheck()}catch(e){}renderHUD();renderDay();try{navBadge()}catch(e){}
+function render0(){try{recovTick()}catch(e){}try{autoClean()}catch(e){}setTimeout(()=>{try{renderSteps()}catch(e){}try{renderKgBar()}catch(e){}try{renderCmBar()}catch(e){}},0);setTimeout(hintify,0);setTimeout(colify,0);ensureDay();checkGoals();checkAch();checkRank();try{pkCheck()}catch(e){}try{cmCheck()}catch(e){}renderHUD();renderDay();try{navBadge()}catch(e){}
  DIRTY=new Set(Object.keys(SCRR));renderScr(curScr())}
 
 /* ================= ROADMAP 道: the whole future ================= */
@@ -2671,6 +2671,8 @@ function relapseChain(L){const R={halt:L.halt||[],first:L.first||''};sheet('<h3>
  $('cH').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{const t=c.dataset.t;R.halt=R.halt.includes(t)?R.halt.filter(x=>x!==t):[...R.halt,t];c.classList.toggle('on')});
  $('cF').querySelectorAll('.chp').forEach(c=>c.onclick=()=>{R.first=R.first===c.dataset.t?'':c.dataset.t;$('cF').querySelectorAll('.chp').forEach(x=>x.classList.toggle('on',x.dataset.t===R.first));if(!$('cL').value&&FIRSTFIX[R.first])$('cL').value=FIRSTFIX[R.first]});
  $('cN').onclick=closeSheet;$('cY').onclick=()=>{const l=$('cL').value.trim().slice(0,120),nw=!L.first&&R.first;lapseRec(S.fellAt||Date.now(),{halt:R.halt,first:R.first,lesson:l});if(l&&R.first&&R.first!=='Другое')S.ifthen[R.first]=l;if(nw)S.xp+=10;save();closeSheet();render();toast('Цепочка записана'+(nw?' · +10 XP':''))}}
+function autoClean(){if(!S.cleanSince)return;let k=shift(dkey(new Date(S.cleanSince)),1),n=0;const t=today();while(k<t){if(!S.days[k]){S.days[k]='c';n++}k=shift(k,1)}
+ if(n){addLog('Засчитано без срыва: '+n+' '+plural(n,'день','дня','дней'));award(20*n,'wil',n+' '+plural(n,'чистый день','чистых дня','чистых дней')+' засчитано',{dmg:20*n});save()}}
 function recovTick(){if(!recovOn())return;S.recA=S.recA||{};const h=(Date.now()-S.fellAt)/36e5,k=String(S.fellAt);
  if(h>=24&&S.recA[k]!==24&&S.recA[k]!==72){S.recA[k]=24;award(25,'wil','сутки без второго раза',{t:'Сутки после срыва без второго раза',dmg:25});toast('Сутки без второго раза · +25 XP')}
  if(h>=72&&S.recA[k]!==72){S.recA[k]=72;award(50,'wil','феникс поднялся',{t:'72 часа после срыва: Феникс поднялся',dmg:50});toast('🔥 Феникс поднялся · +50 XP')}}
