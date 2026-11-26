@@ -1148,6 +1148,30 @@
      "pin": 1
     }
    ]
+  },
+  {
+   "id": "tasks-widerspruch-unterschrift-2026-11-26",
+   "date": "2026-11-27",
+   "tasks": [
+    {
+     "t": "Распечатать Widerspruch (2 копии) и подписать",
+     "xp": 20,
+     "c": "int",
+     "time": "08:00",
+     "pin": 1
+    },
+    {
+     "t": "Сдать подписанный Widerspruch в Jobcenter + штамп на копии",
+     "xp": 60,
+     "c": "int",
+     "time": "08:05",
+     "pin": 1
+    }
+   ],
+   "focus": {
+    "t": "Сдать подписанный Widerspruch в Jobcenter + штамп на копии",
+    "why": "Нужна подпись от руки, срок до 15.12"
+   }
   }
  ]
 }
